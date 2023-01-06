@@ -10,7 +10,7 @@
     <div class="recent-preview-item-content-batch">
         <span>
             <%= #render "_link.html", batch_index: @txn_batch .batch_index, data_test: "address_hash_link" %>
-            <%=  @txn_batch .batch_index %>
+            <%= render "_link.html", batch_index: @txn_batch.batch_index, data_test: "address_hash_link" %>
         </span>
         <span in-tile data-from-now="<%= block_timestamp(@txn_batch ) %>"></span>
         
