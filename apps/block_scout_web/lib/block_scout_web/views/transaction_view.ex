@@ -311,9 +311,10 @@ defmodule BlockScoutWeb.TransactionView do
   end
 
   def formatted_fee(%Transaction{} = transaction, opts) do
+    l1_fee = if transaction.l1_fee == nil, do: Wei.from(Decimal.new(0), :wei), else: transaction.l1_fee
     transaction
     |> Chain.fee(:wei)
-    |> fee_to_denomination(transaction.l1_fee, opts)
+    |> fee_to_denomination(l1_fee, opts)
     |> case do
          {:actual, value} -> value
          {:maximum, value} -> "#{gettext("Max of")} #{value}"
