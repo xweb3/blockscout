@@ -234,6 +234,15 @@ const elements = {
       $el.empty().append(numeral(state.blockCount).format())
     }
   },
+  '[data-selector="block-counts"]': {
+    load($el) {
+      return { blockCount: numeral($el.text()).value() }
+    },
+    render($el, state, oldState) {
+      if (oldState.blockCount === state.blockCount) return
+      $el.empty().append(numeral(state.blockCount).format())
+    }
+  },
   '[data-selector="address-count"]': {
     render($el, state, oldState) {
       if (oldState.addressCount === state.addressCount) return

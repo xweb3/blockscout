@@ -97,7 +97,7 @@
                 <%= gettext "Total transactions" %>
               </span>
               <div class="d-flex">
-                <span class="dashboard-banner-network-stats-value" data-selector="transaction-count">
+                <span class="dashboard-banner-network-stats-value" data-selector="block-counts">
                   <%= #BlockScoutWeb.Cldr.Number.to_string!(@transaction_estimated_count, format: "#,###") %>
                   <%= BlockScoutWeb.Cldr.Number.to_string!(@block_count, format: "#,###") %>
                 </span>
