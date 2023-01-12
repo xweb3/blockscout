@@ -428,7 +428,14 @@
                 text: gettext("L1 Gas Price") %>
               <%= gettext "L1 Gas Price" %>
             </dt>
-            <dd class="col-sm-9 col-lg-10"> <%= l1_gas_price(@transaction, :gwei) %> </dd>
+            <dd class="col-sm-9 col-lg-10" style="display:flex;flex-direction:column;"> 
+              <span>
+                <%= l1_gas_price(@transaction, :gwei) %>
+              </span>
+              <span style="font-size:12px;color:#585F65;">
+                Display with gwei on Mantle, converted from L1 gas price
+              </span>
+             </dd>
           </dl>
           <!-- L1 Fee -->
           <dl class="row">
