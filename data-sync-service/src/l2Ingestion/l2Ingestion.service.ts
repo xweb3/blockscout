@@ -2,6 +2,8 @@ import { ConfigService } from '@nestjs/config';
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
+  L1SentMessageEvents,
+  L1ToL2,
   L2RelayedMessageEvents,
   L2SentMessageEvents,
   L2ToL1,
@@ -88,6 +90,9 @@ export class L2IngestionService {
       'function finalizeBitWithdrawal(address _from, address _to, uint256 _amount, bytes calldata _data)',
       'function finalizeERC20Withdrawal(address _l1Token, address _l2Token, address _from, address _to, uint256 _amount, bytes calldata _data)',
     ]);
+    const dataSource = getConnection();
+    const queryRunner = dataSource.createQueryRunner();
+    await queryRunner.connect();
     for (const item of list) {
       const {
         blockNumber,
@@ -148,11 +153,8 @@ export class L2IngestionService {
         );
       }
       const { timestamp } = await this.web3.eth.getBlock(blockNumber);
-      const dataSource = getConnection();
-      const queryRunner = dataSource.createQueryRunner();
-      await queryRunner.connect();
-      await queryRunner.startTransaction();
       try {
+        await queryRunner.startTransaction();
         const savedResult = await queryRunner.manager.save(
           L2SentMessageEvents,
           {
@@ -212,10 +214,9 @@ export class L2IngestionService {
           `l2 createSentEvents blocknumber:${blockNumber} ${error}`,
         );
         await queryRunner.rollbackTransaction();
-      } finally {
-        await queryRunner.release();
       }
     }
+    await queryRunner.release();
     return result;
   }
   async createRelayedEvents(startBlock, endBlock) {
@@ -223,6 +224,9 @@ export class L2IngestionService {
       startBlock,
       endBlock,
     );
+    const dataSource = getConnection();
+    const queryRunner = dataSource.createQueryRunner();
+    await queryRunner.connect();
     const result: any = [];
     for (const item of list) {
       const {
@@ -232,11 +236,8 @@ export class L2IngestionService {
         signature,
       } = item;
       const { timestamp } = await this.web3.eth.getBlock(blockNumber);
-      const dataSource = getConnection();
-      const queryRunner = dataSource.createQueryRunner();
-      await queryRunner.connect();
-      await queryRunner.startTransaction();
       try {
+        await queryRunner.startTransaction();
         const savedResult = await queryRunner.manager.save(
           L2RelayedMessageEvents,
           {
@@ -259,10 +260,9 @@ export class L2IngestionService {
           `l2 createRelayedEvents blocknumber:${blockNumber} ${error}`,
         );
         await queryRunner.rollbackTransaction();
-      } finally {
-        await queryRunner.release();
       }
     }
+    await queryRunner.release();
     return result;
   }
   async syncSentEvents() {
