@@ -60,7 +60,6 @@ const elements = {
           })
 
           $('.js-smart-contract-form-reset').on('click', function () {
-            console.log(123123)
             $('.js-contract-library-form-group').removeClass('active')
             $('.js-contract-library-form-group').first().addClass('active')
             $('.js-smart-contract-libraries-wrapper').hide()
