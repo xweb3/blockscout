@@ -240,6 +240,7 @@ if ($contractVerificationPage.length) {
       $('.js-contract-library-form-group').first().addClass('active')
       $('.js-smart-contract-libraries-wrapper').hide()
       $('.js-btn-add-contract-libraries').show()
+      $('#smart-contract-form-group').show()
       $('.js-add-contract-library-wrapper').show()
     })
 
