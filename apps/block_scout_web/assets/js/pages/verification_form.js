@@ -236,6 +236,7 @@ if ($contractVerificationPage.length) {
     })
 
     $('.js-smart-contract-form-reset').on('click', function () {
+      console.log('reset button has been clicked')
       $('.js-contract-library-form-group').removeClass('active')
       $('.js-contract-library-form-group').first().addClass('active')
       $('.js-smart-contract-libraries-wrapper').hide()
