@@ -242,6 +242,7 @@ if ($contractVerificationPage.length) {
       $('.js-smart-contract-libraries-wrapper').hide()
       $('.js-btn-add-contract-libraries').show()
       $('#smart-contract-form-group').show()
+      $('#smart-contract-form-group-constructor-arguments').hide()
       $('.js-add-contract-library-wrapper').show()
     })
 
