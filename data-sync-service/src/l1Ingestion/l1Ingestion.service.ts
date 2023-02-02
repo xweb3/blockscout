@@ -498,11 +498,38 @@ export class L1IngestionService {
       );
     }
   }
-  async createEigenBatches() {
-    return null;
-  }
   async createEigenBatchTransaction() {
-    return null;
+    const dataSource = getConnection();
+    const queryRunner = dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    try {
+      await queryRunner.manager.save(DaBatches, {
+        batch_index: 1,
+        status: 'confirmed', // todo: if eigen layer proof of cousty launch we will support it
+        start_block: 1,
+        end_block: 2,
+        da_hash: '',
+        store_id: 1,
+        store_number: 1000,
+        de_fee: 10.1,
+        timestamp: new Date().toISOString(),
+        inserted_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      });
+      await queryRunner.manager.save(DaBatchTransaction, {
+        batch_index: 1,
+        tx_hash: '',
+        timestamp: new Date().toISOString(),
+        inserted_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      });
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      this.logger.error(`create eigenlayer batch transaction error: ${error}`);
+      await queryRunner.rollbackTransaction();
+    }
+    await queryRunner.release();
   }
   async handleWaitTransaction() {
     // const latestBlock = await this.getCurrentBlockNumber();
@@ -810,17 +837,12 @@ export class L1IngestionService {
       result: result,
     };
   }
-  async syncEigenDaBatches() {
+  async syncEigenDaBatchTxn() {
     const batch_index = await this.getLatestBatchIndex();
     console.log('batch_index==', batch_index);
     const rollup_info = await this.getRollupInfoByBatchIndex(1);
     console.log('rollup_info==', rollup_info);
     const data = this.eigenlayerService.retrieveFramesAndData(100);
     console.log('data==', data);
-    return null;
-  }
-
-  async syncEigenDaBatchTxn() {
-    return null;
   }
 }

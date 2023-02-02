@@ -318,19 +318,11 @@ export class TasksService {
   //   }
   // }
   @Interval(2000)
-  async eigen_da_batch() {
+  async eigen_da_batch_txns() {
     try {
-      await this.l1IngestionService.syncEigenDaBatches();
+      await this.l1IngestionService.syncEigenDaBatchTxn();
     } catch (error) {
       this.logger.error(`error eigen da batches err: ${error}`);
     }
   }
-  // @Interval(2000)
-  // async eigen_da_batch_txns() {
-  //   try {
-  //     await this.l1IngestionService.syncEigenDaBatchTxn();
-  //   } catch (error) {
-  //     this.logger.error(`error eigen da batches transactions err: ${error}`);
-  //   }
-  // }
 }
