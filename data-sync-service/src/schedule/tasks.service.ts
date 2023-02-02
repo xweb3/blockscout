@@ -81,240 +81,256 @@ export class TasksService {
     });
     console.log('================end init cache================');
   }
+  // @Interval(2000)
+  // async l1_sent() {
+  //   let end = 0;
+  //   const currentBlockNumber =
+  //     await this.l1IngestionService.getCurrentBlockNumber();
+  //   console.log('l1 sent currentBlockNumber: ', currentBlockNumber);
+  //   const start = Number(await this.cacheManager.get(L1_SENT));
+  //   if (currentBlockNumber - start > SYNC_STEP) {
+  //     end = start + SYNC_STEP;
+  //   } else {
+  //     end =
+  //       start - SYNC_STEP > currentBlockNumber
+  //         ? start - SYNC_STEP
+  //         : currentBlockNumber;
+  //   }
+  //   if (currentBlockNumber > start + 1) {
+  //     const result = await this.l1IngestionService.createSentEvents(
+  //       start + 1,
+  //       end,
+  //     );
+  //     if (result.length > 0) {
+  //       this.logger.log(
+  //         `sync [${result.length}] l1_sent_message_events from block [${start}] to [${end}]`,
+  //       );
+  //     } else {
+  //       this.logger.log(
+  //         `sync l1_sent_message_events from block [${start}] to [${end}]`,
+  //       );
+  //     }
+  //     await this.cacheManager.set(L1_SENT, end, { ttl: 0 });
+  //   } else {
+  //     this.logger.log(
+  //       `sync l1_sent finished and latest block number is: ${currentBlockNumber}`,
+  //     );
+  //   }
+  // }
+  // @Interval(2000)
+  // async l1_relayed() {
+  //   let end = 0;
+  //   const currentBlockNumber =
+  //     await this.l1IngestionService.getCurrentBlockNumber();
+  //   console.log('l1 relayed currentBlockNumber: ', currentBlockNumber);
+  //   const start = Number(await this.cacheManager.get(L1_RELAYED));
+  //   if (currentBlockNumber - start > SYNC_STEP) {
+  //     end = start + SYNC_STEP;
+  //   } else {
+  //     end =
+  //       start - SYNC_STEP > currentBlockNumber
+  //         ? start - SYNC_STEP
+  //         : currentBlockNumber;
+  //   }
+  //   if (currentBlockNumber > start + 1) {
+  //     const result = await this.l1IngestionService.createRelayedEvents(
+  //       start + 1,
+  //       end,
+  //     );
+  //     if (result.length > 0) {
+  //       this.logger.log(
+  //         `sync [${result.length}] l1_relayed_message_events from block [${start}] to [${end}]`,
+  //       );
+  //     } else {
+  //       this.logger.log(
+  //         `sync l1_relayed_message_events from block [${start}] to [${end}]`,
+  //       );
+  //     }
+  //     await this.cacheManager.set(L1_RELAYED, end, { ttl: 0 });
+  //   } else {
+  //     this.logger.log(
+  //       `sync l1_relayed finished and latest block number is: ${currentBlockNumber}`,
+  //     );
+  //   }
+  // }
+  // @Interval(2000)
+  // async l2_sent() {
+  //   let end = 0;
+  //   const currentBlockNumber =
+  //     await this.l2IngestionService.getCurrentBlockNumber();
+  //   console.log('l2 sent currentBlockNumber: ', currentBlockNumber);
+  //   const start = Number(await this.cacheManager.get(L2_SENT));
+  //   if (currentBlockNumber - start > SYNC_STEP) {
+  //     end = start + SYNC_STEP;
+  //   } else {
+  //     end =
+  //       start - SYNC_STEP > currentBlockNumber
+  //         ? start - SYNC_STEP
+  //         : currentBlockNumber;
+  //   }
+  //   if (currentBlockNumber > start + 1) {
+  //     const result = await this.l2IngestionService.createSentEvents(
+  //       start + 1,
+  //       end,
+  //     );
+  //     if (result.length > 0) {
+  //       this.logger.log(
+  //         `sync [${result.length}] l2_sent_message_events from block [${start}] to [${end}]`,
+  //       );
+  //     } else {
+  //       this.logger.log(
+  //         `sync l2_sent_message_events from block [${start}] to [${end}]`,
+  //       );
+  //     }
+  //     await this.cacheManager.set(L2_SENT, end, { ttl: 0 });
+  //   } else {
+  //     this.logger.log(
+  //       `sync l2_sent finished and latest block number is: ${currentBlockNumber}`,
+  //     );
+  //   }
+  // }
+  // @Interval(2000)
+  // async l2_relayed() {
+  //   let end = 0;
+  //   const currentBlockNumber =
+  //     await this.l2IngestionService.getCurrentBlockNumber();
+  //   console.log('l2 relayed currentBlockNumber: ', currentBlockNumber);
+  //   const start = Number(await this.cacheManager.get(L2_RELAYED));
+  //   if (currentBlockNumber - start > SYNC_STEP) {
+  //     end = start + SYNC_STEP;
+  //   } else {
+  //     end =
+  //       start - SYNC_STEP > currentBlockNumber
+  //         ? start - SYNC_STEP
+  //         : currentBlockNumber;
+  //   }
+  //   if (currentBlockNumber > start + 1) {
+  //     const result = await this.l2IngestionService.createRelayedEvents(
+  //       start + 1,
+  //       end,
+  //     );
+  //     if (result.length > 0) {
+  //       this.logger.log(
+  //         `sync [${result.length}] l2_relayed_message_events from block [${start}] to [${end}]`,
+  //       );
+  //     } else {
+  //       this.logger.log(
+  //         `sync l2_relayed_message_events from block [${start}] to [${end}]`,
+  //       );
+  //     }
+  //     await this.cacheManager.set(L2_RELAYED, end, { ttl: 0 });
+  //   } else {
+  //     this.logger.log(
+  //       `sync l2_relayed finished and latest block number is: ${currentBlockNumber}`,
+  //     );
+  //   }
+  // }
+  // @Interval(2000)
+  // async state_batch() {
+  //   let end = 0;
+  //   const currentBlockNumber =
+  //     await this.l1IngestionService.getCurrentBlockNumber();
+  //   console.log('state batch currentBlockNumber: ', currentBlockNumber);
+  //   const start = Number(await this.cacheManager.get(STATE_BATCH));
+  //   if (currentBlockNumber - start > SYNC_STEP) {
+  //     end = start + SYNC_STEP;
+  //   } else {
+  //     end =
+  //       start - SYNC_STEP > currentBlockNumber
+  //         ? start - SYNC_STEP
+  //         : currentBlockNumber;
+  //   }
+  //   if (currentBlockNumber >= start + 1) {
+  //     const result = await this.l1IngestionService.createStateBatchesEvents(
+  //       start + 1,
+  //       end,
+  //     );
+  //     if (result.length > 0) {
+  //       this.logger.log(
+  //         `sync [${result.length}] state batch from block [${start}] to [${end}]`,
+  //       );
+  //     } else {
+  //       this.logger.log(`sync state_batch from block [${start}] to [${end}]`);
+  //     }
+  //     await this.cacheManager.set(STATE_BATCH, end, { ttl: 0 });
+  //   } else {
+  //     this.logger.log(
+  //       `sync state_batch finished and latest block number is: ${currentBlockNumber}`,
+  //     );
+  //   }
+  // }
+  // @Interval(2000)
+  // async txn_batch() {
+  //   let end = 0;
+  //   const currentBlockNumber =
+  //     await this.l1IngestionService.getCurrentBlockNumber();
+  //   console.log('txn batch currentBlockNumber: ', currentBlockNumber);
+  //   const start = Number(await this.cacheManager.get(TXN_BATCH));
+  //   if (currentBlockNumber - start > SYNC_STEP) {
+  //     end = start + SYNC_STEP;
+  //   } else {
+  //     end =
+  //       start - SYNC_STEP > currentBlockNumber
+  //         ? start - SYNC_STEP
+  //         : currentBlockNumber;
+  //   }
+  //   if (currentBlockNumber >= start + 1) {
+  //     const result = await this.l1IngestionService.createTxnBatchesEvents(
+  //       start + 1,
+  //       end,
+  //     );
+  //     if (result.length > 0) {
+  //       this.logger.log(
+  //         `sync [${result.length}] txn batch from block [${start}] to [${end}]`,
+  //       );
+  //     } else {
+  //       this.logger.log(`sync txn_batch from block [${start}] to [${end}]`);
+  //     }
+  //     await this.cacheManager.set(TXN_BATCH, end, { ttl: 0 });
+  //   } else {
+  //     this.logger.log(
+  //       `sync txn_batch finished and latest block number is: ${currentBlockNumber}`,
+  //     );
+  //   }
+  // }
+  // @Interval(10000)
+  // async l1l2_merge() {
+  //   try {
+  //     await this.l1IngestionService.createL1L2Relation();
+  //   } catch (error) {
+  //     this.logger.error(`error l1->l2 [handle_L1_l2_merge]: ${error}`);
+  //   }
+  // }
+  // @Interval(10000)
+  // async l2l1_merge() {
+  //   try {
+  //     await this.l1IngestionService.createL2L1Relation();
+  //   } catch (error) {
+  //     this.logger.error(`error l1->l2 [handle_l1_l2__merge]: ${error}`);
+  //   }
+  // }
+  // @Interval(10000)
+  // async l2l1_merge_waiting() {
+  //   try {
+  //     await this.l1IngestionService.handleWaitTransaction();
+  //   } catch (error) {
+  //     this.logger.error(`error l1l2 [handle_l2l1_merge_waiting]: ${error}`);
+  //   }
+  // }
   @Interval(2000)
-  async l1_sent() {
-    let end = 0;
-    const currentBlockNumber =
-      await this.l1IngestionService.getCurrentBlockNumber();
-    console.log('l1 sent currentBlockNumber: ', currentBlockNumber);
-    const start = Number(await this.cacheManager.get(L1_SENT));
-    if (currentBlockNumber - start > SYNC_STEP) {
-      end = start + SYNC_STEP;
-    } else {
-      end =
-        start - SYNC_STEP > currentBlockNumber
-          ? start - SYNC_STEP
-          : currentBlockNumber;
-    }
-    if (currentBlockNumber > start + 1) {
-      const result = await this.l1IngestionService.createSentEvents(
-        start + 1,
-        end,
-      );
-      if (result.length > 0) {
-        this.logger.log(
-          `sync [${result.length}] l1_sent_message_events from block [${start}] to [${end}]`,
-        );
-      } else {
-        this.logger.log(
-          `sync l1_sent_message_events from block [${start}] to [${end}]`,
-        );
-      }
-      await this.cacheManager.set(L1_SENT, end, { ttl: 0 });
-    } else {
-      this.logger.log(
-        `sync l1_sent finished and latest block number is: ${currentBlockNumber}`,
-      );
-    }
-  }
-  @Interval(2000)
-  async l1_relayed() {
-    let end = 0;
-    const currentBlockNumber =
-      await this.l1IngestionService.getCurrentBlockNumber();
-    console.log('l1 relayed currentBlockNumber: ', currentBlockNumber);
-    const start = Number(await this.cacheManager.get(L1_RELAYED));
-    if (currentBlockNumber - start > SYNC_STEP) {
-      end = start + SYNC_STEP;
-    } else {
-      end =
-        start - SYNC_STEP > currentBlockNumber
-          ? start - SYNC_STEP
-          : currentBlockNumber;
-    }
-    if (currentBlockNumber > start + 1) {
-      const result = await this.l1IngestionService.createRelayedEvents(
-        start + 1,
-        end,
-      );
-      if (result.length > 0) {
-        this.logger.log(
-          `sync [${result.length}] l1_relayed_message_events from block [${start}] to [${end}]`,
-        );
-      } else {
-        this.logger.log(
-          `sync l1_relayed_message_events from block [${start}] to [${end}]`,
-        );
-      }
-      await this.cacheManager.set(L1_RELAYED, end, { ttl: 0 });
-    } else {
-      this.logger.log(
-        `sync l1_relayed finished and latest block number is: ${currentBlockNumber}`,
-      );
-    }
-  }
-  @Interval(2000)
-  async l2_sent() {
-    let end = 0;
-    const currentBlockNumber =
-      await this.l2IngestionService.getCurrentBlockNumber();
-    console.log('l2 sent currentBlockNumber: ', currentBlockNumber);
-    const start = Number(await this.cacheManager.get(L2_SENT));
-    if (currentBlockNumber - start > SYNC_STEP) {
-      end = start + SYNC_STEP;
-    } else {
-      end =
-        start - SYNC_STEP > currentBlockNumber
-          ? start - SYNC_STEP
-          : currentBlockNumber;
-    }
-    if (currentBlockNumber > start + 1) {
-      const result = await this.l2IngestionService.createSentEvents(
-        start + 1,
-        end,
-      );
-      if (result.length > 0) {
-        this.logger.log(
-          `sync [${result.length}] l2_sent_message_events from block [${start}] to [${end}]`,
-        );
-      } else {
-        this.logger.log(
-          `sync l2_sent_message_events from block [${start}] to [${end}]`,
-        );
-      }
-      await this.cacheManager.set(L2_SENT, end, { ttl: 0 });
-    } else {
-      this.logger.log(
-        `sync l2_sent finished and latest block number is: ${currentBlockNumber}`,
-      );
-    }
-  }
-  @Interval(2000)
-  async l2_relayed() {
-    let end = 0;
-    const currentBlockNumber =
-      await this.l2IngestionService.getCurrentBlockNumber();
-    console.log('l2 relayed currentBlockNumber: ', currentBlockNumber);
-    const start = Number(await this.cacheManager.get(L2_RELAYED));
-    if (currentBlockNumber - start > SYNC_STEP) {
-      end = start + SYNC_STEP;
-    } else {
-      end =
-        start - SYNC_STEP > currentBlockNumber
-          ? start - SYNC_STEP
-          : currentBlockNumber;
-    }
-    if (currentBlockNumber > start + 1) {
-      const result = await this.l2IngestionService.createRelayedEvents(
-        start + 1,
-        end,
-      );
-      if (result.length > 0) {
-        this.logger.log(
-          `sync [${result.length}] l2_relayed_message_events from block [${start}] to [${end}]`,
-        );
-      } else {
-        this.logger.log(
-          `sync l2_relayed_message_events from block [${start}] to [${end}]`,
-        );
-      }
-      await this.cacheManager.set(L2_RELAYED, end, { ttl: 0 });
-    } else {
-      this.logger.log(
-        `sync l2_relayed finished and latest block number is: ${currentBlockNumber}`,
-      );
-    }
-  }
-  @Interval(2000)
-  async state_batch() {
-    let end = 0;
-    const currentBlockNumber =
-      await this.l1IngestionService.getCurrentBlockNumber();
-    console.log('state batch currentBlockNumber: ', currentBlockNumber);
-    const start = Number(await this.cacheManager.get(STATE_BATCH));
-    if (currentBlockNumber - start > SYNC_STEP) {
-      end = start + SYNC_STEP;
-    } else {
-      end =
-        start - SYNC_STEP > currentBlockNumber
-          ? start - SYNC_STEP
-          : currentBlockNumber;
-    }
-    if (currentBlockNumber >= start + 1) {
-      const result = await this.l1IngestionService.createStateBatchesEvents(
-        start + 1,
-        end,
-      );
-      if (result.length > 0) {
-        this.logger.log(
-          `sync [${result.length}] state batch from block [${start}] to [${end}]`,
-        );
-      } else {
-        this.logger.log(`sync state_batch from block [${start}] to [${end}]`);
-      }
-      await this.cacheManager.set(STATE_BATCH, end, { ttl: 0 });
-    } else {
-      this.logger.log(
-        `sync state_batch finished and latest block number is: ${currentBlockNumber}`,
-      );
-    }
-  }
-  @Interval(2000)
-  async txn_batch() {
-    let end = 0;
-    const currentBlockNumber =
-      await this.l1IngestionService.getCurrentBlockNumber();
-    console.log('txn batch currentBlockNumber: ', currentBlockNumber);
-    const start = Number(await this.cacheManager.get(TXN_BATCH));
-    if (currentBlockNumber - start > SYNC_STEP) {
-      end = start + SYNC_STEP;
-    } else {
-      end =
-        start - SYNC_STEP > currentBlockNumber
-          ? start - SYNC_STEP
-          : currentBlockNumber;
-    }
-    if (currentBlockNumber >= start + 1) {
-      const result = await this.l1IngestionService.createTxnBatchesEvents(
-        start + 1,
-        end,
-      );
-      if (result.length > 0) {
-        this.logger.log(
-          `sync [${result.length}] txn batch from block [${start}] to [${end}]`,
-        );
-      } else {
-        this.logger.log(`sync txn_batch from block [${start}] to [${end}]`);
-      }
-      await this.cacheManager.set(TXN_BATCH, end, { ttl: 0 });
-    } else {
-      this.logger.log(
-        `sync txn_batch finished and latest block number is: ${currentBlockNumber}`,
-      );
-    }
-  }
-  @Interval(10000)
-  async l1l2_merge() {
+  async eigen_da_batch() {
     try {
-      await this.l1IngestionService.createL1L2Relation();
+      await this.l1IngestionService.syncEigenDaBatches();
     } catch (error) {
-      this.logger.error(`error l1->l2 [handle_L1_l2_merge]: ${error}`);
+      this.logger.error(`error eigen da batches err: ${error}`);
     }
   }
-  @Interval(10000)
-  async l2l1_merge() {
-    try {
-      await this.l1IngestionService.createL2L1Relation();
-    } catch (error) {
-      this.logger.error(`error l1->l2 [handle_l1_l2__merge]: ${error}`);
-    }
-  }
-  @Interval(10000)
-  async l2l1_merge_waiting() {
-    try {
-      await this.l1IngestionService.handleWaitTransaction();
-    } catch (error) {
-      this.logger.error(`error l1l2 [handle_l2l1_merge_waiting]: ${error}`);
-    }
-  }
+  // @Interval(2000)
+  // async eigen_da_batch_txns() {
+  //   try {
+  //     await this.l1IngestionService.syncEigenDaBatchTxn();
+  //   } catch (error) {
+  //     this.logger.error(`error eigen da batches transactions err: ${error}`);
+  //   }
+  // }
 }

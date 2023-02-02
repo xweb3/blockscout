@@ -7,7 +7,9 @@ import { L2RelayedMessageEvents } from './l2_relayed_message_events.entity';
 import { L2SentMessageEvents } from './l2_sent_message_events.entity';
 import { StateBatches } from './state_batches.entity';
 import { TxnBatches } from './txn_batches.entity';
-import { Tokens } from "./tokens.entity";
+import { Tokens } from './tokens.entity';
+import { DaBatches } from './da_batches.entity';
+import { DaBatchTransaction } from './da_batch_transactions.entity';
 
 const entities = [
   L1ToL2,
@@ -20,6 +22,8 @@ const entities = [
   TxnBatches,
   Transactions,
   Tokens,
+  DaBatches,
+  DaBatchTransaction,
 ];
 
 export {
@@ -33,5 +37,7 @@ export {
   TxnBatches,
   Transactions,
   Tokens,
+  DaBatches,
+  DaBatchTransaction,
 };
 export default entities;

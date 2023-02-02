@@ -12,6 +12,8 @@ import {
   TxnBatches,
   Transactions,
   Tokens,
+  DaBatches,
+  DaBatchTransaction,
 } from 'src/typeorm';
 import {
   EntityManager,
@@ -25,8 +27,9 @@ import Web3 from 'web3';
 import CMGABI from '../abi/L1CrossDomainMessenger.json';
 import CTCABI from '../abi/CanonicalTransactionChain.json';
 import SCCABI from '../abi/StateCommitmentChain.json';
-
+import DAABI from '../abi/BVM_EigenDataLayrChain.json';
 import { L2IngestionService } from '../l2Ingestion/l2Ingestion.service';
+import { EigenlayerService } from '../grpc/eigenlayer.service';
 import { decode } from 'punycode';
 import { utils } from 'ethers';
 import { from } from 'rxjs';
@@ -41,6 +44,7 @@ export class L1IngestionService {
   ctcContract: any;
   sccContract: any;
   crossDomainMessengerContract: any;
+  bvmEigenDataLayrChain: any;
   constructor(
     private configService: ConfigService,
     @InjectRepository(L1RelayedMessageEvents)
@@ -59,7 +63,12 @@ export class L1IngestionService {
     private readonly transactions: Repository<Transactions>,
     @InjectRepository(Tokens)
     private readonly tokensRepository: Repository<Tokens>,
+    @InjectRepository(DaBatches)
+    private readonly daBatchesRepository: Repository<DaBatches>,
+    @InjectRepository(DaBatchTransaction)
+    private readonly daBatchTransactionRepository: Repository<DaBatchTransaction>,
     private readonly l2IngestionService: L2IngestionService,
+    private readonly eigenlayerService: EigenlayerService,
   ) {
     this.entityManager = getManager();
     const web3 = new Web3(
@@ -77,9 +86,14 @@ export class L1IngestionService {
       SCCABI as any,
       configService.get('SCC_ADDRESS'),
     );
+    const bvmEigenDataLayrChain = new web3.eth.Contract(
+      DAABI as any,
+      configService.get('DA_ADDRESS'),
+    );
     this.ctcContract = ctcContract;
     this.sccContract = sccContract;
     this.crossDomainMessengerContract = crossDomainMessengerContract;
+    this.bvmEigenDataLayrChain = bvmEigenDataLayrChain;
     this.web3 = web3;
   }
   async getCtcTransactionBatchAppendedByBlockNumber(
@@ -111,6 +125,14 @@ export class L1IngestionService {
       fromBlock,
       toBlock,
     });
+  }
+  async getLatestBatchIndex() {
+    return this.bvmEigenDataLayrChain.methods.rollupBatchIndex().call();
+  }
+  async getRollupInfoByBatchIndex(batch_index) {
+    return this.bvmEigenDataLayrChain.methods
+      .getRollupStoreByRollupBatchIndex(batch_index)
+      .call();
   }
   async getSccTotalElements() {
     return this.sccContract.methods.getTotalElements().call();
@@ -476,6 +498,12 @@ export class L1IngestionService {
       );
     }
   }
+  async createEigenBatches() {
+    return null;
+  }
+  async createEigenBatchTransaction() {
+    return null;
+  }
   async handleWaitTransaction() {
     // const latestBlock = await this.getCurrentBlockNumber();
     // const { timestamp } = await this.web3.eth.getBlock(latestBlock);
@@ -781,5 +809,18 @@ export class L1IngestionService {
       code: 2000,
       result: result,
     };
+  }
+  async syncEigenDaBatches() {
+    const batch_index = await this.getLatestBatchIndex();
+    console.log('batch_index==', batch_index);
+    const rollup_info = await this.getRollupInfoByBatchIndex(1);
+    console.log('rollup_info==', rollup_info);
+    const data = this.eigenlayerService.retrieveFramesAndData(100);
+    console.log('data==', data);
+    return null;
+  }
+
+  async syncEigenDaBatchTxn() {
+    return null;
   }
 }

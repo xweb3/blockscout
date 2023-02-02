@@ -12,7 +12,11 @@ import {
   L1ToL2,
   Transactions,
   Tokens,
+  DaBatches,
+  DaBatchTransaction,
 } from 'src/typeorm';
+import { EigenlayerModule } from '../grpc/eigenlayer.module';
+
 
 @Module({
   imports: [
@@ -26,7 +30,10 @@ import {
       L1ToL2,
       Transactions,
       Tokens,
+      DaBatches,
+      DaBatchTransaction,
     ]),
+    EigenlayerModule,
   ],
   controllers: [L1IngestionController],
   providers: [L1IngestionService],
