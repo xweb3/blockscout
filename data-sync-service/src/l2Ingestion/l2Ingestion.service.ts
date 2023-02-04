@@ -2,6 +2,8 @@ import { ConfigService } from '@nestjs/config';
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
+  L1SentMessageEvents,
+  L1ToL2,
   L2RelayedMessageEvents,
   L2SentMessageEvents,
   L2ToL1,
@@ -9,6 +11,7 @@ import {
 import { EntityManager, getConnection, getManager, Repository } from 'typeorm';
 import Web3 from 'web3';
 import ABI from '../abi/L2CrossDomainMessenger.json';
+import { utils } from 'ethers';
 
 @Injectable()
 export class L2IngestionService {
@@ -82,6 +85,14 @@ export class L2IngestionService {
   async createSentEvents(startBlock, endBlock) {
     const list = await this.getSentMessageByBlockNumber(startBlock, endBlock);
     const result: any[] = [];
+    const iface = new utils.Interface([
+      'function finalizeETHWithdrawal(address _from, address _to, uint256 _amount, bytes calldata _data)',
+      'function finalizeBitWithdrawal(address _from, address _to, uint256 _amount, bytes calldata _data)',
+      'function finalizeERC20Withdrawal(address _l1Token, address _l2Token, address _from, address _to, uint256 _amount, bytes calldata _data)',
+    ]);
+    const dataSource = getConnection();
+    const queryRunner = dataSource.createQueryRunner();
+    await queryRunner.connect();
     for (const item of list) {
       const {
         blockNumber,
@@ -89,12 +100,61 @@ export class L2IngestionService {
         returnValues: { target, sender, message, messageNonce, gasLimit },
         signature,
       } = item;
+      const funName = message.slice(0, 10);
+      let name = '';
+      let symbol = '';
+      let l1_token = '0x0000000000000000000000000000000000000000';
+      let l2_token = '0x0000000000000000000000000000000000000000';
+      let from = '0x0000000000000000000000000000000000000000';
+      let to = '0x0000000000000000000000000000000000000000';
+      let value = '0';
+      if (funName === '0x1532ec34') {
+        const decodeMsg = iface.decodeFunctionData(
+          'finalizeETHWithdrawal',
+          message,
+        );
+        name = 'ETH';
+        symbol = 'ETH';
+        from = decodeMsg._from;
+        to = decodeMsg._to;
+        value = this.web3.utils.hexToNumberString(decodeMsg._amount._hex);
+        this.logger.log(
+          `finalizeETHWithdrawal: from: [${from}], to: [${to}], value: [${value}]`,
+        );
+      }
+      if (funName === '0xa9f9e675') {
+        const decodeMsg = iface.decodeFunctionData(
+          'finalizeERC20Withdrawal',
+          message,
+        );
+        name = 'ERC20';
+        symbol = 'ERC20';
+        l1_token = decodeMsg._l1Token;
+        l2_token = decodeMsg._l2Token;
+        from = decodeMsg._from;
+        to = decodeMsg._to;
+        value = this.web3.utils.hexToNumberString(decodeMsg._amount._hex);
+        this.logger.log(
+          `finalizeERC20Withdrawal: l1_token: [${l1_token}], l2_token: [${l2_token}], from: [${from}], to: [${to}], value: [${value}]`,
+        );
+      }
+      if (funName === '0x839f0ec6') {
+        const decodeMsg = iface.decodeFunctionData(
+          'finalizeBitWithdrawal',
+          message,
+        );
+        name = 'BIT';
+        symbol = 'BIT';
+        from = decodeMsg._from;
+        to = decodeMsg._to;
+        value = this.web3.utils.hexToNumberString(decodeMsg._amount._hex);
+        this.logger.log(
+          `finalizeBitWithdrawal: from: [${from}], to: [${to}], value: [${value}]`,
+        );
+      }
       const { timestamp } = await this.web3.eth.getBlock(blockNumber);
-      const dataSource = getConnection();
-      const queryRunner = dataSource.createQueryRunner();
-      await queryRunner.connect();
-      await queryRunner.startTransaction();
       try {
+        await queryRunner.startTransaction();
         const savedResult = await queryRunner.manager.save(
           L2SentMessageEvents,
           {
@@ -107,6 +167,13 @@ export class L2IngestionService {
             gas_limit: gasLimit,
             signature,
             timestamp: new Date(Number(timestamp) * 1000).toISOString(),
+            name: name,
+            symbol: symbol,
+            l1_token: l1_token,
+            l2_token: l2_token,
+            from: from,
+            to: to,
+            value: value,
             inserted_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),
           },
@@ -129,6 +196,11 @@ export class L2IngestionService {
           timestamp: new Date(Number(timestamp) * 1000).toISOString(),
           status: 'Waiting',
           gas_limit: gasLimit,
+          l1_token: l1_token,
+          l2_token: l2_token,
+          from: from,
+          to: to,
+          value: value,
           inserted_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
         });
@@ -142,10 +214,9 @@ export class L2IngestionService {
           `l2 createSentEvents blocknumber:${blockNumber} ${error}`,
         );
         await queryRunner.rollbackTransaction();
-      } finally {
-        await queryRunner.release();
       }
     }
+    await queryRunner.release();
     return result;
   }
   async createRelayedEvents(startBlock, endBlock) {
@@ -153,6 +224,9 @@ export class L2IngestionService {
       startBlock,
       endBlock,
     );
+    const dataSource = getConnection();
+    const queryRunner = dataSource.createQueryRunner();
+    await queryRunner.connect();
     const result: any = [];
     for (const item of list) {
       const {
@@ -162,11 +236,8 @@ export class L2IngestionService {
         signature,
       } = item;
       const { timestamp } = await this.web3.eth.getBlock(blockNumber);
-      const dataSource = getConnection();
-      const queryRunner = dataSource.createQueryRunner();
-      await queryRunner.connect();
-      await queryRunner.startTransaction();
       try {
+        await queryRunner.startTransaction();
         const savedResult = await queryRunner.manager.save(
           L2RelayedMessageEvents,
           {
@@ -189,10 +260,9 @@ export class L2IngestionService {
           `l2 createRelayedEvents blocknumber:${blockNumber} ${error}`,
         );
         await queryRunner.rollbackTransaction();
-      } finally {
-        await queryRunner.release();
       }
     }
+    await queryRunner.release();
     return result;
   }
   async syncSentEvents() {
