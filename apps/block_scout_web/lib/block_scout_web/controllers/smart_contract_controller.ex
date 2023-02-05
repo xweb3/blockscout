@@ -75,7 +75,8 @@ defmodule BlockScoutWeb.SmartContractController do
         implementation_address: implementation_address_hash_string,
         implementation_abi: implementation_abi,
         contract_type: contract_type,
-        action: action
+        action: action,
+        chain_id: Application.get_env(:block_scout_web, :chain_id)
       )
     else
       :error ->
