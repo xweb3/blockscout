@@ -317,8 +317,9 @@ export class TasksService {
   //     this.logger.error(`error l1l2 [handle_l2l1_merge_waiting]: ${error}`);
   //   }
   // }
-  @Interval(2000)
+  @Interval(5000)
   async eigen_da_batch_txns() {
+    console.log('start eigenda service');
     try {
       await this.l1IngestionService.syncEigenDaBatchTxn();
     } catch (error) {

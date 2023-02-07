@@ -30,11 +30,13 @@ import SCCABI from '../abi/StateCommitmentChain.json';
 import DAABI from '../abi/BVM_EigenDataLayrChain.json';
 import { L2IngestionService } from '../l2Ingestion/l2Ingestion.service';
 import { EigenlayerService } from '../grpc/eigenlayer.service';
-import { decode } from 'punycode';
 import { utils } from 'ethers';
 import { from } from 'rxjs';
 const FraudProofWindow = 0;
 let l1l2MergerIsProcessing = false;
+import { decode, encode } from 'rlp';
+
+
 
 @Injectable()
 export class L1IngestionService {
@@ -838,11 +840,29 @@ export class L1IngestionService {
     };
   }
   async syncEigenDaBatchTxn() {
-    const batch_index = await this.getLatestBatchIndex();
-    console.log('batch_index==', batch_index);
-    const rollup_info = await this.getRollupInfoByBatchIndex(1);
-    console.log('rollup_info==', rollup_info);
-    const data = this.eigenlayerService.retrieveFramesAndData(100);
-    console.log('data==', data);
+    // const batch_index = await this.getLatestBatchIndex();
+    // console.log('batch_index==', batch_index);
+    // const rollup_info = await this.getRollupInfoByBatchIndex(batch_index);
+    // console.log('rollup_info==', rollup_info);
+    try {
+      const data = await this.eigenlayerService.retrieveFramesAndData(19605);
+      const dataList = utils.RLP.decode(data['Data']);
+      console.log(dataList);
+      // if (data) {
+      //   const dataList = utils.RLP.decode(data['Data']);
+      //   for (let i = 0; i < dataList.length; i++) {
+      //     console.log('dataList[i][1]=', dataList[i][1]);
+      //     const dataFor = utils.RLP.decode(dataList[i][1]);
+      //     // console.log(dataFor);
+      //     // console.log(dataFor[3].toLocaleString('hex'));
+      //     // console.log(dataFor[7].toLocaleString('hex'));
+      //     // console.log(dataFor[8].toLocaleString('hex'));
+      //   }
+      // } else {
+      //   console.log('no data');
+      // }
+    } catch (err) {
+      console.log(err);
+    }
   }
 }

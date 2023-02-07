@@ -4,6 +4,7 @@ const proto_loader = require('@grpc/proto-loader');
 const grpc = require('@grpc/grpc-js');
 import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+// source /Users/bj89182ml/.gvm/scripts/gvm
 
 export class EigenlayerService {
   private readonly logger = new Logger(EigenlayerService.name);
@@ -17,6 +18,7 @@ export class EigenlayerService {
       enums: String,
       oneofs: true,
     });
+    console.log(this.configService.get('RETRIEVER_SOCKET'));
     const rpc_pkg =
       grpc.loadPackageDefinition(pkg_def).interfaceRetrieverServer;
     this.client = new rpc_pkg.DataRetrieval(
@@ -26,11 +28,21 @@ export class EigenlayerService {
   }
 
   async retrieveFramesAndData(dataStoreId: number) {
-    const framesAndDataRequest = {
-      DataStoreId: dataStoreId,
-    };
-    const response = this.client.RetrieveFramesAndData(framesAndDataRequest);
-    console.log('retrieve response is:', response);
-    return response;
+    return new Promise((resolve, reject) => {
+      const framesAndDataRequest = {
+        DataStoreId: dataStoreId,
+      };
+      this.client.RetrieveFramesAndData(
+        framesAndDataRequest,
+        function (err, response) {
+          if (err) {
+            // todo: handle error
+            console.log(err);
+            reject(err);
+          }
+          resolve(response);
+        },
+      );
+    });
   }
 }
