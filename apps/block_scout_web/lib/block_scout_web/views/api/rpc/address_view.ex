@@ -3,7 +3,6 @@ defmodule BlockScoutWeb.API.RPC.AddressView do
 
   alias BlockScoutWeb.API.EthRPC.View, as: EthRPCView
   alias BlockScoutWeb.API.RPC.RPCView
-  require Logger
 
   def render("listaccounts.json", %{accounts: accounts}) do
     accounts = Enum.map(accounts, &prepare_account/1)
@@ -103,8 +102,6 @@ defmodule BlockScoutWeb.API.RPC.AddressView do
   end
 
   defp prepare_transaction(transaction) do
-    Logger.info("start prepare transaction.")
-    Logger.info(Map.has_key?(transaction, :l1_gas_price))
     %{
       "blockNumber" => "#{transaction.block_number}",
       "timeStamp" => "#{DateTime.to_unix(transaction.block_timestamp)}",
