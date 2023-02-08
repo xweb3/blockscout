@@ -103,8 +103,8 @@ defmodule BlockScoutWeb.API.RPC.AddressView do
   end
 
   defp prepare_transaction(transaction) do
-    Logger.info("start prepare transaction")
-    Logger.info(transaction.l1_gas_price)
+    Logger.info("start prepare transaction.")
+    Logger.info(Map.has_key?(transaction, :l1_gas_price))
     %{
       "blockNumber" => "#{transaction.block_number}",
       "timeStamp" => "#{DateTime.to_unix(transaction.block_timestamp)}",
@@ -122,10 +122,10 @@ defmodule BlockScoutWeb.API.RPC.AddressView do
       "input" => "#{transaction.input}",
       "contractAddress" => "#{transaction.created_contract_address_hash}",
       "cumulativeGasUsed" => "#{transaction.cumulative_gas_used}",
-      "l1GasPrice" => if(transaction.l1_gas_price == nil, do: "0", else: transaction.l1_gas_price),
-      "l1GasUsed" => if(transaction.l1_gas_used == nil, do: "0", else: transaction.l1_gas_used),
-      "l1Fee" => if(transaction.l1_fee == nil, do: "0", else: transaction.l1_fee),
-      "l1FeeScalar" =>if(transaction.l1_fee_scalar == nil, do: "0", else: transaction.l1_fee_scalar),
+      "l1GasPrice" => if(Map.has_key?(transaction, :l1_gas_price), do: transaction.l1_gas_price, else: "0"),
+      "l1GasUsed" => if(Map.has_key?(transaction, :l1_gas_used), do: transaction.l1_gas_used, else: "0"),
+      "l1Fee" => if(Map.has_key?(transaction, :l1_fee), do: transaction.l1_fee, else: "0"),
+      "l1FeeScalar" => if(Map.has_key?(transaction, :l1_fee_scalar), do: transaction.l1_fee_scalar, else: "0"),
       "gasUsed" => "#{transaction.gas_used}",
       "confirmations" => "#{transaction.confirmations}"
     }
