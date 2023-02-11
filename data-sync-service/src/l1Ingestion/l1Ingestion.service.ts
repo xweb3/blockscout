@@ -12,6 +12,8 @@ import {
   TxnBatches,
   Transactions,
   Tokens,
+  DaBatches,
+  DaBatchTransactions,
 } from 'src/typeorm';
 import {
   EntityManager,
@@ -25,13 +27,16 @@ import Web3 from 'web3';
 import CMGABI from '../abi/L1CrossDomainMessenger.json';
 import CTCABI from '../abi/CanonicalTransactionChain.json';
 import SCCABI from '../abi/StateCommitmentChain.json';
-
+import DAABI from '../abi/BVM_EigenDataLayrChain.json';
 import { L2IngestionService } from '../l2Ingestion/l2Ingestion.service';
-import { decode } from 'punycode';
+import { EigenlayerService } from '../grpc/eigenlayer.service';
 import { utils } from 'ethers';
 import { from } from 'rxjs';
 const FraudProofWindow = 0;
 let l1l2MergerIsProcessing = false;
+import { decode, encode } from 'rlp';
+
+
 
 @Injectable()
 export class L1IngestionService {
@@ -41,6 +46,7 @@ export class L1IngestionService {
   ctcContract: any;
   sccContract: any;
   crossDomainMessengerContract: any;
+  bvmEigenDataLayrChain: any;
   constructor(
     private configService: ConfigService,
     @InjectRepository(L1RelayedMessageEvents)
@@ -59,7 +65,12 @@ export class L1IngestionService {
     private readonly transactions: Repository<Transactions>,
     @InjectRepository(Tokens)
     private readonly tokensRepository: Repository<Tokens>,
+    @InjectRepository(DaBatches)
+    private readonly daBatchesRepository: Repository<DaBatches>,
+    @InjectRepository(DaBatchTransactions)
+    private readonly DaBatchTransactionsRepository: Repository<DaBatchTransactions>,
     private readonly l2IngestionService: L2IngestionService,
+    private readonly eigenlayerService: EigenlayerService,
   ) {
     this.entityManager = getManager();
     const web3 = new Web3(
@@ -77,9 +88,14 @@ export class L1IngestionService {
       SCCABI as any,
       configService.get('SCC_ADDRESS'),
     );
+    const bvmEigenDataLayrChain = new web3.eth.Contract(
+      DAABI as any,
+      configService.get('DA_ADDRESS'),
+    );
     this.ctcContract = ctcContract;
     this.sccContract = sccContract;
     this.crossDomainMessengerContract = crossDomainMessengerContract;
+    this.bvmEigenDataLayrChain = bvmEigenDataLayrChain;
     this.web3 = web3;
   }
   async getCtcTransactionBatchAppendedByBlockNumber(
@@ -111,6 +127,14 @@ export class L1IngestionService {
       fromBlock,
       toBlock,
     });
+  }
+  async getLatestBatchIndex() {
+    return this.bvmEigenDataLayrChain.methods.rollupBatchIndex().call();
+  }
+  async getRollupInfoByBatchIndex(batch_index) {
+    return this.bvmEigenDataLayrChain.methods
+      .getRollupStoreByRollupBatchIndex(batch_index)
+      .call();
   }
   async getSccTotalElements() {
     return this.sccContract.methods.getTotalElements().call();
@@ -476,6 +500,23 @@ export class L1IngestionService {
       );
     }
   }
+  async createEigenBatchTransaction(insertBatchData, insertHashData) {
+    const dataSource = getConnection();
+    const queryRunner = dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    try {
+      await queryRunner.manager.save(DaBatches, insertBatchData);
+      await queryRunner.manager.insert(DaBatchTransactions, insertHashData);
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      this.logger.error(`create eigenlayer batch transaction error: ${error}`);
+      await queryRunner.rollbackTransaction();
+      return false;
+    }
+    await queryRunner.release();
+    return true;
+  }
   async handleWaitTransaction() {
     // const latestBlock = await this.getCurrentBlockNumber();
     // const { timestamp } = await this.web3.eth.getBlock(latestBlock);
@@ -782,4 +823,83 @@ export class L1IngestionService {
       result: result,
     };
   }
+  async syncEigenDaBatch(fromStoreNumber) {
+    try {
+      const {
+        Index,
+        StorePeriodLength,
+        Confirmed,
+        MsgHash,
+        DurationDataStoreId,
+        StoreNumber,
+        Fee,
+        InitTxHash,
+        ConfirmTxHash
+      } = await this.eigenlayerService.getDataStore(fromStoreNumber);
+      if (Index === undefined) return false;
+      const CURRENT_TIMESTAMP = new Date().toISOString()
+      const insertBatchData = {
+        batch_index: Index,
+        batch_size: StorePeriodLength,
+        status: Confirmed ? 'confirmed' : 'init',
+        start_block: 1,
+        end_block: 2,
+        da_hash: utils.hexlify(MsgHash),
+        store_id: DurationDataStoreId,
+        store_number: StoreNumber,
+        da_fee: Fee,
+        da_init_hash: utils.hexlify(InitTxHash),
+        da_store_hash: utils.hexlify(ConfirmTxHash),
+        from_store_number: fromStoreNumber,
+        inserted_at: CURRENT_TIMESTAMP,
+        updated_at: CURRENT_TIMESTAMP
+      }
+      console.log(insertBatchData)
+      const txHashList = await this.eigenlayerService.getTxn(StoreNumber) || [];
+      const insertHashData = [];
+      txHashList.forEach((txHash) => {
+        insertHashData.push({
+          batch_index: Index,
+          tx_hash: txHash,
+          inserted_at: CURRENT_TIMESTAMP,
+          updated_at: CURRENT_TIMESTAMP
+        })
+      })
+      const result = await this.createEigenBatchTransaction(insertBatchData, insertHashData);
+      return result;
+    } catch (error) {
+      this.logger.error(`[syncEigenDaBatch] error: ${error}`);
+      return false;
+    }
+  }
+  async getLastFromStoreNumber() {
+    const result = await this.daBatchesRepository
+      .createQueryBuilder()
+      .select('Max(from_store_number)', 'fromStoreNumber')
+      .getRawOne();
+    return Number(result.fromStoreNumber) || 0;
+  }
+  // async syncEigenDaBatchTxn() {
+  //   const data1 = await this.eigenlayerService.getDataStore(2);
+  //   const data2 = await this.eigenlayerService.getDataStore(3);
+  //   console.log(data1, data2);
+  //   return {
+  //     data1: {
+  //       ...data1,
+  //       MsgHash: utils.hexlify(data1.MsgHash),
+  //       InitTxHash: utils.hexlify(data1.InitTxHash),
+  //       ConfirmTxHash: utils.hexlify(data1.ConfirmTxHash),
+  //       DataCommitment: utils.hexlify(data1.DataCommitment),
+  //       SignatoryRecord: utils.hexlify(data1.SignatoryRecord),
+  //     },
+  //     data2: {
+  //       ...data2,
+  //       MsgHash: utils.hexlify(data2.MsgHash),
+  //       InitTxHash: utils.hexlify(data2.InitTxHash),
+  //       ConfirmTxHash: utils.hexlify(data2.ConfirmTxHash),
+  //       DataCommitment: utils.hexlify(data2.DataCommitment),
+  //       SignatoryRecord: utils.hexlify(data2.SignatoryRecord),
+  //     },
+  //   }
+  // }
 }
