@@ -14,8 +14,8 @@ export class EigenlayerService {
 
   async getTxn(storeNumber: number) {
     const { data } = await firstValueFrom(
-      this.httpService.post(`${this.configService.get('EIGEN_DA_URL')}/browser/getTxn`, {
-        store_number: storeNumber
+      this.httpService.post(`${this.configService.get('EIGEN_DA_URL')}/browser/GetTransactionListByStoreNumber`, {
+        store_number: Number(storeNumber)
       }, {
         headers: {
           'Content-Type': 'application/json'
@@ -26,9 +26,9 @@ export class EigenlayerService {
   }
   async getDataStore(fromStoreNumber: number) {
     const { data } = await firstValueFrom(
-      this.httpService.post(`${this.configService.get('EIGEN_DA_URL')}/browser/getDataStore`, {
-        from_store_number: fromStoreNumber.toString(),
-        eigen_contract_addr: this.configService.get('DA_ADDRESS')
+      this.httpService.post(`${this.configService.get('EIGEN_DA_URL')}/browser/getDataStoreById`, {
+        store_id: fromStoreNumber.toString()
+        // eigen_contract_addr: this.configService.get('DA_ADDRESS')
       }, {
         headers: {
           'Content-Type': 'application/json'

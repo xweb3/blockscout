@@ -11,11 +11,11 @@ export class DaBatches {
   @Column({ type: 'varchar', length: 255 })
   status: string;
 
-  @Column({ type: 'int8' })
-  start_block: number;
+  // @Column({ type: 'int8' })
+  // start_block: number;
 
-  @Column({ type: 'int8' })
-  end_block: number;
+  // @Column({ type: 'int8' })
+  // end_block: number;
 
   @PrimaryColumn({ type: 'bytea' })
   da_hash: string;

@@ -8,6 +8,9 @@ export class DaBatchTransactions {
   @PrimaryColumn({ type: 'bytea' })
   tx_hash: string;
 
+  @Column({ type: 'bigint' })
+  block_number: string;
+
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   inserted_at: Date;
 
