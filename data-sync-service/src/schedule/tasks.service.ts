@@ -66,7 +66,7 @@ export class TasksService {
     if (!da_batch_store_number) {
       da_batch_store_number =
         (await this.l1IngestionService.getLastFromStoreNumber() + 1) ||
-        0;
+        1;
     }
     await this.cacheManager.set(L1_SENT, Number(l1_sent_block_number), {
       ttl: 0,

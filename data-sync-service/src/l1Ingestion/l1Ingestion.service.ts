@@ -836,14 +836,13 @@ export class L1IngestionService {
         InitTxHash,
         ConfirmTxHash
       } = await this.eigenlayerService.getDataStore(fromStoreNumber);
-      if (Index === undefined) return false;
+      if (Index === undefined || Index === '') return false;
       const CURRENT_TIMESTAMP = new Date().toISOString()
+      const batchIndex = StoreNumber - 1;
       const insertBatchData = {
-        batch_index: Index,
+        batch_index: batchIndex,
         batch_size: StorePeriodLength,
         status: Confirmed ? 'confirmed' : 'init',
-        start_block: 1,
-        end_block: 2,
         da_hash: utils.hexlify(MsgHash),
         store_id: DurationDataStoreId,
         store_number: StoreNumber,
@@ -857,10 +856,11 @@ export class L1IngestionService {
       console.log(insertBatchData)
       const txHashList = await this.eigenlayerService.getTxn(StoreNumber) || [];
       const insertHashData = [];
-      txHashList.forEach((txHash) => {
+      txHashList.forEach((item) => {
         insertHashData.push({
-          batch_index: Index,
-          tx_hash: txHash,
+          batch_index: batchIndex,
+          block_number: item.BlockNumber,
+          tx_hash: item.TxHash,
           inserted_at: CURRENT_TIMESTAMP,
           updated_at: CURRENT_TIMESTAMP
         })
