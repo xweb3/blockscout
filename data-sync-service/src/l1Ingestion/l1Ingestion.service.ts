@@ -476,10 +476,10 @@ export class L1IngestionService {
                 tx_hash: unMergeTxList[i].tx_hash,
               })
               .execute();
-            await queryRunner.manager.query(
-              `UPDATE transactions SET l1_origin_tx_hash=$1, l1l2_type=$2 WHERE hash=$3;`,
-              [unMergeTxList[i].tx_hash, tx_type, l1ToL2Transaction.l2_hash],
-            );
+            // await queryRunner.manager.query(
+            //   `UPDATE transactions SET l1_origin_tx_hash=$1, l1l2_type=$2 WHERE hash=$3;`,
+            //   [unMergeTxList[i].tx_hash, tx_type, l1ToL2Transaction.l2_hash],
+            // );
             await queryRunner.commitTransaction();
             this.logger.log(`commit l1->l2 data successes`);
           } catch (error) {
@@ -539,10 +539,10 @@ export class L1IngestionService {
         .andWhere('status = :status', { status: 'Waiting' })
         .execute();
       // update transactions to Ready for Relay
-      await queryRunner.manager.query(
-        `UPDATE transactions SET l1l2_status=$1 WHERE l1l2_status=$2;`,
-        [1, 0],
-      );
+      // await queryRunner.manager.query(
+      //   `UPDATE transactions SET l1l2_status=$1 WHERE l1l2_status=$2;`,
+      //   [1, 0],
+      // );
       await queryRunner.commitTransaction();
     } catch (error) {
       await queryRunner.rollbackTransaction();
@@ -585,10 +585,10 @@ export class L1IngestionService {
             .where('tx_hash = :tx_hash', { tx_hash: unMergeTxList[i].tx_hash })
             .execute();
           // update transactions to Ready for Relay
-          await queryRunner.manager.query(
-            `UPDATE transactions SET l1_origin_tx_hash=$1, l1l2_type=$2 WHERE hash=$3;`,
-            [unMergeTxList[i].tx_hash, 2, l2ToL1Transaction.l2_hash],
-          );
+          // await queryRunner.manager.query(
+          //   `UPDATE transactions SET l1_origin_tx_hash=$1, l1l2_type=$2 WHERE hash=$3;`,
+          //   [unMergeTxList[i].tx_hash, 2, l2ToL1Transaction.l2_hash],
+          // );
           await queryRunner.commitTransaction();
           this.logger.log(
             `create l2->l1 relation to l2_to_l1 table commit transaction finish`,
