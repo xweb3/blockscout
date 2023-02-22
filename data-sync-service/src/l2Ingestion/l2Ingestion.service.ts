@@ -90,9 +90,8 @@ export class L2IngestionService {
       'function finalizeBitWithdrawal(address _from, address _to, uint256 _amount, bytes calldata _data)',
       'function finalizeERC20Withdrawal(address _l1Token, address _l2Token, address _from, address _to, uint256 _amount, bytes calldata _data)',
     ]);
-    const dataSource = getConnection();
-    const queryRunner = dataSource.createQueryRunner();
-    await queryRunner.connect();
+    const l2SentMessageEventsInsertData: any[] = [];
+    const l2ToL1InsertData: any[] = [];
     for (const item of list) {
       const {
         blockNumber,
@@ -153,68 +152,73 @@ export class L2IngestionService {
         );
       }
       const { timestamp } = await this.web3.eth.getBlock(blockNumber);
-      try {
-        await queryRunner.startTransaction();
-        const savedResult = await queryRunner.manager.save(
-          L2SentMessageEvents,
-          {
-            tx_hash: transactionHash,
-            block_number: blockNumber.toString(),
-            target,
-            sender,
-            message,
-            message_nonce: messageNonce,
-            gas_limit: gasLimit,
-            signature,
-            timestamp: new Date(Number(timestamp) * 1000).toISOString(),
-            name: name,
-            symbol: symbol,
-            l1_token: l1_token,
-            l2_token: l2_token,
-            from: from,
-            to: to,
-            value: value,
-            inserted_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-          },
-        );
-        const msgHash = this.verifyDomainCalldataHash({
-          target: target.toString(),
-          sender: sender.toString(),
-          message: message.toString(),
-          messageNonce: messageNonce.toString(),
-        });
-        await queryRunner.manager.save(L2ToL1, {
-          hash: null,
-          l2_hash: transactionHash,
-          msg_hash: msgHash,
-          block: blockNumber,
-          msg_nonce: Number(messageNonce),
-          from_address: target,
-          txn_batch_index: Number(messageNonce),
-          state_batch_index: Number(messageNonce),
-          timestamp: new Date(Number(timestamp) * 1000).toISOString(),
-          status: 'Waiting',
-          gas_limit: gasLimit,
-          l1_token: l1_token,
-          l2_token: l2_token,
-          from: from,
-          to: to,
-          value: value,
-          inserted_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        });
-        result.push(savedResult);
-        this.logger.log(
-          `l2 createSentEvents success:${JSON.stringify(savedResult)}`,
-        );
-        await queryRunner.commitTransaction();
-      } catch (error) {
-        this.logger.error(
-          `l2 createSentEvents blocknumber:${blockNumber} ${error}`,
-        );
-        await queryRunner.rollbackTransaction();
-      }
+      const msgHash = this.verifyDomainCalldataHash({
+        target: target.toString(),
+        sender: sender.toString(),
+        message: message.toString(),
+        messageNonce: messageNonce.toString(),
+      });
+      l2SentMessageEventsInsertData.push({
+        tx_hash: transactionHash,
+        block_number: blockNumber.toString(),
+        target,
+        sender,
+        message,
+        message_nonce: messageNonce,
+        gas_limit: gasLimit,
+        signature,
+        timestamp: new Date(Number(timestamp) * 1000).toISOString(),
+        name: name,
+        symbol: symbol,
+        l1_token: l1_token,
+        l2_token: l2_token,
+        from: from,
+        to: to,
+        value: value,
+        inserted_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      })
+      l2ToL1InsertData.push({
+        hash: null,
+        l2_hash: transactionHash,
+        msg_hash: msgHash,
+        block: blockNumber,
+        msg_nonce: Number(messageNonce),
+        from_address: target,
+        txn_batch_index: Number(messageNonce),
+        state_batch_index: Number(messageNonce),
+        timestamp: new Date(Number(timestamp) * 1000).toISOString(),
+        status: 'Waiting',
+        gas_limit: gasLimit,
+        l1_token: l1_token,
+        l2_token: l2_token,
+        from: from,
+        to: to,
+        value: value,
+        inserted_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      })
+    }
+    const dataSource = getConnection();
+    const queryRunner = dataSource.createQueryRunner();
+    await queryRunner.connect();
+    try {
+      await queryRunner.startTransaction();
+      const savedResult = await queryRunner.manager.insert(
+        L2SentMessageEvents,
+        l2SentMessageEventsInsertData,
+      );
+      await queryRunner.manager.insert(L2ToL1, l2ToL1InsertData);
+      result.push(savedResult);
+      this.logger.log(
+        `l2 createSentEvents success:${JSON.stringify(savedResult)}`,
+      );
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      this.logger.error(
+        `l2 createSentEvents ${error}`,
+      );
+      await queryRunner.rollbackTransaction();
     }
     await queryRunner.release();
     return result;
@@ -224,10 +228,8 @@ export class L2IngestionService {
       startBlock,
       endBlock,
     );
-    const dataSource = getConnection();
-    const queryRunner = dataSource.createQueryRunner();
-    await queryRunner.connect();
     const result: any = [];
+    const l2RelayedMessageEventsInsertData: any = [];
     for (const item of list) {
       const {
         blockNumber,
@@ -236,31 +238,35 @@ export class L2IngestionService {
         signature,
       } = item;
       const { timestamp } = await this.web3.eth.getBlock(blockNumber);
-      try {
-        await queryRunner.startTransaction();
-        const savedResult = await queryRunner.manager.save(
-          L2RelayedMessageEvents,
-          {
-            tx_hash: transactionHash,
-            block_number: blockNumber.toString(),
-            msg_hash: msgHash,
-            signature,
-            timestamp: new Date(Number(timestamp) * 1000).toISOString(),
-            inserted_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-          },
-        );
-        result.push(savedResult);
-        this.logger.log(
-          `l2 createRelayedEvents success:${JSON.stringify(savedResult)}`,
-        );
-        await queryRunner.commitTransaction();
-      } catch (error) {
-        this.logger.error(
-          `l2 createRelayedEvents blocknumber:${blockNumber} ${error}`,
-        );
-        await queryRunner.rollbackTransaction();
-      }
+      l2RelayedMessageEventsInsertData.push({
+        tx_hash: transactionHash,
+        block_number: blockNumber.toString(),
+        msg_hash: msgHash,
+        signature,
+        timestamp: new Date(Number(timestamp) * 1000).toISOString(),
+        inserted_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      })
+    }
+    const dataSource = getConnection();
+    const queryRunner = dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    try {
+      const savedResult = await queryRunner.manager.insert(
+        L2RelayedMessageEvents,
+        l2RelayedMessageEventsInsertData,
+      );
+      result.push(savedResult);
+      this.logger.log(
+        `l2 createRelayedEvents success:${JSON.stringify(savedResult)}`,
+      );
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      this.logger.error(
+        `l2 createRelayedEvents ${error}`,
+      );
+      await queryRunner.rollbackTransaction();
     }
     await queryRunner.release();
     return result;
