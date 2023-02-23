@@ -22,6 +22,7 @@ import {
   Repository,
   IsNull,
   Not,
+  In,
 } from 'typeorm';
 import Web3 from 'web3';
 import CMGABI from '../abi/L1CrossDomainMessenger.json';
@@ -394,7 +395,7 @@ export class L1IngestionService {
       await queryRunner.commitTransaction();
     } catch (error) {
       this.logger.error(
-        `l1 createSentEvents ${error} ${JSON.stringify(l1SentMessageEventsInsertData)}`,
+        `l1 createSentEvents ${error}`,
       );
       await queryRunner.rollbackTransaction();
     }
@@ -450,6 +451,9 @@ export class L1IngestionService {
       const unMergeTxList =
         await this.l2IngestionService.getRelayedEventByIsMerge(false);
       this.logger.log(`start create l1->l2 relation`);
+      const l1ToL2UpdateList = []
+      const l1SentMessageEventsTxHashList = []
+      const l2RelayedMessageEventsTxHashList = []
       for (let i = 0; i < unMergeTxList.length; i++) {
         const l1ToL2Transaction = await this.getL1ToL2TxByMsgHash(
           unMergeTxList[i].msg_hash,
@@ -459,50 +463,58 @@ export class L1IngestionService {
           if (l1ToL2Transaction.type === 0) {
             tx_type = 3;
           }
-          const dataSource = getConnection();
-          const queryRunner = dataSource.createQueryRunner();
-          await queryRunner.connect();
-          await queryRunner.startTransaction();
-          try {
-            await queryRunner.manager
-              .createQueryBuilder()
-              .setLock('pessimistic_write')
-              .update(L1ToL2)
-              .set({ l2_hash: unMergeTxList[i].tx_hash, status: 'Relayed' })
-              .where('hash = :hash', { hash: l1ToL2Transaction.hash })
-              .execute();
-            await queryRunner.manager
-              .createQueryBuilder()
-              .setLock('pessimistic_write')
-              .update(L1SentMessageEvents)
-              .set({ is_merge: true })
-              .where('tx_hash = :tx_hash', { tx_hash: l1ToL2Transaction.hash })
-              .execute();
-            await queryRunner.manager
-              .createQueryBuilder()
-              .setLock('pessimistic_write')
-              .update(L2RelayedMessageEvents)
-              .set({ is_merge: true })
-              .where('tx_hash = :tx_hash', {
-                tx_hash: unMergeTxList[i].tx_hash,
-              })
-              .execute();
-            // await queryRunner.manager.query(
-            //   `UPDATE transactions SET l1_origin_tx_hash=$1, l1l2_type=$2 WHERE hash=$3;`,
-            //   [unMergeTxList[i].tx_hash, tx_type, l1ToL2Transaction.l2_hash],
-            // );
-            await queryRunner.commitTransaction();
-            this.logger.log(`commit l1->l2 data successes`);
-          } catch (error) {
-            this.logger.error(
-              `create l1->l2 relation to l1_to_l2 table error ${error}`,
-            );
-            await queryRunner.rollbackTransaction();
-          } finally {
-            await queryRunner.release();
-            this.logger.log(`create l1->l2 relation to l1_to_l2 table finish`);
-          }
+          l1ToL2UpdateList.push({
+            l2_hash: unMergeTxList[i].tx_hash,
+            status: 'Relayed',
+            hash: l1ToL2Transaction.hash
+          })
+          l1SentMessageEventsTxHashList.push(l1ToL2Transaction.hash)
+          l2RelayedMessageEventsTxHashList.push(unMergeTxList[i].tx_hash)
         }
+      }
+      const dataSource = getConnection();
+      const queryRunner = dataSource.createQueryRunner();
+      await queryRunner.connect();
+      await queryRunner.startTransaction();
+      try {
+        await queryRunner.manager
+          .createQueryBuilder()
+          .setLock('pessimistic_write')
+          .insert()
+          .into(L1ToL2)
+          .values(l1ToL2UpdateList)
+          .orUpdate(["l2_hash", "status"], ["hash"], {
+            skipUpdateIfNoValuesChanged: true
+          })
+          .execute();
+        await queryRunner.manager
+          .createQueryBuilder()
+          .setLock('pessimistic_write')
+          .update(L1SentMessageEvents)
+          .set({ is_merge: true })
+          .where({ tx_hash: In(l1SentMessageEventsTxHashList) })
+          .execute();
+        await queryRunner.manager
+          .createQueryBuilder()
+          .setLock('pessimistic_write')
+          .update(L2RelayedMessageEvents)
+          .set({ is_merge: true })
+          .where({ tx_hash: In(l2RelayedMessageEventsTxHashList) })
+          .execute();
+        // await queryRunner.manager.query(
+        //   `UPDATE transactions SET l1_origin_tx_hash=$1, l1l2_type=$2 WHERE hash=$3;`,
+        //   [unMergeTxList[i].tx_hash, tx_type, l1ToL2Transaction.l2_hash],
+        // );
+        await queryRunner.commitTransaction();
+        this.logger.log(`commit l1->l2 data successes`);
+      } catch (error) {
+        this.logger.error(
+          `create l1->l2 relation to l1_to_l2 table error ${error}`,
+        );
+        await queryRunner.rollbackTransaction();
+      } finally {
+        await queryRunner.release();
+        this.logger.log(`create l1->l2 relation to l1_to_l2 table finish`);
       }
       l1l2MergerIsProcessing = false;
     } else {
@@ -564,56 +576,69 @@ export class L1IngestionService {
   }
   async createL2L1Relation() {
     const unMergeTxList = await this.getRelayedEventByIsMerge(false);
+    const l2ToL1UpdateList = [];
+    const l2SentMessageEventsTxHashList = [];
+    const l1RelayedMessageEventsTxHashList = [];
     for (let i = 0; i < unMergeTxList.length; i++) {
       const l2ToL1Transaction = await this.getL2ToL1TxByMsgHash(
         unMergeTxList[i].msg_hash,
       );
       if (l2ToL1Transaction) {
-        const dataSource = getConnection();
-        const queryRunner = dataSource.createQueryRunner();
-        await queryRunner.connect();
-        await queryRunner.startTransaction();
-        try {
-          await queryRunner.manager
-            .createQueryBuilder()
-            .setLock('pessimistic_write')
-            .update(L2ToL1)
-            .set({ hash: unMergeTxList[i].tx_hash, status: 'Relayed' })
-            .where('l2_hash = :l2_hash', { l2_hash: l2ToL1Transaction.l2_hash })
-            .execute();
-          await queryRunner.manager
-            .createQueryBuilder()
-            .setLock('pessimistic_write')
-            .update(L2SentMessageEvents)
-            .set({ is_merge: true })
-            .where('tx_hash = :tx_hash', { tx_hash: l2ToL1Transaction.l2_hash })
-            .execute();
-          await queryRunner.manager
-            .createQueryBuilder()
-            .setLock('pessimistic_write')
-            .update(L1RelayedMessageEvents)
-            .set({ is_merge: true })
-            .where('tx_hash = :tx_hash', { tx_hash: unMergeTxList[i].tx_hash })
-            .execute();
-          // update transactions to Ready for Relay
-          // await queryRunner.manager.query(
-          //   `UPDATE transactions SET l1_origin_tx_hash=$1, l1l2_type=$2 WHERE hash=$3;`,
-          //   [unMergeTxList[i].tx_hash, 2, l2ToL1Transaction.l2_hash],
-          // );
-          await queryRunner.commitTransaction();
-          this.logger.log(
-            `create l2->l1 relation to l2_to_l1 table commit transaction finish`,
-          );
-        } catch (error) {
-          this.logger.log(
-            `create l2->l1 relation to l2_to_l1 table error ${error}`,
-          );
-          await queryRunner.rollbackTransaction();
-        } finally {
-          await queryRunner.release();
-          this.logger.log(`create l2->l1 relation to l2_to_l1 table finish`);
-        }
+        l2ToL1UpdateList.push({
+          hash: unMergeTxList[i].tx_hash,
+          status: 'Relayed',
+          l2_hash: l2ToL1Transaction.l2_hash
+        })
+        l2SentMessageEventsTxHashList.push(l2ToL1Transaction.l2_hash)
+        l1RelayedMessageEventsTxHashList.push(unMergeTxList[i].tx_hash)
       }
+    }
+    const dataSource = getConnection();
+    const queryRunner = dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    try {
+      await queryRunner.manager
+        .createQueryBuilder()
+        .setLock('pessimistic_write')
+        .insert()
+        .into(L2ToL1)
+        .values(l2ToL1UpdateList)
+        .orUpdate(["hash", "status"], ["l2_hash"], {
+          skipUpdateIfNoValuesChanged: true
+        })
+        .execute();
+      await queryRunner.manager
+        .createQueryBuilder()
+        .setLock('pessimistic_write')
+        .update(L2SentMessageEvents)
+        .set({ is_merge: true })
+        .where({ tx_hash: In(l2SentMessageEventsTxHashList) })
+        .execute();
+      await queryRunner.manager
+        .createQueryBuilder()
+        .setLock('pessimistic_write')
+        .update(L1RelayedMessageEvents)
+        .set({ is_merge: true })
+        .where({ tx_hash: In(l1RelayedMessageEventsTxHashList) })
+        .execute();
+      // update transactions to Ready for Relay
+      // await queryRunner.manager.query(
+      //   `UPDATE transactions SET l1_origin_tx_hash=$1, l1l2_type=$2 WHERE hash=$3;`,
+      //   [unMergeTxList[i].tx_hash, 2, l2ToL1Transaction.l2_hash],
+      // );
+      await queryRunner.commitTransaction();
+      this.logger.log(
+        `create l2->l1 relation to l2_to_l1 table commit transaction finish`,
+      );
+    } catch (error) {
+      this.logger.log(
+        `create l2->l1 relation to l2_to_l1 table error ${error}`,
+      );
+      await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
+      this.logger.log(`create l2->l1 relation to l2_to_l1 table finish`);
     }
   }
   async syncSentEvents() {
