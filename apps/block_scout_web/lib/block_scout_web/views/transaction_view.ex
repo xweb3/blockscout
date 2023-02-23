@@ -311,10 +311,7 @@ require Logger
   end
 
   def formatted_fee(%Transaction{} = transaction, opts) do
-    Logger.info("start formate fee")
     l1_fee = if transaction.l1_fee == nil, do: Wei.from(Decimal.new(0), :wei), else: transaction.l1_fee
-    Logger.info(l1_fee)
-    Logger.info("end formate fee")
     transaction
     |> Chain.fee(:wei)
     |> fee_to_denomination(l1_fee, opts)
