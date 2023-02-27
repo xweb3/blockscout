@@ -12,6 +12,8 @@ import {
   TxnBatches,
   Transactions,
   Tokens,
+  DaBatches,
+  DaBatchTransactions,
 } from 'src/typeorm';
 import {
   EntityManager,
@@ -20,18 +22,22 @@ import {
   Repository,
   IsNull,
   Not,
+  In,
 } from 'typeorm';
 import Web3 from 'web3';
 import CMGABI from '../abi/L1CrossDomainMessenger.json';
 import CTCABI from '../abi/CanonicalTransactionChain.json';
 import SCCABI from '../abi/StateCommitmentChain.json';
-
+import DAABI from '../abi/BVM_EigenDataLayrChain.json';
 import { L2IngestionService } from '../l2Ingestion/l2Ingestion.service';
-import { decode } from 'punycode';
+import { EigenlayerService } from '../grpc/eigenlayer.service';
 import { utils } from 'ethers';
 import { from } from 'rxjs';
 const FraudProofWindow = 0;
 let l1l2MergerIsProcessing = false;
+import { decode, encode } from 'rlp';
+
+
 
 @Injectable()
 export class L1IngestionService {
@@ -41,6 +47,7 @@ export class L1IngestionService {
   ctcContract: any;
   sccContract: any;
   crossDomainMessengerContract: any;
+  bvmEigenDataLayrChain: any;
   constructor(
     private configService: ConfigService,
     @InjectRepository(L1RelayedMessageEvents)
@@ -59,7 +66,12 @@ export class L1IngestionService {
     private readonly transactions: Repository<Transactions>,
     @InjectRepository(Tokens)
     private readonly tokensRepository: Repository<Tokens>,
+    @InjectRepository(DaBatches)
+    private readonly daBatchesRepository: Repository<DaBatches>,
+    @InjectRepository(DaBatchTransactions)
+    private readonly DaBatchTransactionsRepository: Repository<DaBatchTransactions>,
     private readonly l2IngestionService: L2IngestionService,
+    private readonly eigenlayerService: EigenlayerService,
   ) {
     this.entityManager = getManager();
     const web3 = new Web3(
@@ -77,9 +89,14 @@ export class L1IngestionService {
       SCCABI as any,
       configService.get('SCC_ADDRESS'),
     );
+    const bvmEigenDataLayrChain = new web3.eth.Contract(
+      DAABI as any,
+      configService.get('DA_ADDRESS'),
+    );
     this.ctcContract = ctcContract;
     this.sccContract = sccContract;
     this.crossDomainMessengerContract = crossDomainMessengerContract;
+    this.bvmEigenDataLayrChain = bvmEigenDataLayrChain;
     this.web3 = web3;
   }
   async getCtcTransactionBatchAppendedByBlockNumber(
@@ -111,6 +128,14 @@ export class L1IngestionService {
       fromBlock,
       toBlock,
     });
+  }
+  async getLatestBatchIndex() {
+    return this.bvmEigenDataLayrChain.methods.rollupBatchIndex().call();
+  }
+  async getRollupInfoByBatchIndex(batch_index) {
+    return this.bvmEigenDataLayrChain.methods
+      .getRollupStoreByRollupBatchIndex(batch_index)
+      .call();
   }
   async getSccTotalElements() {
     return this.sccContract.methods.getTotalElements().call();
@@ -169,14 +194,11 @@ export class L1IngestionService {
     return this.txnL2ToL1Repository.find({ where: { status: status } });
   }
   async createTxnBatchesEvents(startBlock, endBlock) {
-    const result: any[] = [];
     const list = await this.getCtcTransactionBatchAppendedByBlockNumber(
       startBlock,
       endBlock,
     );
-    const dataSource = getConnection();
-    const queryRunner = dataSource.createQueryRunner();
-    await queryRunner.connect();
+    const txnBatchesInsertData: any[] = []
     for (const item of list) {
       const {
         blockNumber,
@@ -191,42 +213,44 @@ export class L1IngestionService {
         },
       } = item;
       const { timestamp } = await this.web3.eth.getBlock(blockNumber);
-      try {
-        await queryRunner.startTransaction();
-        const savedResult = await queryRunner.manager.save(TxnBatches, {
-          batch_index: _batchIndex,
-          block_number: blockNumber.toString(),
-          hash: transactionHash,
-          size: _batchSize,
-          l1_block_number: blockNumber,
-          batch_root: _batchRoot,
-          extra_data: _extraData,
-          pre_total_elements: _prevTotalElements,
-          timestamp: new Date(Number(timestamp) * 1000).toISOString(),
-          inserted_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        });
-        result.push(savedResult);
-        await queryRunner.commitTransaction();
-      } catch (error) {
-        this.logger.error(
-          `l1 createTxnBatchesEvents blocknumber:${blockNumber} ${error}`,
-        );
-        await queryRunner.rollbackTransaction();
-      }
+      txnBatchesInsertData.push({
+        batch_index: _batchIndex,
+        block_number: blockNumber.toString(),
+        hash: transactionHash,
+        size: _batchSize,
+        l1_block_number: blockNumber,
+        batch_root: _batchRoot,
+        extra_data: _extraData,
+        pre_total_elements: _prevTotalElements,
+        timestamp: new Date(Number(timestamp) * 1000).toISOString(),
+        inserted_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      })
+    }
+    const result: any[] = [];
+    const dataSource = getConnection();
+    const queryRunner = dataSource.createQueryRunner();
+    await queryRunner.connect();
+    try {
+      await queryRunner.startTransaction();
+      const savedResult = await queryRunner.manager.insert(TxnBatches, txnBatchesInsertData);
+      result.push(savedResult);
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      this.logger.error(
+        `l1 createTxnBatchesEvents ${error}`,
+      );
+      await queryRunner.rollbackTransaction();
     }
     await queryRunner.release();
     return result;
   }
   async createStateBatchesEvents(startBlock, endBlock) {
-    const result: any[] = [];
     const list = await this.getSccStateBatchAppendedByBlockNumber(
       startBlock,
       endBlock,
     );
-    const dataSource = getConnection();
-    const queryRunner = dataSource.createQueryRunner();
-    await queryRunner.connect();
+    const stateBatchesInsertData: any[] = [];
     for (const item of list) {
       const {
         blockNumber,
@@ -240,29 +264,34 @@ export class L1IngestionService {
         },
       } = item;
       const { timestamp } = await this.web3.eth.getBlock(blockNumber);
-      try {
-        await queryRunner.startTransaction();
-        const savedResult = await queryRunner.manager.save(StateBatches, {
-          batch_index: _batchIndex,
-          block_number: blockNumber.toString(),
-          hash: transactionHash,
-          size: _batchSize,
-          l1_block_number: blockNumber,
-          batch_root: _batchRoot,
-          extra_data: _extraData,
-          pre_total_elements: _prevTotalElements,
-          timestamp: new Date(Number(timestamp) * 1000).toISOString(),
-          inserted_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        });
-        result.push(savedResult);
-        await queryRunner.commitTransaction();
-      } catch (error) {
-        this.logger.error(
-          `l1 createStateBatchesEvents blocknumber:${blockNumber} ${error}`,
-        );
-        await queryRunner.rollbackTransaction();
-      }
+      stateBatchesInsertData.push({
+        batch_index: _batchIndex,
+        block_number: blockNumber.toString(),
+        hash: transactionHash,
+        size: _batchSize,
+        l1_block_number: blockNumber,
+        batch_root: _batchRoot,
+        extra_data: _extraData,
+        pre_total_elements: _prevTotalElements,
+        timestamp: new Date(Number(timestamp) * 1000).toISOString(),
+        inserted_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      })
+    }
+    const result: any[] = [];
+    const dataSource = getConnection();
+    const queryRunner = dataSource.createQueryRunner();
+    await queryRunner.connect();
+    try {
+      await queryRunner.startTransaction();
+      const savedResult = await queryRunner.manager.insert(StateBatches, stateBatchesInsertData);
+      result.push(savedResult);
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      this.logger.error(
+        `l1 createStateBatchesEvents ${error}`,
+      );
+      await queryRunner.rollbackTransaction();
     }
     await queryRunner.release();
     return result;
@@ -280,9 +309,8 @@ export class L1IngestionService {
     let to = '0x0000000000000000000000000000000000000000';
     let value = '0';
     let type = 0;
-    const dataSource = getConnection();
-    const queryRunner = dataSource.createQueryRunner();
-    await queryRunner.connect();
+    const l1SentMessageEventsInsertData: any[] = [];
+    const l1ToL2InsertData: any[] = [];
     for (const item of list) {
       const {
         blockNumber,
@@ -308,63 +336,68 @@ export class L1IngestionService {
         this.logger.log(`reward tssMembers is [${decodeMsg._tssMembers}]`);
       }
       const { timestamp } = await this.web3.eth.getBlock(blockNumber);
+      const msgHash = this.verifyDomainCalldataHash({
+        target: target.toString(),
+        sender: sender.toString(),
+        message: message.toString(),
+        messageNonce: messageNonce.toString(),
+      });
+      l1SentMessageEventsInsertData.push({
+        tx_hash: transactionHash,
+        block_number: blockNumber.toString(),
+        target,
+        sender,
+        message,
+        message_nonce: messageNonce,
+        gas_limit: gasLimit,
+        signature,
+        l1_token: l1_token,
+        l2_token: l2_token,
+        from: from,
+        to: to,
+        value: value,
+        type: type,
+        inserted_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      })
+      l1ToL2InsertData.push({
+        hash: transactionHash,
+        l2_hash: null,
+        msg_hash: msgHash,
+        block: blockNumber,
+        timestamp: new Date(Number(timestamp) * 1000).toISOString(),
+        tx_origin: sender,
+        queue_index: Number(messageNonce),
+        target: sender,
+        gas_limit: gasLimit,
+        status: 'Ready for Relay',
+        l1_token: l1_token,
+        l2_token: l2_token,
+        from: from,
+        to: to,
+        value: value,
+        type: type,
+        inserted_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      })
+    }
+    const dataSource = getConnection();
+    const queryRunner = dataSource.createQueryRunner();
+    await queryRunner.connect();
+    try {
       await queryRunner.startTransaction();
-      try {
-        const savedResult = await queryRunner.manager.save(
-          L1SentMessageEvents,
-          {
-            tx_hash: transactionHash,
-            block_number: blockNumber.toString(),
-            target,
-            sender,
-            message,
-            message_nonce: messageNonce,
-            gas_limit: gasLimit,
-            signature,
-            l1_token: l1_token,
-            l2_token: l2_token,
-            from: from,
-            to: to,
-            value: value,
-            type: type,
-            inserted_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-          },
-        );
-        const msgHash = this.verifyDomainCalldataHash({
-          target: target.toString(),
-          sender: sender.toString(),
-          message: message.toString(),
-          messageNonce: messageNonce.toString(),
-        });
-        await queryRunner.manager.save(L1ToL2, {
-          hash: transactionHash,
-          l2_hash: null,
-          msg_hash: msgHash,
-          block: blockNumber,
-          timestamp: new Date(Number(timestamp) * 1000).toISOString(),
-          tx_origin: sender,
-          queue_index: Number(messageNonce),
-          target: sender,
-          gas_limit: gasLimit,
-          status: 'Ready for Relay',
-          l1_token: l1_token,
-          l2_token: l2_token,
-          from: from,
-          to: to,
-          value: value,
-          type: type,
-          inserted_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        });
-        result.push(savedResult);
-        await queryRunner.commitTransaction();
-      } catch (error) {
-        this.logger.error(
-          `l1 createSentEvents blocknumber:${blockNumber} ${error}`,
-        );
-        await queryRunner.rollbackTransaction();
-      }
+      const savedResult = await queryRunner.manager.insert(
+        L1SentMessageEvents,
+        l1SentMessageEventsInsertData,
+      );
+      await queryRunner.manager.insert(L1ToL2, l1ToL2InsertData);
+      result.push(savedResult);
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      this.logger.error(
+        `l1 createSentEvents ${error}`,
+      );
+      await queryRunner.rollbackTransaction();
     }
     await queryRunner.release();
     return result;
@@ -374,10 +407,8 @@ export class L1IngestionService {
       startBlock,
       endBlock,
     );
-    const dataSource = getConnection();
-    const queryRunner = dataSource.createQueryRunner();
-    await queryRunner.connect();
     const result: any = [];
+    const l1RelayedMessageEventsInsertData: any[] = [];
     for (const item of list) {
       const {
         blockNumber,
@@ -385,27 +416,32 @@ export class L1IngestionService {
         returnValues: { msgHash },
         signature,
       } = item;
+      l1RelayedMessageEventsInsertData.push({
+        tx_hash: transactionHash,
+        block_number: blockNumber.toString(),
+        msg_hash: msgHash,
+        signature,
+        inserted_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      })
+      
+    }
+    const dataSource = getConnection();
+    const queryRunner = dataSource.createQueryRunner();
+    await queryRunner.connect();
+    try {
       await queryRunner.startTransaction();
-      try {
-        const savedResult = await queryRunner.manager.save(
-          L1RelayedMessageEvents,
-          {
-            tx_hash: transactionHash,
-            block_number: blockNumber.toString(),
-            msg_hash: msgHash,
-            signature,
-            inserted_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-          },
-        );
-        result.push(savedResult);
-        await queryRunner.commitTransaction();
-      } catch (error) {
-        this.logger.error(
-          `l1 createRelayedEvents blocknumber:${blockNumber} ${error}`,
-        );
-        await queryRunner.rollbackTransaction();
-      }
+      const savedResult = await queryRunner.manager.insert(
+        L1RelayedMessageEvents,
+        l1RelayedMessageEventsInsertData,
+      );
+      result.push(savedResult);
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      this.logger.error(
+        `l1 createRelayedEvents ${error}`,
+      );
+      await queryRunner.rollbackTransaction();
     }
     await queryRunner.release();
     return result;
@@ -415,6 +451,9 @@ export class L1IngestionService {
       const unMergeTxList =
         await this.l2IngestionService.getRelayedEventByIsMerge(false);
       this.logger.log(`start create l1->l2 relation`);
+      const l1ToL2UpdateList = []
+      const l1SentMessageEventsTxHashList = []
+      const l2RelayedMessageEventsTxHashList = []
       for (let i = 0; i < unMergeTxList.length; i++) {
         const l1ToL2Transaction = await this.getL1ToL2TxByMsgHash(
           unMergeTxList[i].msg_hash,
@@ -424,50 +463,58 @@ export class L1IngestionService {
           if (l1ToL2Transaction.type === 0) {
             tx_type = 3;
           }
-          const dataSource = getConnection();
-          const queryRunner = dataSource.createQueryRunner();
-          await queryRunner.connect();
-          await queryRunner.startTransaction();
-          try {
-            await queryRunner.manager
-              .createQueryBuilder()
-              .setLock('pessimistic_write')
-              .update(L1ToL2)
-              .set({ l2_hash: unMergeTxList[i].tx_hash, status: 'Relayed' })
-              .where('hash = :hash', { hash: l1ToL2Transaction.hash })
-              .execute();
-            await queryRunner.manager
-              .createQueryBuilder()
-              .setLock('pessimistic_write')
-              .update(L1SentMessageEvents)
-              .set({ is_merge: true })
-              .where('tx_hash = :tx_hash', { tx_hash: l1ToL2Transaction.hash })
-              .execute();
-            await queryRunner.manager
-              .createQueryBuilder()
-              .setLock('pessimistic_write')
-              .update(L2RelayedMessageEvents)
-              .set({ is_merge: true })
-              .where('tx_hash = :tx_hash', {
-                tx_hash: unMergeTxList[i].tx_hash,
-              })
-              .execute();
-            await queryRunner.manager.query(
-              `UPDATE transactions SET l1_origin_tx_hash=$1, l1l2_type=$2 WHERE hash=$3;`,
-              [unMergeTxList[i].tx_hash, tx_type, l1ToL2Transaction.l2_hash],
-            );
-            await queryRunner.commitTransaction();
-            this.logger.log(`commit l1->l2 data successes`);
-          } catch (error) {
-            this.logger.error(
-              `create l1->l2 relation to l1_to_l2 table error ${error}`,
-            );
-            await queryRunner.rollbackTransaction();
-          } finally {
-            await queryRunner.release();
-            this.logger.log(`create l1->l2 relation to l1_to_l2 table finish`);
-          }
+          l1ToL2UpdateList.push({
+            l2_hash: unMergeTxList[i].tx_hash,
+            status: 'Relayed',
+            hash: l1ToL2Transaction.hash
+          })
+          l1SentMessageEventsTxHashList.push(l1ToL2Transaction.hash)
+          l2RelayedMessageEventsTxHashList.push(unMergeTxList[i].tx_hash)
         }
+      }
+      const dataSource = getConnection();
+      const queryRunner = dataSource.createQueryRunner();
+      await queryRunner.connect();
+      await queryRunner.startTransaction();
+      try {
+        await queryRunner.manager
+          .createQueryBuilder()
+          .setLock('pessimistic_write')
+          .insert()
+          .into(L1ToL2)
+          .values(l1ToL2UpdateList)
+          .orUpdate(["l2_hash", "status"], ["hash"], {
+            skipUpdateIfNoValuesChanged: true
+          })
+          .execute();
+        await queryRunner.manager
+          .createQueryBuilder()
+          .setLock('pessimistic_write')
+          .update(L1SentMessageEvents)
+          .set({ is_merge: true })
+          .where({ tx_hash: In(l1SentMessageEventsTxHashList) })
+          .execute();
+        await queryRunner.manager
+          .createQueryBuilder()
+          .setLock('pessimistic_write')
+          .update(L2RelayedMessageEvents)
+          .set({ is_merge: true })
+          .where({ tx_hash: In(l2RelayedMessageEventsTxHashList) })
+          .execute();
+        // await queryRunner.manager.query(
+        //   `UPDATE transactions SET l1_origin_tx_hash=$1, l1l2_type=$2 WHERE hash=$3;`,
+        //   [unMergeTxList[i].tx_hash, tx_type, l1ToL2Transaction.l2_hash],
+        // );
+        await queryRunner.commitTransaction();
+        this.logger.log(`commit l1->l2 data successes`);
+      } catch (error) {
+        this.logger.error(
+          `create l1->l2 relation to l1_to_l2 table error ${error}`,
+        );
+        await queryRunner.rollbackTransaction();
+      } finally {
+        await queryRunner.release();
+        this.logger.log(`create l1->l2 relation to l1_to_l2 table finish`);
       }
       l1l2MergerIsProcessing = false;
     } else {
@@ -475,6 +522,25 @@ export class L1IngestionService {
         `this task is in processing and l1l2MergerIsProcessing is ${l1l2MergerIsProcessing}`,
       );
     }
+  }
+  async createEigenBatchTransaction(insertBatchData, insertHashData) {
+    const dataSource = getConnection();
+    const queryRunner = dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    try {
+      await queryRunner.manager.save(DaBatches, insertBatchData);
+      if (insertHashData) {
+        await queryRunner.manager.insert(DaBatchTransactions, insertHashData);
+      }
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      this.logger.error(`create eigenlayer batch transaction error: ${error}`);
+      await queryRunner.rollbackTransaction();
+      return false;
+    }
+    await queryRunner.release();
+    return true;
   }
   async handleWaitTransaction() {
     // const latestBlock = await this.getCurrentBlockNumber();
@@ -496,10 +562,10 @@ export class L1IngestionService {
         .andWhere('status = :status', { status: 'Waiting' })
         .execute();
       // update transactions to Ready for Relay
-      await queryRunner.manager.query(
-        `UPDATE transactions SET l1l2_status=$1 WHERE l1l2_status=$2;`,
-        [1, 0],
-      );
+      // await queryRunner.manager.query(
+      //   `UPDATE transactions SET l1l2_status=$1 WHERE l1l2_status=$2;`,
+      //   [1, 0],
+      // );
       await queryRunner.commitTransaction();
     } catch (error) {
       await queryRunner.rollbackTransaction();
@@ -510,56 +576,69 @@ export class L1IngestionService {
   }
   async createL2L1Relation() {
     const unMergeTxList = await this.getRelayedEventByIsMerge(false);
+    const l2ToL1UpdateList = [];
+    const l2SentMessageEventsTxHashList = [];
+    const l1RelayedMessageEventsTxHashList = [];
     for (let i = 0; i < unMergeTxList.length; i++) {
       const l2ToL1Transaction = await this.getL2ToL1TxByMsgHash(
         unMergeTxList[i].msg_hash,
       );
       if (l2ToL1Transaction) {
-        const dataSource = getConnection();
-        const queryRunner = dataSource.createQueryRunner();
-        await queryRunner.connect();
-        await queryRunner.startTransaction();
-        try {
-          await queryRunner.manager
-            .createQueryBuilder()
-            .setLock('pessimistic_write')
-            .update(L2ToL1)
-            .set({ hash: unMergeTxList[i].tx_hash, status: 'Relayed' })
-            .where('l2_hash = :l2_hash', { l2_hash: l2ToL1Transaction.l2_hash })
-            .execute();
-          await queryRunner.manager
-            .createQueryBuilder()
-            .setLock('pessimistic_write')
-            .update(L2SentMessageEvents)
-            .set({ is_merge: true })
-            .where('tx_hash = :tx_hash', { tx_hash: l2ToL1Transaction.l2_hash })
-            .execute();
-          await queryRunner.manager
-            .createQueryBuilder()
-            .setLock('pessimistic_write')
-            .update(L1RelayedMessageEvents)
-            .set({ is_merge: true })
-            .where('tx_hash = :tx_hash', { tx_hash: unMergeTxList[i].tx_hash })
-            .execute();
-          // update transactions to Ready for Relay
-          await queryRunner.manager.query(
-            `UPDATE transactions SET l1_origin_tx_hash=$1, l1l2_type=$2 WHERE hash=$3;`,
-            [unMergeTxList[i].tx_hash, 2, l2ToL1Transaction.l2_hash],
-          );
-          await queryRunner.commitTransaction();
-          this.logger.log(
-            `create l2->l1 relation to l2_to_l1 table commit transaction finish`,
-          );
-        } catch (error) {
-          this.logger.log(
-            `create l2->l1 relation to l2_to_l1 table error ${error}`,
-          );
-          await queryRunner.rollbackTransaction();
-        } finally {
-          await queryRunner.release();
-          this.logger.log(`create l2->l1 relation to l2_to_l1 table finish`);
-        }
+        l2ToL1UpdateList.push({
+          hash: unMergeTxList[i].tx_hash,
+          status: 'Relayed',
+          l2_hash: l2ToL1Transaction.l2_hash
+        })
+        l2SentMessageEventsTxHashList.push(l2ToL1Transaction.l2_hash)
+        l1RelayedMessageEventsTxHashList.push(unMergeTxList[i].tx_hash)
       }
+    }
+    const dataSource = getConnection();
+    const queryRunner = dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    try {
+      await queryRunner.manager
+        .createQueryBuilder()
+        .setLock('pessimistic_write')
+        .insert()
+        .into(L2ToL1)
+        .values(l2ToL1UpdateList)
+        .orUpdate(["hash", "status"], ["l2_hash"], {
+          skipUpdateIfNoValuesChanged: true
+        })
+        .execute();
+      await queryRunner.manager
+        .createQueryBuilder()
+        .setLock('pessimistic_write')
+        .update(L2SentMessageEvents)
+        .set({ is_merge: true })
+        .where({ tx_hash: In(l2SentMessageEventsTxHashList) })
+        .execute();
+      await queryRunner.manager
+        .createQueryBuilder()
+        .setLock('pessimistic_write')
+        .update(L1RelayedMessageEvents)
+        .set({ is_merge: true })
+        .where({ tx_hash: In(l1RelayedMessageEventsTxHashList) })
+        .execute();
+      // update transactions to Ready for Relay
+      // await queryRunner.manager.query(
+      //   `UPDATE transactions SET l1_origin_tx_hash=$1, l1l2_type=$2 WHERE hash=$3;`,
+      //   [unMergeTxList[i].tx_hash, 2, l2ToL1Transaction.l2_hash],
+      // );
+      await queryRunner.commitTransaction();
+      this.logger.log(
+        `create l2->l1 relation to l2_to_l1 table commit transaction finish`,
+      );
+    } catch (error) {
+      this.logger.log(
+        `create l2->l1 relation to l2_to_l1 table error ${error}`,
+      );
+      await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
+      this.logger.log(`create l2->l1 relation to l2_to_l1 table finish`);
     }
   }
   async syncSentEvents() {
@@ -782,4 +861,101 @@ export class L1IngestionService {
       result: result,
     };
   }
+  async syncEigenDaBatch(batchIndex) {
+    try {
+      const latestBatchIndex = await this.eigenlayerService.getLatestTransactionBatchIndex();
+      this.logger.log(`[syncEigenDaBatch] latestBatchIndex: ${latestBatchIndex}`);
+      if (batchIndex > Number(latestBatchIndex)) {
+        return false;
+      }
+      const {
+        data_store_id: fromStoreNumber
+      } = await this.eigenlayerService.getRollupStoreByRollupBatchIndex(batchIndex);
+      const {
+        Index,
+        StorePeriodLength,
+        Confirmed,
+        MsgHash,
+        DurationDataStoreId,
+        StoreNumber,
+        Fee,
+        InitTxHash,
+        ConfirmTxHash
+      } = await this.eigenlayerService.getDataStore(fromStoreNumber);
+      if (Index === undefined || Index === '') return true;
+      const CURRENT_TIMESTAMP = new Date().toISOString();
+      const insertBatchData = {
+        batch_index: batchIndex,
+        batch_size: StorePeriodLength,
+        status: Confirmed ? 'confirmed' : 'init',
+        da_hash: utils.hexlify(MsgHash),
+        store_id: DurationDataStoreId,
+        store_number: StoreNumber,
+        da_fee: Fee,
+        da_init_hash: utils.hexlify(InitTxHash),
+        da_store_hash: utils.hexlify(ConfirmTxHash),
+        from_store_number: fromStoreNumber,
+        inserted_at: CURRENT_TIMESTAMP,
+        updated_at: CURRENT_TIMESTAMP
+      }
+      let insertHashData = null;
+      // if Confirmed = true then get EigenDa tx list, else skip
+      if (Confirmed) {
+        const txHashList = await this.eigenlayerService.getTxn(StoreNumber) || [];
+        const insertHashList = [];
+        txHashList.forEach((item) => {
+          insertHashList.push({
+            batch_index: batchIndex,
+            block_number: item.BlockNumber,
+            tx_hash: item.TxHash,
+            inserted_at: CURRENT_TIMESTAMP,
+            updated_at: CURRENT_TIMESTAMP
+          })
+        })
+        insertHashData = insertHashList
+      }
+      const result = await this.createEigenBatchTransaction(insertBatchData, insertHashData);
+      return result;
+    } catch (error) {
+      this.logger.error(`[syncEigenDaBatch] error: ${error}`);
+      return false;
+    }
+  }
+  async getLastFromStoreNumber() {
+    const result = await this.daBatchesRepository
+      .createQueryBuilder()
+      .select('Max(from_store_number)', 'fromStoreNumber')
+      .getRawOne();
+    return Number(result.fromStoreNumber) || 0;
+  }
+  async getLastBatchIndex() {
+    const result = await this.daBatchesRepository
+      .createQueryBuilder()
+      .select('Max(batch_index)', 'batchIndex')
+      .getRawOne();
+    return Number(result.batchIndex) || 0;
+  }
+  // async syncEigenDaBatchTxn() {
+  //   const data1 = await this.eigenlayerService.getDataStore(2);
+  //   const data2 = await this.eigenlayerService.getDataStore(3);
+  //   console.log(data1, data2);
+  //   return {
+  //     data1: {
+  //       ...data1,
+  //       MsgHash: utils.hexlify(data1.MsgHash),
+  //       InitTxHash: utils.hexlify(data1.InitTxHash),
+  //       ConfirmTxHash: utils.hexlify(data1.ConfirmTxHash),
+  //       DataCommitment: utils.hexlify(data1.DataCommitment),
+  //       SignatoryRecord: utils.hexlify(data1.SignatoryRecord),
+  //     },
+  //     data2: {
+  //       ...data2,
+  //       MsgHash: utils.hexlify(data2.MsgHash),
+  //       InitTxHash: utils.hexlify(data2.InitTxHash),
+  //       ConfirmTxHash: utils.hexlify(data2.ConfirmTxHash),
+  //       DataCommitment: utils.hexlify(data2.DataCommitment),
+  //       SignatoryRecord: utils.hexlify(data2.SignatoryRecord),
+  //     },
+  //   }
+  // }
 }

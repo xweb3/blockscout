@@ -311,10 +311,7 @@ require Logger
   end
 
   def formatted_fee(%Transaction{} = transaction, opts) do
-    Logger.info("start formate fee")
     l1_fee = if transaction.l1_fee == nil, do: Wei.from(Decimal.new(0), :wei), else: transaction.l1_fee
-    Logger.info(l1_fee)
-    Logger.info("end formate fee")
     transaction
     |> Chain.fee(:wei)
     |> fee_to_denomination(l1_fee, opts)
@@ -352,7 +349,9 @@ require Logger
       :pending -> gettext("Pending")
       :awaiting_internal_transactions -> gettext("(Awaiting internal transactions for status)")
       :success -> gettext("Success")
-      {:error, :awaiting_internal_transactions} -> gettext("Error: (Awaiting internal transactions for reason)")
+      #TODO(Jayce) internal transaction feature has not been completed, use success temporary.
+      #{:error, :awaiting_internal_transactions} -> gettext("Error: (Awaiting internal transactions for reason)")
+      {:error, :awaiting_internal_transactions} -> gettext("Success")
       # The pool of possible error reasons is unknown or even if it is enumerable, so we can't translate them
       {:error, reason} when is_binary(reason) -> gettext("Error: %{reason}", reason: reason)
     end
@@ -460,7 +459,9 @@ require Logger
       :pending -> "tile-status--pending"
       :awaiting_internal_transactions -> "tile-status--awaiting-internal-transactions"
       :success -> "tile-status--success"
-      {:error, :awaiting_internal_transactions} -> "tile-status--error--awaiting-internal-transactions"
+      # TODO(Jayce) internal transaction feature has not been completed, use success temporary.
+      #{:error, :awaiting_internal_transactions} -> "tile-status--error--awaiting-internal-transactions"
+      {:error, :awaiting_internal_transactions} -> "tile-status--success"
       {:error, reason} when is_binary(reason) -> "tile-status--error--reason"
     end
   end

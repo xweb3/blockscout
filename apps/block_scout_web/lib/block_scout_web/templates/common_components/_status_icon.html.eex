@@ -1,8 +1,12 @@
 <%= case @status do %>
       <% :success -> %>
+      <i style="color: #20b760;" class="fa-regular fa-check-circle"></i>
+        <%# TODO(Jayce) internal transaction feature has not been completed, use success temporary. %>
+      <% {:error, :awaiting_internal_transactions} -> %>
         <i style="color: #20b760;" class="fa-regular fa-check-circle"></i>
       <% {:error, _} -> %>
         <i style="color: #dc3545;" class="fa-solid fa-exclamation-circle"></i>
+      
       <% :awaiting_internal_transactions -> %>
         <i style="color: #f7b32b;" class="fa-solid fa-exclamation-circle"></i>
       <% :pending -> %>

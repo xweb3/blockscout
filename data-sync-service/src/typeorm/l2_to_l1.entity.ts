@@ -61,5 +61,4 @@ export class L2ToL1 {
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   updated_at: Date;
-
 }

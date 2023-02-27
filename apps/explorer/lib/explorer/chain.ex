@@ -60,6 +60,8 @@ defmodule Explorer.Chain do
     Wei,
     StateBatch,
     TxnBatch,
+    DaBatch,
+    DaBatchTransaction,
     L1ToL2,
     L2ToL1,
   }
@@ -3304,6 +3306,32 @@ defmodule Explorer.Chain do
     |> Repo.all()
   end
 
+  def fetch_recent_collated_eigenda_batch_for_rap(paging_options) do
+    fetch_eigenda_batch_for_rap()
+    |> where([eigenda_batch], not is_nil(eigenda_batch.batch_index))
+    |> no_cache_handle_options(paging_options)
+    |> Repo.all()
+  end
+
+
+  def fetch_recent_collated_da_batch_transactions_for_rap(options \\ [], batch_index) when is_list(options) do
+    paging_options = Keyword.get(options, :paging_options, @default_paging_options)
+    DaBatchTransaction
+    |> where([da_batch_transaction], da_batch_transaction.batch_index == ^batch_index)
+    |> no_cache_handle_options(paging_options)
+    |> Repo.all()
+  end
+
+
+  def fetch_recent_collated_eigenda_batch_for_rap(paging_options) do
+    fetch_eigenda_batch_for_rap()
+    |> where([eigenda_batch], not is_nil(eigenda_batch.batch_index))
+    |> no_cache_handle_options(paging_options)
+    |> Repo.all()
+  end
+
+
+
   @spec recent_collated_txn_batches_for_rap([paging_options]) :: %{
     :total_transactions_count => non_neg_integer(),
     :txn_batches => [TxnBatch.t()]
@@ -3314,6 +3342,29 @@ defmodule Explorer.Chain do
     txn_batch_count = txn_batch_available_count()
     fetched_txn_batches =fetch_recent_collated_txn_batch_for_rap(paging_options)
     %{total_transactions_count: txn_batch_count, txn_batches: fetched_txn_batches}
+  end
+
+  @spec recent_collated_eigenda_batches_for_rap([paging_options]) :: %{
+    :total_eigenda_batches_count => non_neg_integer(),
+    :eigenda_batches => [DaBatch.t()]
+  }
+
+  def recent_collated_eigenda_batches_for_rap(options \\ []) when is_list(options) do
+    paging_options = Keyword.get(options, :paging_options, @default_paging_options)
+    total_eigenda_batches_count = eigenda_batch_available_count()
+    fetched_eigenda_batches =fetch_recent_collated_eigenda_batch_for_rap(paging_options)
+    %{total_eigenda_batches_count: total_eigenda_batches_count, eigenda_batches: fetched_eigenda_batches}
+  end
+
+  @spec recent_collated_da_batch_transactions_for_rap([paging_options], integer()) :: %{
+    :total_da_batch_transactions_count => non_neg_integer(),
+    :da_batch_transactions => [DaBatchTransaction.t()]
+  }
+
+  def recent_collated_da_batch_transactions_for_rap(options \\ [], batch_index) when is_list(options) do
+    total_da_batch_transactions_count = da_batch_transactions_available_count(batch_index)
+    fetched_da_batch_transactions =fetch_recent_collated_da_batch_transactions_for_rap(options, batch_index)
+    %{total_da_batch_transactions_count: total_da_batch_transactions_count, da_batch_transactions: fetched_da_batch_transactions}
   end
 
   @spec txn_batch_detail(integer()) :: %{
@@ -3349,11 +3400,25 @@ defmodule Explorer.Chain do
     |> order_by([txn_batch], desc: txn_batch.batch_index)
   end
 
+  defp fetch_eigenda_batch_for_rap do
+    DaBatch
+    |> order_by([eigenda_batch], desc: eigenda_batch.batch_index)
+  end
+
   defp fetch_txn_batch(batch_index) do
     TxnBatch
     |> where([txn_batch], txn_batch.batch_index == ^batch_index)
     |> limit(1)
     |> Repo.one()
+  end
+
+  defp fetch_eigenda_batch_transactions(options \\ []) when is_list(options) do
+    paging_options = Keyword.get(options, :paging_options, @default_paging_options)
+    %{batch_index: batch_index} = Keyword.get(options, :params)
+    DaBatchTransaction
+    |> where([eigenda_batch_transaction], eigenda_batch_transaction.batch_index == ^batch_index)
+    |> no_cache_handle_options(paging_options)
+    |> Repo.all()
   end
 
   defp fetch_state_batch(batch_index) do
@@ -3378,6 +3443,20 @@ defmodule Explorer.Chain do
     |> where([txn_batch], not is_nil(txn_batch.batch_index))
     |> limit(^@limit_showing_transactions)
     |> Repo.aggregate(:count, :hash)
+  end
+
+  def eigenda_batch_available_count do
+    DaBatch
+    |> where([eigenda_batch], not is_nil(eigenda_batch.batch_index))
+    |> limit(^@limit_showing_transactions)
+    |> Repo.aggregate(:count, :da_hash)
+  end
+
+  def da_batch_transactions_available_count(batch_index) do
+    DaBatchTransaction
+    |> where([da_batch_transaction], da_batch_transaction.batch_index == ^batch_index)
+    |> limit(^@limit_showing_transactions)
+    |> Repo.aggregate(:count, :batch_index)
   end
 
   def state_batch_available_count do
