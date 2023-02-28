@@ -91,7 +91,8 @@ defmodule Indexer.Block.Catchup.Fetcher do
             |> Enum.flat_map(fn f..l -> Chain.missing_block_number_ranges(l..f) end)
 
           range_count = Enum.count(missing_ranges)
-
+          Logger.info("starting fetch blocks missed")
+          Logger.info(missing_ranges)
           missing_block_count =
             missing_ranges
             |> Stream.map(&Enum.count/1)

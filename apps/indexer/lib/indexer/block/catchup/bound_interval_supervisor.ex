@@ -200,25 +200,23 @@ defmodule Indexer.Block.Catchup.BoundIntervalSupervisor do
     new_bound_interval =
       case missing_block_count do
         0 ->
-          # TODO (Jayce) debug code
-          #Logger.info("Index already caught up.",
-          #  first_block_number: first_block_number,
-          #  last_block_number: last_block_number,
-          #  missing_block_count: 0,
-          #  shrunk: shrunk
-          #)
+          Logger.info("Index already caught up.",
+            first_block_number: first_block_number,
+            last_block_number: last_block_number,
+            missing_block_count: 0,
+            shrunk: shrunk
+          )
 
           BoundInterval.increase(bound_interval)
 
         _ ->
-          # TODO (Jayce) debug code
-          #Logger.info(
-          #  "Index had to catch up.",
-          #  first_block_number: first_block_number,
-          #  last_block_number: last_block_number,
-          #  missing_block_count: missing_block_count,
-          #  shrunk: shrunk
-          #)
+          Logger.info(
+            "Index had to catch up.",
+            first_block_number: first_block_number,
+            last_block_number: last_block_number,
+            missing_block_count: missing_block_count,
+            shrunk: shrunk
+          )
 
           BoundInterval.decrease(bound_interval)
       end
@@ -226,10 +224,9 @@ defmodule Indexer.Block.Catchup.BoundIntervalSupervisor do
     Process.demonitor(ref, [:flush])
 
     interval = new_bound_interval.current
-    # TODO (Jayce) debug code
-    #Logger.info(fn ->
-    #  ["Checking if index needs to catch up in ", to_string(interval), "ms."]
-    #end)
+    Logger.info(fn ->
+      ["Checking if index needs to catch up in ", to_string(interval), "ms."]
+    end)
 
     Process.send_after(self(), :catchup_index, interval)
 
@@ -250,14 +247,13 @@ defmodule Indexer.Block.Catchup.BoundIntervalSupervisor do
       )
       when is_integer(missing_block_count) do
     Process.demonitor(ref, [:flush])
-# TODO (Jayce) debug code
-    #Logger.info(
-    #  "Index had to catch up, but the sequence was shrunk to save memory, so retrying immediately.",
-    #  first_block_number: first_block_number,
-    #  last_block_number: last_block_number,
-    #  missing_block_count: missing_block_count,
-    #  shrunk: shrunk
-    #)
+    Logger.info(
+      "Index had to catch up, but the sequence was shrunk to save memory, so retrying immediately.....",
+      first_block_number: first_block_number,
+      last_block_number: last_block_number,
+      missing_block_count: missing_block_count,
+      shrunk: shrunk
+    )
 
     send(self(), :catchup_index)
 
@@ -270,8 +266,7 @@ defmodule Indexer.Block.Catchup.BoundIntervalSupervisor do
           task: %Task{ref: ref}
         } = state
       ) do
-    # TODO (Jayce) debug code
-    #Logger.info("Index had to catch up, but the request is timing out, so retrying immediately.")
+    Logger.info("Index had to catch up, but the request is timing out, so retrying immediately...")
 
     send(self(), :catchup_index)
 
@@ -284,8 +279,7 @@ defmodule Indexer.Block.Catchup.BoundIntervalSupervisor do
           task: _
         } = state
       ) do
-    # TODO (Jayce) debug code
-    #Logger.info("Index had to catch up, but the request is timing out, so retrying immediately.")
+    Logger.info("Index had to catch up, but the request is timing out, so retrying immediately..")
 
     send(self(), :catchup_index)
 
@@ -308,7 +302,7 @@ defmodule Indexer.Block.Catchup.BoundIntervalSupervisor do
         } = state
       ) do
     Logger.error(fn ->
-      "Catchup index stream exited because the archive node endpoint at #{Keyword.get(options, :url)} is unavailable. Restarting"
+      "Catchup index stream exited because the archive node endpoint at #{Keyword.get(options, :url)} is unavailable. Restarting..."
     end)
 
     send(self(), :catchup_index)
@@ -320,7 +314,7 @@ defmodule Indexer.Block.Catchup.BoundIntervalSupervisor do
         {:DOWN, ref, :process, pid, reason},
         %__MODULE__{task: %Task{pid: pid, ref: ref}} = state
       ) do
-    Logger.error(fn -> "Catchup index stream exited with reason (#{inspect(reason)}). Restarting" end)
+    Logger.error(fn -> "Catchup index stream exited with reason (#{inspect(reason)}). Restarting.." end)
 
     send(self(), :catchup_index)
 
@@ -331,7 +325,7 @@ defmodule Indexer.Block.Catchup.BoundIntervalSupervisor do
         {:DOWN, _ref, :process, _pid, reason},
         %__MODULE__{task: nil} = state
       ) do
-    Logger.error(fn -> "Catchup index stream exited with reason (#{inspect(reason)}). Restarting" end)
+    Logger.error(fn -> "Catchup index stream exited with reason (#{inspect(reason)}). Restarting." end)
 
     send(self(), :catchup_index)
 
