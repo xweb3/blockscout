@@ -17,7 +17,7 @@ defmodule Indexer.Block.Catchup.Supervisor do
       start: {__MODULE__, :start_link, start_link_arguments},
       type: :supervisor
     }
-
+#
     Supervisor.child_spec(default, [])
   end
 
