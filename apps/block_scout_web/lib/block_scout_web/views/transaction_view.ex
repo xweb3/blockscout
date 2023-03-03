@@ -350,8 +350,8 @@ require Logger
       :awaiting_internal_transactions -> gettext("(Awaiting internal transactions for status)")
       :success -> gettext("Success")
       #TODO(Jayce) internal transaction feature has not been completed, use success temporary.
-      #{:error, :awaiting_internal_transactions} -> gettext("Error: (Awaiting internal transactions for reason)")
-      {:error, :awaiting_internal_transactions} -> gettext("Success")
+      {:error, :awaiting_internal_transactions} -> gettext("Error: (Awaiting internal transactions for reason)")
+      #{:error, :awaiting_internal_transactions} -> gettext("Success")
       # The pool of possible error reasons is unknown or even if it is enumerable, so we can't translate them
       {:error, reason} when is_binary(reason) -> gettext("Error: %{reason}", reason: reason)
     end
@@ -460,8 +460,8 @@ require Logger
       :awaiting_internal_transactions -> "tile-status--awaiting-internal-transactions"
       :success -> "tile-status--success"
       # TODO(Jayce) internal transaction feature has not been completed, use success temporary.
-      #{:error, :awaiting_internal_transactions} -> "tile-status--error--awaiting-internal-transactions"
-      {:error, :awaiting_internal_transactions} -> "tile-status--success"
+      {:error, :awaiting_internal_transactions} -> "tile-status--error--awaiting-internal-transactions"
+      #{:error, :awaiting_internal_transactions} -> "tile-status--success"
       {:error, reason} when is_binary(reason) -> "tile-status--error--reason"
     end
   end
