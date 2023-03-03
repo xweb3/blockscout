@@ -39,11 +39,71 @@ $dark-primary-alternate: #65B3AE !default;
 		}
 	}
 }
-.card-body{
+
+.card-body {
 	.tile {
-		.tile-title-block-link{
+		.tile-title-block-link {
 			color: #007bff !important;
 		}
+	}
+
+	.transfers-list-mobile-container {
+		max-height: 320px;
+		padding: 12px 0 12px 16px;
+		background: #F8F8F9;
+		border-radius: 12px;
+		position: relative;
+
+		.transfers-list-mobile-scroll-notice{
+			position: absolute;
+			bottom: 0;
+			left: 14px;
+			display:flex;
+			background: #F8F8F9;
+			.transfers-list-mobile-img{
+				width: 20px;
+				height: 20px;
+				margin-right: 7px;
+			}
+			.transfers-list-mobile-title{
+				color: #6c757d;
+			}
+		}
+		.transfers-list-mobile-container-wrap{
+			width: 100%;
+			height: 100%;
+			overflow-y: auto;
+		}
+		.token-transfer-item {
+			display: flex;
+			margin-bottom: 10px;
+			&:last-child{
+				margin-bottom:0;
+			}
+			@media (max-width: 992px) {
+				flex-direction: column;
+			  }
+			.token-transfer-item-item {
+				display: flex;
+				margin-right: 40px;
+				height:24px;
+				flex-wrap: wrap;
+
+				&:last-child {
+					margin-right: 0;
+				}
+
+				.token-transfer-item-item-title {
+					margin-right: 16px;
+				}
+				.token-transfer-item-item-address{
+					min-width: 123px;
+				}
+			}
+		}
+	}
+	.transfers-list-mobile-less{
+		padding-bottom: 30px;
 	}
 }
 
@@ -87,14 +147,17 @@ $dark-primary-alternate: #65B3AE !default;
 		&.active,
 		&:hover {
 			color: #ffffff;
+
 			.nav-link-icon {
 				svg path {
-					fill:#ffffff;;
+					fill: #ffffff;
+					;
 				}
 			}
 
 			&:before {
-				background-color:#ffffff;;
+				background-color: #ffffff;
+				;
 			}
 		}
 	}
@@ -258,7 +321,8 @@ $dark-primary-alternate: #65B3AE !default;
 		border-top-color: $dark-light;
 		border-bottom-color: $dark-light;
 		border-right-color: $dark-light;
-		background-color: rgba(255, 255, 255, 0.05);;
+		background-color: rgba(255, 255, 255, 0.05);
+		;
 		color: $labels-dark;
 
 		&:not([class^="tile tile-type"]) {
@@ -474,7 +538,7 @@ $dark-primary-alternate: #65B3AE !default;
 	}
 
 	hr {
-		border-top-color: rgba(255,255,255, .15) !important;
+		border-top-color: rgba(255, 255, 255, .15) !important;
 	}
 
 	.i-tooltip {
