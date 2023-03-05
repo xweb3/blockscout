@@ -4,7 +4,7 @@ defmodule Indexer.Block.Catchup.Supervisor do
   """
 
   use Supervisor
-
+  require Logger
   alias Indexer.Block.Catchup.BoundIntervalSupervisor
 
   def child_spec([init_arguments]) do
@@ -27,6 +27,7 @@ defmodule Indexer.Block.Catchup.Supervisor do
 
   @impl Supervisor
   def init(bound_interval_supervisor_arguments) do
+    Logger.info("Supervisor was started")
     Supervisor.init(
       [
         {Task.Supervisor, name: Indexer.Block.Catchup.TaskSupervisor},

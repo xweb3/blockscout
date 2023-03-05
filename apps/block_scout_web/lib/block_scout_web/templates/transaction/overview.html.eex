@@ -238,12 +238,20 @@
                     <%= render BlockScoutWeb.CommonComponentsView, "_i_tooltip_2.html",
                       text: gettext("List of token transferred in the transaction.") %>
                     <%= gettext "Tokens Transferred" %></dt>
-                  <dd class="col-sm-9 col-lg-10 transfers-list-mobile-container">
-                    <table cellpadding="3" cellspacing="0">
-                      <%= for transfer <- transfers do %>
-                        <%= render BlockScoutWeb.TransactionView, "_total_transfers_from_to.html", Map.put(assigns, :transfer, transfer) %>
+                  <dd class="col-sm-9 col-lg-10 transfers-list-mobile-container <%= if Enum.count(transfers) > 8 do "transfers-list-mobile-less" end %>">
+                      <%= if Enum.count(transfers) > 8 do %>
+                        <div class="transfers-list-mobile-scroll-notice">
+                          <img class="transfers-list-mobile-img" src="<%= static_path(@conn, "/images/bottom_arrow.png") %>"/>
+                          <span class="transfers-list-mobile-title">
+                            Scroll for more
+                          </span>
+                        </div>
                       <% end %>
-                    </table>
+                      <div class="transfers-list-mobile-container-wrap">
+                        <%= for transfer <- transfers do %>
+                          <%= render BlockScoutWeb.TransactionView, "_total_transfers_from_to.html", Map.put(assigns, :transfer, transfer) %>
+                        <% end %>
+                      </div>
                   </dd>
                 </dl>
               <% end %>
@@ -428,7 +436,7 @@
                 text: gettext("L1 Gas Price") %>
               <%= gettext "L1 Gas Price" %>
             </dt>
-            <dd class="col-sm-9 col-lg-10" style="display:flex;flex-direction:column;"> 
+            <dd class="col-sm-9 col-lg-10" style="display:flex;flex-direction:column;">
               <span>
                 <%= l1_gas_price(@transaction, :gwei) %>
               </span>
