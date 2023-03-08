@@ -50,6 +50,7 @@
         'Tx/day': '<%= gettext("Tx/day") %>'
       }
     </script>
+
   </head>
 
   <body>
@@ -67,7 +68,7 @@
             }
           }
         },10)
-        
+
       }
       window.onload = applyDarkMode()
     </script>
@@ -226,7 +227,7 @@
           <%= raw(System.get_env("MAINTENANCE_ALERT_MESSAGE")) %>
         </div>
       <% end %>
-      
+
       <%= render BlockScoutWeb.LayoutView, "_topnav.html", assigns %>
 
       <main class="js-ad-dependant-pt pt-5">
@@ -301,5 +302,13 @@
       <script defer data-cfasync="false" src="<%= static_path(@conn, "/js/token-transfers-toggle.js") %>"></script>
     <% end %>
     <script defer src="<%= static_path(@conn, "/js/autocomplete.js") %>"></script>
+
   </body>
+  <script>
+      window.onload=function (){
+        if( window.location &&  window.location.pathname !== '/blocks' && !window.location.pathname.includes('/block/')){
+          sessionStorage.setItem('sessionPageStack', JSON.stringify([]))
+        }
+      }
+    </script>
 </html>

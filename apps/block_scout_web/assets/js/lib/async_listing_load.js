@@ -44,6 +44,14 @@ import '../app'
 
 let enableFirstLoading = true
 
+let sessionPageStack;
+if(sessionStorage.getItem('sessionPageStack')){
+  sessionPageStack = JSON.parse(sessionStorage.getItem('sessionPageStack'))
+} else {
+  sessionPageStack = []
+  sessionStorage.setItem('sessionPageStack', JSON.stringify([]))
+}
+
 export const asyncInitialState = {
   /* it will consider any query param in the current URI as paging */
   beyondPageOne: (URI(window.location).query() !== ''),
@@ -66,7 +74,7 @@ export const asyncInitialState = {
   /* link to the previous page */
   prevPagePath: null,
   /* visited pages */
-  pagesStack: []
+  pagesStack: sessionPageStack,
 }
 
 export function asyncReducer (state = asyncInitialState, action) {
@@ -306,6 +314,12 @@ export const elements = {
 export function createAsyncLoadStore (reducer, initialState, itemKey) {
   const state = merge(asyncInitialState, initialState)
   const store = createStore(reduceReducers(asyncReducer, reducer, state))
+  store.subscribe(() => {
+    const state = store.getState();
+    if(state.pagesStack && state.pagesStack.length !== 0){
+      sessionStorage.setItem('sessionPageStack', JSON.stringify(state.pagesStack))
+    }
+  })
 
   if (typeof itemKey !== 'undefined') {
     store.dispatch({
