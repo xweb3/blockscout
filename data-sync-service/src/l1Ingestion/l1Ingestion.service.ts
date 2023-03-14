@@ -241,8 +241,9 @@ export class L1IngestionService {
         `l1 createTxnBatchesEvents ${error}`,
       );
       await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
     }
-    await queryRunner.release();
     return result;
   }
   async createStateBatchesEvents(startBlock, endBlock) {
@@ -292,8 +293,9 @@ export class L1IngestionService {
         `l1 createStateBatchesEvents ${error}`,
       );
       await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
     }
-    await queryRunner.release();
     return result;
   }
   async createSentEvents(startBlock, endBlock) {
@@ -398,8 +400,9 @@ export class L1IngestionService {
         `l1 createSentEvents ${error}`,
       );
       await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
     }
-    await queryRunner.release();
     return result;
   }
   async createRelayedEvents(startBlock, endBlock) {
@@ -442,8 +445,9 @@ export class L1IngestionService {
         `l1 createRelayedEvents ${error}`,
       );
       await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
     }
-    await queryRunner.release();
     return result;
   }
   async createL1L2Relation() {
@@ -538,8 +542,9 @@ export class L1IngestionService {
       this.logger.error(`create eigenlayer batch transaction error: ${error}`);
       await queryRunner.rollbackTransaction();
       return false;
+    } finally {
+      await queryRunner.release();
     }
-    await queryRunner.release();
     return true;
   }
   async handleWaitTransaction() {
@@ -570,9 +575,9 @@ export class L1IngestionService {
     } catch (error) {
       await queryRunner.rollbackTransaction();
     } finally {
+      await queryRunner.release();
       this.logger.log(`l2l1 change status to Waiting finish`);
     }
-    await queryRunner.release();
   }
   async createL2L1Relation() {
     const unMergeTxList = await this.getRelayedEventByIsMerge(false);
