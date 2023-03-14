@@ -228,8 +228,9 @@ export class L2IngestionService {
         `l2 createSentEvents ${error}`,
       );
       await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
     }
-    await queryRunner.release();
     return result;
   }
   async createRelayedEvents(startBlock, endBlock) {
@@ -276,8 +277,9 @@ export class L2IngestionService {
         `l2 createRelayedEvents ${error}`,
       );
       await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
     }
-    await queryRunner.release();
     return result;
   }
   async syncSentEvents() {
