@@ -535,7 +535,17 @@ export class L1IngestionService {
     try {
       await queryRunner.manager.save(DaBatches, insertBatchData);
       if (insertHashData) {
-        await queryRunner.manager.insert(DaBatchTransactions, insertHashData);
+        await queryRunner.manager
+          .createQueryBuilder()
+          .setLock('pessimistic_write')
+          .insert()
+          .into(DaBatchTransactions)
+          .values(insertHashData)
+          .orUpdate(["block_number"], ["tx_hash"], {
+            skipUpdateIfNoValuesChanged: true
+          })
+          .execute();
+        // await queryRunner.manager.insert(DaBatchTransactions, insertHashData);
       }
       await queryRunner.commitTransaction();
     } catch (error) {
