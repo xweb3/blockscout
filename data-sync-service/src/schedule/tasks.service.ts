@@ -124,15 +124,10 @@ export class TasksService {
         start + 1,
         end,
       );
-      if (result.length > 0) {
-        this.logger.log(
-          `sync [${result.length}] l1_sent_message_events from block [${start}] to [${end}]`,
-        );
-      } else {
-        this.logger.log(
-          `sync l1_sent_message_events from block [${start}] to [${end}]`,
-        );
-      }
+      const insertData = result[0].identifiers
+      this.logger.log(
+        `sync [${insertData.length}] l1_sent_message_events from block [${start}] to [${end}]`,
+      );
       await this.cacheManager.set(L1_SENT, end, { ttl: 0 });
     } else {
       this.logger.log(
@@ -160,15 +155,10 @@ export class TasksService {
         start + 1,
         end,
       );
-      if (result.length > 0) {
-        this.logger.log(
-          `sync [${result.length}] l1_relayed_message_events from block [${start}] to [${end}]`,
-        );
-      } else {
-        this.logger.log(
-          `sync l1_relayed_message_events from block [${start}] to [${end}]`,
-        );
-      }
+      const insertData = result[0].identifiers
+      this.logger.log(
+        `sync [${insertData.length}] l1_relayed_message_events from block [${start}] to [${end}]`,
+      );
       await this.cacheManager.set(L1_RELAYED, end, { ttl: 0 });
     } else {
       this.logger.log(
@@ -196,15 +186,10 @@ export class TasksService {
         start + 1,
         end,
       );
-      if (result.length > 0) {
-        this.logger.log(
-          `sync [${result.length}] l2_sent_message_events from block [${start}] to [${end}]`,
-        );
-      } else {
-        this.logger.log(
-          `sync l2_sent_message_events from block [${start}] to [${end}]`,
-        );
-      }
+      const insertData = result[0].identifiers
+      this.logger.log(
+        `sync [${insertData.length}] l2_sent_message_events from block [${start}] to [${end}]`,
+      );
       await this.cacheManager.set(L2_SENT, end, { ttl: 0 });
     } else {
       this.logger.log(
@@ -232,15 +217,10 @@ export class TasksService {
         start + 1,
         end,
       );
-      if (result.length > 0) {
-        this.logger.log(
-          `sync [${result.length}] l2_relayed_message_events from block [${start}] to [${end}]`,
-        );
-      } else {
-        this.logger.log(
-          `sync l2_relayed_message_events from block [${start}] to [${end}]`,
-        );
-      }
+      const insertData = result[0].identifiers
+      this.logger.log(
+        `sync [${insertData.length}] l2_relayed_message_events from block [${start}] to [${end}]`,
+      );
       await this.cacheManager.set(L2_RELAYED, end, { ttl: 0 });
     } else {
       this.logger.log(
@@ -268,13 +248,10 @@ export class TasksService {
         start + 1,
         end,
       );
-      if (result.length > 0) {
-        this.logger.log(
-          `sync [${result.length}] state batch from block [${start}] to [${end}]`,
-        );
-      } else {
-        this.logger.log(`sync state_batch from block [${start}] to [${end}]`);
-      }
+      const insertData = result[0].identifiers
+      this.logger.log(
+        `sync [${insertData.length}] state_batch from block [${start}] to [${end}]`,
+      );
       await this.cacheManager.set(STATE_BATCH, end, { ttl: 0 });
     } else {
       this.logger.log(
@@ -302,13 +279,10 @@ export class TasksService {
         start + 1,
         end,
       );
-      if (result.length > 0) {
-        this.logger.log(
-          `sync [${result.length}] txn batch from block [${start}] to [${end}]`,
-        );
-      } else {
-        this.logger.log(`sync txn_batch from block [${start}] to [${end}]`);
-      }
+      const insertData = result[0].identifiers
+      this.logger.log(
+        `sync [${insertData.length}] txn_batch from block [${start}] to [${end}]`,
+      );
       await this.cacheManager.set(TXN_BATCH, end, { ttl: 0 });
     } else {
       this.logger.log(
