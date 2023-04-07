@@ -1,4 +1,5 @@
 import $ from 'jquery'
+import Cookies from 'js-cookie'
 import { Chart, LineController, LineElement, PointElement, LinearScale, TimeScale, Title, Tooltip } from 'chart.js'
 import 'chartjs-adapter-luxon'
 import humps from 'humps'
@@ -17,15 +18,15 @@ const grid = {
 }
 
 function getTxChartColor () {
-  if (localStorage.getItem('current-color-mode') === 'dark') {
-    return '#BFF6F2'
+  if (Cookies.get('chakra-ui-color-mode') === 'dark') {
+    return sassVariables.dashboardLineColorTransactionsDarkTheme
   } else {
     return '#305A57'
   }
 }
 
 function getPriceChartColor () {
-  if (localStorage.getItem('current-color-mode') === 'dark') {
+  if (Cookies.get('chakra-ui-color-mode') === 'dark') {
     return sassVariables.dashboardLineColorPriceDarkTheme
   } else {
     return sassVariables.dashboardLineColorPrice
@@ -33,7 +34,7 @@ function getPriceChartColor () {
 }
 
 function getMarketCapChartColor () {
-  if (localStorage.getItem('current-color-mode') === 'dark') {
+  if (Cookies.get('chakra-ui-color-mode') === 'dark') {
     return sassVariables.dashboardLineColorMarketDarkTheme
   } else {
     return sassVariables.dashboardLineColorMarket

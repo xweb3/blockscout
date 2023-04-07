@@ -1,4 +1,7 @@
 <% apps_menu = Application.get_env(:block_scout_web, :apps_menu) %>
+<% other_nets = dropdown_other_nets() %>
+<% test_nets = test_nets(dropdown_nets()) %>
+<% main_nets = dropdown_head_main_nets() %>
 <nav class="navbar navbar-dark navbar-expand-lg navbar-primary" data-selector="navbar" id="top-navbar">
   <div class="container-fluid navbar-container">
     <%= link to: webapp_url(@conn), class: "navbar-brand", "data-test": "header_logo" do %>
@@ -32,11 +35,13 @@
                 </span>
                 <%= gettext("Transactions") %>
               </a>
+              <% json_rpc_named_arguments = Application.fetch_env!(:indexer, :json_rpc_named_arguments)%>
+              <% variant = Keyword.fetch!(json_rpc_named_arguments, :variant) %>
               <div class="dropdown-menu" aria-labeledby="navbarTransactionsDropdown">
                 <%= link(
                   gettext("Validated"),
-                  class: "dropdown-item #{tab_status("txs", @conn.request_path)}",
-                  to: transaction_path(@conn, :index)
+                  to: transaction_path(@conn, :index),
+                  class: "#{if variant == EthereumJSONRPC.Besu, do: "border-bottom", else: ""} dropdown-item #{tab_status("txs", @conn.request_path)}"
                 ) %>
                 <%= link(
                   gettext("L1 to L2 Txns"),
@@ -65,8 +70,7 @@
                   to: eigenda_batch_path(@conn, :index)
                 ) %>
 
-                <% json_rpc_named_arguments = Application.fetch_env!(:indexer, :json_rpc_named_arguments)%>
-                <% variant = Keyword.fetch!(json_rpc_named_arguments, :variant) %>
+
                 <%= if variant !== EthereumJSONRPC.Besu do %>
                   <%= link(
                         gettext("Pending"),
@@ -75,6 +79,9 @@
                         to: pending_transaction_path(@conn, :index)
                       ) %>
                 <% end %>
+                <%= link(gettext("Verified contracts"),
+                    to: verified_contracts_path(@conn, :index),
+                    class: "dropdown-item #{tab_status("reorgs", @conn.request_path)}")%>
               </div>
             </li>
             <li class="nav-item dropdown">
@@ -91,7 +98,7 @@
                       to: tokens_path(@conn, :index)
                     ) %>
                 <%= link(
-                      gettext("BIT"),
+                      Explorer.coin_name(),
                       class: "dropdown-item #{tab_status("accounts", @conn.request_path)}",
                       to: address_path(@conn, :index)
                     ) %>
@@ -139,7 +146,7 @@
               </a>
               <div class="dropdown-menu" aria-labeledby="navbarAppsDropdown">
                 <%= if apps_menu == true do %>
-                  <%= for %{url: url, title: title} <- external_apps_list() do %>
+                  <%= for %{url: url, title: title} <- apps_list() do %>
                       <a href="<%= url %>" class="dropdown-item" target="_blank"><%= title %>
                         <span class="external-link-icon">
                           <%= render BlockScoutWeb.IconsView, "_external_link.html" %>

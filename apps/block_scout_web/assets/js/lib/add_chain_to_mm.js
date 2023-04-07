@@ -1,29 +1,41 @@
 import 'bootstrap'
+import { commonPath } from './path_helper'
 
 export async function addChainToMM({ btn }) {
-  const chainIDFromEnvVar = parseInt(process.env.CHAIN_ID)
-  const chainIDHex = chainIDFromEnvVar && `0x${chainIDFromEnvVar.toString(16)}`
+  //const chainIDFromWallet = await window.ethereum.request({ method: 'eth_chainId' })
+  const chainIDFromInstance = getChainIdHex()
+
   const p = {
     method: 'wallet_switchEthereumChain',
     params: [{
-      chainId: chainIDHex
+      chainId: chainIDFromInstance
     }]
   };
+
+  const coinNameObj = document.getElementById('js-coin-name')
+  // @ts-ignore
+  const coinName = coinNameObj && coinNameObj.value
+  const subNetworkObj = document.getElementById('js-subnetwork')
+  // @ts-ignore
+  const subNetwork = subNetworkObj && subNetworkObj.value
+  const jsonRPCObj = document.getElementById('js-json-rpc')
+  // @ts-ignore
+  const jsonRPC = jsonRPCObj && jsonRPCObj.value
   const res = await window.ethereum.request(p).catch(async e => {
     console.error('switch chain failed:', e)
     if (e && e.code === 4902) {
-      const blockscoutURL = location.protocol + '//' + location.host
+      const blockscoutURL = location.protocol + '//' + location.host + commonPath
       const params = {
         method: 'wallet_addEthereumChain',
         params: [{
-          chainId: chainIDHex,
-          chainName: process.env.SUBNETWORK,
+          chainId: chainIDFromInstance,
+          chainName: subNetwork,
           nativeCurrency: {
-            name: process.env.COIN_NAME,
-            symbol: process.env.COIN_NAME,
+            name: coinName,
+            symbol: coinName,
             decimals: 18
           },
-          rpcUrls: [process.env.JSON_RPC],
+          rpcUrls: [jsonRPC],
           blockExplorerUrls: [blockscoutURL]
         }]
       };
@@ -43,55 +55,24 @@ export async function addChainToMM({ btn }) {
       })
     }
   })
-  if(res === null){
+  if (res === null) {
     btn.tooltip('dispose')
-        btn.tooltip({
-          title: `You're already connected to ${process.env.SUBNETWORK}`,
-          trigger: 'click',
-          placement: 'bottom'
-        }).tooltip('show')
+    btn.tooltip({
+      title: `You're already connected to ${subNetwork}`,
+      trigger: 'click',
+      placement: 'bottom'
+    }).tooltip('show')
 
-        setTimeout(() => {
-          btn.tooltip('dispose')
-        }, 3000)
-  }
-
-
-  /* try {
-    //const chainID = await window.ethereum.request({ method: 'eth_chainId' })
-    const chainIDFromEnvVar = parseInt(process.env.CHAIN_ID)
-    const chainIDHex = chainIDFromEnvVar && `0x${chainIDFromEnvVar.toString(16)}`
-    const blockscoutURL = location.protocol + '//' + location.host
-    const params = {
-      method: 'wallet_addEthereumChain',
-      params: [{
-        chainId: chainIDHex,
-        chainName: process.env.SUBNETWORK,
-        nativeCurrency: {
-          name: process.env.COIN_NAME,
-          symbol: process.env.COIN_NAME,
-          decimals: 18
-        },
-        rpcUrls: [process.env.JSON_RPC],
-        blockExplorerUrls: [blockscoutURL]
-      }]
-    };
-    console.log(params);
-    if (chainID !== chainIDHex) {
-      await window.ethereum.request(params)
-    } else {
+    setTimeout(() => {
       btn.tooltip('dispose')
-      btn.tooltip({
-        title: `You're already connected to ${process.env.SUBNETWORK}`,
-        trigger: 'click',
-        placement: 'bottom'
-      }).tooltip('show')
+    }, 3000)
+  }
+}
 
-      setTimeout(() => {
-        btn.tooltip('dispose')
-      }, 3000)
-    }
-  } catch (error) {
-    console.error(error)
-  } */
+function getChainIdHex() {
+  const chainIDObj = document.getElementById('js-chain-id')
+  // @ts-ignore
+  const chainIDFromDOM = chainIDObj && chainIDObj.value
+  const chainIDFromInstance = parseInt(chainIDFromDOM)
+  return chainIDFromInstance && `0x${chainIDFromInstance.toString(16)}`
 }
