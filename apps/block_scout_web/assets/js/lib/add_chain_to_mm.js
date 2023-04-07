@@ -1,5 +1,4 @@
 import 'bootstrap'
-import { commonPath } from './path_helper'
 
 export async function addChainToMM({ btn }) {
   //const chainIDFromWallet = await window.ethereum.request({ method: 'eth_chainId' })
@@ -11,20 +10,15 @@ export async function addChainToMM({ btn }) {
       chainId: chainIDFromInstance
     }]
   };
+    const coinName = document.getElementById('js-coin-name').value
+    const subNetwork = document.getElementById('js-subnetwork').value
+    const jsonRPC = document.getElementById('js-json-rpc').value
+    const path = process.env.NETWORK_PATH || '/'
+    const blockscoutURL = location.protocol + '//' + location.host + path
 
-  const coinNameObj = document.getElementById('js-coin-name')
-  // @ts-ignore
-  const coinName = coinNameObj && coinNameObj.value
-  const subNetworkObj = document.getElementById('js-subnetwork')
-  // @ts-ignore
-  const subNetwork = subNetworkObj && subNetworkObj.value
-  const jsonRPCObj = document.getElementById('js-json-rpc')
-  // @ts-ignore
-  const jsonRPC = jsonRPCObj && jsonRPCObj.value
   const res = await window.ethereum.request(p).catch(async e => {
     console.error('switch chain failed:', e)
     if (e && e.code === 4902) {
-      const blockscoutURL = location.protocol + '//' + location.host + commonPath
       const params = {
         method: 'wallet_addEthereumChain',
         params: [{

@@ -1,3 +1,5 @@
+<% burned_fee = if !is_nil(@block.base_fee_per_gas), do: Wei.mult(@block.base_fee_per_gas, BlockBurnedFeeCounter.fetch(@block.hash)), else: nil %>
+<% priority_fee = if !is_nil(@block.base_fee_per_gas), do: BlockPriorityFeeCounter.fetch(@block.hash), else: nil %>
 <section>
   <%= render BlockScoutWeb.Advertisement.TextAdView, "index.html", conn: @conn %>
   <div class="row">
