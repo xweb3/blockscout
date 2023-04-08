@@ -2,7 +2,7 @@ defmodule BlockScoutWeb.Prometheus.Instrumenter do
   @moduledoc """
   Phoenix request metrics for `Prometheus`.
   """
-  require Prometheus.PhoenixInstrumenter
+
   @dialyzer {:no_match,
              [
                phoenix_channel_join: 3,
