@@ -98,6 +98,7 @@ defmodule BlockScout.Mixfile do
       # Documentation
       {:ex_doc, "~> 0.29.0", only: :dev, runtime: false},
       {:number, "~> 1.0.3"}
+
     ]
   end
 end

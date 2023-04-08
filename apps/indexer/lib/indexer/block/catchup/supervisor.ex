@@ -27,7 +27,6 @@ defmodule Indexer.Block.Catchup.Supervisor do
 
   @impl Supervisor
   def init(bound_interval_supervisor_arguments) do
-    Logger.info("Supervisor was started")
     Supervisor.init(
       [
         {MissingRangesCollector, []},

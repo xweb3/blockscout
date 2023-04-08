@@ -28,7 +28,8 @@ defmodule EthereumJSONRPC.Block do
           timestamp: DateTime.t(),
           total_difficulty: non_neg_integer(),
           transactions_root: EthereumJSONRPC.hash(),
-          uncles: [EthereumJSONRPC.hash()]
+          uncles: [EthereumJSONRPC.hash()],
+          base_fee_per_gas: non_neg_integer()
         }
 
   @typedoc """
@@ -209,7 +210,8 @@ defmodule EthereumJSONRPC.Block do
           "timestamp" => timestamp,
           "totalDifficulty" => total_difficulty,
           "transactionsRoot" => transactions_root,
-          "uncles" => uncles
+          "uncles" => uncles,
+          #"baseFeePerGas" => base_fee_per_gas
         } = elixir
       ) do
     %{
@@ -231,7 +233,8 @@ defmodule EthereumJSONRPC.Block do
       timestamp: timestamp,
       total_difficulty: total_difficulty,
       transactions_root: transactions_root,
-      uncles: uncles
+      uncles: uncles,
+      #base_fee_per_gas: base_fee_per_gas
     }
   end
 
@@ -253,7 +256,8 @@ defmodule EthereumJSONRPC.Block do
           "stateRoot" => state_root,
           "timestamp" => timestamp,
           "transactionsRoot" => transactions_root,
-          "uncles" => uncles
+          "uncles" => uncles,
+          #"baseFeePerGas" => base_fee_per_gas
         } = elixir
       ) do
     %{
