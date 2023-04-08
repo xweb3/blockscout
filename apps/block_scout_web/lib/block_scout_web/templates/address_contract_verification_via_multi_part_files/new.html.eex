@@ -23,7 +23,7 @@
             <div class="center-column">
               <%= select f, :evm_version, @evm_versions, class: "form-control border-rounded", "aria-describedby": "evm-version-help-block" %>
             </div>
-            <div class="smart-contract-form-group-tooltip"><%= gettext "The EVM version the contract is written for. If the bytecode does not match the version, we try to verify using the latest EVM version." %> <a href="https://forum.poa.network/t/smart-contract-verification-evm-version-details/2318" target="_blank"><%= gettext "EVM version details" %></a>.</div>
+            <div class="smart-contract-form-group-tooltip"><%= gettext "The EVM version the contract is written for. If the bytecode does not match the version, we try to verify using the latest EVM version." %> <a href="https://docs.blockscout.com/for-developers/evm-version-information" target="_blank"><%= gettext "EVM version details" %></a>.</div>
           </div>
         </div>
 
