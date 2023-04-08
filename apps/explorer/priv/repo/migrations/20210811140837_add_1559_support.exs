@@ -1,6 +1,6 @@
 # TODO(Jyace) for QA, these field has been added, but not added in testnet
-#defmodule Explorer.Repo.Migrations.Add1559Support do
-#  use Ecto.Migration
+defmodule Explorer.Repo.Migrations.Add1559Support do
+  use Ecto.Migration
 
 #  def change do
 #    alter table(:transactions) do
@@ -13,4 +13,4 @@
 #      add(:base_fee_per_gas, :numeric, precision: 100, null: true)
 #    end
 #  end
-#end
+end
