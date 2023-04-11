@@ -1,7 +1,7 @@
 <!-- Search navbar -->
 <div class="search-form d-lg-flex d-inline-block <%= if assigns[:additional_classes] do @additional_classes |> Enum.join(" ") end %>">
 	<div class="input-group" style="width: 100%;" title='<%= gettext("Search by address, token symbol name, transaction hash, or block number") %>'>
-		<div 
+		<div
 			style="border:none;padding-top:11px;"
 		class="form-control search-control me auto <%= if assigns[:additional_classes] do @additional_classes |> Enum.join(" ") end %>">
 			<input
@@ -9,7 +9,7 @@
 				class="main-search-autocomplete"
 				data-test="search_input"
 				style="height:auto;"
-				data-chain-id="<%= System.get_env("CHAIN_ID") %>"
+				data-chain-id="<%= Application.get_env(:block_scout_web, :chain_id) %>"
 				data-display-token-icons="<%= System.get_env("DISPLAY_TOKEN_ICONS") %>"
 				type="text"
 				tabindex="1"
@@ -20,7 +20,7 @@
 			<%= render BlockScoutWeb.IconsView, "_search_icon.html" %>
 			</button>
 		</div>
-		<div 
+		<div
 			class="right desktop-only search-btn-cls"
 			id="search-btn"
 			style="	height:30px;

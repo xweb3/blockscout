@@ -3,8 +3,10 @@
 <div align="center">
 
 [![Blockscout](https://github.com/blockscout/blockscout/workflows/Blockscout/badge.svg?branch=master)](https://github.com/mantlenetworkio/blockscout/actions) 
+[![](https://dcbadge.vercel.app/api/server/blockscout?style=flat)](https://discord.gg/blockscout)
 
 </div>
+
 
 BlockScout provides a comprehensive, easy-to-use interface for users to view, confirm, and inspect transactions on EVM (Ethereum Virtual Machine) blockchains. This includes the POA Network, Gnosis Chain, Ethereum Classic and other **Ethereum testnets, private networks and sidechains**.
 
@@ -25,12 +27,12 @@ BlockScout supports a number of projects. Hosted instances include POA Network, 
 - [List of hosted mainnets, testnets, and additional chains using BlockScout](https://docs.blockscout.com/for-projects/supported-projects)
 - [Hosted instance versions](https://docs.blockscout.com/about/use-cases/hosted-blockscout)
 
-
 ## Getting Started
 
 ### 1. Elixir Services
 
 See the [project documentation](https://docs.blockscout.com/) for instructions:
+
 - [Requirements](https://docs.blockscout.com/for-developers/information-and-settings/requirements)
 - [Ansible deployment](https://docs.blockscout.com/for-developers/ansible-deployment)
 - [Manual deployment](https://docs.blockscout.com/for-developers/manual-deployment)

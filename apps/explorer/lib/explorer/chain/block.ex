@@ -7,10 +7,10 @@ defmodule Explorer.Chain.Block do
 
   use Explorer.Schema
 
-  alias Explorer.Chain.{Address, Gas, Hash, PendingBlockOperation, Transaction}
+  alias Explorer.Chain.{Address, Gas, Hash, PendingBlockOperation, Transaction, Wei}
   alias Explorer.Chain.Block.{Reward, SecondDegreeRelation}
 
-  @optional_attrs ~w(size refetch_needed total_difficulty difficulty)a
+  @optional_attrs ~w(size refetch_needed total_difficulty difficulty base_fee_per_gas)a
 
   @required_attrs ~w(consensus gas_limit gas_used hash miner_hash nonce number parent_hash timestamp)a
 
@@ -63,6 +63,7 @@ defmodule Explorer.Chain.Block do
           total_difficulty: difficulty(),
           transactions: %Ecto.Association.NotLoaded{} | [Transaction.t()],
           refetch_needed: boolean(),
+          base_fee_per_gas: Wei.t(),
           is_empty: boolean()
         }
 
@@ -78,6 +79,7 @@ defmodule Explorer.Chain.Block do
     field(:timestamp, :utc_datetime_usec)
     field(:total_difficulty, :decimal)
     field(:refetch_needed, :boolean)
+    field(:base_fee_per_gas, Wei)
     field(:is_empty, :boolean)
 
     timestamps()
