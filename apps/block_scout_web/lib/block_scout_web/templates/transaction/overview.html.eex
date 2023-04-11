@@ -380,6 +380,15 @@
             </dt>
             <dd class="col-sm-9 col-lg-10"> <%= format_gas_limit(@transaction.gas) %> </dd>
           </dl>
+          <!-- L2 Fee -->
+          <dl class="row">
+            <dt class="col-sm-3 col-lg-2 text-muted">
+              <%= render BlockScoutWeb.CommonComponentsView, "_i_tooltip_2.html",
+                text: gettext("Transaction fee on layer2.") %>
+              <%= gettext "L2 Fee" %>
+            </dt>
+            <dd class="col-sm-9 col-lg-10"> <%= l2_fee(@transaction, :gwei) %> <%= Explorer.coin_name() %> </dd>
+          </dl>
           <%= if !is_nil(max_fee_per_gas) do %>
             <dl class="row">
               <dt class="col-sm-3 col-lg-2 text-muted">

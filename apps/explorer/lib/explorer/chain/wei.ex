@@ -186,6 +186,13 @@ defmodule Explorer.Chain.Wei do
     |> from(:wei)
   end
 
+  def multi(%Wei{value: value}, %Decimal{} = multiplier) do
+    p = value
+    |> Decimal.mult(multiplier)
+    %Wei{value: value} = %__MODULE__{value: Decimal.div(p, @wei_per_bit)}
+    value
+  end
+
   @doc """
   Converts `Decimal` representations of various wei denominations (wei, Gwei, ether) to
   a wei base unit.

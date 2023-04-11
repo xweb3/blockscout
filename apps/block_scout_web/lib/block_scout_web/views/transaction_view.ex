@@ -384,6 +384,12 @@ require Logger
     format_wei_value(gas_price, unit)
   end
 
+  def l2_fee(%Transaction{gas_price: gas_price, gas: gas}, unit) when unit in ~w(wei gwei ether)a do
+    gas_price
+    |> Wei.multi( gas)
+    |> Decimal.to_string(:normal)
+  end
+
   def gas_used(%Transaction{gas_used: nil}), do: gettext("Pending")
 
   def gas_used(%Transaction{gas_used: gas_used}) do
