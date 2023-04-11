@@ -324,9 +324,10 @@ export class L2IngestionService {
       where: { msg_hash: msgHash },
     });
   }
-  async getRelayedEventByIsMerge(is_merge: boolean) {
+  async getRelayedEventByIsMerge(is_merge: boolean, take: number = 100) {
     return this.relayedEventsRepository.find({
       where: { is_merge: is_merge },
+      take
     });
   }
   async getRelayedEventByTxHash(txHash: string) {
