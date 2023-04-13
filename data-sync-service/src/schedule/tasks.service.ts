@@ -124,7 +124,7 @@ export class TasksService {
         start + 1,
         end,
       );
-      const insertData = result || result.length <= 0 ?  [] : result[0].identifiers || []
+      const insertData = !result || result.length <= 0 ?  [] : result[0].identifiers || []
       this.logger.log(
         `sync [${insertData.length}] l1_sent_message_events from block [${start}] to [${end}]`,
       );
@@ -155,7 +155,7 @@ export class TasksService {
         start + 1,
         end,
       );
-      const insertData = result || result.length <= 0 ?  [] : result[0].identifiers || []
+      const insertData = !result || result.length <= 0 ?  [] : result[0].identifiers || []
       this.logger.log(
         `sync [${insertData.length}] l1_relayed_message_events from block [${start}] to [${end}]`,
       );
@@ -186,7 +186,7 @@ export class TasksService {
         start + 1,
         end,
       );
-      const insertData = result || result.length <= 0 ?  [] : result[0].identifiers || []
+      const insertData = !result || result.length <= 0 ?  [] : result[0].identifiers || []
       this.logger.log(
         `sync [${insertData.length}] l2_sent_message_events from block [${start}] to [${end}]`,
       );
@@ -217,7 +217,7 @@ export class TasksService {
         start + 1,
         end,
       );
-      const insertData = result || result.length <= 0 ?  [] : result[0].identifiers || []
+      const insertData = !result || result.length <= 0 ?  [] : result[0].identifiers || []
       this.logger.log(
         `sync [${insertData.length}] l2_relayed_message_events from block [${start}] to [${end}]`,
       );
@@ -248,7 +248,7 @@ export class TasksService {
         start + 1,
         end,
       );
-      const insertData = result || result.length <= 0 ?  [] : result[0].identifiers || []
+      const insertData = !result || result.length <= 0 ?  [] : result[0].identifiers || []
       this.logger.log(
         `sync [${insertData.length}] state_batch from block [${start}] to [${end}]`,
       );
@@ -279,7 +279,7 @@ export class TasksService {
         start + 1,
         end,
       );
-      const insertData = result || result.length <= 0 ?  [] : result[0].identifiers || []
+      const insertData = !result || result.length <= 0 ?  [] : result[0].identifiers || []
       this.logger.log(
         `sync [${insertData.length}] txn_batch from block [${start}] to [${end}]`,
       );
