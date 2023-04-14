@@ -689,9 +689,10 @@ export class L1IngestionService {
       where: { msg_hash: msgHash },
     });
   }
-  async getRelayedEventByIsMerge(is_merge: boolean) {
+  async getRelayedEventByIsMerge(is_merge: boolean, take: number = 100) {
     return this.relayedEventsRepository.find({
       where: { is_merge: is_merge },
+      take
     });
   }
   async getL2ToL1TxByMsgHash(msgHash: string) {
@@ -1018,7 +1019,7 @@ export class L1IngestionService {
     const deposits = await this.txnL1ToL2Repository.findAndCount({
       where: { from: address },
       order: { queue_index: 'DESC' },
-      skip: offset,
+      // skip: offset,
       take: limit,
     });
     const list = deposits[0];
@@ -1058,7 +1059,7 @@ export class L1IngestionService {
     const withdrawals = await this.txnL2ToL1Repository.findAndCount({
       where: { from: address },
       order: { msg_nonce: 'DESC' },
-      skip: offset,
+      // skip: offset,
       take: limit,
     });
     const list = withdrawals[0];

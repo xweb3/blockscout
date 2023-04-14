@@ -2,6 +2,7 @@ defmodule BlockScoutWeb.TransactionView do
   use BlockScoutWeb, :view
 
   alias BlockScoutWeb.{AccessHelpers, AddressView, BlockView, TabHelpers}
+  alias BlockScoutWeb.Account.AuthController
   alias BlockScoutWeb.Cldr.Number
   alias Explorer.{Chain, CustomContractsHelpers, Repo}
   alias Explorer.Chain.Block.Reward
@@ -11,10 +12,10 @@ defmodule BlockScoutWeb.TransactionView do
   alias Timex.Duration
 require Logger
   import BlockScoutWeb.Gettext
-  import BlockScoutWeb.AddressView, only: [from_address_hash: 1, short_token_id: 2]
+  import BlockScoutWeb.AddressView, only: [from_address_hash: 1, short_token_id: 2, tag_name_to_label: 1]
   import BlockScoutWeb.Tokens.Helpers
 
-  @tabs ["token-transfers", "internal-transactions", "logs", "raw-trace"]
+  @tabs ["token-transfers", "internal-transactions", "logs", "raw-trace", "state"]
 
   @token_burning_title "Token Burning"
   @token_minting_title "Token Minting"
@@ -140,8 +141,7 @@ require Logger
       token: token_transfer.token,
       amount: nil,
       amounts: [],
-      token_id: token_transfer.token_id,
-      token_ids: [],
+      token_ids: token_transfer.token_ids,
       to_address_hash: token_transfer.to_address_hash,
       from_address_hash: token_transfer.from_address_hash
     }
@@ -155,7 +155,6 @@ require Logger
       token: token_transfer.token,
       amount: nil,
       amounts: amounts,
-      token_id: nil,
       token_ids: token_transfer.token_ids,
       to_address_hash: token_transfer.to_address_hash,
       from_address_hash: token_transfer.from_address_hash
@@ -169,8 +168,7 @@ require Logger
       token: token_transfer.token,
       amount: token_transfer.amount,
       amounts: [],
-      token_id: token_transfer.token_id,
-      token_ids: [],
+      token_ids: token_transfer.token_ids,
       to_address_hash: token_transfer.to_address_hash,
       from_address_hash: token_transfer.from_address_hash
     }
@@ -386,6 +384,12 @@ require Logger
     format_wei_value(gas_price, unit)
   end
 
+  def l2_fee(%Transaction{gas_price: gas_price, gas: gas}, unit) when unit in ~w(wei gwei ether)a do
+    gas_price
+    |> Wei.multi( gas)
+    |> Decimal.to_string(:normal)
+  end
+
   def gas_used(%Transaction{gas_used: nil}), do: gettext("Pending")
 
   def gas_used(%Transaction{gas_used: gas_used}) do
@@ -546,6 +550,7 @@ require Logger
   defp tab_name(["internal-transactions"]), do: gettext("Internal Transactions")
   defp tab_name(["logs"]), do: gettext("Logs")
   defp tab_name(["raw-trace"]), do: gettext("Raw Trace")
+  defp tab_name(["state"]), do: gettext("State changes")
 
   defp get_transaction_type_from_token_transfers(token_transfers) do
     token_transfers_types =

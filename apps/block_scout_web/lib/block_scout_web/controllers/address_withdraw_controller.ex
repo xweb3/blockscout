@@ -10,6 +10,8 @@ defmodule BlockScoutWeb.AddressWithdrawController do
 require Logger
   import BlockScoutWeb.Chain,
     only: [current_filter: 1, next_page_params: 3, paging_options: 1, split_list_by_page: 1]
+    import BlockScoutWeb.Account.AuthController, only: [current_user: 1]
+    import BlockScoutWeb.Models.GetAddressTags, only: [get_address_tags: 2]
 
   @transaction_necessity_by_association [
     necessity_by_association: %{
@@ -74,7 +76,8 @@ require Logger
             conn: conn,
             transaction: transaction,
             burn_address_hash: @burn_address_hash,
-            current_address: address
+            current_address: address,
+            tags: get_address_tags(address_hash, current_user(conn))
           )
         end)
       json(conn, %{items: transfers_json, next_page_path: next_page_path})
@@ -107,7 +110,8 @@ require Logger
         exchange_rate: Market.get_exchange_rate(Explorer.coin()) || Token.null(),
         current_path: Controller.current_full_path(conn),
         token: token,
-        counters_path: address_path(conn, :address_counters, %{"id" => Address.checksum(address_hash)})
+        counters_path: address_path(conn, :address_counters, %{"id" => Address.checksum(address_hash)}),
+        tags: get_address_tags(address_hash, current_user(conn))
       )
     else
       {:restricted_access, _} ->
@@ -166,7 +170,8 @@ require Logger
             conn: conn,
             transaction: transaction,
             burn_address_hash: @burn_address_hash,
-            current_address: address
+            current_address: address,
+            tags: get_address_tags(address_hash, current_user(conn))
           )
         end)
 
@@ -198,7 +203,8 @@ require Logger
         exchange_rate: Market.get_exchange_rate(Explorer.coin()) || Token.null(),
         filter: params["filter"],
         current_path: Controller.current_full_path(conn),
-        counters_path: address_path(conn, :address_counters, %{"id" => Address.checksum(address_hash)})
+        counters_path: address_path(conn, :address_counters, %{"id" => Address.checksum(address_hash)}),
+        tags: get_address_tags(address_hash, current_user(conn))
       )
     else
       {:restricted_access, _} ->
