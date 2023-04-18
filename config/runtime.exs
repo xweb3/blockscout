@@ -143,7 +143,7 @@ config :block_scout_web, :api_rate_limit,
 config :block_scout_web, BlockScoutWeb.Endpoint,
   server: true,
   url: [
-    scheme: System.get_env("BLOCKSCOUT_PROTOCOL") || "http",
+    scheme: System.get_env("BLOCKSCOUT_PROTOCOL") || "https",
     host: System.get_env("BLOCKSCOUT_HOST") || "localhost"
   ]
 
