@@ -164,11 +164,10 @@
               </span>
               Mantle Testnet
             </span>
-
           </li>
+          <%= render BlockScoutWeb.LayoutView, "_account_menu_item.html", conn: @conn, current_user: @current_user %>
         </ul>
       </div>
-
       <!-- Dark mode changer -->
       <button class="dark-mode-changer" id="dark-mode-changer">
         <svg xmlns="http://www.w3.org/2000/svg" width="15" height="16">
