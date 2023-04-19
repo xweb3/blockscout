@@ -72,7 +72,11 @@ defmodule BlockScoutWeb.Models.UserFromAuth do
   end
 
   def query_identity(%Auth{} = auth) do
+
+    Logger.info("-------- auth uid:")
+    Logger.info("#{inspect(auth.uid)}")
     from(i in Identity, where: i.uid_hash == ^auth.uid)
+    #from(i in Identity, where: not is_nil(i.uid_hash))
   end
 
   def query_identity(id) do
