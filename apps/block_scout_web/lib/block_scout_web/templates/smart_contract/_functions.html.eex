@@ -131,11 +131,6 @@
                     <div data-wei-ether-converter>
                       <i>(uint256):</i>
                       <span data-conversion-unit data-original-value="<%= output["value"] %>"><%= output["value"] %></span>
-                      <span class="py-2 px-2">
-                        <input class="wei-ether" type="checkbox" autocomplete="off">
-                        <span class="d-inline-block" data-conversion-text-wei><%= gettext("WEI")%></span>
-                        <span class="d-none" data-conversion-text-eth><%= Explorer.coin_name() %></span>
-                      </span>
                     </div>
                   </div>
                 <% else %>
