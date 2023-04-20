@@ -349,7 +349,7 @@ function initializeDropzone () {
   if ($dropzoneMultiPartFiles.length) {
     const func = multiPartFilesBehavior
     const maxFiles = 100
-    const acceptedFiles = 'text/plain,.sol'
+    const acceptedFiles = 'text/plain,.sol,.yul'
     const tag = '#multi-part-dropzone-form'
     const jsonVerificationType = 'multi-part-files'
 
