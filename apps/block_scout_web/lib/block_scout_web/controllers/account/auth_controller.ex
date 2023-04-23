@@ -5,6 +5,7 @@ defmodule BlockScoutWeb.Account.AuthController do
   alias Explorer.Account
   alias Explorer.Repo.ConfigHelper
   alias Plug.CSRFProtection
+  require Logger
 
   plug(Ueberauth)
 
@@ -37,7 +38,8 @@ defmodule BlockScoutWeb.Account.AuthController do
     case UserFromAuth.find_or_create(auth) do
       {:ok, user} ->
         CSRFProtection.get_csrf_token()
-
+        Logger.info("--------- create user successfully")
+        Logger.info("#{inspect(user)}")
         conn
         |> put_session(:current_user, user)
         |> redirect(to: redirect_path(params["path"]))
