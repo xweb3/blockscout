@@ -389,6 +389,14 @@
             </dt>
             <dd class="col-sm-9 col-lg-10"> <%= l2_fee(@transaction, :gwei) %> <%= Explorer.coin_name() %> </dd>
           </dl>
+          <dl class="row">
+            <dt class="col-sm-3 col-lg-2 text-muted">
+              <%= render BlockScoutWeb.CommonComponentsView, "_i_tooltip_2.html",
+                text: gettext("Da Fee") %>
+              <%= gettext "Da Fee" %>
+            </dt>
+            <dd class="col-sm-9 col-lg-10"> <%= da_fee(@transaction, :ether) %> </dd>
+          </dl>
           <%= if !is_nil(max_fee_per_gas) do %>
             <dl class="row">
               <dt class="col-sm-3 col-lg-2 text-muted">

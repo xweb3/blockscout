@@ -183,8 +183,8 @@ defmodule Indexer.Block.Fetcher do
                transactions: %{params: transactions_with_receipts}
              }
            ) do
-            Logger.info("==============")
-            Logger.info("#{inspect(transactions_with_receipts)}")
+            #Logger.info("==============")
+            #Logger.info("#{inspect(transactions_with_receipts)}")
       Prometheus.Instrumenter.block_batch_fetch(fetch_time, callback_module)
       result = {:ok, %{inserted: inserted, errors: blocks_errors}}
       update_block_cache(inserted[:blocks])
