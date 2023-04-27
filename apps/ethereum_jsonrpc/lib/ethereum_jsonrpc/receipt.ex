@@ -7,7 +7,7 @@ defmodule EthereumJSONRPC.Receipt do
   import EthereumJSONRPC, only: [quantity_to_integer: 1]
 
   alias EthereumJSONRPC.Logs
-
+require Logger
   @type elixir :: %{String.t() => String.t() | non_neg_integer}
 
   @typedoc """
@@ -122,6 +122,9 @@ defmodule EthereumJSONRPC.Receipt do
           l1_fee_scalar: non_neg_integer,
           l1_gas_price: non_neg_integer,
           l1_gas_used: non_neg_integer,
+          da_fee: non_neg_integer,
+          da_gas_price: non_neg_integer,
+          da_gas_used: non_neg_integer,
         }
   def elixir_to_params(
         %{
@@ -133,7 +136,10 @@ defmodule EthereumJSONRPC.Receipt do
           "l1Fee" => l1_fee,
           "l1FeeScalar" => l1_fee_scalar,
           "l1GasPrice" => l1_gas_price,
-          "l1GasUsed" => l1_gas_used
+          "l1GasUsed" => l1_gas_used,
+          "daFee" => da_fee,
+          "daGasPrice" => da_gas_price,
+          "daGasUsed" => da_gas_used,
         } = elixir
       ) do
     status = elixir_to_status(elixir)
@@ -148,7 +154,10 @@ defmodule EthereumJSONRPC.Receipt do
       l1_fee: l1_fee,
       l1_fee_scalar: l1_fee_scalar,
       l1_gas_price: l1_gas_price,
-      l1_gas_used: l1_gas_used
+      l1_gas_used: l1_gas_used,
+      da_fee: da_fee,
+      da_gas_price: da_gas_price,
+      da_gas_used: da_gas_used,
     }
   end
 
@@ -270,7 +279,7 @@ defmodule EthereumJSONRPC.Receipt do
 
 # l1GasUsed l1GasPrice l1Fee are from Optimstic Rollups l2Geth
   defp entry_to_elixir({key, quantity})
-       when key in ~w(blockNumber cumulativeGasUsed gasUsed transactionIndex l1GasUsed l1GasPrice l1Fee) do
+       when key in ~w(blockNumber cumulativeGasUsed gasUsed transactionIndex l1GasUsed l1GasPrice l1Fee daFee daGasPrice daGasUsed) do
     result =
       if is_nil(quantity) do
         nil
@@ -332,7 +341,7 @@ defmodule EthereumJSONRPC.Receipt do
   end
 
   # Metis fields
-  defp entry_to_elixir({key, _}) when key in ~w(l1GasUsed l1GasPrice l1FeeScalar l1Fee) do
+  defp entry_to_elixir({key, _}) when key in ~w(l1GasUsed l1GasPrice l1FeeScalar l1Fee daFee daGasPrice daGasUsed) do
     :ignore
   end
 
