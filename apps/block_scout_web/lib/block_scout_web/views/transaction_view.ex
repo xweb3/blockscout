@@ -427,7 +427,7 @@ require Logger
     format_wei_value(l1_fee, unit)
   end
 
-  def da_fee(%Transaction{da_fee: nil}, _unit), do: gettext("Pending")
+  def da_fee(%Transaction{da_fee: nil}, _unit), do: "0 BIT"
 
   def da_fee(%Transaction{da_fee: da_fee}, unit) when unit in ~w(wei gwei ether)a do
     format_wei_value(da_fee, unit)
