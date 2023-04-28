@@ -384,6 +384,10 @@ require Logger
     format_wei_value(gas_price, unit)
   end
 
+  def da_gas_price(%Transaction{da_gas_price: da_gas_price}, unit) when unit in ~w(wei gwei ether)a do
+    format_wei_value(da_gas_price, unit)
+  end
+
   def l2_fee(%Transaction{gas_price: gas_price, gas: gas}, unit) when unit in ~w(wei gwei ether)a do
     gas_price
     |> Wei.multi( gas)
@@ -437,6 +441,12 @@ require Logger
 
   def l1_gas_used(%Transaction{l1_gas_used: l1_gas_used}) do
     l1_gas_used
+  end
+
+  def da_gas_used(%Transaction{da_gas_used: nil}), do: "0"
+
+  def da_gas_used(%Transaction{da_gas_used: da_gas_used}) do
+    da_gas_used
   end
 
   def l1_fee_scalar(%Transaction{l1_fee_scalar: nil}), do: gettext("Pending")
