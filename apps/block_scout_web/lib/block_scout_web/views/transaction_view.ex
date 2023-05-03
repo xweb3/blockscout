@@ -389,7 +389,7 @@ require Logger
   end
 
   def da_gas_price(%Transaction{da_gas_price: nil}, unit) when unit in ~w(wei gwei ether)a do
-    format_wei_value(0, unit)
+    format_wei_value(%Wei{value: Decimal.new(0)}, unit)
   end
 
   def l2_fee(%Transaction{gas_price: gas_price, gas: gas}, unit) when unit in ~w(wei gwei ether)a do
