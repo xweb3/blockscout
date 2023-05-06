@@ -122,9 +122,9 @@ export class L2IngestionService {
         value = this.web3.utils.hexToNumberString(decodeMsg._amount._hex);
         l1_token = '0x0000000000000000000000000000000000000000'
         l2_token = '0xdeaddeaddeaddeaddeaddeaddeaddeaddead1111'
-        this.logger.log(
+        /* this.logger.log(
           `finalizeETHWithdrawal: from: [${from}], to: [${to}], value: [${value}]`,
-        );
+        ); */
       }
       // finalizeERC20Withdrawal
       if (funName === '0xa9f9e675') {
@@ -139,9 +139,9 @@ export class L2IngestionService {
         from = decodeMsg._from;
         to = decodeMsg._to;
         value = this.web3.utils.hexToNumberString(decodeMsg._amount._hex);
-        this.logger.log(
+        /* this.logger.log(
           `finalizeERC20Withdrawal: l1_token: [${l1_token}], l2_token: [${l2_token}], from: [${from}], to: [${to}], value: [${value}]`,
-        );
+        ); */
       }
       // finalizeBitWithdrawal
       if (funName === '0x839f0ec6') {
@@ -156,9 +156,9 @@ export class L2IngestionService {
         value = this.web3.utils.hexToNumberString(decodeMsg._amount._hex);
         l1_token = '0x1a4b46696b2bb4794eb3d4c26f1c55f9170fa4c5'
         l2_token = '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'
-        this.logger.log(
+        /* this.logger.log(
           `finalizeBitWithdrawal: from: [${from}], to: [${to}], value: [${value}]`,
-        );
+        ); */
       }
       const { timestamp } = await this.web3.eth.getBlock(blockNumber);
       const msgHash = this.verifyDomainCalldataHash({
@@ -219,9 +219,9 @@ export class L2IngestionService {
       );
       await queryRunner.manager.insert(L2ToL1, l2ToL1InsertData);
       result.push(savedResult);
-      this.logger.log(
+     /*  this.logger.log(
         `l2 createSentEvents success:${JSON.stringify(savedResult)}`,
-      );
+      ); */
       await queryRunner.commitTransaction();
     } catch (error) {
       this.logger.error(
@@ -239,6 +239,8 @@ export class L2IngestionService {
       endBlock,
     );
     const result: any = [];
+    console.log('============')
+    console.log(list)
     const l2RelayedMessageEventsInsertData: any = [];
     for (const item of list) {
       const {
@@ -268,9 +270,9 @@ export class L2IngestionService {
         l2RelayedMessageEventsInsertData,
       );
       result.push(savedResult);
-      this.logger.log(
+      /* this.logger.log(
         `l2 createRelayedEvents success:${JSON.stringify(savedResult)}`,
-      );
+      ); */
       await queryRunner.commitTransaction();
     } catch (error) {
       this.logger.error(
@@ -289,9 +291,9 @@ export class L2IngestionService {
       const start = i === 0 ? 0 : i + 1;
       const end = Math.min(i + 1, currentBlockNumber);
       const result = await this.createSentEvents(start, end);
-      this.logger.log(
+      /* this.logger.log(
         `sync [${result.length}] l2_sent_message_events from block [${start}] to [${end}]`,
-      );
+      ); */
     }
   }
   async syncRelayedEvents() {
@@ -301,9 +303,9 @@ export class L2IngestionService {
       const start = i === 0 ? 0 : i + 1;
       const end = Math.min(i + 1, currentBlockNumber);
       const result = await this.createRelayedEvents(start, end);
-      this.logger.log(
+      /* this.logger.log(
         `sync [${result.length}] l2_relayed_message_events from block [${start}] to [${end}]`,
-      );
+      ); */
     }
   }
   async sync() {
@@ -349,7 +351,7 @@ export class L2IngestionService {
       take: 1000
     })
     if (list.length <= 0) {
-      this.logger.log('fixedL2ToL1TokenAddress0x000Bug finished');
+      //this.logger.log('fixedL2ToL1TokenAddress0x000Bug finished');
       return [];
     }
     const updateL2ToL1Data = []
@@ -409,7 +411,7 @@ export class L2IngestionService {
       })
       .execute();
       await queryRunner.commitTransaction();
-      this.logger.log(`commit l1->l2 data successes`);
+      //this.logger.log(`commit l1->l2 data successes`);
     } catch (error) {
       this.logger.error(
         `create l1->l2 relation to l1_to_l2 table error ${error}`,
@@ -417,7 +419,7 @@ export class L2IngestionService {
       await queryRunner.rollbackTransaction();
     } finally {
       await queryRunner.release();
-      this.logger.log(`create l1->l2 relation to l1_to_l2 table finish`);
+      //this.logger.log(`create l1->l2 relation to l1_to_l2 table finish`);
     }
     return updateL2ToL1Data;
   }

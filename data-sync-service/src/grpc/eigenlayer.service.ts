@@ -14,11 +14,9 @@ export class EigenlayerService {
 
   async getTxn(storeNumber: number) {
     const { data } = await firstValueFrom(
-      this.httpService.post(`${this.configService.get('EIGEN_DA_URL')}/browser/GetTransactionListByStoreNumber`, {
-        store_number: Number(storeNumber)
-      }, {
-        headers: {
-          'Content-Type': 'application/json'
+      this.httpService.get(`${this.configService.get('EIGEN_DA_URL')}/da/getTxsListByDsId`, {
+        params:{
+          dsId: Number(storeNumber)
         }
       })
     );
@@ -26,31 +24,27 @@ export class EigenlayerService {
   }
   async getDataStore(fromStoreNumber: number) {
     const { data } = await firstValueFrom(
-      this.httpService.post(`${this.configService.get('EIGEN_DA_URL')}/browser/getDataStoreById`, {
-        store_id: fromStoreNumber.toString()
-        // eigen_contract_addr: this.configService.get('DA_ADDRESS')
-      }, {
-        headers: {
-          'Content-Type': 'application/json'
+      this.httpService.get(`${this.configService.get('EIGEN_DA_URL')}/da/getDataStoreById`, {
+        params:{
+          dsId: fromStoreNumber.toString()
+          // eigen_contract_addr: this.configService.get('DA_ADDRESS')
         }
       })
     );
     return data;
   }
-  
+
   async getLatestTransactionBatchIndex() {
     const { data } = await firstValueFrom(
-      this.httpService.get(`${this.configService.get('EIGEN_DA_URL')}/eigen/getLatestTransactionBatchIndex`)
+      this.httpService.get(`${this.configService.get('EIGEN_DA_URL')}/da/getLatestTransactionBatchIndex`)
     );
     return data;
   }
   async getRollupStoreByRollupBatchIndex(batchIndex: number) {
     const { data } = await firstValueFrom(
-      this.httpService.post(`${this.configService.get('EIGEN_DA_URL')}/eigen/getRollupStoreByRollupBatchIndex`, {
-        batch_index: batchIndex
-      }, {
-        headers: {
-          'Content-Type': 'application/json'
+      this.httpService.get(`${this.configService.get('EIGEN_DA_URL')}/da/getDataStoreListByBatchIndex`, {
+        params:{
+          batchIndex: batchIndex
         }
       })
     );
