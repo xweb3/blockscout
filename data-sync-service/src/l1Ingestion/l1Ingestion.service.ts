@@ -463,18 +463,20 @@ export class L1IngestionService {
       if(unMergeTxList.length>0){
         console.log('-=-=-=-=-=-=-=-=-=-q')
       }
-      
-      
+      const res = await this.getL1ToL2TxByMsgHash(
+        '0x99d92719b93fbeae730f68a05034d80d19d3a5f607e582b67da124b8f5cb8bdd',
+      )
+      console.log('res for debug hash', res)
       for (let i = 0; i < unMergeTxList.length; i++) {
         const l1ToL2Transaction = await this.getL1ToL2TxByMsgHash(
           unMergeTxList[i].msg_hash,
         )
         if (l1ToL2Transaction) {
+          console.log('--------------')
           let tx_type = 1;
           if (l1ToL2Transaction.type === 0) {
             tx_type = 3;
           }
-          console.log('------ l2_hash',Buffer.from(unMergeTxList[i].tx_hash).toString('hex'))
           l1ToL2UpdateList.push({
             l2_hash: unMergeTxList[i].tx_hash,
             status: 'Relayed',
@@ -482,6 +484,8 @@ export class L1IngestionService {
           })
           l1SentMessageEventsTxHashList.push(l1ToL2Transaction.hash)
           l2RelayedMessageEventsTxHashList.push(unMergeTxList[i].tx_hash)
+        } else {
+          console.log("no result for l1 to l2")
         }
       }
       const dataSource = getConnection();
