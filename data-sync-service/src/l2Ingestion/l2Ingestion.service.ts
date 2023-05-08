@@ -239,7 +239,7 @@ export class L2IngestionService {
       endBlock,
     );
     const result: any = [];
-    console.log('============')
+    console.log('============ start and end', startBlock, endBlock)
     console.log(list)
     const l2RelayedMessageEventsInsertData: any = [];
     for (const item of list) {

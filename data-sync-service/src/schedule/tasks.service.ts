@@ -28,7 +28,7 @@ export class TasksService {
       try {
         const result = await this.l2IngestionService.fixedL2ToL1TokenAddress0x000Bug();
         if (result.length <= 0) {
-          console.log('deleteInterval fixedL2ToL1TokenAddress0x000Bug');
+          //console.log('deleteInterval fixedL2ToL1TokenAddress0x000Bug');
           this.schedulerRegistry.deleteInterval('fixedL2ToL1TokenAddress0x000Bug');
         }
       } catch (error) {
@@ -109,7 +109,7 @@ export class TasksService {
     let end = 0;
     const currentBlockNumber =
       await this.l1IngestionService.getCurrentBlockNumber();
-    console.log('l1 sent currentBlockNumber: ', currentBlockNumber);
+    //('l1 sent currentBlockNumber: ', currentBlockNumber);
     const start = Number(await this.cacheManager.get(L1_SENT));
     if (currentBlockNumber - start > SYNC_STEP) {
       end = start + SYNC_STEP;
@@ -140,7 +140,7 @@ export class TasksService {
     let end = 0;
     const currentBlockNumber =
       await this.l1IngestionService.getCurrentBlockNumber();
-    console.log('l1 relayed currentBlockNumber: ', currentBlockNumber);
+    //console.log('l1 relayed currentBlockNumber: ', currentBlockNumber);
     const start = Number(await this.cacheManager.get(L1_RELAYED));
     if (currentBlockNumber - start > SYNC_STEP) {
       end = start + SYNC_STEP;
@@ -171,7 +171,7 @@ export class TasksService {
     let end = 0;
     const currentBlockNumber =
       await this.l2IngestionService.getCurrentBlockNumber();
-    console.log('l2 sent currentBlockNumber: ', currentBlockNumber);
+    //console.log('l2 sent currentBlockNumber: ', currentBlockNumber);
     const start = Number(await this.cacheManager.get(L2_SENT));
     if (currentBlockNumber - start > SYNC_STEP) {
       end = start + SYNC_STEP;
@@ -202,7 +202,7 @@ export class TasksService {
     let end = 0;
     const currentBlockNumber =
       await this.l2IngestionService.getCurrentBlockNumber();
-    console.log('l2 relayed currentBlockNumber: ', currentBlockNumber);
+    //console.log('l2 relayed currentBlockNumber: ', currentBlockNumber);
     const start = Number(await this.cacheManager.get(L2_RELAYED));
     if (currentBlockNumber - start > SYNC_STEP) {
       end = start + SYNC_STEP;
@@ -233,7 +233,7 @@ export class TasksService {
     let end = 0;
     const currentBlockNumber =
       await this.l1IngestionService.getCurrentBlockNumber();
-    console.log('state batch currentBlockNumber: ', currentBlockNumber);
+    //console.log('state batch currentBlockNumber: ', currentBlockNumber);
     const start = Number(await this.cacheManager.get(STATE_BATCH));
     if (currentBlockNumber - start > SYNC_STEP) {
       end = start + SYNC_STEP;
@@ -264,7 +264,7 @@ export class TasksService {
     let end = 0;
     const currentBlockNumber =
       await this.l1IngestionService.getCurrentBlockNumber();
-    console.log('txn batch currentBlockNumber: ', currentBlockNumber);
+    //console.log('txn batch currentBlockNumber: ', currentBlockNumber);
     const start = Number(await this.cacheManager.get(TXN_BATCH));
     if (currentBlockNumber - start > SYNC_STEP) {
       end = start + SYNC_STEP;

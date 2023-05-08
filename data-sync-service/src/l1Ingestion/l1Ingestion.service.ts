@@ -459,23 +459,22 @@ export class L1IngestionService {
       const l1ToL2UpdateList = []
       const l1SentMessageEventsTxHashList = []
       const l2RelayedMessageEventsTxHashList = []
-      //console.log(11111111111)
-      //console.log(unMergeTxList.length)
+      console.log(11111111111)
+      if(unMergeTxList.length>0){
+        console.log('-=-=-=-=-=-=-=-=-=-q')
+      }
+      
       
       for (let i = 0; i < unMergeTxList.length; i++) {
-        console.log('------==========0',unMergeTxList[i].msg_hash)
         const l1ToL2Transaction = await this.getL1ToL2TxByMsgHash(
           unMergeTxList[i].msg_hash,
-        ).catch(e=>{
-          console.error('-=-=-=', e)
-        });
+        )
         if (l1ToL2Transaction) {
           let tx_type = 1;
           if (l1ToL2Transaction.type === 0) {
             tx_type = 3;
           }
           console.log('------ l2_hash',Buffer.from(unMergeTxList[i].tx_hash).toString('hex'))
-          console.log('------ l1_hash',Buffer.from(l1ToL2Transaction.hash).toString('hex'))
           l1ToL2UpdateList.push({
             l2_hash: unMergeTxList[i].tx_hash,
             status: 'Relayed',
