@@ -463,12 +463,8 @@ export class L1IngestionService {
       if(unMergeTxList.length>0){
         console.log('-=-=-=-=-=-=-=-=-=-q')
       }
-      const res = await this.getL1ToL2TxByMsgHash(
-        '0x99d92719b93fbeae730f68a05034d80d19d3a5f607e582b67da124b8f5cb8bdd',
-      )
-      console.log('res for debug hash', res)
       for (let i = 0; i < unMergeTxList.length; i++) {
-        console.log("current msg hash:", unMergeTxList[i].msg_hash)
+        console.log("current msg hash:", unMergeTxList[i].msg_hash.toString())
         const l1ToL2Transaction = await this.getL1ToL2TxByMsgHash(
           unMergeTxList[i].msg_hash,
         )
