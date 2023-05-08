@@ -329,13 +329,13 @@ export class L1IngestionService {
         to = decodeMsg._to;
         value = this.web3.utils.hexToNumberString(decodeMsg._amount._hex);
         type = 1; // user deposit
-        /* this.logger.log(
+        this.logger.log(
           `l1_token: [${l1_token}], l2_token: [${l2_token}], from: [${from}], to: [${to}], value: [${value}]`,
-        ); */
+        );
       } else if (funName === '0x0fae75d9') {
         const decodeMsg = iface.decodeFunctionData('claimReward', message);
         type = 0; // reward
-        //this.logger.log(`reward tssMembers is [${decodeMsg._tssMembers}]`);
+        this.logger.log(`reward tssMembers is [${decodeMsg._tssMembers}]`);
       }
       const { timestamp } = await this.web3.eth.getBlock(blockNumber);
       const msgHash = this.verifyDomainCalldataHash({
@@ -392,7 +392,6 @@ export class L1IngestionService {
         L1SentMessageEvents,
         l1SentMessageEventsInsertData,
       );
-      console.log("l1 to l2 data:", l1ToL2InsertData)
       await queryRunner.manager.insert(L1ToL2, l1ToL2InsertData);
       result.push(savedResult);
       await queryRunner.commitTransaction();
@@ -455,21 +454,15 @@ export class L1IngestionService {
     if (!l1l2MergerIsProcessing) {
       const unMergeTxList =
         await this.l2IngestionService.getRelayedEventByIsMerge(false);
-      //this.logger.log(`start create l1->l2 relation`);
+      this.logger.log(`start create l1->l2 relation`);
       const l1ToL2UpdateList = []
       const l1SentMessageEventsTxHashList = []
       const l2RelayedMessageEventsTxHashList = []
-      console.log(11111111111)
-      if(unMergeTxList.length>0){
-        console.log('-=-=-=-=-=-=-=-=-=-q')
-      }
       for (let i = 0; i < unMergeTxList.length; i++) {
-        console.log("current msg hash:", unMergeTxList[i].msg_hash.toString())
         const l1ToL2Transaction = await this.getL1ToL2TxByMsgHash(
           unMergeTxList[i].msg_hash,
-        )
+        );
         if (l1ToL2Transaction) {
-          console.log('--------------')
           let tx_type = 1;
           if (l1ToL2Transaction.type === 0) {
             tx_type = 3;
@@ -481,8 +474,6 @@ export class L1IngestionService {
           })
           l1SentMessageEventsTxHashList.push(l1ToL2Transaction.hash)
           l2RelayedMessageEventsTxHashList.push(unMergeTxList[i].tx_hash)
-        } else {
-          console.log("no result for l1 to l2")
         }
       }
       const dataSource = getConnection();
@@ -519,7 +510,7 @@ export class L1IngestionService {
         //   [unMergeTxList[i].tx_hash, tx_type, l1ToL2Transaction.l2_hash],
         // );
         await queryRunner.commitTransaction();
-        //this.logger.log(`commit l1->l2 data successes`);
+        this.logger.log(`commit l1->l2 data successes`);
       } catch (error) {
         this.logger.error(
           `create l1->l2 relation to l1_to_l2 table error ${error}`,
@@ -527,13 +518,13 @@ export class L1IngestionService {
         await queryRunner.rollbackTransaction();
       } finally {
         await queryRunner.release();
-        //this.logger.log(`create l1->l2 relation to l1_to_l2 table finish`);
+        this.logger.log(`create l1->l2 relation to l1_to_l2 table finish`);
       }
       l1l2MergerIsProcessing = false;
     } else {
-      /* this.logger.log(
+      this.logger.log(
         `this task is in processing and l1l2MergerIsProcessing is ${l1l2MergerIsProcessing}`,
-      ); */
+      );
     }
   }
   async createEigenBatchTransaction(insertBatchData, insertHashData) {
@@ -595,7 +586,7 @@ export class L1IngestionService {
       await queryRunner.rollbackTransaction();
     } finally {
       await queryRunner.release();
-      //this.logger.log(`l2l1 change status to Waiting finish`);
+      this.logger.log(`l2l1 change status to Waiting finish`);
     }
   }
   async createL2L1Relation() {
@@ -652,17 +643,17 @@ export class L1IngestionService {
       //   [unMergeTxList[i].tx_hash, 2, l2ToL1Transaction.l2_hash],
       // );
       await queryRunner.commitTransaction();
-      /* this.logger.log(
+      this.logger.log(
         `create l2->l1 relation to l2_to_l1 table commit transaction finish`,
-      ); */
+      );
     } catch (error) {
-      /* this.logger.log(
+      this.logger.log(
         `create l2->l1 relation to l2_to_l1 table error ${error}`,
-      ); */
+      );
       await queryRunner.rollbackTransaction();
     } finally {
       await queryRunner.release();
-      //this.logger.log(`create l2->l1 relation to l2_to_l1 table finish`);
+      this.logger.log(`create l2->l1 relation to l2_to_l1 table finish`);
     }
   }
   async syncSentEvents() {
@@ -672,9 +663,9 @@ export class L1IngestionService {
       const start = i === 0 ? 0 : i + 1;
       const end = Math.min(i + 10, currentBlockNumber);
       const result = await this.createSentEvents(start, end);
-      /* this.logger.log(
+      this.logger.log(
         `sync [${result.length}] l1_sent_message_events from block [${start}] to [${end}]`,
-      ); */
+      );
     }
   }
   async syncRelayedEvents() {
@@ -684,9 +675,9 @@ export class L1IngestionService {
       const start = i === 0 ? 0 : i + 1;
       const end = Math.min(i + 10, currentBlockNumber);
       const result = await this.createRelayedEvents(start, end);
-     /*  this.logger.log(
+      this.logger.log(
         `sync [${result.length}] l1_relayed_message_events from block [${start}] to [${end}]`,
-      ); */
+      );
     }
   }
   async sync() {
@@ -889,7 +880,7 @@ export class L1IngestionService {
   async syncEigenDaBatch(batchIndex) {
     try {
       const latestBatchIndex = await this.eigenlayerService.getLatestTransactionBatchIndex();
-      //this.logger.log(`[syncEigenDaBatch] latestBatchIndex: ${latestBatchIndex}`);
+      this.logger.log(`[syncEigenDaBatch] latestBatchIndex: ${latestBatchIndex}`);
       if (batchIndex > Number(latestBatchIndex)) {
         return false;
       }
@@ -897,7 +888,7 @@ export class L1IngestionService {
         data_store_id: fromStoreNumber
       } = await this.eigenlayerService.getRollupStoreByRollupBatchIndex(batchIndex);
       if (+fromStoreNumber === 0) {
-        //this.logger.log(`[syncEigenDaBatch] latestBatchIndex: ${fromStoreNumber}`);
+        this.logger.log(`[syncEigenDaBatch] latestBatchIndex: ${fromStoreNumber}`);
         return false;
       }
       const {
@@ -927,9 +918,9 @@ export class L1IngestionService {
         SignatoryRecord,
         ConfirmGasUsed
       } = await this.eigenlayerService.getDataStore(fromStoreNumber);
-      //this.logger.log(`[syncEigenDaBatch] latestBatchIndex index:${Index}`);
+      this.logger.log(`[syncEigenDaBatch] latestBatchIndex index:${Index}`);
       if (Index === undefined || Index === '') {
-        //this.logger.log(`[syncEigenDaBatch] latestBatchIndex Index === undefined || Index === ''`);
+        this.logger.log(`[syncEigenDaBatch] latestBatchIndex Index === undefined || Index === ''`);
         return true;
       }
       const CURRENT_TIMESTAMP = new Date().toISOString();
