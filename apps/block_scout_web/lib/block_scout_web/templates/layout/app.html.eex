@@ -331,11 +331,4 @@
       <script defer data-cfasync="false" src="<%= static_path(@conn, "/js/dropzone.js") %>"></script>
     <% end %>
   </body>
-  <script>
-      window.onload=function (){
-        if( window.location &&  window.location.pathname !== '/blocks' && !window.location.pathname.includes('/block/')){
-          sessionStorage.setItem('sessionPageStack', JSON.stringify([]))
-        }
-      }
-    </script>
 </html>
