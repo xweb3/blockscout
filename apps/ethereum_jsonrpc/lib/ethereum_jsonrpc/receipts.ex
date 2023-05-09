@@ -6,7 +6,7 @@ defmodule EthereumJSONRPC.Receipts do
   """
 
   import EthereumJSONRPC, only: [json_rpc: 2, request: 1]
-require Logger
+
   alias EthereumJSONRPC.{Logs, Receipt}
 
   @type elixir :: [Receipt.elixir()]
@@ -133,11 +133,8 @@ require Logger
         {requests, id_to_transaction_params}
       end)
 
-
     with {:ok, responses} <- json_rpc(requests, json_rpc_named_arguments),
          {:ok, receipts} <- reduce_responses(responses, id_to_transaction_params) do
-          #Logger.info("======")
-      #Logger.info("#{inspect(responses)}")
       elixir_receipts = to_elixir(receipts)
 
       elixir_logs = elixir_to_logs(elixir_receipts)
