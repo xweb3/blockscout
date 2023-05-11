@@ -4660,7 +4660,8 @@ defmodule Explorer.Chain do
       )
 
     current_smart_contract = Repo.one(query)
-
+Logger.info("-=-=-=")
+Logger.info("#{inspect(address_hash)}")
     if current_smart_contract do
       current_smart_contract
     else

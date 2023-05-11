@@ -7,7 +7,7 @@ defmodule BlockScoutWeb.SmartContractController do
   alias Explorer.SmartContract.{Reader, Writer}
 
   import Explorer.SmartContract.Solidity.Verifier, only: [parse_boolean: 1]
-
+require Logger
   @burn_address "0x0000000000000000000000000000000000000000"
 
   def index(conn, %{"hash" => address_hash_string, "type" => contract_type, "action" => action} = params) do
@@ -23,6 +23,8 @@ defmodule BlockScoutWeb.SmartContractController do
          {:custom_abi, false} <- {:custom_abi, is_custom_abi},
          {:ok, address_hash} <- Chain.string_to_address_hash(address_hash_string),
          {:ok, address} <- Chain.find_contract_address(address_hash, address_options, true) do
+          Logger.info("------------")
+Logger.info("#{inspect(address_hash_string)}")
       implementation_address_hash_string =
         if contract_type == "proxy" do
           address.smart_contract

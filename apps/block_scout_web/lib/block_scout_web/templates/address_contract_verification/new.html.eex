@@ -62,7 +62,7 @@
               b) otherwise you will be asked to upload source files and JSON metadata file(s).<br/>
             4. Verification of Vyper contract.
             </div>
-              
+
           </div>
         </div>
 
@@ -127,3 +127,4 @@
     </div>
     <script defer data-cfasync="false" src="<%= static_path(@conn, "/js/verification-form.js") %>"></script>
 </section>
+<script defer data-cfasync="false" src="<%= static_path(@conn, "/js/app.js") %>"></script>
