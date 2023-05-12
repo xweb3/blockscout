@@ -28,7 +28,7 @@ defmodule Explorer.ChainSpec.GenesisData do
   @impl GenServer
   def handle_info({_ref, {:error, reason}}, state) do
     Logger.warn(fn -> "Failed to fetch genesis data '#{reason}'." end)
-
+Logger.info("-=-=-=-=-=-1111")
     fetch_genesis_data()
 
     {:noreply, state}
@@ -37,7 +37,7 @@ defmodule Explorer.ChainSpec.GenesisData do
   @impl GenServer
   def handle_info(:import, state) do
     Logger.debug(fn -> "Importing genesis data" end)
-
+Logger.info("-=-=-=-=-=-111222222")
     fetch_genesis_data()
 
     {:noreply, state}
@@ -57,11 +57,13 @@ defmodule Explorer.ChainSpec.GenesisData do
 
   def fetch_genesis_data do
     path = Application.get_env(:explorer, __MODULE__)[:chain_spec_path]
-
+Logger.info("------------")
+Logger.info(path)
     if path do
       json_rpc_named_arguments = Application.fetch_env!(:indexer, :json_rpc_named_arguments)
       variant = Keyword.fetch!(json_rpc_named_arguments, :variant)
-
+Logger.info("-2-2--2-2-2")
+Logger.info("#{inspect(variant)}")
       Task.Supervisor.async_nolink(Explorer.GenesisDataTaskSupervisor, fn ->
         case fetch_spec(path) do
           {:ok, chain_spec} ->

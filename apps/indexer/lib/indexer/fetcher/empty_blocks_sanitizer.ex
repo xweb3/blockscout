@@ -97,11 +97,10 @@ defmodule Indexer.Fetcher.EmptyBlocksSanitizer do
           |> Enum.count()
 
         if transactions_count > 0 do
-          # TODO (Jayce) debug code
-          #Logger.info(
-          #  "Block with number #{block_number} and hash #{to_string(block_hash)} is full of transactions. We should set consensus=false for it in order to refetch.",
-          #  fetcher: :empty_blocks_to_refetch
-          #)
+          Logger.info(
+            "Block with number #{block_number} and hash #{to_string(block_hash)} is full of transactions. We should set consensus=false for it in order to refetch.",
+            fetcher: :empty_blocks_to_refetch
+          )
 
           Blocks.invalidate_consensus_blocks([block_number])
         else
