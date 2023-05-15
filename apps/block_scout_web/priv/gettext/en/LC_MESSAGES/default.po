@@ -773,7 +773,7 @@ msgstr ""
 
 #: lib/block_scout_web/templates/address/overview.html.eex:120
 #, elixir-autogen, elixir-format
-msgid "Contract was precompiled and created at genesis or contract creation transaction is missing"
+msgid "Contract was precompiled and created at genesis"
 msgstr ""
 
 #: lib/block_scout_web/templates/verified_contracts/_stats.html.eex:5
