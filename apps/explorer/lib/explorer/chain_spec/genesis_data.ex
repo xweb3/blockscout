@@ -92,7 +92,7 @@ defmodule Explorer.ChainSpec.GenesisData do
       fetch_from_url(path)
     #else
     #  fetch_from_file(path)
-    end
+    #end
   end
 
   # sobelow_skip ["Traversal"]
