@@ -91,8 +91,10 @@ Logger.info("#{inspect(variant)}")
 
   defp fetch_spec(path) do
     if valid_url?(path) do
+      Logger.info("fetch spec from url")
       fetch_from_url(path)
     else
+      Logger.info("fetch spec from file")
       fetch_from_file(path)
     end
   end
@@ -100,6 +102,8 @@ Logger.info("#{inspect(variant)}")
   # sobelow_skip ["Traversal"]
   defp fetch_from_file(path) do
     with {:ok, data} <- File.read(path) do
+      Logger.info("fetch spec successful from file")
+      Logger.info("#{inspect(data)}")
       Jason.decode(data)
     end
   end
@@ -107,9 +111,13 @@ Logger.info("#{inspect(variant)}")
   defp fetch_from_url(url) do
     case HTTPoison.get(url) do
       {:ok, %Response{body: body, status_code: 200}} ->
+        Logger.info("fetch spec successful from url")
+        Logger.info("#{inspect(body)}")
         {:ok, Jason.decode!(body)}
 
       reason ->
+        Logger.info("fetch spec failed")
+        Logger.info("#{inspect(reason)}")
         {:error, reason}
     end
   end
