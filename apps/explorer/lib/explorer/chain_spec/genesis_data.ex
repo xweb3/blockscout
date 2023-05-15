@@ -28,7 +28,7 @@ defmodule Explorer.ChainSpec.GenesisData do
   @impl GenServer
   def handle_info({_ref, {:error, reason}}, state) do
     Logger.warn(fn -> "Failed to fetch genesis data '#{reason}'." end)
-Logger.info("-=-=-=-=-=-1111")
+
     fetch_genesis_data()
 
     {:noreply, state}
@@ -37,7 +37,7 @@ Logger.info("-=-=-=-=-=-1111")
   @impl GenServer
   def handle_info(:import, state) do
     Logger.debug(fn -> "Importing genesis data" end)
-Logger.info("-=-=-=-=-=-111222222")
+
     fetch_genesis_data()
 
     {:noreply, state}
@@ -57,13 +57,11 @@ Logger.info("-=-=-=-=-=-111222222")
 
   def fetch_genesis_data do
     path = Application.get_env(:explorer, __MODULE__)[:chain_spec_path]
-Logger.info("------------")
-Logger.info(path)
+
     if path do
       json_rpc_named_arguments = Application.fetch_env!(:indexer, :json_rpc_named_arguments)
       variant = Keyword.fetch!(json_rpc_named_arguments, :variant)
-Logger.info("-2-2--2-2-2")
-Logger.info("#{inspect(variant)}")
+
       Task.Supervisor.async_nolink(Explorer.GenesisDataTaskSupervisor, fn ->
         case fetch_spec(path) do
           {:ok, chain_spec} ->
@@ -90,20 +88,16 @@ Logger.info("#{inspect(variant)}")
   end
 
   defp fetch_spec(path) do
-    if valid_url?(path) do
-      Logger.info("fetch spec from url")
+    #if valid_url?(path) do
       fetch_from_url(path)
-    else
-      Logger.info("fetch spec from file")
-      fetch_from_file(path)
+    #else
+    #  fetch_from_file(path)
     end
   end
 
   # sobelow_skip ["Traversal"]
   defp fetch_from_file(path) do
     with {:ok, data} <- File.read(path) do
-      Logger.info("fetch spec successful from file")
-      Logger.info("#{inspect(data)}")
       Jason.decode(data)
     end
   end
@@ -111,13 +105,9 @@ Logger.info("#{inspect(variant)}")
   defp fetch_from_url(url) do
     case HTTPoison.get(url) do
       {:ok, %Response{body: body, status_code: 200}} ->
-        Logger.info("fetch spec successful from url")
-        Logger.info("#{inspect(body)}")
         {:ok, Jason.decode!(body)}
 
       reason ->
-        Logger.info("fetch spec failed")
-        Logger.info("#{inspect(reason)}")
         {:error, reason}
     end
   end
