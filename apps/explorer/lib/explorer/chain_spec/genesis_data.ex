@@ -65,8 +65,6 @@ defmodule Explorer.ChainSpec.GenesisData do
       Task.Supervisor.async_nolink(Explorer.GenesisDataTaskSupervisor, fn ->
         case fetch_spec(path) do
           {:ok, chain_spec} ->
-            Logger.info("-2-2--2-2-2")
-            Logger.info("#{inspect(chain_spec)}")
             case variant do
               EthereumJSONRPC.Nethermind ->
                 Importer.import_emission_rewards(chain_spec)
@@ -107,13 +105,9 @@ defmodule Explorer.ChainSpec.GenesisData do
   defp fetch_from_url(url) do
     case HTTPoison.get(url) do
       {:ok, %Response{body: body, status_code: 200}} ->
-        Logger.info("------------")
-        Logger.info("#{inspect(body)}")
         {:ok, Jason.decode!(body)}
 
       reason ->
-        Logger.info("------------ failed")
-        Logger.info("#{inspect(reason)}")
         {:error, reason}
     end
   end

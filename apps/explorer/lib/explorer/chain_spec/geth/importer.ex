@@ -11,8 +11,6 @@ defmodule Explorer.ChainSpec.Geth.Importer do
   alias Explorer.Chain.Hash.Address, as: AddressHash
 
   def import_genesis_accounts(chain_spec) do
-    Logger.info("0-0-0-0-")
-    Logger.info("#{inspect(chain_spec)}")
     balance_params =
       chain_spec
       |> genesis_accounts()
