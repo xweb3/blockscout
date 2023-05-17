@@ -564,30 +564,6 @@
             </dl>
           <% end %>
           <hr>
-          <dl class="row">
-            <dt class="col-sm-3 col-lg-2 text-muted">
-              <%= render BlockScoutWeb.CommonComponentsView, "_i_tooltip_2.html",
-                text: gettext("DA Gas Price") %>
-              <%= gettext "DA Gas Price" %>
-            </dt>
-            <dd class="col-sm-9 col-lg-10"> <%= da_gas_price(@transaction, :gwei) %> </dd>
-          </dl>
-          <dl class="row">
-            <dt class="col-sm-3 col-lg-2 text-muted">
-              <%= render BlockScoutWeb.CommonComponentsView, "_i_tooltip_2.html",
-                text: gettext("DA Fee") %>
-              <%= gettext "DA Fee" %>
-            </dt>
-            <dd class="col-sm-9 col-lg-10"> <%= da_fee(@transaction, :ether) %> </dd>
-          </dl>
-          <dl class="row">
-            <dt class="col-sm-3 col-lg-2 text-muted">
-              <%= render BlockScoutWeb.CommonComponentsView, "_i_tooltip_2.html",
-                text: gettext("DA Gas Used") %>
-              <%= gettext "DA Gas Used" %>
-            </dt>
-            <dd class="col-sm-9 col-lg-10"> <%= da_gas_used(@transaction) %> </dd>
-          </dl>
         </div>
       </div>
     </div>

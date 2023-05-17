@@ -122,9 +122,9 @@ require Logger
           l1_fee_scalar: non_neg_integer,
           l1_gas_price: non_neg_integer,
           l1_gas_used: non_neg_integer,
-          da_fee: non_neg_integer,
-          da_gas_price: non_neg_integer,
-          da_gas_used: non_neg_integer,
+          #da_fee: non_neg_integer,
+          #da_gas_price: non_neg_integer,
+          #da_gas_used: non_neg_integer,
         }
   def elixir_to_params(
         %{
@@ -137,9 +137,9 @@ require Logger
           "l1FeeScalar" => l1_fee_scalar,
           "l1GasPrice" => l1_gas_price,
           "l1GasUsed" => l1_gas_used,
-          "daFee" => da_fee,
-          "daGasPrice" => da_gas_price,
-          "daGasUsed" => da_gas_used,
+          #"daFee" => da_fee,
+          #"daGasPrice" => da_gas_price,
+          #"daGasUsed" => da_gas_used,
         } = elixir
       ) do
     status = elixir_to_status(elixir)
@@ -155,9 +155,9 @@ require Logger
       l1_fee_scalar: l1_fee_scalar,
       l1_gas_price: l1_gas_price,
       l1_gas_used: l1_gas_used,
-      da_fee: da_fee,
-      da_gas_price: da_gas_price,
-      da_gas_used: da_gas_used,
+      #da_fee: da_fee,
+      #da_gas_price: da_gas_price,
+      #da_gas_used: da_gas_used,
     }
   end
 
