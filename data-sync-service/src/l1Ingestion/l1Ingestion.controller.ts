@@ -63,14 +63,14 @@ export class L1IngestionController {
       order_by,
     );
   }
-  @Get('deposits/:address')
+  @Get('v1/deposits/:address')
   getDepositList(@Param('address') address, @Query('offset') offset = 0, @Query('limit') limit = 0) {
     if (!isValidAddress(address)) {
       return { ok: false, code: 4000, result: 'invalid address' };
     }
     return this.l1IngestionService.getDepositList(address, Number(offset), Number(limit));
   }
-  @Get('withdrawals/:address')
+  @Get('v1/withdrawals/:address')
   getWithdrawList(@Param('address') address, @Query('offset') offset = 0, @Query('limit') limit = 0) {
     if (!isValidAddress(address)) {
       return { ok: false, code: 4000, result: 'invalid address' };

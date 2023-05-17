@@ -1018,7 +1018,7 @@ export class L1IngestionService {
     const deposits = await this.txnL1ToL2Repository.findAndCount({
       where: { from: address },
       order: { queue_index: 'DESC' },
-      skip: offset,
+      // skip: offset,
       take: limit,
     });
     const list = deposits[0];
@@ -1058,7 +1058,7 @@ export class L1IngestionService {
     const withdrawals = await this.txnL2ToL1Repository.findAndCount({
       where: { from: address },
       order: { msg_nonce: 'DESC' },
-      skip: offset,
+      // skip: offset,
       take: limit,
     });
     const list = withdrawals[0];
