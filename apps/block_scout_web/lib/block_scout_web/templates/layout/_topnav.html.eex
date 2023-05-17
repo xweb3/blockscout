@@ -157,6 +157,7 @@
               </div>
             </li>
           <% end %>
+          <%= render BlockScoutWeb.LayoutView, "_account_menu_item.html", conn: @conn, current_user: @current_user %>
           <li class="nav-item dropdown">
             <span class="nav-link topnav-nav-link active-icon">
               <span class="nav-link-icon">
@@ -165,7 +166,6 @@
               Mantle Testnet
             </span>
           </li>
-          <%= render BlockScoutWeb.LayoutView, "_account_menu_item.html", conn: @conn, current_user: @current_user %>
         </ul>
       </div>
       <!-- Dark mode changer -->
