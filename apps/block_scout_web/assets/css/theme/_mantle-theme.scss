@@ -53,7 +53,7 @@ $dark-primary-alternate: #65B3AE !default;
 		background: #F8F8F9;
 		border-radius: 12px;
 		position: relative;
-		max-width: 600px;
+		max-width: 650px;
 
 		.transfers-list-mobile-scroll-notice{
 			position: absolute;
@@ -87,7 +87,6 @@ $dark-primary-alternate: #65B3AE !default;
 				margin-right: 40px;
 				height:24px;
 				flex-wrap: wrap;
-
 				&:last-child {
 					margin-right: 0;
 				}
@@ -110,6 +109,15 @@ $dark-primary-alternate: #65B3AE !default;
 						padding-top: 0px;
 						padding-bottom: 0px;
 						line-height: 24px;
+					}
+				}
+				@media screen and (max-width: 992px) {
+					margin-right: 10px;
+
+					.token-transfer-item-item-address{
+						.bs-label{
+							max-width: 90px;
+						}
 					}
 				}
 			}

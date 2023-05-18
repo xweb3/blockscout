@@ -31,7 +31,7 @@ defmodule Explorer.ThirdPartyIntegrations.AirTable do
       case request do
         {:ok, %Response{body: body, status_code: 200}} ->
           request_id = Enum.at(Jason.decode!(body)["records"], 0)["fields"]["request_id"]
-
+          Logger.info("#{inspect(request_id)}")
           new_request
           |> PublicTagsRequest.changeset(%{request_id: request_id})
           |> Repo.account_repo().update()
