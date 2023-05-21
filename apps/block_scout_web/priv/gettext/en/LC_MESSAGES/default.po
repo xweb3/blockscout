@@ -2076,7 +2076,7 @@ msgstr ""
 
 #: lib/block_scout_web/templates/account/public_tags_request/form.html.eex:50
 #, elixir-autogen, elixir-format
-msgid "Public tags* (2 tags maximum, please use \";\" as a divider)"
+msgid "Public tag you want to add for contract / address"
 msgstr ""
 
 #: lib/block_scout_web/templates/common_components/_btn_qr_code.html.eex:10

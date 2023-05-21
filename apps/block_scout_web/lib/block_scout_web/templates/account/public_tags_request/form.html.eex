@@ -47,8 +47,8 @@
                 <%= error_tag f, :is_owner, class: "text-danger form-error" %>
               </div>
               <div class="form-group mr-4-rem">
-                <%= label f, :tags, gettext("Public tags* (2 tags maximum, please use \";\" as a divider)"), class: "control-label", style: "font-size: 14px" %>
-                <%= text_input f, :tags, class: "form-control", placeholder: "Public tags", maxlength: 71 %>
+                <%= label f, :tags, gettext("Public tag"), class: "control-label", style: "font-size: 14px" %>
+                <%= text_input f, :tags, class: "form-control", placeholder: "Public tag you want to add for contract / address", maxlength: 50 %>
                 <%= error_tag f, :tags, class: "text-danger form-error" %>
               </div>
               <%= render "address_field.html", f: f %>
