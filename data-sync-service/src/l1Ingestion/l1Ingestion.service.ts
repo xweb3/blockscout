@@ -879,13 +879,15 @@ export class L1IngestionService {
   }
   async syncEigenDaBatch(batchIndex) {
     try {
-      const latestBatchIndex = await this.eigenlayerService.getLatestTransactionBatchIndex();
+      const { latestBatchIndex } = await this.eigenlayerService.getLatestTransactionBatchIndex();
       this.logger.log(`[syncEigenDaBatch] latestBatchIndex: ${latestBatchIndex}`);
       if (batchIndex > Number(latestBatchIndex)) {
         return false;
       }
       const {
-        data_store_id: fromStoreNumber
+        dataStore: {
+          data_store_id: fromStoreNumber
+        }
       } = await this.eigenlayerService.getRollupStoreByRollupBatchIndex(batchIndex);
       if (+fromStoreNumber === 0) {
         this.logger.log(`[syncEigenDaBatch] latestBatchIndex: ${fromStoreNumber}`);
