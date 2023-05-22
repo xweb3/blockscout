@@ -29,7 +29,6 @@ export class EigenlayerService {
     const { data } = await firstValueFrom(
       this.httpService.get(`${this.configService.get('EIGEN_DA_URL')}/da/getLatestTransactionBatchIndex`)
     );
-    console.log('=-=-=-==-==', data)
     return data;
   }
   async getRollupStoreByRollupBatchIndex(batchIndex: number) {

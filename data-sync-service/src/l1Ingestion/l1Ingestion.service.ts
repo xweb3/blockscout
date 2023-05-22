@@ -879,7 +879,7 @@ export class L1IngestionService {
   }
   async syncEigenDaBatch(batchIndexParam) {
     try {
-      const { batchIndex } = await this.eigenlayerService.getLatestTransactionBatchIndex().catch(e=> console.error('---------11111', e));
+      const { batchIndex } = await this.eigenlayerService.getLatestTransactionBatchIndex();
       this.logger.log(`[syncEigenDaBatch] latestBatchIndex: ${batchIndex}`);
       if (batchIndexParam > Number(batchIndex)) {
         return false;
@@ -888,7 +888,7 @@ export class L1IngestionService {
         dataStore: {
           data_store_id: fromStoreNumber
         }
-      } = await this.eigenlayerService.getRollupStoreByRollupBatchIndex(batchIndexParam).catch(e=> console.error('---------22222', e));
+      } = await this.eigenlayerService.getRollupStoreByRollupBatchIndex(batchIndexParam);
       if (+fromStoreNumber === 0) {
         this.logger.log(`[syncEigenDaBatch] latestBatchIndex: ${fromStoreNumber}`);
         return false;
@@ -921,7 +921,7 @@ export class L1IngestionService {
           signatoryRecord: SignatoryRecord,
           confirmGasUsed: ConfirmGasUsed
         }
-      } = await this.eigenlayerService.getDataStore(fromStoreNumber).catch(e=> console.error('---------33333', e));
+      } = await this.eigenlayerService.getDataStore(fromStoreNumber);
       this.logger.log(`[syncEigenDaBatch] latestBatchIndex index:${Index}`);
       if (Index === undefined || Index === '') {
         this.logger.log(`[syncEigenDaBatch] latestBatchIndex Index === undefined || Index === ''`);
@@ -961,8 +961,7 @@ export class L1IngestionService {
       let insertHashData = null;
       // if Confirmed = true then get EigenDa tx list, else skip
       if (Confirmed) {
-        const {txList} = await this.eigenlayerService.getTxn(StoreNumber).catch(e=> console.error('---------44444', e)) || [];
-        console.log(23423423424324, txList)
+        const {txList} = await this.eigenlayerService.getTxn(StoreNumber) || [];
         const insertHashList = [];
         txList.forEach((item) => {
           insertHashList.push({
