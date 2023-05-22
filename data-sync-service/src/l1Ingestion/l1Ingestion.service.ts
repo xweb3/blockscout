@@ -194,6 +194,7 @@ export class L1IngestionService {
     return this.txnL2ToL1Repository.find({ where: { status: status } });
   }
   async createTxnBatchesEvents(startBlock, endBlock) {
+    console.log('txn batch start block', startBlock, endBlock)
     const list = await this.getCtcTransactionBatchAppendedByBlockNumber(
       startBlock,
       endBlock,
@@ -247,6 +248,7 @@ export class L1IngestionService {
     return result;
   }
   async createStateBatchesEvents(startBlock, endBlock) {
+    console.log('state batch start block', startBlock, endBlock)
     const list = await this.getSccStateBatchAppendedByBlockNumber(
       startBlock,
       endBlock,
