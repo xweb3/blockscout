@@ -247,10 +247,12 @@ export class L1IngestionService {
     return result;
   }
   async createStateBatchesEvents(startBlock, endBlock) {
+    console.log('--------223', startBlock, endBlock)
     const list = await this.getSccStateBatchAppendedByBlockNumber(
       startBlock,
       endBlock,
     );
+    console.log('--------224', list)
     const stateBatchesInsertData: any[] = [];
     for (const item of list) {
       const {
