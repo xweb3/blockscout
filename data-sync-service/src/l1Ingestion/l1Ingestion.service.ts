@@ -877,46 +877,50 @@ export class L1IngestionService {
       result: result,
     };
   }
-  async syncEigenDaBatch(batchIndex) {
+  async syncEigenDaBatch(batchIndexParam) {
     try {
-      const latestBatchIndex = await this.eigenlayerService.getLatestTransactionBatchIndex();
-      this.logger.log(`[syncEigenDaBatch] latestBatchIndex: ${latestBatchIndex}`);
-      if (batchIndex > Number(latestBatchIndex)) {
+      const { batchIndex } = await this.eigenlayerService.getLatestTransactionBatchIndex();
+      this.logger.log(`[syncEigenDaBatch] latestBatchIndex: ${batchIndex}`);
+      if (batchIndexParam > Number(batchIndex)) {
         return false;
       }
       const {
-        data_store_id: fromStoreNumber
-      } = await this.eigenlayerService.getRollupStoreByRollupBatchIndex(batchIndex);
+        dataStore: {
+          data_store_id: fromStoreNumber
+        }
+      } = await this.eigenlayerService.getRollupStoreByRollupBatchIndex(batchIndexParam);
       if (+fromStoreNumber === 0) {
         this.logger.log(`[syncEigenDaBatch] latestBatchIndex: ${fromStoreNumber}`);
         return false;
       }
       const {
-        Index,
-        StorePeriodLength,
-        Confirmed,
-        MsgHash,
-        DurationDataStoreId,
-        StoreNumber,
-        Fee,
-        InitTxHash,
-        ConfirmTxHash,
-        DataCommitment,
-        StakesFromBlockNumber,
-        InitTime,
-        ExpireTime,
-        Duration,
-        NumSys,
-        NumPar,
-        Degree,
-        Confirmer,
-        Header,
-        InitGasUsed,
-        InitBlockNumber,
-        EthSigned,
-        EigenSigned,
-        SignatoryRecord,
-        ConfirmGasUsed
+        dataStore:{
+          index: Index,
+          storePeriodLength: StorePeriodLength,
+          confirmed: Confirmed,
+          msgHash: MsgHash,
+          durationDataStoreId: DurationDataStoreId,
+          storeNumber: StoreNumber,
+          fee: Fee,
+          initTxHash: InitTxHash,
+          confirmTxHash: ConfirmTxHash,
+          dataCommitment: DataCommitment,
+          stakesFromBlockNumber: StakesFromBlockNumber,
+          initTime: InitTime,
+          expireTime: ExpireTime,
+          duration: Duration,
+          numSys: NumSys,
+          numPar: NumPar,
+          degree: Degree,
+          confirmer: Confirmer,
+          header: Header,
+          initGasUsed: InitGasUsed,
+          initBlockNumber: InitBlockNumber,
+          ethSigned: EthSigned,
+          eigenSigned: EigenSigned,
+          signatoryRecord: SignatoryRecord,
+          confirmGasUsed: ConfirmGasUsed
+        }
       } = await this.eigenlayerService.getDataStore(fromStoreNumber);
       this.logger.log(`[syncEigenDaBatch] latestBatchIndex index:${Index}`);
       if (Index === undefined || Index === '') {
@@ -925,7 +929,7 @@ export class L1IngestionService {
       }
       const CURRENT_TIMESTAMP = new Date().toISOString();
       const insertBatchData = {
-        batch_index: batchIndex,
+        batch_index: batchIndexParam,
         batch_size: StorePeriodLength,
         status: Confirmed ? 'confirmed' : 'init',
         da_hash: utils.hexlify(MsgHash),
@@ -957,13 +961,13 @@ export class L1IngestionService {
       let insertHashData = null;
       // if Confirmed = true then get EigenDa tx list, else skip
       if (Confirmed) {
-        const txHashList = await this.eigenlayerService.getTxn(StoreNumber) || [];
+        const {txList} = await this.eigenlayerService.getTxn(StoreNumber) || [];
         const insertHashList = [];
-        txHashList.forEach((item) => {
+        txList.forEach((item) => {
           insertHashList.push({
-            batch_index: batchIndex,
-            block_number: item.BlockNumber,
-            tx_hash: item.TxHash,
+            batch_index: batchIndexParam,
+            block_number: item.blockNumber,
+            tx_hash: item.txHash,
             inserted_at: CURRENT_TIMESTAMP,
             updated_at: CURRENT_TIMESTAMP
           })

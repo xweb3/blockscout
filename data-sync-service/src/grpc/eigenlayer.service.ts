@@ -14,22 +14,13 @@ export class EigenlayerService {
 
   async getTxn(storeNumber: number) {
     const { data } = await firstValueFrom(
-      this.httpService.get(`${this.configService.get('EIGEN_DA_URL')}/da/getTxsListByDsId`, {
-        params:{
-          dsId: Number(storeNumber)
-        }
-      })
+      this.httpService.get(`${this.configService.get('EIGEN_DA_URL')}/da/getTxsListByDsId/${Number(storeNumber)}`)
     );
     return data;
   }
   async getDataStore(fromStoreNumber: number) {
     const { data } = await firstValueFrom(
-      this.httpService.get(`${this.configService.get('EIGEN_DA_URL')}/da/getDataStoreById`, {
-        params:{
-          dsId: fromStoreNumber.toString()
-          // eigen_contract_addr: this.configService.get('DA_ADDRESS')
-        }
-      })
+      this.httpService.get(`${this.configService.get('EIGEN_DA_URL')}/da/getDataStoreById/${fromStoreNumber.toString()}`)
     );
     return data;
   }
@@ -42,11 +33,7 @@ export class EigenlayerService {
   }
   async getRollupStoreByRollupBatchIndex(batchIndex: number) {
     const { data } = await firstValueFrom(
-      this.httpService.get(`${this.configService.get('EIGEN_DA_URL')}/da/getDataStoreListByBatchIndex`, {
-        params:{
-          batchIndex: batchIndex
-        }
-      })
+      this.httpService.get(`${this.configService.get('EIGEN_DA_URL')}/da/getDataStoreListByBatchIndex/${batchIndex}`)
     );
     return data;
   }
