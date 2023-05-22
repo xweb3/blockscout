@@ -959,13 +959,13 @@ export class L1IngestionService {
       let insertHashData = null;
       // if Confirmed = true then get EigenDa tx list, else skip
       if (Confirmed) {
-        const txHashList = await this.eigenlayerService.getTxn(StoreNumber) || [];
+        const {txList} = await this.eigenlayerService.getTxn(StoreNumber) || [];
         const insertHashList = [];
-        txHashList.forEach((item) => {
+        txList.forEach((item) => {
           insertHashList.push({
             batch_index: batchIndex,
-            block_number: item.BlockNumber,
-            tx_hash: item.TxHash,
+            block_number: item.blockNumber,
+            tx_hash: item.txHash,
             inserted_at: CURRENT_TIMESTAMP,
             updated_at: CURRENT_TIMESTAMP
           })

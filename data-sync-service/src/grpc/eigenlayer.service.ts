@@ -14,11 +14,7 @@ export class EigenlayerService {
 
   async getTxn(storeNumber: number) {
     const { data } = await firstValueFrom(
-      this.httpService.get(`${this.configService.get('EIGEN_DA_URL')}/da/getTxsListByDsId`, {
-        params:{
-          dsId: Number(storeNumber)
-        }
-      })
+      this.httpService.get(`${this.configService.get('EIGEN_DA_URL')}/da/getTxsListByDsId/${Number(storeNumber)}`)
     );
     return data;
   }
