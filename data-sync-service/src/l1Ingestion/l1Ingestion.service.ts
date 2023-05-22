@@ -879,7 +879,7 @@ export class L1IngestionService {
   }
   async syncEigenDaBatch(batchIndex) {
     try {
-      const { latestBatchIndex } = await this.eigenlayerService.getLatestTransactionBatchIndex();
+      const { latestBatchIndex } = await this.eigenlayerService.getLatestTransactionBatchIndex().catch(e=> console.error('---------11111', e));
       this.logger.log(`[syncEigenDaBatch] latestBatchIndex: ${latestBatchIndex}`);
       if (batchIndex > Number(latestBatchIndex)) {
         return false;
@@ -888,7 +888,7 @@ export class L1IngestionService {
         dataStore: {
           data_store_id: fromStoreNumber
         }
-      } = await this.eigenlayerService.getRollupStoreByRollupBatchIndex(batchIndex);
+      } = await this.eigenlayerService.getRollupStoreByRollupBatchIndex(batchIndex).catch(e=> console.error('---------22222', e));
       if (+fromStoreNumber === 0) {
         this.logger.log(`[syncEigenDaBatch] latestBatchIndex: ${fromStoreNumber}`);
         return false;
@@ -919,7 +919,7 @@ export class L1IngestionService {
         EigenSigned,
         SignatoryRecord,
         ConfirmGasUsed
-      } = await this.eigenlayerService.getDataStore(fromStoreNumber);
+      } = await this.eigenlayerService.getDataStore(fromStoreNumber).catch(e=> console.error('---------33333', e));
       this.logger.log(`[syncEigenDaBatch] latestBatchIndex index:${Index}`);
       if (Index === undefined || Index === '') {
         this.logger.log(`[syncEigenDaBatch] latestBatchIndex Index === undefined || Index === ''`);
@@ -959,7 +959,7 @@ export class L1IngestionService {
       let insertHashData = null;
       // if Confirmed = true then get EigenDa tx list, else skip
       if (Confirmed) {
-        const {txList} = await this.eigenlayerService.getTxn(StoreNumber) || [];
+        const {txList} = await this.eigenlayerService.getTxn(StoreNumber).catch(e=> console.error('---------44444', e)) || [];
         const insertHashList = [];
         txList.forEach((item) => {
           insertHashList.push({
