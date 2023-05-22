@@ -194,10 +194,12 @@ export class L1IngestionService {
     return this.txnL2ToL1Repository.find({ where: { status: status } });
   }
   async createTxnBatchesEvents(startBlock, endBlock) {
+    console.log('=========', startBlock, endBlock)
     const list = await this.getCtcTransactionBatchAppendedByBlockNumber(
       startBlock,
       endBlock,
     );
+    console.log('=========000', list)
     const txnBatchesInsertData: any[] = []
     for (const item of list) {
       const {
