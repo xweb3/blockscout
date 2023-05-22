@@ -47,3 +47,4 @@
       <% end %>
     </div>
 </section>
+<script defer data-cfasync="false" src="<%= static_path(@conn, "/js/app.js") %>"></script>

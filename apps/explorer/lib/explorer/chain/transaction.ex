@@ -175,6 +175,9 @@ defmodule Explorer.Chain.Transaction do
           max_priority_fee_per_gas: wei_per_gas | nil,
           max_fee_per_gas: wei_per_gas | nil,
           type: non_neg_integer() | nil,
+          #da_fee: wei_per_gas,
+          #da_gas_price: wei_per_gas,
+          #da_gas_used: Gas.t() | nil
 
         }
 
@@ -200,6 +203,9 @@ defmodule Explorer.Chain.Transaction do
              :l1_gas_used,
              :l1_fee,
              :l1_fee_scalar,
+             #:da_gas_price,
+             #:da_gas_used,
+             #:da_fee,
              :l1_origin_tx_hash
            ]}
 
@@ -224,6 +230,9 @@ defmodule Explorer.Chain.Transaction do
              :l1_gas_price,
              :l1_gas_used,
              :l1_fee,
+             #:da_gas_price,
+             #:da_gas_used,
+             #:da_fee,
              :l1_fee_scalar,
              :l1_origin_tx_hash
            ]}
@@ -251,6 +260,9 @@ defmodule Explorer.Chain.Transaction do
     field(:l1_gas_price, Wei)
     field(:l1_gas_used, :decimal)
     field(:l1_fee, Wei)
+    #field(:da_gas_price, Wei)
+    #field(:da_gas_used, :decimal)
+    #field(:da_fee, Wei)
     field(:l1_fee_scalar, :decimal)
     field(:l1_origin_tx_hash, :string)
     field(:max_priority_fee_per_gas, Wei)

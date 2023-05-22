@@ -88,11 +88,11 @@ defmodule Explorer.ChainSpec.GenesisData do
   end
 
   defp fetch_spec(path) do
-    if valid_url?(path) do
+    #if valid_url?(path) do
       fetch_from_url(path)
-    else
-      fetch_from_file(path)
-    end
+    #else
+    #  fetch_from_file(path)
+    #end
   end
 
   # sobelow_skip ["Traversal"]

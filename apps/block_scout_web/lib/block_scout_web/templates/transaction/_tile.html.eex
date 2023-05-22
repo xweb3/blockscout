@@ -36,7 +36,7 @@
         <%= if tx_tags.personal_tx_tag && tx_tags.personal_tx_tag.name !== :error do %>
           <%= render BlockScoutWeb.FormView, "_tag.html", text: tx_tags.personal_tx_tag.name, additional_classes: [tag_name_to_label(tx_tags.personal_tx_tag.name), "ml-1"] %>
         <% end %>
-        <%= render BlockScoutWeb.AddressView, "_labels.html", tags: tx_tags %>
+        <%=# render BlockScoutWeb.AddressView, "_labels.html", tags: tx_tags %>
       </div>
       </span>
       <span>

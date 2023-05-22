@@ -20,6 +20,21 @@ defmodule BlockScoutWeb.Models.GetAddressTags do
     }
   end
 
+  def get_address_tags_custom(address_hash, current_user) when not is_nil(address_hash) do
+    case get_tags_on_address(address_hash) do
+      [] -> %{
+        personal_tags: get_personal_tags(address_hash, current_user),
+        common_tags: [],
+        watchlist_names: []
+      }
+      common_tags -> %{
+        common_tags: common_tags,
+        personal_tags: [],
+        watchlist_names: []
+      }
+    end
+  end
+
   def get_address_tags(_, _), do: %{common_tags: [], personal_tags: [], watchlist_names: []}
 
   def get_public_tags(address_hash) when not is_nil(address_hash) do

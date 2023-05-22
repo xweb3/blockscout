@@ -20,7 +20,7 @@ $dark-primary-alternate: #65B3AE !default;
 	background: transparent;
 	border: none;
 	cursor: pointer;
-	margin-right: 5px;
+	margin-right: 0;
 	outline: none !important;
 	box-shadow: none !important;
 	transition: .2s ease-in;
@@ -53,7 +53,7 @@ $dark-primary-alternate: #65B3AE !default;
 		background: #F8F8F9;
 		border-radius: 12px;
 		position: relative;
-		max-width: 600px;
+		max-width: 650px;
 
 		.transfers-list-mobile-scroll-notice{
 			position: absolute;
@@ -87,7 +87,6 @@ $dark-primary-alternate: #65B3AE !default;
 				margin-right: 40px;
 				height:24px;
 				flex-wrap: wrap;
-
 				&:last-child {
 					margin-right: 0;
 				}
@@ -96,7 +95,30 @@ $dark-primary-alternate: #65B3AE !default;
 					margin-right: 16px;
 				}
 				.token-transfer-item-item-address{
-					min-width: 123px;
+					min-width: 130px;
+					display:flex;
+					a{
+						display:flex;
+						align-items: center;
+					}
+					.bs-label{
+						white-space: nowrap;
+    					overflow: hidden;
+    					text-overflow: ellipsis;
+    					max-width: 120px;
+						padding-top: 0px;
+						padding-bottom: 0px;
+						line-height: 24px;
+					}
+				}
+				@media screen and (max-width: 992px) {
+					margin-right: 10px;
+
+					.token-transfer-item-item-address{
+						.bs-label{
+							max-width: 90px;
+						}
+					}
 				}
 			}
 		}

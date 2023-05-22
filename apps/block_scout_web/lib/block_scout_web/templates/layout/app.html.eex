@@ -324,18 +324,12 @@
       <script defer data-cfasync="false" src="<%= static_path(@conn, "/js/token-transfers-toggle.js") %>"></script>
     <% end %>
     <script defer src="<%= static_path(@conn, "/js/autocomplete.js") %>"></script>
-    <%= if @view_module in [Elixir.BlockScoutWeb.AddressContractVerificationView, Elixir.BlockScoutWeb.AddressContractVerificationVyperView, Elixir.BlockScoutWeb.AddressContractVerificationViaFlattenedCodeView, Elixir.BlockScoutWeb.AddressContractVerificationViaMultiPartFilesView, Elixir.BlockScoutWeb.AddressContractVerificationViaJsonView, Elixir.BlockScoutWeb.AddressContractVerificationViaStandardJsonInputView] do %>
+    <%= if @view_module in [Elixir.BlockScoutWeb.AddressContractVerificationView, Elixir.BlockScoutWeb.AddressContractVerificationVyperView, Elixir.BlockScoutWeb.AddressContractVerificationViaFlattenedCodeView] do %>
       <script defer data-cfasync="false" src="<%= static_path(@conn, "/js/verification-form.js") %>"></script>
     <% end %>
     <%= if @view_module in [Elixir.BlockScoutWeb.AddressContractVerificationViaMultiPartFilesView, Elixir.BlockScoutWeb.AddressContractVerificationViaJsonView, Elixir.BlockScoutWeb.AddressContractVerificationViaStandardJsonInputView] do %>
+      <script defer data-cfasync="false" src="<%= static_path(@conn, "/js/verification-form.js") %>"></script>
       <script defer data-cfasync="false" src="<%= static_path(@conn, "/js/dropzone.js") %>"></script>
     <% end %>
   </body>
-  <script>
-      window.onload=function (){
-        if( window.location &&  window.location.pathname !== '/blocks' && !window.location.pathname.includes('/block/')){
-          sessionStorage.setItem('sessionPageStack', JSON.stringify([]))
-        }
-      }
-    </script>
 </html>
