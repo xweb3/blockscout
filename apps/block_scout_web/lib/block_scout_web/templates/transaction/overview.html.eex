@@ -121,7 +121,7 @@
                   <% end %>
 
                 <%= if confirmations > 0 do %>
-                  <span class="bs-label large ml-2 confirmations-label"><%= gettext "Confirmed by " %><span data-selector="block-confirmations"><%= confirmations %></span><%= " " <> confirmations_ds_name(confirmations) %></span>
+                  <span class="large ml-2" style="padding:5px;display:inline-block"><%= gettext "Confirmed by " %><span data-selector="block-confirmations"><%= confirmations %></span><%= " " <> confirmations_ds_name(confirmations) %></span>
                 <% end %>
               </span>
             </dd>

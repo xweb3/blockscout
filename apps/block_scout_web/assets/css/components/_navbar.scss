@@ -133,7 +133,7 @@ $navbar-logo-width: 100% !default;
     position: relative;
     width: 100%;
     z-index: 1;
-
+    min-width: 320px;
     &[placeholder]{
       text-overflow: ellipsis !important;
     }
@@ -154,9 +154,9 @@ $navbar-logo-width: 100% !default;
       box-shadow: none;
     }
 
-    @include media-breakpoint-up(xl) {
-      width: 290px;
-    }
+    /* @include media-breakpoint-up(xl) {
+      min-width: 320px;
+    } */
     @media (min-width: 1500px) {
       width: 350px;
     }
