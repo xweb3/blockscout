@@ -310,9 +310,10 @@ require Logger
 
   def formatted_fee(%Transaction{} = transaction, opts) do
     l1_fee = if transaction.l1_fee == nil, do: Wei.from(Decimal.new(0), :wei), else: transaction.l1_fee
+    da_fee = if transaction.da_fee == nil, do: Wei.from(Decimal.new(0), :wei), else: transaction.da_fee
     transaction
     |> Chain.fee(:wei)
-    |> fee_to_denomination(l1_fee, opts)
+    |> fee_to_denomination(l1_fee, da_fee, opts)
     |> case do
          {:actual, value} -> value
          {:maximum, value} -> "#{gettext("Max of")} #{value}"
@@ -382,13 +383,14 @@ require Logger
     format_wei_value(gas_price, unit)
   end
 
-  #def da_gas_price(%Transaction{da_gas_price: da_gas_price}, unit) when unit in ~w(wei gwei ether)a do
-  #  if da_gas_price == nil, do: format_wei_value(%Wei{value: Decimal.new(0)}, unit), else: format_wei_value(da_gas_price, unit)
-  #end
+  def da_gas_price(%Transaction{da_gas_price: da_gas_price}, unit) when unit in ~w(wei gwei ether)a do
+    if da_gas_price == nil, do: format_wei_value(%Wei{value: Decimal.new(0)}, unit), else: format_wei_value(da_gas_price, unit)
+  end
 
-  def l2_fee(%Transaction{gas_price: gas_price, gas: gas}, unit) when unit in ~w(wei gwei ether)a do
+  def l2_fee(%Transaction{gas_price: gas_price, gas: gas, gas_used: gas_used}, unit) when unit in ~w(wei gwei ether)a do
+    actual_gas = if gas_used == nil, do: gas, else: gas_used
     gas_price
-    |> Wei.multi( gas)
+    |> Wei.multi(actual_gas)
     |> Decimal.to_string(:normal)
   end
 
@@ -429,11 +431,11 @@ require Logger
     format_wei_value(l1_fee, unit)
   end
 
-  #def da_fee(%Transaction{da_fee: nil}, _unit), do: "0 BIT"
+  def da_fee(%Transaction{da_fee: nil}, _unit), do: "0 BIT"
 
-  #def da_fee(%Transaction{da_fee: da_fee}, unit) when unit in ~w(wei gwei ether)a do
-  #  format_wei_value(da_fee, unit)
-  #end
+  def da_fee(%Transaction{da_fee: da_fee}, unit) when unit in ~w(wei gwei ether)a do
+    format_wei_value(da_fee, unit)
+  end
 
   def l1_gas_used(%Transaction{l1_gas_used: nil}), do: gettext("Pending")
 
@@ -441,11 +443,11 @@ require Logger
     l1_gas_used
   end
 
-  #def da_gas_used(%Transaction{da_gas_used: nil}), do: "0"
+  def da_gas_used(%Transaction{da_gas_used: nil}), do: "0"
 
-  #def da_gas_used(%Transaction{da_gas_used: da_gas_used}) do
-  #  da_gas_used
-  #end
+  def da_gas_used(%Transaction{da_gas_used: da_gas_used}) do
+    da_gas_used
+  end
 
   def l1_fee_scalar(%Transaction{l1_fee_scalar: nil}), do: gettext("Pending")
 
@@ -538,10 +540,11 @@ require Logger
     format_wei_value(value, :ether, include_unit_label: false)
   end
 
-  defp fee_to_denomination({fee_type, fee}, l1_fee, opts) do
+  defp fee_to_denomination({fee_type, fee}, l1_fee, da_fee, opts) do
     denomination = Keyword.get(opts, :denomination)
     include_label? = Keyword.get(opts, :include_label, true)
-    {fee_type, format_wei_value(Wei.sum(Wei.from(fee, :wei), l1_fee), denomination, include_unit_label: include_label?)}
+    l1_and_da_fee = Wei.sum(l1_fee, da_fee)
+    {fee_type, format_wei_value(Wei.sum(Wei.from(fee, :wei), l1_and_da_fee), denomination, include_unit_label: include_label?)}
   end
 
   @doc """

@@ -24,7 +24,7 @@ import statusMonitorConfig from './config/statusMonitor';
         database: configService.get('DB_NAME'),
         entities: entities,
         synchronize: false,
-        // logging: true,
+        logging: ["error"]
       }),
       inject: [ConfigService],
     }),
