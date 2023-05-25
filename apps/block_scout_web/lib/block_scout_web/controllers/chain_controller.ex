@@ -187,8 +187,8 @@ defmodule BlockScoutWeb.ChainController do
     eigenda_batch_path =
       conn
       |> eigenda_batch_path(:show, item)
-      |> Controller.full_path()
-
+      #|> Controller.full_path()
+      Logger.info("#{inspect(eigenda_batch_path)}")
     redirect(conn, to: eigenda_batch_path)
   end
 end

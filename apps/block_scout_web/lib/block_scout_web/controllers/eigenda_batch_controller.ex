@@ -125,7 +125,9 @@ require Logger
   end
 
   def show(conn, %{"da_hash" => da_hash}) do
+    Logger.info("-1123123--------")
     %{da_batch: da_batch} = Chain.da_batch_detail(da_hash);
+    Logger.info("#{inspect(da_batch)}")
     render(
           conn,
           "overview.html",
