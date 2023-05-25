@@ -310,9 +310,10 @@ require Logger
 
   def formatted_fee(%Transaction{} = transaction, opts) do
     l1_fee = if transaction.l1_fee == nil, do: Wei.from(Decimal.new(0), :wei), else: transaction.l1_fee
+    da_fee = if transaction.da_fee == nil, do: Wei.from(Decimal.new(0), :wei), else: transaction.da_fee
     transaction
     |> Chain.fee(:wei)
-    |> fee_to_denomination(l1_fee, opts)
+    |> fee_to_denomination(l1_fee, da_fee, opts)
     |> case do
          {:actual, value} -> value
          {:maximum, value} -> "#{gettext("Max of")} #{value}"
@@ -538,10 +539,11 @@ require Logger
     format_wei_value(value, :ether, include_unit_label: false)
   end
 
-  defp fee_to_denomination({fee_type, fee}, l1_fee, opts) do
+  defp fee_to_denomination({fee_type, fee}, l1_fee, da_fee, opts) do
     denomination = Keyword.get(opts, :denomination)
     include_label? = Keyword.get(opts, :include_label, true)
-    {fee_type, format_wei_value(Wei.sum(Wei.from(fee, :wei), l1_fee), denomination, include_unit_label: include_label?)}
+    l1_and_da_fee = Wei.sum(l1_fee, da_fee)
+    {fee_type, format_wei_value(Wei.sum(Wei.from(fee, :wei), l1_and_da_fee), denomination, include_unit_label: include_label?)}
   end
 
   @doc """
