@@ -134,17 +134,8 @@ defmodule Indexer.Block.Fetcher do
            }}} <- {:blocks, fetched_blocks},
          blocks = TransformBlocks.transform_blocks(blocks_params),
          {:receipts, {:ok, receipt_params}} <- {:receipts, Receipts.fetch(state, transactions_params_without_receipts)},
-         Logger.info("------"),
-         Logger.info("#{inspect(range)}"),
-         Enum.each(blocks_params, fn block ->
-          Logger.info("#{inspect(block.number)}")
-          end),
          %{logs: logs, receipts: receipts} = receipt_params,
          transactions_with_receipts = Receipts.put(transactions_params_without_receipts, receipts),
-         Logger.info("======"),
-         Enum.each(transactions_with_receipts, fn tx ->
-          Logger.info("#{inspect(tx.block_number)}")
-          end),
          %{token_transfers: token_transfers, tokens: tokens} = TokenTransfers.parse(logs),
          %{mint_transfers: mint_transfers} = MintTransfers.parse(logs),
          %FetchedBeneficiaries{params_set: beneficiary_params_set, errors: beneficiaries_errors} =
