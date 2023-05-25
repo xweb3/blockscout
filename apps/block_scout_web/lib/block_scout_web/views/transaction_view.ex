@@ -387,9 +387,10 @@ require Logger
     if da_gas_price == nil, do: format_wei_value(%Wei{value: Decimal.new(0)}, unit), else: format_wei_value(da_gas_price, unit)
   end
 
-  def l2_fee(%Transaction{gas_price: gas_price, gas: gas}, unit) when unit in ~w(wei gwei ether)a do
+  def l2_fee(%Transaction{gas_price: gas_price, gas: gas, gas_used: gas_used}, unit) when unit in ~w(wei gwei ether)a do
+    actual_gas = if gas_used == nil, do: gas, else: gas_used
     gas_price
-    |> Wei.multi( gas)
+    |> Wei.multi(actual_gas)
     |> Decimal.to_string(:normal)
   end
 
