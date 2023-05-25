@@ -135,6 +135,7 @@ defmodule Indexer.Block.Fetcher do
          blocks = TransformBlocks.transform_blocks(blocks_params),
          {:receipts, {:ok, receipt_params}} <- {:receipts, Receipts.fetch(state, transactions_params_without_receipts)},
          Logger.info("------"),
+         Logger.info("#{inspect(range)}"),
          Enum.each(blocks_params, fn block ->
           Logger.info("#{inspect(block.number)}")
           end),
