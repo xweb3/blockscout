@@ -152,6 +152,9 @@ defmodule BlockScoutWeb.Schema.Types do
     field(:l1_gas_used, :decimal)
     field(:l1_fee, :decimal)
     field(:l1_fee_scalar, :decimal)
+    field(:da_fee, :decimal)
+    field(:da_gas_price, :decimal)
+    field(:da_gas_used, :decimal)
 
     connection field(:internal_transactions, node_type: :internal_transaction) do
       arg(:count, :integer)

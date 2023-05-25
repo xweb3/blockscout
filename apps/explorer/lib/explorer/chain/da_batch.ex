@@ -17,7 +17,7 @@ defmodule Explorer.Chain.DaBatch do
 
   # @optional_attrs ~w(batch_index hash size pre_total_elements timestamp)a
 
-  @required_attrs ~w(batch_index batch_size status da_hash store_id store_number data_commitment init_time expire_time duration confirmer header da_init_hash init_block_number signatory_record da_store_hash)a
+  @required_attrs ~w(batch_index batch_size status da_hash store_id store_number da_fee data_commitment init_time expire_time duration confirmer header da_init_hash init_block_number signatory_record da_store_hash)a
 
   @typedoc """
   How much work is required to find a hash with some number of leading 0s.  It is measured in hashes for PoW
