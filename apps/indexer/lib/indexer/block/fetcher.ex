@@ -140,6 +140,10 @@ defmodule Indexer.Block.Fetcher do
           end),
          %{logs: logs, receipts: receipts} = receipt_params,
          transactions_with_receipts = Receipts.put(transactions_params_without_receipts, receipts),
+         Logger.info("======"),
+         Enum.each(transactions_with_receipts, fn tx ->
+          Logger.info("#{inspect(tx.block_number)}")
+          end),
          %{token_transfers: token_transfers, tokens: tokens} = TokenTransfers.parse(logs),
          %{mint_transfers: mint_transfers} = MintTransfers.parse(logs),
          %FetchedBeneficiaries{params_set: beneficiary_params_set, errors: beneficiaries_errors} =
