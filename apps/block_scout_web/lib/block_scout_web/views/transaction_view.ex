@@ -543,11 +543,6 @@ require Logger
   defp fee_to_denomination({fee_type, fee}, l1_fee, da_fee, opts) do
     denomination = Keyword.get(opts, :denomination)
     include_label? = Keyword.get(opts, :include_label, true)
-    Logger.info("--------- l1 l2 da fee")
-    Logger.info("#{inspect(l1_fee)}")
-    Logger.info("#{inspect(Wei.from(fee, :wei))}")
-    Logger.info("#{inspect(da_fee)}")
-    Logger.info("---------")
     l1_and_da_fee = Wei.sum(l1_fee, da_fee)
     {fee_type, format_wei_value(Wei.sum(Wei.from(fee, :wei), l1_and_da_fee), denomination, include_unit_label: include_label?)}
   end
