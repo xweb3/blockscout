@@ -3091,7 +3091,7 @@ msgstr "L1->L2 Transactions"
 #, elixir-format
 #: lib/block_scout_web/templates/layout/_topnav.html.eex:49
 msgid "L2 to L1 Transactions"
-msgstr "L2->L1 Transactions"
+msgstr "L2->L1 Withdrawals"
 
 #, elixir-format
 #: lib/block_scout_web/templates/layout/_topnav.html.eex:49

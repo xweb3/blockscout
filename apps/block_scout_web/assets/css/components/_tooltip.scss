@@ -1,9 +1,10 @@
-$tooltip-background-color: $btn-line-color !default;
+$tooltip-background-color: #CBE9E7 !default;
 $tooltip-color: #fff !default;
 
 .tooltip {
-  max-width: 250px;
+  max-width: 305px;
   min-width: 100px;
+  opacity: 1 !important;
 
   .tooltip-inner {
     background-color: $tooltip-background-color;
@@ -11,6 +12,7 @@ $tooltip-color: #fff !default;
     color: $tooltip-color;
     padding: 15px;
     font-size: 12px;
+    max-width: 305px;
   }
 
   .arrow::before {

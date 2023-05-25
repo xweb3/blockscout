@@ -2,7 +2,7 @@
     class="fade-in txn-list-table-item"
     data-identifier-hash="<%= @l1_to_l2.queue_index %>"
 >
-  
+
     <span style="width: 10%;">
        <%= @l1_to_l2.block %>
     </span>
@@ -11,7 +11,7 @@
     </span>
     <%= if @l1_to_l2.l2_hash == nil do %>
       <a style="width: 20%; text-align: center">
-         <p style="margin-right: 30px">NULL</p>
+         <p style="margin-right: 30px">Pending</p>
       </a>
     <% else %>
       <a style="width: 20%;" href="/tx/<%= @l1_to_l2.l2_hash %>" >
@@ -29,6 +29,6 @@
      <span style="width: 10%;">
        <%= @l1_to_l2.gas_limit %>
     </span>
-    
+
 
 </div>

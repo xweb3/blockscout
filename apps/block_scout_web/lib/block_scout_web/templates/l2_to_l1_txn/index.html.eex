@@ -45,6 +45,18 @@
           Age
         </span>
         <span style="width: 10%;">
+          <%= render BlockScoutWeb.CommonComponentsView, "_i_tooltip_2.html",
+              text: gettext("
+              <div class='custom-tooltip-container'>
+                <h3 class='custom-tooltip-total-title'>Whole status about the L2-L1 withdrawal</h3>
+                <p class='custom-tooltip-title'>· Waiting for Relay:</p>
+                <p class='custom-tooltip-content'>Withdrawn on L2 but not ready for claim on L1</p>
+                <p class='custom-tooltip-title'>· Ready for Claim:</p>
+                <p class='custom-tooltip-content'>Ready for claim on L1</p>
+                <p class='custom-tooltip-title'>· Claimed:</p>
+                <p class='custom-tooltip-content'>Withdrawal has been claimed on L1</p>
+              </div>
+              ") %>
           Status
         </span>
         <span style="width: 20%;">

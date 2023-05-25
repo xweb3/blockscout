@@ -2141,8 +2141,8 @@ defmodule Explorer.Chain do
       `:required`, and the `t:Explorer.Chain.Transaction.t/0` has no associated record for that association, then the
       `t:Explorer.Chain.Transaction.t/0` will not be included in the page `entries`.
   """
-  @spec hash_to_transaction(Hash.Full.t(), [necessity_by_association_option]) ::
-          {:ok, Transaction.t()} | {:error, :not_found}
+  @spec hash_to_transaction(Hash.Full.t() | String.t(), [necessity_by_association_option]) ::
+          {:ok, Transaction.t()} | {:ok, DaBatch.t()} | {:error, :not_found}
   def hash_to_transaction(
         %Hash{byte_count: unquote(Hash.Full.byte_count())} = hash,
         options \\ []
@@ -2156,11 +2156,31 @@ defmodule Explorer.Chain do
     |> Repo.one()
     |> case do
       nil ->
-        {:error, :not_found}
+        Logger.info("111111111111122")
+        hash_string = Hash.to_string(hash)
+        Logger.info("111111111111122")
+        DaBatch
+        |> where([da_batch], da_batch.da_hash == ^hash_string)
+        |> limit(1)
+        |> Repo.one()
+        |> case do
+          nil -> {:error, :not_found}
+
+          da_transaction ->
+            Logger.info("1111111111111")
+            {:ok, da_transaction}
+          end
 
       transaction ->
         {:ok, transaction}
     end
+  end
+
+  defp hash_to_da_transaction(da_hash) do
+    DaBatch
+    |> where([da_batch], da_batch.da_hash == ^da_hash)
+    |> limit(1)
+    |> Repo.one()
   end
 
   # preload_to_detect_tt?: we don't need to preload more than one token transfer in case the tx inside the list (we dont't show any token transfers on tx tile in new UI)

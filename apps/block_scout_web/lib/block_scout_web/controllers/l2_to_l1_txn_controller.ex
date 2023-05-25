@@ -99,11 +99,35 @@ defmodule BlockScoutWeb.L2ToL1TxnController do
       conn,
       %{
         items:
-          Enum.map(l2_to_l1, fn l2_to_l1 ->
+          Enum.map(l2_to_l1, fn l ->
+            display_status = case l.status do
+              "Waiting" ->
+                "Waiting for relay"
+              "Ready for Relay" ->
+                "Ready for Claim"
+              "Relayed" ->
+                "Claimed"
+              _ ->
+                l.status
+            end
+
+            updated_l2_to_l1 = Map.put(l, :display_status, display_status)
+
+            display_status_tooltip = case l.status do
+              "Waiting" ->
+                "Withdrawn on L2 but not ready for claim on L1"
+              "Ready for Relay" ->
+                "Ready for claim on L1"
+              "Relayed" ->
+                "Withdrawal has been claimed on L1"
+              _ ->
+                l.status
+            end
+            l2_to_l1_data = Map.put(updated_l2_to_l1, :display_status_tooltip, display_status_tooltip)
             View.render_to_string(
               L2ToL1TxnView,
               "_tile.html",
-              l2_to_l1: l2_to_l1,
+              l2_to_l1: l2_to_l1_data,
               conn: conn,
               l1_explorer: Application.get_env(:block_scout_web, :l1_explorer_url)
             )
