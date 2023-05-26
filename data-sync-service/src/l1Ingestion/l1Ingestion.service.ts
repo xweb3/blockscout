@@ -599,12 +599,16 @@ export class L1IngestionService {
     console.log('-------------- start')
     console.log(unMergeTxList)
     for (let i = 0; i < unMergeTxList.length; i++) {
+      console.log(unMergeTxList[i].msg_hash)
+      console.log(Buffer.from(unMergeTxList[i].msg_hash).toString())
       const l2ToL1Transaction = await this.getL2ToL1TxByMsgHash(
-        unMergeTxList[i].msg_hash,
+        Buffer.from(unMergeTxList[i].msg_hash).toString(),
       );
       console.log('==========')
       console.log(l2ToL1Transaction)
       if (l2ToL1Transaction) {
+        console.log('l2 hash', l2ToL1Transaction.l2_hash)
+        console.log('l1 hash', unMergeTxList[i].tx_hash)
         l2ToL1UpdateList.push({
           hash: unMergeTxList[i].tx_hash,
           status: 'Relayed',
