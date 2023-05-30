@@ -27,7 +27,7 @@ api_path =
 config :block_scout_web,
   namespace: BlockScoutWeb,
   ecto_repos: [Explorer.Repo, Explorer.Repo.Account],
-  l1_token_symbol: System.get_env("L1_TOKEN_SYMBOL") || "BIT",
+  l1_token_symbol: System.get_env("L1_TOKEN_SYMBOL") || "MNT",
   cookie_domain: System.get_env("SESSION_COOKIE_DOMAIN")
 
 config :block_scout_web,
