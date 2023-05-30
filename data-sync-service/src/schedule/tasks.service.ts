@@ -259,7 +259,7 @@ export class TasksService {
       );
     }
   }
-  @Interval(2000)
+  /* @Interval(2000)
   async txn_batch() {
     let end = 0;
     const currentBlockNumber =
@@ -289,7 +289,7 @@ export class TasksService {
         `sync txn_batch finished and latest block number is: ${currentBlockNumber}`,
       );
     }
-  }
+  } */
   @Interval(10000)
   async l1l2_merge() {
     try {

@@ -5,7 +5,7 @@ defmodule BlockScoutWeb.EigendaBatchView do
   alias BlockScoutWeb.Cldr.Number
   alias Explorer.{Chain, CustomContractsHelpers, Repo}
   alias Explorer.Chain.Block.Reward
-  alias Explorer.Chain.{Address, Block, InternalTransaction, Transaction, Wei, TxnBatch}
+  alias Explorer.Chain.{Address, Block, InternalTransaction, Transaction, Wei, TxnBatch, DaBatch}
   alias Explorer.Counters.AverageBlockTime
   alias Explorer.ExchangeRates.Token
   alias Timex.Duration

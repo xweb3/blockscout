@@ -55,7 +55,7 @@ defmodule BlockScoutWeb.ChainController do
       transaction_estimated_count: transaction_estimated_count,
       total_gas_usage: total_gas_usage,
       transactions_path: recent_transactions_path(conn, :index),
-      txn_batches_path: recent_txn_batches_path(conn, :index),
+      eigenda_batches_path: recent_eigenda_batches_path(conn, :index),
       l1_to_l2_txn_path: recent_l1_to_l2_txn_path(conn, :index),
       transaction_stats: transaction_stats,
       block_count: block_count,
@@ -153,7 +153,6 @@ defmodule BlockScoutWeb.ChainController do
   end
 
   defp redirect_search_results(conn, %Address{} = item) do
-    Logger.info("0-0-0-0-444")
     address_path =
       conn
       |> address_path(:show, item)
@@ -163,7 +162,6 @@ defmodule BlockScoutWeb.ChainController do
   end
 
   defp redirect_search_results(conn, %Block{} = item) do
-    Logger.info("0-0-0-0-333")
     block_path =
       conn
       |> block_path(:show, item)
@@ -173,22 +171,15 @@ defmodule BlockScoutWeb.ChainController do
   end
 
   defp redirect_search_results(conn, %Transaction{} = item) do
-    Logger.info("0-0-0-0-111")
     transaction_path =
       conn
       |> transaction_path(:show, item)
       |> Controller.full_path()
-
+      Logger.info("#{inspect(transaction_path)}")
     redirect(conn, to: transaction_path)
   end
 
   defp redirect_search_results(conn, %DaBatch{} = item) do
-    Logger.info("0-0-0-0-2222")
-    eigenda_batch_path =
-      conn
-      |> eigenda_batch_path(:show, item)
-      #|> Controller.full_path()
-      Logger.info("#{inspect(eigenda_batch_path)}")
-    redirect(conn, to: eigenda_batch_path)
+    redirect(conn, to: "/eigenda-batch/#{item.da_hash}")
   end
 end

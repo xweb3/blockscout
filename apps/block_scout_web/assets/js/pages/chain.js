@@ -25,14 +25,14 @@ export const initialState = {
   blocksLoading: true,
   blocksError: false,
   transactions: [],
-  txnBatches: [],
+  eigendaBatches: [],
   l1ToL2Txn: [],
   transactionsBatch: [],
   transactionsError: false,
-  txnBatchesError: false,
+  eigendaBatchesError: false,
   L1ToL2Error: false,
   transactionsLoading: true,
-  txnBatchesLoading: true,
+  eigendaBatchesLoading: true,
   L1ToL2Loading: true,
   transactionCount: null,
   totalGasUsageCount: null,
@@ -150,17 +150,17 @@ function baseReducer(state = initialState, action) {
     case 'FINISH_TRANSACTIONS_FETCH':
       return Object.assign({}, state, { transactionsLoading: false })
 
-    case 'START_TXN_BATCHES_FETCH':
-      return Object.assign({}, state, {txnBatchesError: false, txnBatchesLoading: true })
-    case 'TXN_BATCHES_FETCHED':
-      return Object.assign({}, state, { txnBatches: [...action.msg.txnBatches] })
-    case 'TXN_BATCHES_FETCH_ERROR':
-      return Object.assign({}, state, { txnBatchesError: true })
-    case 'FINISH_TXN_BATCHES_FETCH':
-      return Object.assign({}, state, { txnBatchesLoading: false })
+    case 'START_EIGENDA_BATCHES_FETCH':
+      return Object.assign({}, state, {eigendaBatchesError: false, eigendaBatchesLoading: true })
+    case 'EIGENDA_BATCHES_FETCHED':
+      return Object.assign({}, state, { eigendaBatches: [...action.msg.eigendaBatches] })
+    case 'EIGENDA_BATCHES_FETCH_ERROR':
+      return Object.assign({}, state, { eigendaBatchesError: true })
+    case 'FINISH_EIGENDA_BATCHES_FETCH':
+      return Object.assign({}, state, { eigendaBatchesLoading: false })
 
     case 'START_L1_TO_L2_FETCH':
-      return Object.assign({}, state, {L1ToL2Error: false, txnBatchesLoading: true })
+      return Object.assign({}, state, {L1ToL2Error: false, eigendaBatchesLoading: true })
     case 'L1_TO_L2_FETCHED':
       return Object.assign({}, state, { l1ToL2Txn: [...action.msg.l1ToL2Txn] })
     case 'L1_TO_L2_FETCH_ERROR':
@@ -322,25 +322,25 @@ const elements = {
       listMorph(container, newElements, { key: 'dataset.identifierHash' })
     }
   },
-  '[data-selector="txn-batch-list"] [data-selector="error-message"]': {
+  '[data-selector="eigenda-batch-list"] [data-selector="error-message"]': {
     render ($el, state, _oldState) {
-      $el.toggle(state.txnBatchesError)
+      $el.toggle(state.eigendaBatchesError)
     }
   },
-  '[data-selector="txn-batch-list"] [data-selector="loading-message"]': {
+  '[data-selector="eigenda-batch-list"] [data-selector="loading-message"]': {
     render ($el, state, _oldState) {
-      showLoader(state.txnBatchesLoading, $el)
+      showLoader(state.eigendaBatchesLoading, $el)
     }
   },
-  '[data-selector="txn-batch-list"]': {
+  '[data-selector="eigenda-batch-list"]': {
     load($el) {
-      return { txnBatchesPath: $el[0].dataset.txnBatchesPath }
+      return { eigendaBatchesPath: $el[0].dataset.eigendaBatchesPath }
     },
     render($el, state, oldState) {
-      if (oldState.txnBatches === state.txnBatches) return
+      if (oldState.eigendaBatches === state.eigendaBatches) return
       const container = $el[0]
-      const newElements = map(state.txnBatches, ({ txnBatchesHtml }) => {
-        return $(txnBatchesHtml)[0]
+      const newElements = map(state.eigendaBatches, ({ eigendaBatchesHtml }) => {
+        return $(eigendaBatchesHtml)[0]
       })
       listMorph(container, newElements, { key: 'dataset.identifierHash' })
     }
@@ -384,7 +384,7 @@ if ($chainDetailsPage.length) {
   connectElements({ store, elements })
 
   loadTransactions(store)
-  loadTxnBatches(store)
+  loadEigendaBatches(store)
   loadl1ToL2Txn(store)
   bindTransactionErrorMessage(store)
 
@@ -434,7 +434,7 @@ if ($chainDetailsPage.length) {
   $txReloadButton.on('click', (event) => {
     event.preventDefault()
     loadTransactions(store)
-    loadTxnBatches(store)
+    loadEigendaBatches(store)
     loadl1ToL2Txn(store)
     $channelBatching.hide()
     store.dispatch({
@@ -452,13 +452,13 @@ function loadTransactions(store) {
     .always(() => store.dispatch({ type: 'FINISH_TRANSACTIONS_FETCH' }))
 }
 
-function loadTxnBatches(store) {
-  const path = store.getState().txnBatchesPath
-  store.dispatch({ type: 'START_TXN_BATCHES_FETCH' })
+function loadEigendaBatches(store) {
+  const path = store.getState().eigendaBatchesPath
+  store.dispatch({ type: 'START_EIGENDA_BATCHES_FETCH' })
   $.getJSON(path)
-    .done(response => store.dispatch({ type: 'TXN_BATCHES_FETCHED', msg: humps.camelizeKeys(response) }))
-    .fail(() => store.dispatch({ type: 'TXN_BATCHES_FETCH_ERROR' }))
-    .always(() => store.dispatch({ type: 'FINISH_TXN_BATCHES_FETCH' }))
+    .done(response => store.dispatch({ type: 'EIGENDA_BATCHES_FETCHED', msg: humps.camelizeKeys(response) }))
+    .fail(() => store.dispatch({ type: 'EIGENDA_BATCHES_FETCH_ERROR' }))
+    .always(() => store.dispatch({ type: 'FINISH_EIGENDA_BATCHES_FETCH' }))
 }
 
 function loadl1ToL2Txn(store) {

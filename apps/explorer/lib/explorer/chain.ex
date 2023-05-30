@@ -3419,6 +3419,12 @@ defmodule Explorer.Chain do
       fetch_recent_collated_txn_batches(paging_options)
   end
 
+  @spec recent_collated_eigenda_batches([paging_options]) :: [DaBatch.t()]
+  def recent_collated_eigenda_batches(options \\ []) when is_list(options) do
+    paging_options = Keyword.get(options, :paging_options, @default_paging_options)
+      fetch_recent_collated_eigenda_batches(paging_options)
+  end
+
   @spec recent_collated_l1_to_l2([paging_options]) :: [L1ToL2.t()]
   def recent_collated_l1_to_l2(options \\ []) when is_list(options) do
     paging_options = Keyword.get(options, :paging_options, @default_paging_options)
@@ -3756,6 +3762,12 @@ defmodule Explorer.Chain do
     #|> where([transaction], not is_nil(transaction.block_number) and not is_nil(transaction.index))
     #|> join_associations(necessity_by_association)
     #|> preload([{:token_transfers, [:token, :from_address, :to_address]}])
+    |> Repo.all()
+  end
+
+  def fetch_recent_collated_eigenda_batches(paging_options) do
+    paging_options
+    |> fetch_eigenda_batches()
     |> Repo.all()
   end
 
@@ -4772,6 +4784,13 @@ defmodule Explorer.Chain do
   defp fetch_txn_batches(paging_options \\ nil, from_index \\ nil, to_index \\ nil) do
     TxnBatch
     |> order_by([txn_batch], desc: txn_batch.batch_index)
+    |> where_batch_index_in_period(from_index, to_index)
+    |> handle_paging_options(paging_options)
+  end
+
+  defp fetch_eigenda_batches(paging_options \\ nil, from_index \\ nil, to_index \\ nil) do
+    DaBatch
+    |> order_by([da_batch], desc: da_batch.batch_index)
     |> where_batch_index_in_period(from_index, to_index)
     |> handle_paging_options(paging_options)
   end

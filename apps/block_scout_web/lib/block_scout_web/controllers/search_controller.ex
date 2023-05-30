@@ -9,7 +9,6 @@ defmodule BlockScoutWeb.SearchController do
   require Logger
 
   def search_results(conn, %{"q" => query, "type" => "JSON"} = params) do
-    Logger.info("==========")
     [paging_options: paging_options] = paging_options(params)
     offset = (max(paging_options.page_number, 1) - 1) * paging_options.page_size
 
@@ -60,7 +59,6 @@ defmodule BlockScoutWeb.SearchController do
   end
 
   def search_results(conn, %{"q" => query}) do
-    Logger.info("==========22")
     render(
       conn,
       "results.html",

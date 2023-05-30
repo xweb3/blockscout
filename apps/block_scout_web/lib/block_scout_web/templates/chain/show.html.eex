@@ -200,12 +200,12 @@
     <div class="tile recent-preview-item">
       <p class="recent-preview-item-title-container">
         <span style="font-size:16px;" class="tile-title">
-          Latest L1 Batches
+          Latest EigenLayer Txn Batches
         </span>
       </p>
       <span
-        data-selector="txn-batch-list"
-        data-txn-batches-path="<%= @txn_batches_path %>"
+        data-selector="eigenda-batch-list"
+        data-eigenda-batches-path="<%= @eigenda_batches_path %>"
         style="display:flex;flex-direction:column;padding:0 10px;box-sizing:border-box;"
       >
         <button data-selector="error-message" class="alert alert-danger col-12 text-left" style="display: none;">
@@ -215,8 +215,8 @@
         </button>
 
       </span>
-      <a href="/txn-batches">
-        <button class="col-12 text-center view-btn">View all Txn batches</button>
+      <a href="/eigenda-batches">
+        <button class="col-12 text-center view-btn">View all EigenLyaer Txn batches</button>
       </a>
     </div>
 

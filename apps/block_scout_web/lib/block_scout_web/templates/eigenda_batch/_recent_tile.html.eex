@@ -1,27 +1,28 @@
-<div 
-    data-identifier-hash="<%= @txn_batch.batch_index %>"
+<div
+    data-identifier-hash="<%= @eigenda_batch.batch_index %>"
     class="recent-preview-item-content"
 >
     <span
         class="recent-preview-item-content-title"
     >
-        Ba
+        Da
     </span>
     <div class="recent-preview-item-content-batch">
         <span>
-            <%= #render "_link.html", batch_index: @txn_batch .batch_index, data_test: "address_hash_link" %>
-            <%= render "_link.html", batch_index: @txn_batch.batch_index, data_test: "address_hash_link" %>
+            <%= #render "_link.html", batch_index: @eigenda_batch .batch_index, data_test: "address_hash_link" %>
+            <%= render "_link.html", batch_index: @eigenda_batch.batch_index, data_test: "address_hash_link" %>
         </span>
-        <span in-tile data-from-now="<%= block_timestamp(@txn_batch ) %>"></span>
-        
     </div>
 
     <div style="margin-bottom:5px;display:flex;flex-direction:column;flex:1;">
-        <a href="https://goerli.etherscan.io/tx/<%= @txn_batch.hash %>" target="_blank">
-            <%= sub_hash_string(@txn_batch.hash, 15) %>...
-        </a>
+        <a
+                href="/eigenda-batch/<%= @eigenda_batch.da_hash %>"
+                class="recent-preview-item-content-l1-2-l2-link"
+            >
+                <%= sub_hash_string(@eigenda_batch.da_hash, 15) %>...
+            </a>
         <span>
-            <%= @txn_batch .size %> txns
+            <%= @eigenda_batch .batch_size %> txns
         </span>
     </div>
 </div>
