@@ -12,6 +12,8 @@
             <%= #render "_link.html", batch_index: @eigenda_batch .batch_index, data_test: "address_hash_link" %>
             <%= render "_link.html", batch_index: @eigenda_batch.batch_index, data_test: "address_hash_link" %>
         </span>
+        <span class="transaction-details-address" in-tile data-from-now="<%= @eigenda_batch.init_time %>">
+              </span>
     </div>
 
     <div style="margin-bottom:5px;display:flex;flex-direction:column;flex:1;">
