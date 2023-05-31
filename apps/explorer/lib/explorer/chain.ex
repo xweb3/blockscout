@@ -2176,6 +2176,54 @@ defmodule Explorer.Chain do
     end
   end
 
+  @spec hash_to_batch(String.t(), [necessity_by_association_option]) ::
+          {:ok, map()} | {:error, :not_found}
+  def hash_to_batch(
+      hash,
+      options \\ []
+    )
+  when is_list(options) do
+    query =
+      from(
+        t in DaBatchTransaction,
+        left_join: d in DaBatch,
+        on: d.batch_index == t.batch_index,
+        where: t.tx_hash == ^hash,
+        select: %{batch_index: t.batch_index, data_commitment: d.data_commitment}
+      )
+
+    Repo.one(query)
+    |> case do
+      nil ->
+        {:error, :not_found}
+      batch ->
+        {:ok, batch}
+    end
+  end
+
+  @spec block_to_state_batch(Decimal.t(), [necessity_by_association_option]) ::
+          {:ok, StateBatch.t()} | {:error, :not_found}
+  def block_to_state_batch(
+      block_number,
+      options \\ []
+    )
+  when is_list(options) do
+    query =
+      from(
+        s in StateBatch,
+        where: ^block_number >= s.pre_total_elements and ^block_number < s.pre_total_elements + s.size,
+        select: %{batch_index: s.batch_index, submission_tx_hash: s.hash}
+      )
+
+    Repo.one(query)
+    |> case do
+      nil ->
+        {:error, :not_found}
+      batch ->
+        {:ok, batch}
+    end
+  end
+
   defp hash_to_da_transaction(da_hash) do
     DaBatch
     |> where([da_batch], da_batch.da_hash == ^da_hash)

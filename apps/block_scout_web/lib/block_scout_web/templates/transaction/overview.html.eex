@@ -192,6 +192,63 @@
               </dd>
             </dl>
           <% end %>
+
+          <!-- Eigenda batch index -->
+           <%= if Map.has_key?(@transaction, :batch_index) do %>
+            <dl class="row">
+                <dt class="col-sm-3 col-lg-2 text-muted">
+                  <%= render BlockScoutWeb.CommonComponentsView, "_i_tooltip_2.html",
+                    text: gettext("Eigenlayer Txn Batch Index.") %>
+                  <%= gettext "Eigenlayer Txn Batch Index" %>
+                </dt>
+                <dd class="col-sm-9 col-lg-10" data-selector="block-timestamp">
+                  <%= render "_batch_link.html", batch_index: @transaction.batch_index, data_test: "address_hash_link" %>
+                </dd>
+              </dl>
+          <% end %>
+
+           <!-- Eigenda Submission Hash -->
+          <%= if Map.has_key?(@transaction, :data_commitment) do %>
+            <dl class="row">
+                <dt class="col-sm-3 col-lg-2 text-muted">
+                  <%= render BlockScoutWeb.CommonComponentsView, "_i_tooltip_2.html",
+                    text: gettext("Eigenlayer Submission Hash") %>
+                  <%= gettext "Eigenlayer Submission Hash" %>
+                </dt>
+                  <dd class="col-sm-9 col-lg-10"> <%= @transaction.data_commitment %> </dd>
+                </dd>
+            </dl>
+          <% end %>
+
+          <!-- State batch index -->
+          <%= if Map.has_key?(@transaction, :state_batch_index) do %>
+            <dl class="row">
+                <dt class="col-sm-3 col-lg-2 text-muted">
+                  <%= render BlockScoutWeb.CommonComponentsView, "_i_tooltip_2.html",
+                    text: gettext(" L1 State Batch Index.") %>
+                  <%= gettext " L1 State Batch Index" %>
+                </dt>
+                <dd class="col-sm-9 col-lg-10" data-selector="block-timestamp">
+                  <%= render "_state_batch_link.html", batch_index: @transaction.state_batch_index, data_test: "address_hash_link" %>
+                </dd>
+              </dl>
+          <% end %>
+           <!-- State Root Submission Tx Hash -->
+           <%= if Map.has_key?(@transaction, :submission_tx_hash) do %>
+            <dl class="row">
+                <dt class="col-sm-3 col-lg-2 text-muted">
+                  <%= render BlockScoutWeb.CommonComponentsView, "_i_tooltip_2.html",
+                    text: gettext("L1 State Root Submission Tx Hash") %>
+                  <%= gettext "L1 State Root Submission Tx Hash" %>
+                </dt>
+                  <dd class="col-sm-9 col-lg-10">
+                     <a href="<%= Application.get_env(:block_scout_web, :l1_explorer_url) %>/tx/<%= @transaction.submission_tx_hash %>" target="_blank">
+                      <%= @transaction.submission_tx_hash %>
+                    </a>
+                  </dd>
+                </dd>
+            </dl>
+          <% end %>
           <!-- From -->
           <dl class="row">
             <dt class="col-sm-3 col-lg-2 text-muted">

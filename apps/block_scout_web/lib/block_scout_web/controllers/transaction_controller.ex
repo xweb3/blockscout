@@ -156,8 +156,26 @@ require Logger
                  transaction_hash,
                  necessity_by_association: @necessity_by_association
                ),
+
              {:ok, false} <- AccessHelpers.restricted_access?(to_string(transaction.from_address_hash), params),
              {:ok, false} <- AccessHelpers.restricted_access?(to_string(transaction.to_address_hash), params) do
+              # TODO(Jayce) hash hard code
+              updated_transaction = case Chain.hash_to_batch("0xbea2e27d87299ab1f91b914b2acb1b08780199ad042958c854fc7992bea448fc",necessity_by_association: @necessity_by_association) do
+                {:error, _} ->
+                  transaction
+                {:ok, %{batch_index: batch_index, data_commitment: data_commitment}} ->
+                  res = Map.put(transaction, :batch_index, batch_index)
+                  Map.put(res, :data_commitment, data_commitment)
+              end
+              # TODO(Jayce) hash hard code
+              updated_state_transaction = case Chain.block_to_state_batch(2536260,necessity_by_association: @necessity_by_association) do
+                {:error, _} ->
+                  updated_transaction
+                {:ok, %{batch_index: batch_index, submission_tx_hash: submission_tx_hash}} ->
+                  res = Map.put(updated_transaction, :state_batch_index, batch_index)
+                  Map.put(res, :submission_tx_hash, submission_tx_hash)
+              end
+
           render(
             conn,
             "show_token_transfers.html",
@@ -166,7 +184,7 @@ require Logger
             current_path: Controller.current_full_path(conn),
             current_user: current_user(conn),
             show_token_transfers: true,
-            transaction: transaction,
+            transaction: updated_state_transaction,
             from_tags: get_address_tags(transaction.from_address_hash, current_user(conn)),
             to_tags: get_address_tags(transaction.to_address_hash, current_user(conn)),
             tx_tags:
@@ -196,6 +214,23 @@ require Logger
                ),
              {:ok, false} <- AccessHelpers.restricted_access?(to_string(transaction.from_address_hash), params),
              {:ok, false} <- AccessHelpers.restricted_access?(to_string(transaction.to_address_hash), params) do
+              # TODO(Jayce) hash hard code
+              updated_transaction = case Chain.hash_to_batch("0xbea2e27d87299ab1f91b914b2acb1b08780199ad042958c854fc7992bea448fc",necessity_by_association: @necessity_by_association) do
+                {:error, _} ->
+                  transaction
+                {:ok, %{batch_index: batch_index, data_commitment: data_commitment}} ->
+                  res = Map.put(transaction, :batch_index, batch_index)
+                  Map.put(res, :data_commitment, data_commitment)
+              end
+              # TODO(Jayce) hash hard code
+              updated_state_transaction = case Chain.block_to_state_batch(2536260,necessity_by_association: @necessity_by_association) do
+                {:error, _} ->
+                  updated_transaction
+                {:ok, %{batch_index: batch_index, submission_tx_hash: submission_tx_hash}} ->
+                  res = Map.put(updated_transaction, :state_batch_index, batch_index)
+                  Map.put(res, :submission_tx_hash, submission_tx_hash)
+              end
+
           render(
             conn,
             "show_internal_transactions.html",
@@ -204,7 +239,7 @@ require Logger
             current_user: current_user(conn),
             block_height: Chain.block_height(),
             show_token_transfers: Chain.transaction_has_token_transfers?(transaction_hash),
-            transaction: transaction,
+            transaction: updated_state_transaction,
             from_tags: get_address_tags(transaction.from_address_hash, current_user(conn)),
             to_tags: get_address_tags(transaction.to_address_hash, current_user(conn)),
             tx_tags:

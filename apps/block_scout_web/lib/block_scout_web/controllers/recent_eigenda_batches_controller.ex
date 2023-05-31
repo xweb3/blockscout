@@ -24,7 +24,6 @@ defmodule BlockScoutWeb.RecentEigendaBatchesController do
               )
           }
         end)
-        Logger.info("#{inspect(eigenda_batches)}")
       json(conn, %{eigenda_batches: eigenda_batches})
     else
       unprocessable_entity(conn)
