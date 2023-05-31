@@ -1,4 +1,4 @@
-defmodule BlockScoutWeb.TransactionController do
+defmodule BlockScoutWeb.StateBatchTransactionController do
   use BlockScoutWeb, :controller
 
   import BlockScoutWeb.Account.AuthController, only: [current_user: 1]
@@ -52,12 +52,10 @@ require Logger
     }
   ]
 
-  def index(conn, %{"type" => "JSON"} = params) do
+  def index(conn, %{"type" => "JSON", "elements"=> elements, "size"=> size} = params) do
     options =
       @default_options
       |> Keyword.merge(paging_options(params))
-Logger.info("------")
-Logger.info("#{inspect(params)}")
     full_options =
       options
       |> Keyword.put(
@@ -67,9 +65,11 @@ Logger.info("#{inspect(params)}")
         |> update_page_parameters(Chain.default_page_size(), Keyword.get(options, :paging_options))
       )
 
-    %{total_transactions_count: transactions_count, transactions: transactions_plus_one} =
-      Chain.recent_collated_transactions_for_rap(full_options)
+      elements_integer = String.to_integer(elements)
+      size_integer = String.to_integer(size)
 
+    %{total_transactions_count: transactions_count, transactions: transactions_plus_one} =
+      Chain.recent_state_batch_transactions_for_rap(full_options, elements_integer, size_integer)
     {transactions, next_page} =
       if fetch_page_number(params) == 1 do
         split_list_by_page(transactions_plus_one)

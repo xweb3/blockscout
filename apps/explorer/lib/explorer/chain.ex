@@ -3509,6 +3509,21 @@ defmodule Explorer.Chain do
     %{total_transactions_count: total_transactions_count, transactions: fetched_transactions}
   end
 
+
+  @spec recent_state_batch_transactions_for_rap([paging_options | necessity_by_association_option], Decimal.t(), Decimal.t()) :: %{
+          :total_transactions_count => non_neg_integer(),
+          :transactions => [Transaction.t()]
+        }
+  def recent_state_batch_transactions_for_rap(options \\ [], elements, size) when is_list(options) do
+    necessity_by_association = Keyword.get(options, :necessity_by_association, %{})
+    paging_options = Keyword.get(options, :paging_options, @default_paging_options)
+    total_transactions_count = state_batch_transactions_available_count(elements, size)
+    fetched_transactions = fetch_recent_collated_state_batch_transactions_for_rap(paging_options, necessity_by_association, elements, size)
+
+    %{total_transactions_count: total_transactions_count, transactions: fetched_transactions}
+  end
+
+
   def default_page_size, do: @default_page_size
 
   @spec recent_collated_state_batches_for_rap([paging_options]) :: %{
@@ -3554,6 +3569,16 @@ defmodule Explorer.Chain do
   def fetch_recent_collated_transactions_for_rap(paging_options, necessity_by_association) do
     fetch_transactions_for_rap()
     |> where([transaction], not is_nil(transaction.block_number) and not is_nil(transaction.index))
+    |> handle_random_access_paging_options(paging_options)
+    |> join_associations(necessity_by_association)
+    |> preload([{:token_transfers, [:token, :from_address, :to_address]}])
+    |> Repo.all()
+  end
+
+  def fetch_recent_collated_state_batch_transactions_for_rap(paging_options, necessity_by_association, elements, size) do
+    max = elements + size
+    fetch_transactions_for_rap()
+    |> where([transaction], not is_nil(transaction.block_number) and not is_nil(transaction.index) and  transaction.block_number >= ^elements and transaction.block_number < ^max)
     |> handle_random_access_paging_options(paging_options)
     |> join_associations(necessity_by_association)
     |> preload([{:token_transfers, [:token, :from_address, :to_address]}])
@@ -3779,6 +3804,14 @@ defmodule Explorer.Chain do
   def transactions_available_count do
     Transaction
     |> where([transaction], not is_nil(transaction.block_number) and not is_nil(transaction.index))
+    |> limit(^@limit_showing_transactions)
+    |> Repo.aggregate(:count, :hash)
+  end
+
+  def state_batch_transactions_available_count(elements, size) do
+    max = elements + size
+    Transaction
+    |> where([transaction], not is_nil(transaction.block_number) and not is_nil(transaction.index) and transaction.block_number >= ^elements and transaction.block_number < ^max)
     |> limit(^@limit_showing_transactions)
     |> Repo.aggregate(:count, :hash)
   end

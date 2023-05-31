@@ -126,6 +126,7 @@ defmodule BlockScoutWeb.WebRouter do
     resources("/verified-contracts", VerifiedContractsController, only: [:index])
 
     get("/txs", TransactionController, :index)
+    get("/state-batch-txs/:elements/:size/:batch", StateBatchTransactionController, :index)
     get("/state-batches", StateBatchController, :index)
     resources("/state-batch", StateBatchController, only: [:show], param: "batch_index")
     get("/eigenda-batches", EigendaBatchController, :index)
