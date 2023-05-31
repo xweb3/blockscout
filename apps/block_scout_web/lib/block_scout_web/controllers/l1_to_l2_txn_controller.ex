@@ -61,9 +61,10 @@ defmodule BlockScoutWeb.L1ToL2TxnController do
         |> fetch_page_number()
         |> update_page_parameters(Chain.default_page_size(), Keyword.get(options, :paging_options))
       )
+    tx_type = if Map.has_key?(params, "tx_type"), do: String.to_integer(params["tx_type"]), else: nil
 
     %{total_l1_to_l2_count: l1_to_l2_count, l1_to_l2: l1_to_l2_plus_one} =
-      Chain.recent_collated_l1_to_l2_for_rap(full_options)
+      Chain.recent_collated_l1_to_l2_for_rap(full_options, tx_type)
 
     {l1_to_l2, next_page} =
       if fetch_page_number(params) == 1 do
@@ -71,6 +72,7 @@ defmodule BlockScoutWeb.L1ToL2TxnController do
       else
         {l1_to_l2_plus_one, nil}
       end
+
     next_page_params =
       if fetch_page_number(params) == 1 do
         page_size = Chain.default_page_size()
@@ -92,16 +94,27 @@ defmodule BlockScoutWeb.L1ToL2TxnController do
       else
         Map.delete(params, "type")
       end
-
     json(
       conn,
       %{
         items:
-          Enum.map(l1_to_l2, fn l1_to_l2 ->
+          Enum.map(l1_to_l2, fn l ->
+            display_type = case l.type do
+              0 ->
+                "Tss Reward"
+              1 ->
+                "User Deposit"
+              2 ->
+                "L2 Txn Rollback"
+              _ ->
+                l.type
+            end
+
+            updated_l1_to_l2 = Map.put(l, :display_type, display_type)
             View.render_to_string(
               L1ToL2TxnView,
               "_tile.html",
-              l1_to_l2: l1_to_l2,
+              l1_to_l2: updated_l1_to_l2,
               conn: conn,
               l1_explorer: Application.get_env(:block_scout_web, :l1_explorer_url)
             )

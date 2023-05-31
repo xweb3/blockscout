@@ -3553,16 +3553,15 @@ defmodule Explorer.Chain do
     %{total_l2_to_l1_count: l2_to_l1_count, l2_to_l1: fetched_l2_to_l1}
   end
 
-  @spec recent_collated_l1_to_l2_for_rap([paging_options]) :: %{
+  @spec recent_collated_l1_to_l2_for_rap([paging_options], Decimal.t()) :: %{
     :total_l1_to_l2_count => non_neg_integer(),
     :l1_to_l2 => [L1ToL2.t()]
   }
 
-  def recent_collated_l1_to_l2_for_rap(options \\ []) when is_list(options) do
+  def recent_collated_l1_to_l2_for_rap(options \\ [], tx_type) when is_list(options) do
     paging_options = Keyword.get(options, :paging_options, @default_paging_options)
-
-    l1_to_l2_count = l1_to_l2_available_count()
-    fetched_l1_to_l2=fetch_recent_collated_l1_to_l2_for_rap(paging_options)
+    l1_to_l2_count = l1_to_l2_available_count(tx_type)
+    fetched_l1_to_l2=fetch_recent_collated_l1_to_l2_for_rap(paging_options, tx_type)
     %{total_l1_to_l2_count: l1_to_l2_count, l1_to_l2: fetched_l1_to_l2}
   end
 
@@ -3591,8 +3590,8 @@ defmodule Explorer.Chain do
     |> Repo.all()
   end
 
-  def fetch_recent_collated_l1_to_l2_for_rap(paging_options) do
-    fetch_l1_to_l2_for_rap()
+  def fetch_recent_collated_l1_to_l2_for_rap(paging_options, tx_type) do
+    fetch_l1_to_l2_for_rap(tx_type)
     |> no_cache_handle_options(paging_options)
     |> Repo.all()
   end
@@ -3749,9 +3748,15 @@ defmodule Explorer.Chain do
     |> Repo.one()
   end
 
-  defp fetch_l1_to_l2_for_rap do
-    L1ToL2
-    |> order_by([l1_to_l2], desc: l1_to_l2.queue_index)
+  defp fetch_l1_to_l2_for_rap(tx_type) do
+    if is_nil(tx_type) do
+      L1ToL2
+      |> order_by([l1_to_l2], desc: l1_to_l2.queue_index)
+    else
+      L1ToL2
+      |> order_by([l1_to_l2], desc: l1_to_l2.queue_index)
+      |> where([l1_to_l2], l1_to_l2.type == ^tx_type)
+    end
   end
 
   defp fetch_l2_to_l1_for_rap do
@@ -3787,7 +3792,18 @@ defmodule Explorer.Chain do
     |> Repo.aggregate(:count, :hash)
   end
 
-  def l1_to_l2_available_count do
+  def l1_to_l2_available_count(tx_type) do
+      if is_nil(tx_type) do
+        l1_to_l2_available_count()
+      else
+        L1ToL2
+        |> where([l1_to_l2], not is_nil(l1_to_l2.queue_index) and l1_to_l2.type == ^tx_type)
+        |> limit(^@limit_showing_transactions)
+        |> Repo.aggregate(:count, :hash)
+      end
+  end
+
+  def l1_to_l2_available_count() do
     L1ToL2
     |> where([l1_to_l2], not is_nil(l1_to_l2.queue_index))
     |> limit(^@limit_showing_transactions)

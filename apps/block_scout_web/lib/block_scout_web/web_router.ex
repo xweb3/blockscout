@@ -133,6 +133,7 @@ defmodule BlockScoutWeb.WebRouter do
     get("/da_batch_transactions", DaBatchTransactionController, :index, param: "batch_index")
     resources("/eigenda-batch", EigendaBatchController, only: [:show], param: "da_hash")
     get("/l1-to-l2-txns", L1ToL2TxnController, :index)
+    get("/l1-to-l2-txns/:tx_type", L1ToL2TxnController, :index)
     get("/l2-to-l1-txns", L2ToL1TxnController, :index)
 
     resources "/tx", TransactionController, only: [:show] do
