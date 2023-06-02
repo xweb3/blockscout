@@ -306,6 +306,7 @@ export class L1IngestionService {
     const iface = new utils.Interface([
       'function claimReward(uint256 _blockStartHeight, uint32 _length, uint256 _batchTime, address[] calldata _tssMembers)',
       'function finalizeDeposit(address _l1Token, address _l2Token, address _from, address _to, uint256 _amount, bytes calldata _data)',
+      'function rollBackL2Chain(uint256 _shouldRollBack, uint256 _shouldStartAtElement, bytes memory _signature)',
     ]);
     let l1_token = '0x0000000000000000000000000000000000000000';
     let l2_token = '0x0000000000000000000000000000000000000000';
@@ -338,6 +339,9 @@ export class L1IngestionService {
         const decodeMsg = iface.decodeFunctionData('claimReward', message);
         type = 0; // reward
         this.logger.log(`reward tssMembers is [${decodeMsg._tssMembers}]`);
+      } else if (funName === '0xf523f40d') {
+        const decodeMsg = iface.decodeFunctionData('rollBackL2Chain', message);
+        type = 2; // rollBackL2Chain
       }
       const { timestamp } = await this.web3.eth.getBlock(blockNumber);
       const msgHash = this.verifyDomainCalldataHash({
