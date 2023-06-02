@@ -1024,7 +1024,7 @@ export class L1IngestionService {
   async getDepositList(address, offset, limit) {
     const result = []
     const deposits = await this.txnL1ToL2Repository.findAndCount({
-      where: { from: address },
+      where: { from: address, type: 1 },
       order: { queue_index: 'DESC' },
       // skip: offset,
       take: limit,
