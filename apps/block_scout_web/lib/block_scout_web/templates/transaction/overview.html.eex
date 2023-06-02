@@ -112,18 +112,41 @@
             <dd class="col-sm-9 col-lg-10">
               <% formatted_status = BlockScoutWeb.TransactionView.formatted_status(status) %>
               <% confirmations = confirmations(@transaction, block_height: @block_height) %>
-              <span class="mr-4">
-                <span data-transaction-status="<%= formatted_status %>">
-                  <%= if status == :pending do %>
-                    <%= render BlockScoutWeb.FormView, "_tag.html", text: formatted_status, additional_classes: ["large"] %></span>
-                  <% else %>
-                    <%= render BlockScoutWeb.FormView, "_tag.html", text: formatted_status, additional_classes: ["success", "large"] %></span>
-                  <% end %>
+              <div class="mr-4">
+                <%= if Map.has_key?(@transaction, :tx_status) do %>
+                  <div class="transaction_detail_status_container">
+                    <span class="transaction_detail_status_item transaction_detail_status_item_active">
+                      ✔️
+                      Accepted on L2
+                    </span>
+                    >
+                    <span class="transaction_detail_status_item <%= BlockScoutWeb.TransactionView.get_tx_status_cls1(@transaction.tx_status) %>">
+                      ✔️
+                      Rollup to L1
+                    </span>
+                    >
+                    <span class="transaction_detail_status_item <%= BlockScoutWeb.TransactionView.get_tx_status_cls2(@transaction.tx_status) %>">
+                      ✔️
+                      Finalized on L1
+                    </span>
+                    >
+                    <span class="transaction_detail_status_item <%= BlockScoutWeb.TransactionView.get_tx_status_cls3(@transaction.tx_status) %>">
+                      ✔️
+                      Challenge Period Passed
+                    </span>
+                  </div>
+                <% end %>
 
                 <%= if confirmations > 0 do %>
-                  <span class="large ml-2" style="padding:5px;display:inline-block"><%= gettext "Confirmed by " %><span data-selector="block-confirmations"><%= confirmations %></span><%= " " <> confirmations_ds_name(confirmations) %></span>
+                  <span class="large ml-2" style="padding:5px;display:inline-block;font-size:12px;margin-left:0 !important;padding-left:0;">
+                    <%= gettext "Confirmed by " %>
+                    <span data-selector="block-confirmations">
+                      <%= confirmations %>
+                    </span>
+                    <%= " " <> confirmations_ds_name(confirmations) %>
+                  </span>
                 <% end %>
-              </span>
+              </div>
             </dd>
           </dl>
           <!-- Revert reason -->

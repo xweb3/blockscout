@@ -28,6 +28,10 @@ require Logger
   alias Explorer.ExchangeRates.Token
   alias Phoenix.View
 
+  #alias EthereumJSONRPC.HTTP.HTTPoison
+  import HTTPoison
+  import EthereumJSONRPC
+
   @necessity_by_association %{
     :block => :optional,
     [created_contract_address: :names] => :optional,
@@ -56,8 +60,6 @@ require Logger
     options =
       @default_options
       |> Keyword.merge(paging_options(params))
-Logger.info("------")
-Logger.info("#{inspect(params)}")
     full_options =
       options
       |> Keyword.put(
@@ -151,6 +153,20 @@ Logger.info("#{inspect(params)}")
   def show(conn, %{"id" => id} = params) do
     with {:ok, transaction_hash} <- Chain.string_to_transaction_hash(id),
          :ok <- Chain.check_transaction_exists(transaction_hash) do
+
+          tx_status = EthereumJSONRPC.request(%{id: 0, method: "eth_getTxStatusDetailByHash", params: [id]})
+          |> json_rpc(Application.get_env(:indexer, :json_rpc_named_arguments))
+          |> case do
+            {:ok, tx}  ->
+              tx["status"]
+            {:error, _} ->
+              nil
+          end
+
+          Logger.info("0-0-0-0-0-0")
+          Logger.info("#{inspect(tx_status)}")
+
+
       if Chain.transaction_has_token_transfers?(transaction_hash) do
         with {:ok, transaction} <-
                Chain.hash_to_transaction(
@@ -160,16 +176,14 @@ Logger.info("#{inspect(params)}")
 
              {:ok, false} <- AccessHelpers.restricted_access?(to_string(transaction.from_address_hash), params),
              {:ok, false} <- AccessHelpers.restricted_access?(to_string(transaction.to_address_hash), params) do
-              # TODO(Jayce) hash hard code
-              updated_transaction = case Chain.hash_to_batch("0xbea2e27d87299ab1f91b914b2acb1b08780199ad042958c854fc7992bea448fc",necessity_by_association: @necessity_by_association) do
+              updated_transaction = case Chain.hash_to_batch(id,necessity_by_association: @necessity_by_association) do
                 {:error, _} ->
                   transaction
                 {:ok, %{batch_index: batch_index, data_commitment: data_commitment}} ->
                   res = Map.put(transaction, :batch_index, batch_index)
                   Map.put(res, :data_commitment, data_commitment)
               end
-              # TODO(Jayce) hash hard code
-              updated_state_transaction = case Chain.block_to_state_batch(2536260,necessity_by_association: @necessity_by_association) do
+              updated_state_transaction = case Chain.block_to_state_batch(transaction.block_number,necessity_by_association: @necessity_by_association) do
                 {:error, _} ->
                   updated_transaction
                 {:ok, %{batch_index: batch_index, submission_tx_hash: submission_tx_hash}} ->
@@ -177,6 +191,7 @@ Logger.info("#{inspect(params)}")
                   Map.put(res, :submission_tx_hash, submission_tx_hash)
               end
 
+              updated_display_tx_status_state_transaction = if tx_status == nil, do: updated_state_transaction, else: Map.put(updated_state_transaction, :tx_status, tx_status)
           render(
             conn,
             "show_token_transfers.html",
@@ -185,7 +200,7 @@ Logger.info("#{inspect(params)}")
             current_path: Controller.current_full_path(conn),
             current_user: current_user(conn),
             show_token_transfers: true,
-            transaction: updated_state_transaction,
+            transaction: updated_display_tx_status_state_transaction,
             from_tags: get_address_tags(transaction.from_address_hash, current_user(conn)),
             to_tags: get_address_tags(transaction.to_address_hash, current_user(conn)),
             tx_tags:
@@ -215,22 +230,22 @@ Logger.info("#{inspect(params)}")
                ),
              {:ok, false} <- AccessHelpers.restricted_access?(to_string(transaction.from_address_hash), params),
              {:ok, false} <- AccessHelpers.restricted_access?(to_string(transaction.to_address_hash), params) do
-              # TODO(Jayce) hash hard code
-              updated_transaction = case Chain.hash_to_batch("0xbea2e27d87299ab1f91b914b2acb1b08780199ad042958c854fc7992bea448fc",necessity_by_association: @necessity_by_association) do
+              updated_transaction = case Chain.hash_to_batch(id,necessity_by_association: @necessity_by_association) do
                 {:error, _} ->
                   transaction
                 {:ok, %{batch_index: batch_index, data_commitment: data_commitment}} ->
                   res = Map.put(transaction, :batch_index, batch_index)
                   Map.put(res, :data_commitment, data_commitment)
               end
-              # TODO(Jayce) hash hard code
-              updated_state_transaction = case Chain.block_to_state_batch(2536260,necessity_by_association: @necessity_by_association) do
+              updated_state_transaction = case Chain.block_to_state_batch(transaction.block_number,necessity_by_association: @necessity_by_association) do
                 {:error, _} ->
                   updated_transaction
                 {:ok, %{batch_index: batch_index, submission_tx_hash: submission_tx_hash}} ->
                   res = Map.put(updated_transaction, :state_batch_index, batch_index)
                   Map.put(res, :submission_tx_hash, submission_tx_hash)
               end
+
+              updated_display_tx_status_state_transaction = if tx_status == nil, do: updated_state_transaction, else: Map.put(updated_state_transaction, :tx_status, tx_status)
 
           render(
             conn,
@@ -240,7 +255,7 @@ Logger.info("#{inspect(params)}")
             current_user: current_user(conn),
             block_height: Chain.block_height(),
             show_token_transfers: Chain.transaction_has_token_transfers?(transaction_hash),
-            transaction: updated_state_transaction,
+            transaction: updated_display_tx_status_state_transaction,
             from_tags: get_address_tags(transaction.from_address_hash, current_user(conn)),
             to_tags: get_address_tags(transaction.to_address_hash, current_user(conn)),
             tx_tags:

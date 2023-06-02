@@ -343,6 +343,43 @@ require Logger
     end
   end
 
+  def get_tx_status_cls1(tx_status) do
+    case tx_status do
+      "0x1" ->
+        "transaction_detail_status_item_active"
+      "0x2" ->
+        "transaction_detail_status_item_active"
+      "0x3" ->
+        "transaction_detail_status_item_active"
+    end
+  end
+
+  def get_tx_status_cls2(tx_status) do
+    case tx_status do
+      "0x1" ->
+        ""
+      "0x2" ->
+        "transaction_detail_status_item_active"
+      "0x3" ->
+        "transaction_detail_status_item_active"
+    end
+  end
+
+  def get_tx_status_cls3(tx_status) do
+    case tx_status do
+      "0x1" ->
+        ""
+      "0x2" ->
+        ""
+      "0x3" ->
+        "transaction_detail_status_item_active"
+    end
+  end
+
+  def get_tx_status_cls1(%{tx_status: nil}), do: ""
+  def get_tx_status_cls2(%{tx_status: nil}), do: ""
+  def get_tx_status_cls3(%{tx_status: nil}), do: ""
+
   def formatted_result(status) do
     case status do
       :pending -> gettext("Pending")
