@@ -149,8 +149,8 @@ export class L2IngestionService {
           'finalizeBitWithdrawal',
           message,
         );
-        name = 'BIT';
-        symbol = 'BIT';
+        name = 'MNT';
+        symbol = 'MNT';
         from = decodeMsg._from;
         to = decodeMsg._to;
         value = this.web3.utils.hexToNumberString(decodeMsg._amount._hex);
