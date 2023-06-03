@@ -345,8 +345,10 @@ require Logger
 
   def get_tx_status_cls1(tx_status) do
     case tx_status do
+      "0x0" ->
+        ""
       "0x1" ->
-        "transaction_detail_status_item_active"
+          "transaction_detail_status_item_active"
       "0x2" ->
         "transaction_detail_status_item_active"
       "0x3" ->
@@ -356,6 +358,8 @@ require Logger
 
   def get_tx_status_cls2(tx_status) do
     case tx_status do
+      "0x0" ->
+        ""
       "0x1" ->
         ""
       "0x2" ->
@@ -367,6 +371,8 @@ require Logger
 
   def get_tx_status_cls3(tx_status) do
     case tx_status do
+      "0x0" ->
+        ""
       "0x1" ->
         ""
       "0x2" ->

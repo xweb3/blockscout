@@ -201,6 +201,30 @@ $card-tab-icon-color-active: #fff !default;
     border-bottom:1px solid #F0F1F2;
     color:#6c757e;
     min-width: 1130px;
+    .nav-link{
+      color:#6c757e;
+    }
+    .dropdown-menu{
+      background: #F8F8F9;
+      border: 1px solid #F0F1F2;
+      box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.02);
+      border-radius: 6px;
+      padding: 6px;
+      min-width: 100px;
+      width: auto;
+      .dropdown-item{
+        color: #15181C;
+        border-radius: 4px;
+        width: 120px;
+        line-height: 38px;
+        padding:0 8px;
+        &:hover{
+          font-weight: 700;
+          background: rgba(207, 210, 212, 0.3);
+          
+        }
+      }
+    }
   }
   .recent-tx-list-page{
     min-width: 1130px;
@@ -224,6 +248,30 @@ $card-tab-icon-color-active: #fff !default;
       background:  rgba(255, 255, 255, 0.05);
       color:#ffffff;
       border-color: rgba(255, 255, 255, 0.15);
+      .nav-link{
+        color:#ffffff;
+      }
+      .dropdown-menu{
+        background: #F8F8F9;
+        border: 1px solid #F0F1F2;
+        box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.02);
+        border-radius: 6px;
+        padding: 6px;
+        min-width: 100px;
+        width: auto;
+        .dropdown-item{
+          color: #ffffff;
+          border-radius: 4px;
+          width: 120px;
+          line-height: 38px;
+          padding:0 8px;
+          &:hover{
+            font-weight: 700;
+            background: rgba(207, 210, 212, 0.3);
+            
+          }
+        }
+      }
     }
     .txn-list-table-item{
       border-color:rgba(255,255,255,.1);
