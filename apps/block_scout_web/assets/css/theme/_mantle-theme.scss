@@ -136,6 +136,9 @@ $dark-primary-alternate: #65B3AE !default;
 			fill: $dark-text-content-color;
 		}
 	}
+	.transfers-list-mobile-container{
+		background: none;
+	}
 
 	// navbar
 	.navbar.navbar-primary {
@@ -617,12 +620,22 @@ $dark-primary-alternate: #65B3AE !default;
 
 	//tooltips
 	.tooltip .arrow:before {
-		border-top-color: $dark-primary;
-		border-bottom-color: $dark-primary;
+		border-top-color: #21413F;
+		border-bottom-color: #21413F;
 	}
 
 	.tooltip>.tooltip-inner {
-		background-color: $dark-primary;
+		background-color: #21413F;
+		color: #ffffff;
+		.custom-tooltip-total-title{
+            color: #ffffff;
+        }
+        .custom-tooltip-title{
+            color: #BFF6F2
+        }
+        .custom-tooltip-content{
+            color: #65B3AE
+        }
 	}
 
 	.tooltip-pale-color.bs-tooltip-top .arrow::before,

@@ -128,16 +128,20 @@ $tooltip-background-color: $btn-line-color !default;
             white-space: nowrap;
         }
         .custom-tooltip-title{
-            font-style: normal;
+            font-family: 'Nunito';
             font-weight: 900;
             font-size: 14px;
             text-align: start;
-            color: #585F65;
+            color: #2B3034;
+            line-height: 22px;
         }
         .custom-tooltip-content{
+            font-family: 'Nunito';
+            font-weight: 600;
             font-size: 12px;
             text-align: start;
-            color: #2B3034;
+            color: #585F65;
+            line-height: 22px;
         }
     }
 }

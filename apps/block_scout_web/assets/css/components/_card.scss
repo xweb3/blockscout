@@ -164,6 +164,7 @@ $card-tab-icon-color-active: #fff !default;
   .transaction_detail_status_container{
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     .transaction_detail_status_item {
       height: 36px;
       padding: 0 16px 0 18px;
@@ -189,6 +190,7 @@ $card-tab-icon-color-active: #fff !default;
 
 .txn-list-container{
 
+
   .txn-list-table-head-container{
     background:#F8F8F9;;
     display:flex;
@@ -201,7 +203,7 @@ $card-tab-icon-color-active: #fff !default;
     border-bottom:1px solid #F0F1F2;
     color:#6c757e;
     min-width: 1130px;
-    .nav-link{
+    .l1-to-l2-tx-type-head{
       color:#6c757e;
     }
     .dropdown-menu{
@@ -238,6 +240,12 @@ $card-tab-icon-color-active: #fff !default;
     padding:0 10px;
     border-bottom:1px solid #e7eaf3;
   }
+  .display_tx_status_tooltip{
+    color: #212529;
+    &:hover {
+      color: #212529;
+    }
+  }
 }
 .dark-theme-applied{
   .card-body {
@@ -248,33 +256,30 @@ $card-tab-icon-color-active: #fff !default;
       background:  rgba(255, 255, 255, 0.05);
       color:#ffffff;
       border-color: rgba(255, 255, 255, 0.15);
-      .nav-link{
+      .l1-to-l2-tx-type-head{
         color:#ffffff;
       }
       .dropdown-menu{
-        background: #F8F8F9;
-        border: 1px solid #F0F1F2;
+        background: #152928;
         box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.02);
-        border-radius: 6px;
-        padding: 6px;
-        min-width: 100px;
-        width: auto;
+        border:none;
         .dropdown-item{
           color: #ffffff;
-          border-radius: 4px;
-          width: 120px;
-          line-height: 38px;
-          padding:0 8px;
+          background: #152928 !important;
           &:hover{
-            font-weight: 700;
-            background: rgba(207, 210, 212, 0.3);
-            
+            background: #21413F !important;
           }
         }
       }
     }
     .txn-list-table-item{
       border-color:rgba(255,255,255,.1);
+    }
+    .display_tx_status_tooltip{
+      color: #ffffff;
+      &:hover {
+        color: #ffffff;
+      }
     }
   }
 }
@@ -495,7 +500,20 @@ $card-tab-icon-color-active: #fff !default;
       }
     }
   }
-  
+  .transaction_detail_status_container{
+    
+    .transaction_detail_status_item {
+      background: #21413F;
+      color: #4F8F8B;
+      &:first-child {
+        margin-left: 0;
+      }
+    }
+    .transaction_detail_status_item_active {
+      color: #ffffff;
+      background: rgba(6, 221, 118, 0.5);
+    }
+  }
 }
 
 .card-tabs {

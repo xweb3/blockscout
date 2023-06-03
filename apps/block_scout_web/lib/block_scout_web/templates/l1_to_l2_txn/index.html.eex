@@ -52,7 +52,7 @@
           <div class="navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav">
                   <li class="nav-item dropdown">
-                  <a style="color:#6c757e;" href="#" role="button" id="navbarTransactionsDropdown" class="nav-link topnav-nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <a href="#" role="button" id="navbarTransactionsDropdown" class="nav-link topnav-nav-link dropdown-toggle l1-to-l2-tx-type-head" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Txn Type
                   </a>
                     <div class="dropdown-menu" aria-labeledby="navbarTransactionsDropdown">
