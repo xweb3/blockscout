@@ -106,6 +106,8 @@ defmodule BlockScoutWeb.L1ToL2TxnController do
                 "User Deposit"
               2 ->
                 "L2 Txn Rollback"
+              3 ->
+                "Tss Slash"
               _ ->
                 l.type
             end

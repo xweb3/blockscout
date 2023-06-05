@@ -12,6 +12,8 @@
                 "User Deposit"
               2 ->
                 "L2 Txn Rollback"
+              3 ->
+                "Tss Slash"
               _ ->
                 "All"
             end %>
@@ -58,7 +60,8 @@
                     <div class="dropdown-menu" aria-labeledby="navbarTransactionsDropdown">
                       <a href="/l1-to-l2-txns" class="dropdown-item">All</a>
                       <a href="/l1-to-l2-txns/1" class="dropdown-item">User Deposit</a>
-                      <a href="/l1-to-l2-txns/0" class="dropdown-item">Tss Rrward</a>
+                      <a href="/l1-to-l2-txns/0" class="dropdown-item">Tss Reward</a>
+                      <a href="/l1-to-l2-txns/3" class="dropdown-item">Tss Slash</a>
                       <a href="/l1-to-l2-txns/2" class="dropdown-item">L2 Txn Rollback</a>
                     </div>
                   </li>
