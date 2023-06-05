@@ -1,4 +1,4 @@
-<div 
+<div
     data-identifier-hash="<%= @l1_to_l2.queue_index %>"
     class="recent-preview-item-content"
 >
@@ -15,23 +15,28 @@
         </div>
         <div class="recent-preview-item-content-l1-2-l2" style="display:flex;align-items:center">
             <span>L1 Tx#</span>
-            <a 
-                href="<%= @l1_explorer %>/tx/<%= @l1_to_l2.hash %>" 
+            <a
+                href="<%= @l1_explorer %>/tx/<%= @l1_to_l2.hash %>"
                 target="_blank"
                 class="recent-preview-item-content-l1-2-l2-link"
             >
                 <%= sub_hash_string(@l1_to_l2.hash, 15) %>...
             </a>
-            <span style="margin-left:5px;">L2 Tx#</span>
-            <a 
-                href="/tx/<%= @l1_to_l2.l2_hash %>"
-                class="recent-preview-item-content-l1-2-l2-link"
-            >
-                <%= @l1_to_l2.l2_hash %>...
-            </a>
+            <span style="margin-left:5px;">L2 Tx</span>
+            <%= if @l1_to_l2.l2_hash do %>
+                <a
+                    href="/tx/<%= @l1_to_l2.l2_hash %>"
+                    class="recent-preview-item-content-l1-2-l2-link"
+                >
+                    #<%= @l1_to_l2.l2_hash %>
+                </a>...
+                <% else %>
+                Pendding
+            <% end %>
+
         </div>
     </div>
-    
 
-   
+
+
 </div>
