@@ -172,14 +172,15 @@ $card-tab-icon-color-active: #fff !default;
       line-height: 36px;
       border-radius: 18px;
       background: #F0F1F2;
-      margin: 0 9px;
+      margin: 0 9px 8px 0;
       font-size: 14px;
       font-family: Nunito;
       font-weight: 700;
       color: #6E767D;
-      &:first-child {
-        margin-left: 0;
-      }
+    }
+    .transaction_detail_status_item_true{
+      margin-right: 9px;
+      margin-bottom: 8px;
     }
     .transaction_detail_status_item_active {
       color: #15181C;
@@ -414,6 +415,10 @@ $card-tab-icon-color-active: #fff !default;
           color:#091312;
           background:rgba(175, 208, 232, .35);
           height:20px;
+          max-width: 148px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
           .recent-preview-item-content-latest-txs-tag{
             position:absolute;
             left:0;

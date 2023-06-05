@@ -2741,7 +2741,7 @@ msgstr ""
 msgid "Token Transfer"
 msgstr ""
 
-#: lib/block_scout_web/templates/address/_tabs.html.eex:13
+
 #: lib/block_scout_web/templates/address_token_transfer/index.html.eex:19
 #: lib/block_scout_web/templates/tokens/instance/overview/_tabs.html.eex:3
 #: lib/block_scout_web/templates/tokens/instance/transfer/index.html.eex:16
@@ -2755,6 +2755,10 @@ msgstr ""
 #: lib/block_scout_web/views/transaction_view.ex:509
 #, elixir-autogen, elixir-format
 msgid "Token Transfers"
+msgstr ""
+
+#: lib/block_scout_web/templates/address/_tabs.html.eex:13
+msgid "Token Transfers(ERC20)"
 msgstr ""
 
 #: lib/block_scout_web/templates/address/overview.html.eex:54
