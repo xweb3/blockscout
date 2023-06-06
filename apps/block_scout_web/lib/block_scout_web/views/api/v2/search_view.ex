@@ -1,6 +1,6 @@
 defmodule BlockScoutWeb.API.V2.SearchView do
   use BlockScoutWeb, :view
-
+require Logger
   alias BlockScoutWeb.Endpoint
 
   def render("search_results.json", %{search_results: search_results, next_page_params: next_page_params}) do
@@ -41,11 +41,18 @@ defmodule BlockScoutWeb.API.V2.SearchView do
 
   def prepare_search_result(%{type: "transaction"} = search_result) do
     tx_hash = hash_to_string(search_result.tx_hash)
-
     %{
       "type" => search_result.type,
       "tx_hash" => tx_hash,
       "url" => transaction_path(Endpoint, :show, tx_hash)
+    }
+  end
+
+  def prepare_search_result(%{type: "eigenda"} = search_result) do
+    %{
+      "type" => search_result.type,
+      "tx_hash" => search_result.tx_hash,
+      "url" => eigenda_batch_path(Endpoint, :show, search_result.tx_hash)
     }
   end
 

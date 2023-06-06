@@ -5,11 +5,12 @@ defmodule BlockScoutWeb.TransactionInternalTransactionController do
   import BlockScoutWeb.Chain, only: [paging_options: 1, next_page_params: 3, split_list_by_page: 1]
   import BlockScoutWeb.Models.GetAddressTags, only: [get_address_tags: 2]
   import BlockScoutWeb.Models.GetTransactionTags, only: [get_transaction_with_addresses_tags: 2]
-
+  require Logger
   alias BlockScoutWeb.{AccessHelpers, Controller, InternalTransactionView, TransactionController}
   alias Explorer.{Chain, Market}
   alias Explorer.ExchangeRates.Token
   alias Phoenix.View
+  import EthereumJSONRPC
 
   def index(conn, %{"transaction_id" => transaction_hash_string, "type" => "JSON"} = params) do
     with {:ok, transaction_hash} <- Chain.string_to_transaction_hash(transaction_hash_string),
@@ -99,6 +100,33 @@ defmodule BlockScoutWeb.TransactionInternalTransactionController do
            ),
          {:ok, false} <- AccessHelpers.restricted_access?(to_string(transaction.from_address_hash), params),
          {:ok, false} <- AccessHelpers.restricted_access?(to_string(transaction.to_address_hash), params) do
+
+          tx_status = EthereumJSONRPC.request(%{id: 0, method: "eth_getTxStatusDetailByHash", params: [transaction_hash_string]})
+          |> json_rpc(Application.get_env(:indexer, :json_rpc_named_arguments))
+          |> case do
+            {:ok, tx}  ->
+              tx["status"]
+            {:error, _} ->
+              nil
+          end
+          updated_transaction = case Chain.hash_to_batch(transaction_hash_string,necessity_by_association: @necessity_by_association) do
+            {:error, _} ->
+              transaction
+            {:ok, %{batch_index: batch_index, data_commitment: data_commitment}} ->
+              res = Map.put(transaction, :batch_index, batch_index)
+              Map.put(res, :data_commitment, data_commitment)
+          end
+          updated_state_transaction = case Chain.block_to_state_batch(transaction.block_number,necessity_by_association: @necessity_by_association) do
+            {:error, _} ->
+              updated_transaction
+            {:ok, %{batch_index: batch_index, submission_tx_hash: submission_tx_hash}} ->
+              res = Map.put(updated_transaction, :state_batch_index, batch_index)
+              Map.put(res, :submission_tx_hash, submission_tx_hash)
+          end
+
+          updated_display_tx_status_state_transaction = if tx_status == nil, do: updated_state_transaction, else: Map.put(updated_state_transaction, :tx_status, tx_status)
+
+
       render(
         conn,
         "index.html",
@@ -107,7 +135,7 @@ defmodule BlockScoutWeb.TransactionInternalTransactionController do
         current_user: current_user(conn),
         block_height: Chain.block_height(),
         show_token_transfers: Chain.transaction_has_token_transfers?(transaction_hash),
-        transaction: transaction,
+        transaction: updated_display_tx_status_state_transaction,
         from_tags: get_address_tags(transaction.from_address_hash, current_user(conn)),
         to_tags: get_address_tags(transaction.to_address_hash, current_user(conn)),
         tx_tags:

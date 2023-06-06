@@ -153,7 +153,6 @@ require Logger
   def show(conn, %{"id" => id} = params) do
     with {:ok, transaction_hash} <- Chain.string_to_transaction_hash(id),
          :ok <- Chain.check_transaction_exists(transaction_hash) do
-          Logger.info("query tx status beginning...")
           tx_status = EthereumJSONRPC.request(%{id: 0, method: "eth_getTxStatusDetailByHash", params: [id]})
           |> json_rpc(Application.get_env(:indexer, :json_rpc_named_arguments))
           |> case do
@@ -162,11 +161,6 @@ require Logger
             {:error, _} ->
               nil
           end
-
-          Logger.info("query tx status finished...")
-          Logger.info("#{inspect(tx_status)}")
-
-
       if Chain.transaction_has_token_transfers?(transaction_hash) do
         with {:ok, transaction} <-
                Chain.hash_to_transaction(

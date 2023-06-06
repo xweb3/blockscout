@@ -238,13 +238,6 @@ export class L2IngestionService {
       startBlock,
       endBlock,
     );
-    
-    //if(list.length > 0){
-      console.log('-------')
-      console.log('from and to', `${startBlock}, ${endBlock}`)
-      console.log(list)
-    //}
-    
     const result: any = [];
     const l2RelayedMessageEventsInsertData: any = [];
     for (const item of list) {

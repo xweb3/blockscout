@@ -1593,6 +1593,29 @@ defmodule Explorer.Chain do
     end
   end
 
+  defp search_eigenda_query(term) do
+    case Chain.string_to_transaction_hash(term) do
+      {:ok, tx_hash} ->
+        hash_string = Hash.to_string(tx_hash)
+        from(da_batch in DaBatch,
+          where: da_batch.da_hash == ^hash_string,
+          select: %{
+            address_hash: ^nil,
+            tx_hash: da_batch.da_hash,
+            block_hash: ^nil,
+            type: "eigenda",
+            name: ^nil,
+            symbol: ^nil,
+            holder_count: ^nil,
+            inserted_at: da_batch.init_time,
+            block_number: 0
+          }
+        )
+      _ ->
+        nil
+    end
+  end
+
   defp search_block_query(term) do
     case Chain.string_to_block_hash(term) do
       {:ok, block_hash} ->
@@ -1645,6 +1668,7 @@ defmodule Explorer.Chain do
         tx_query = search_tx_query(string)
         address_query = search_address_query(string)
         block_query = search_block_query(string)
+        eigenda_query = search_eigenda_query(string)
 
         basic_query =
           from(
@@ -1655,19 +1679,24 @@ defmodule Explorer.Chain do
         query =
           cond do
             address_query ->
+              Logger.info("111")
               basic_query
               |> union(^address_query)
 
             tx_query ->
+              Logger.info("222")
               basic_query
               |> union(^tx_query)
               |> union(^block_query)
+              |> union(^eigenda_query)
 
             block_query ->
+              Logger.info("333")
               basic_query
               |> union(^block_query)
 
             true ->
+              Logger.info("444")
               basic_query
           end
 
@@ -1677,13 +1706,10 @@ defmodule Explorer.Chain do
             limit: ^paging_options.page_size,
             offset: ^offset
           )
-
         paginated_ordered_query =
           ordered_query
           |> page_search_results(paging_options)
-
         search_results = Repo.all(paginated_ordered_query)
-
         search_results
         |> Enum.map(fn result ->
           result_checksummed_address_hash =
@@ -2156,9 +2182,7 @@ defmodule Explorer.Chain do
     |> Repo.one()
     |> case do
       nil ->
-        Logger.info("111111111111122")
         hash_string = Hash.to_string(hash)
-        Logger.info("111111111111122")
         DaBatch
         |> where([da_batch], da_batch.da_hash == ^hash_string)
         |> limit(1)
@@ -2167,7 +2191,6 @@ defmodule Explorer.Chain do
           nil -> {:error, :not_found}
 
           da_transaction ->
-            Logger.info("1111111111111")
             {:ok, da_transaction}
           end
 

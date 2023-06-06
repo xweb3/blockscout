@@ -101,11 +101,20 @@ defmodule BlockScoutWeb.ChainController do
       |> Enum.map(fn item ->
         tx_hash_bytes = Map.get(item, :tx_hash)
         block_hash_bytes = Map.get(item, :block_hash)
+        type = Map.get(item, :type)
 
         item =
           if tx_hash_bytes do
-            item
-            |> Map.replace(:tx_hash, "0x" <> Base.encode16(tx_hash_bytes, case: :lower))
+
+            if type == "eigenda" do
+              Logger.info("123123-------")
+      Logger.info("#{inspect(type)}")
+              item
+            else
+              item
+              |> Map.replace(:tx_hash, "0x" <> Base.encode16(tx_hash_bytes, case: :lower))
+            end
+
           else
             item
           end
@@ -120,7 +129,8 @@ defmodule BlockScoutWeb.ChainController do
 
         item
       end)
-
+      Logger.info("123123")
+      Logger.info("#{inspect(encoded_results)}")
     json(conn, encoded_results)
   end
 
@@ -175,7 +185,6 @@ defmodule BlockScoutWeb.ChainController do
       conn
       |> transaction_path(:show, item)
       |> Controller.full_path()
-      Logger.info("#{inspect(transaction_path)}")
     redirect(conn, to: transaction_path)
   end
 
