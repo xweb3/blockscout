@@ -181,6 +181,7 @@ defmodule BlockScoutWeb.ChainController do
   end
 
   defp redirect_search_results(conn, %Transaction{} = item) do
+    Logger.info("-=-=-=-=-")
     transaction_path =
       conn
       |> transaction_path(:show, item)

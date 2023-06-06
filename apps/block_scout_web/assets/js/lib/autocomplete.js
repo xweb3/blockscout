@@ -152,6 +152,8 @@ const selection = (event) => {
     window.location = `/tx/${selectionValue.tx_hash}`
   } else if (selectionValue.type === 'block') {
     window.location = `/blocks/${selectionValue.block_hash}`
+  } else if (selectionValue.type === 'eigenda') {
+    window.location = `/eigenda-batch/${selectionValue.tx_hash}`
   }
 }
 
