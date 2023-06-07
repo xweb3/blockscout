@@ -575,7 +575,7 @@ export class L1IngestionService {
     const queryRunner = dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
-    const fraudProofTimeStamp = new Date((Number(timestamp) - Number(fraudProofWindow)) * 1000);
+    const fraudProofTimeStamp = new Date((Number(timestamp) - Number(fraudProofWindow)) * 1000).toISOString();
     console.log('fraudProofTimeStamp: ', fraudProofTimeStamp);
     try {
       await queryRunner.manager
