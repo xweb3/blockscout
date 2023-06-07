@@ -140,6 +140,9 @@ export class L1IngestionService {
   async getSccTotalElements() {
     return this.sccContract.methods.getTotalElements().call();
   }
+  async getFRAUD_PROOF_WINDOW() {
+    return this.sccContract.methods.FRAUD_PROOF_WINDOW().call();
+  }
   verifyDomainCalldataHash({ target, sender, message, messageNonce }): string {
     const xDomainCalldata = this.web3.eth.abi.encodeFunctionCall(
       {
@@ -564,16 +567,17 @@ export class L1IngestionService {
     return true;
   }
   async handleWaitTransaction() {
-    // const latestBlock = await this.getCurrentBlockNumber();
-    // const { timestamp } = await this.web3.eth.getBlock(latestBlock);
+    const latestBlock = await this.getCurrentBlockNumber();
+    const { timestamp } = await this.web3.eth.getBlock(latestBlock);
     const totalElements = await this.getSccTotalElements();
-    // const lTimestamp = Number(waitTxList[i].timestamp) / 1000;
+    const fraudProofWindow = await this.getFRAUD_PROOF_WINDOW();
     const dataSource = getConnection();
     const queryRunner = dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
+    const fraudProofTimeStamp = new Date((Number(timestamp) - Number(fraudProofWindow)) * 1000);
+    console.log('fraudProofTimeStamp: ', fraudProofTimeStamp);
     try {
-      // todo: lTimestamp + FraudProofWindow >= timestamp
       await queryRunner.manager
         .createQueryBuilder()
         .setLock('pessimistic_write')
@@ -581,6 +585,7 @@ export class L1IngestionService {
         .set({ status: 'Ready for Relay' })
         .where('block <= :block', { block: totalElements })
         .andWhere('status = :status', { status: 'Waiting' })
+        .andWhere('timestamp <= :fraudProofTimeStamp', { fraudProofTimeStamp })
         .execute();
       // update transactions to Ready for Relay
       // await queryRunner.manager.query(
