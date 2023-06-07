@@ -933,7 +933,7 @@ export class L1IngestionService {
       const CURRENT_TIMESTAMP = new Date().toISOString();
       const insertBatchData = {
         batch_index: batchIndexParam,
-        batch_size: StorePeriodLength,
+        batch_size: 0,
         status: Confirmed ? 'confirmed' : 'init',
         da_hash: utils.hexlify(MsgHash),
         store_id: DurationDataStoreId,
@@ -966,6 +966,7 @@ export class L1IngestionService {
       if (Confirmed) {
         const {txList} = await this.eigenlayerService.getTxn(StoreNumber) || [];
         const insertHashList = [];
+        insertBatchData.batch_size = txList.length || 0;
         txList.forEach((item) => {
           insertHashList.push({
             batch_index: batchIndexParam,

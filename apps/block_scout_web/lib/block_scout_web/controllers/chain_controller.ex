@@ -73,7 +73,6 @@ defmodule BlockScoutWeb.ChainController do
     |> BlockScoutWeb.Chain.from_param()
     |> case do
       {:ok, item} ->
-        Logger.info("0-0-0-0-")
         redirect_search_results(conn, item)
 
       {:error, :not_found} ->
@@ -107,8 +106,6 @@ defmodule BlockScoutWeb.ChainController do
           if tx_hash_bytes do
 
             if type == "eigenda" do
-              Logger.info("123123-------")
-      Logger.info("#{inspect(type)}")
               item
             else
               item
@@ -129,8 +126,6 @@ defmodule BlockScoutWeb.ChainController do
 
         item
       end)
-      Logger.info("123123")
-      Logger.info("#{inspect(encoded_results)}")
     json(conn, encoded_results)
   end
 
@@ -181,7 +176,6 @@ defmodule BlockScoutWeb.ChainController do
   end
 
   defp redirect_search_results(conn, %Transaction{} = item) do
-    Logger.info("-=-=-=-=-")
     transaction_path =
       conn
       |> transaction_path(:show, item)
