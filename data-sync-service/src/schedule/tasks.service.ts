@@ -247,12 +247,20 @@ export class TasksService {
       const result = await this.l1IngestionService.createStateBatchesEvents(
         start + 1,
         end,
-      );
-      const insertData = !result || result.length <= 0 ?  [] : result[0].identifiers || []
-      this.logger.log(
-        `sync [${insertData.length}] state_batch from block [${start}] to [${end}]`,
-      );
-      await this.cacheManager.set(STATE_BATCH, end, { ttl: 0 });
+      ).catch(e=> {
+        console.error('==========', start)
+        console.error(e)
+      });
+      if(result){
+        const insertData = !result || result.length <= 0 ?  [] : result[0].identifiers || []
+        this.logger.log(
+          `sync [${insertData.length}] state_batch from block [${start}] to [${end}]`,
+        );
+        await this.cacheManager.set(STATE_BATCH, end, { ttl: 0 });
+      }else {
+        console.error('---------------- insert state batch data failed', start)
+      }
+      
     } else {
       this.logger.log(
         `sync state_batch finished and latest block number is: ${currentBlockNumber}`,
