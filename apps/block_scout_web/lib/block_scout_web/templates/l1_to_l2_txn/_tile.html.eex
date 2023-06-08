@@ -3,10 +3,10 @@
     data-identifier-hash="<%= @l1_to_l2.queue_index %>"
 >
 
-    <span style="width: 10%;">
+    <span style="width: 9%;">
        <%= @l1_to_l2.block %>
     </span>
-    <span style="width: 10%;">
+    <span style="width: 11%;">
       <%= @l1_to_l2.queue_index %>
     </span>
     <%= if @l1_to_l2.l2_hash == nil do %>

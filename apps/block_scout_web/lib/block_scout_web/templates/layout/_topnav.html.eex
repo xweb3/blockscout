@@ -63,14 +63,6 @@
                   class: "dropdown-item #{tab_status("state-batches", @conn.request_path)}",
                   to: state_batch_path(@conn, :index)
                 ) %>
-                <%= if variant !== EthereumJSONRPC.Besu do %>
-                  <%= link(
-                        gettext("Pending"),
-                        class: "dropdown-item #{tab_status("pending-transactions", @conn.request_path)}",
-                        "data-test": "pending_transactions_link",
-                        to: pending_transaction_path(@conn, :index)
-                      ) %>
-                <% end %>
                 <%= link(gettext("Verified contracts"),
                     to: verified_contracts_path(@conn, :index),
                     class: "dropdown-item #{tab_status("reorgs", @conn.request_path)}")%>

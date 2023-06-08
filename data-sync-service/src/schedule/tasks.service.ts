@@ -228,12 +228,14 @@ export class TasksService {
       );
     }
   }
-  @Interval(2000)
+  @Interval(3000)
   async state_batch() {
     let end = 0;
-    const currentBlockNumber =
+    const currentL1BlockNumber =
       await this.l1IngestionService.getCurrentBlockNumber();
-    console.log('state batch currentBlockNumber: ', currentBlockNumber);
+    console.log('state batch currentBlockNumber: ', currentL1BlockNumber);
+    // the latest block might get empty passed events
+    const currentBlockNumber = currentL1BlockNumber - 1;
     const start = Number(await this.cacheManager.get(STATE_BATCH));
     // current = 100   start = 94  SYNC_STEP = 10
     if (currentBlockNumber - start > SYNC_STEP) {

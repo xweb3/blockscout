@@ -40,11 +40,14 @@
         <span href="#" class="alert-link"><%= gettext("Something went wrong, click to reload.") %></span>
       </button>
       <div class="txn-list-table-head-container">
-        <span style="width: 10%;">
+        <span style="width: 9%;">
           Block No
         </span>
-        <span style="width: 10%;">
+        <span style="width: 11%;">
           Queue Index
+          <%= render BlockScoutWeb.CommonComponentsView, "_i_tooltip_2.html",
+              text: gettext("Indicates the L1-L2 transactions volume") %>
+        </span>
         </span>
         <span style="width: 17%;">
           L2 Txn Hash
@@ -77,6 +80,8 @@
         </span>
         <span style="width: 18%;">
           L1 Txn Origin
+          <%= render BlockScoutWeb.CommonComponentsView, "_i_tooltip_2.html",
+              text: gettext("Indicates by which contract was this Txn synced to Mantle Bridge") %>
         </span>
         <span style="width: 7%;">
           Gas Limit
