@@ -567,17 +567,15 @@ export class L1IngestionService {
     return true;
   }
   async handleWaitTransaction() {
-    const latestBlock = await this.getCurrentBlockNumber();
-    const { timestamp } = await this.web3.eth.getBlock(latestBlock);
+    // const latestBlock = await this.getCurrentBlockNumber();
+    // const { timestamp } = await this.web3.eth.getBlock(latestBlock);
     const totalElements = await this.getSccTotalElements();
-    // const fraudProofWindow = await this.getFRAUD_PROOF_WINDOW();
-    const fraudProofWindow = 60;
+    const fraudProofWindow = await this.getFRAUD_PROOF_WINDOW();
     const dataSource = getConnection();
     const queryRunner = dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
     const fraudProofTimeStamp = new Date((Number(new Date().getTime()) - Number(fraudProofWindow)* 1000));
-    console.log('fraudProofTimeStamp: ', fraudProofTimeStamp);
     try {
       // set status: rollup to l1, block <= totalElements & status = Waiting
       await queryRunner.manager
