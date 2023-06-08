@@ -47,7 +47,7 @@
           Queue Index
         </span>
         <span style="width: 17%;">
-          L2 Tx Hash
+          L2 Txn Hash
         </span>
         <span style="width: 10%;">
 
@@ -76,7 +76,7 @@
           L1 Txn Hash
         </span>
         <span style="width: 18%;">
-          L1 Tx Origin
+          L1 Txn Origin
         </span>
         <span style="width: 7%;">
           Gas Limit

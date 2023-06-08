@@ -54,7 +54,7 @@
                   to: l2_to_l1_txn_path(@conn, :index)
                 ) %>
                 <%= link(
-                  gettext("Eigenlayer Txn"),
+                  gettext("Eigenlayer Txn Batches"),
                   class: "dropdown-item #{tab_status("eigenda-batches", @conn.request_path)}",
                   to: eigenda_batch_path(@conn, :index)
                 ) %>

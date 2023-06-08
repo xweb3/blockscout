@@ -3072,7 +3072,7 @@ msgstr ""
 
 #, elixir-format
 #: lib/block_scout_web/templates/layout/_topnav.html.eex:49
-msgid "Eigenlayer Txn"
+msgid "Eigenlayer Txn Batches"
 msgstr ""
 
 #, elixir-format

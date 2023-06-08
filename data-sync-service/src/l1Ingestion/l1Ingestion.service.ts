@@ -269,6 +269,7 @@ export class L1IngestionService {
           _extraData,
         },
       } = item;
+      console.log(`the state batch index will be insert into db: ${_batchIndex}`)
       const { timestamp } = await this.web3.eth.getBlock(blockNumber);
       stateBatchesInsertData.push({
         batch_index: _batchIndex,
@@ -290,14 +291,21 @@ export class L1IngestionService {
     await queryRunner.connect();
     try {
       await queryRunner.startTransaction();
-      const savedResult = await queryRunner.manager.insert(StateBatches, stateBatchesInsertData);
+      const savedResult = await queryRunner.manager
+      .createQueryBuilder()
+      .insert()
+      .into(StateBatches)
+      .values(stateBatchesInsertData)
+      .onConflict(`("batch_index") DO NOTHING`)
+      .execute()
       result.push(savedResult);
       await queryRunner.commitTransaction();
     } catch (error) {
       this.logger.error(
-        `l1 createStateBatchesEvents ${error}`,
+        `l1 createStateBatchesEvents ${error}, insert state batch failed, start and end block number ${startBlock} ${endBlock}`,
       );
       await queryRunner.rollbackTransaction();
+      return Promise.reject(`insert state batch failed`)
     } finally {
       await queryRunner.release();
     }

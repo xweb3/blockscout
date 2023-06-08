@@ -235,6 +235,7 @@ export class TasksService {
       await this.l1IngestionService.getCurrentBlockNumber();
     console.log('state batch currentBlockNumber: ', currentBlockNumber);
     const start = Number(await this.cacheManager.get(STATE_BATCH));
+    // current = 100   start = 94  SYNC_STEP = 10
     if (currentBlockNumber - start > SYNC_STEP) {
       end = start + SYNC_STEP;
     } else {
@@ -248,8 +249,7 @@ export class TasksService {
         start + 1,
         end,
       ).catch(e=> {
-        console.error('==========', start)
-        console.error(e)
+        console.error(`insert state batch failed, number: ${start} ${end}`)
       });
       if(result){
         const insertData = !result || result.length <= 0 ?  [] : result[0].identifiers || []
@@ -258,7 +258,7 @@ export class TasksService {
         );
         await this.cacheManager.set(STATE_BATCH, end, { ttl: 0 });
       }else {
-        console.error('---------------- insert state batch data failed', start)
+        console.error('result insert state batch data failed')
       }
       
     } else {
