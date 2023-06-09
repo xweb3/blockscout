@@ -75,19 +75,18 @@ $dark-primary-alternate: #65B3AE !default;
 			height: 100%;
 			overflow-y: auto;
 		}
-		&:last-child{
-			.token-transfer-item{
-				margin-bottom:0;
-				border: none;
-				padding-bottom: 0;
-			}
-		}
+		
 		.token-transfer-item {
 			display: flex;
 			padding-bottom: 10px;
+			margin-bottom: 10px;
 			flex-direction: column;
 			border-bottom: 1px solid #CFD2D4;
-			
+			&:last-child{
+					margin-bottom:0;
+					border: none;
+					padding-bottom: 0;
+			}
 			.token-transfer-item-item {
 				display: flex;
 				margin-right: 40px;
