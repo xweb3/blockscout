@@ -49,7 +49,7 @@ $dark-primary-alternate: #65B3AE !default;
 
 	.transfers-list-mobile-container {
 		max-height: 320px;
-		padding: 12px 0 12px 16px;
+		padding: 12px 16px 12px 16px;
 		background: #F8F8F9;
 		border-radius: 12px;
 		position: relative;
@@ -75,13 +75,19 @@ $dark-primary-alternate: #65B3AE !default;
 			height: 100%;
 			overflow-y: auto;
 		}
+		&:last-child{
+			.token-transfer-item{
+				margin-bottom:0;
+				border: none;
+				padding-bottom: 0;
+			}
+		}
 		.token-transfer-item {
 			display: flex;
-			margin-bottom: 10px;
+			padding-bottom: 10px;
 			flex-direction: column;
-			&:last-child{
-				margin-bottom:0;
-			}
+			border-bottom: 1px solid #CFD2D4;
+			
 			.token-transfer-item-item {
 				display: flex;
 				margin-right: 40px;
@@ -93,6 +99,7 @@ $dark-primary-alternate: #65B3AE !default;
 
 				.token-transfer-item-item-title {
 					margin-right: 16px;
+					width: 34px;
 				}
 				.token-transfer-item-item-address{
 					min-width: 130px;
