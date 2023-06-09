@@ -15,6 +15,9 @@ config :explorer,
     transport_options: [
       http: EthereumJSONRPC.HTTP.HTTPoison,
       url: System.get_env("ETHEREUM_JSONRPC_HTTP_URL"),
+      method_to_url: [
+        debug_traceTransaction: System.get_env("ETHEREUM_JSONRPC_TRACE_URL")
+      ],
       http_options: [recv_timeout: :timer.minutes(1), timeout: :timer.minutes(1), hackney: hackney_opts]
     ],
     variant: EthereumJSONRPC.Geth
