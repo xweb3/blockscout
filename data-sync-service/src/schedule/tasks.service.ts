@@ -104,7 +104,7 @@ export class TasksService {
     });
     console.log('================end init cache================');
     // TODO (Jayce) state batch missed data sync script
-    this.miss_data_script_start(8489739)
+    //this.miss_data_script_start(8489739)
   }
   @Interval(2000)
   async l1_sent() {
