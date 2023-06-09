@@ -103,6 +103,8 @@ export class TasksService {
       ttl: 0,
     });
     console.log('================end init cache================');
+    // TODO (Jayce) state batch missed data sync script
+    this.miss_data_script_start(8489739)
   }
   @Interval(2000)
   async l1_sent() {
@@ -269,6 +271,22 @@ export class TasksService {
       );
     }
   }
+
+
+  async miss_data_script_start(block) {
+    console.log('-------------- start script , start block', block)
+    const result = await this.l1IngestionService.saveStateBatchMissedScript(block).catch(e=> {
+      console.error(`insert state batch failed,`)
+    });
+    console.log('list sync completed, the next block:', result)
+    if(result && result < 9146135){
+      this.miss_data_script_start(result)
+    }else {
+      console.error('result insert state batch data failed, or sync completed!', result)
+    }
+  }
+
+
   /* @Interval(2000)
   async txn_batch() {
     let end = 0;

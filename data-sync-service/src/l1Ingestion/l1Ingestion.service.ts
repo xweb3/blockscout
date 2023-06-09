@@ -250,6 +250,74 @@ export class L1IngestionService {
     }
     return result;
   }
+
+  // save missed data, need be deleted
+  async saveStateBatchMissedScript(startBlock) {
+    console.log('state batch start block', startBlock)
+    const list = await this.getSccStateBatchAppendedByBlockNumber(
+      startBlock,
+      startBlock+1999,
+    );
+    const stateBatchesInsertData: any[] = [];
+    console.log('data list length', list.length)
+    for (const item of list) {
+      const {
+        blockNumber,
+        transactionHash,
+        returnValues: {
+          _batchIndex,
+          _batchRoot,
+          _batchSize,
+          _prevTotalElements,
+          _extraData,
+        },
+      } = item;
+      console.log(`the state batch index will be insert into db: ${_batchIndex}`)
+      const { timestamp } = await this.web3.eth.getBlock(blockNumber);
+      stateBatchesInsertData.push({
+        batch_index: _batchIndex,
+        block_number: blockNumber.toString(),
+        hash: transactionHash,
+        size: _batchSize,
+        l1_block_number: blockNumber,
+        batch_root: _batchRoot,
+        extra_data: _extraData,
+        pre_total_elements: _prevTotalElements,
+        timestamp: new Date(Number(timestamp) * 1000).toISOString(),
+        inserted_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      })
+    }
+    const result: any[] = [];
+    const dataSource = getConnection();
+    const queryRunner = dataSource.createQueryRunner();
+    await queryRunner.connect();
+    console.log('start insert into db')
+    try {
+      await queryRunner.startTransaction();
+      const savedResult = await queryRunner.manager
+      .createQueryBuilder()
+      .insert()
+      .into(StateBatches)
+      .values(stateBatchesInsertData)
+      .onConflict(`("batch_index") DO NOTHING`)
+      .execute()
+      result.push(savedResult);
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      this.logger.error(
+        `l1 createStateBatchesEvents ${error}, insert state batch failed, start and end block number ${startBlock}`,
+      );
+      await queryRunner.rollbackTransaction();
+      return Promise.reject(`insert state batch failed`)
+    } finally {
+      await queryRunner.release();
+    }
+    return startBlock+2000;
+  }
+
+
+
   async createStateBatchesEvents(startBlock, endBlock) {
     console.log('state batch start block', startBlock, endBlock)
     const list = await this.getSccStateBatchAppendedByBlockNumber(
