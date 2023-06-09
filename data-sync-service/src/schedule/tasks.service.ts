@@ -337,7 +337,7 @@ export class TasksService {
   @Interval(10000)
   async l2l1_merge_waiting() {
     try {
-      await this.l1IngestionService.handleWaitTransaction();
+      await this.l2IngestionService.handleWaitTransaction();
     } catch (error) {
       this.logger.error(`error l1l2 [handle_l2l1_merge_waiting]: ${error}`);
     }

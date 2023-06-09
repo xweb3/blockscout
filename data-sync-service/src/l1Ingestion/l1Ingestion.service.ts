@@ -642,48 +642,6 @@ export class L1IngestionService {
     }
     return true;
   }
-  async handleWaitTransaction() {
-    // const latestBlock = await this.getCurrentBlockNumber();
-    // const { timestamp } = await this.web3.eth.getBlock(latestBlock);
-    const totalElements = await this.getSccTotalElements();
-    const fraudProofWindow = await this.getFRAUD_PROOF_WINDOW();
-    const dataSource = getConnection();
-    const queryRunner = dataSource.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
-    const fraudProofTimeStamp = new Date((Number(new Date().getTime()) - Number(fraudProofWindow)* 1000));
-    try {
-      // set status: rollup to l1, block <= totalElements & status = Waiting
-      await queryRunner.manager
-        .createQueryBuilder()
-        .setLock('pessimistic_write')
-        .update(L2ToL1)
-        .set({ status: 'rollup', updated_at: new Date() })
-        .where('block <= :block', { block: totalElements })
-        .andWhere('status = :status', { status: 'Waiting' })
-        .execute();
-      // set status: Ready for Relay, status = rollup & updated_at <= fraudProofTimeStamp
-      await queryRunner.manager
-        .createQueryBuilder()
-        .setLock('pessimistic_write')
-        .update(L2ToL1)
-        .set({ status: 'Ready for Relay' })
-        .where('status = :status', { status: 'rollup' })
-        .andWhere('updated_at <= :fraudProofTimeStamp', { fraudProofTimeStamp })
-        .execute();
-      // update transactions to Ready for Relay
-      // await queryRunner.manager.query(
-      //   `UPDATE transactions SET l1l2_status=$1 WHERE l1l2_status=$2;`,
-      //   [1, 0],
-      // );
-      await queryRunner.commitTransaction();
-    } catch (error) {
-      await queryRunner.rollbackTransaction();
-    } finally {
-      await queryRunner.release();
-      this.logger.log(`l2l1 change status to Waiting finish`);
-    }
-  }
   async createL2L1Relation() {
     const unMergeTxList = await this.getRelayedEventByIsMerge(false);
     const l2ToL1UpdateList = [];
