@@ -559,38 +559,6 @@ export class L1IngestionService {
     }
     return true;
   }
-  async handleWaitTransaction() {
-    // const latestBlock = await this.getCurrentBlockNumber();
-    // const { timestamp } = await this.web3.eth.getBlock(latestBlock);
-    const totalElements = await this.getSccTotalElements();
-    // const lTimestamp = Number(waitTxList[i].timestamp) / 1000;
-    const dataSource = getConnection();
-    const queryRunner = dataSource.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
-    try {
-      // todo: lTimestamp + FraudProofWindow >= timestamp
-      await queryRunner.manager
-        .createQueryBuilder()
-        .setLock('pessimistic_write')
-        .update(L2ToL1)
-        .set({ status: 'Ready for Relay' })
-        .where('block <= :block', { block: totalElements })
-        .andWhere('status = :status', { status: 'Waiting' })
-        .execute();
-      // update transactions to Ready for Relay
-      // await queryRunner.manager.query(
-      //   `UPDATE transactions SET l1l2_status=$1 WHERE l1l2_status=$2;`,
-      //   [1, 0],
-      // );
-      await queryRunner.commitTransaction();
-    } catch (error) {
-      await queryRunner.rollbackTransaction();
-    } finally {
-      await queryRunner.release();
-      this.logger.log(`l2l1 change status to Waiting finish`);
-    }
-  }
   async createL2L1Relation() {
     const unMergeTxList = await this.getRelayedEventByIsMerge(false);
     const l2ToL1UpdateList = [];
