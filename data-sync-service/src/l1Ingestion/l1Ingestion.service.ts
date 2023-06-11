@@ -886,12 +886,19 @@ export class L1IngestionService {
       if (batchIndexParam > Number(batchIndex)) {
         return false;
       }
-      const {
-        dataStore: {
-          data_store_id: fromStoreNumber,
-          upgrade_data_store_id
-        },
-      } = await this.eigenlayerService.getRollupStoreByRollupBatchIndex(batchIndexParam);
+      
+      const res = await this.eigenlayerService.getRollupStoreByRollupBatchIndex(batchIndexParam);
+      if(!res) return Promise.reject();
+      let fromStoreNumber, upgrade_data_store_id
+      if(res?.dataStore?.data_store_id){
+        fromStoreNumber = res?.dataStore?.data_store_id;
+      }
+      if(res?.dataStore?.upgrade_data_store_id){
+        upgrade_data_store_id = res?.dataStore?.upgrade_data_store_id;
+      }
+      console.log('eigenda data', res)
+      console.log('store number', fromStoreNumber)
+      console.log('upgrade_data_store_id', upgrade_data_store_id)
       if (+fromStoreNumber === 0) {
         this.logger.log(`[syncEigenDaBatch] latestBatchIndex: ${fromStoreNumber}`);
         return false;
