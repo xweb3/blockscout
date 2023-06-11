@@ -903,7 +903,7 @@ export class L1IngestionService {
           signatoryRecord: SignatoryRecord,
           confirmGasUsed: ConfirmGasUsed
         }
-      } = await this.eigenlayerService.getDataStore(number);
+      } = await this.eigenlayerService.getDataStore(fromStoreNumber);
       this.logger.log(`[syncEigenDaBatch] latestBatchIndex index:${Index}`);
       if (Index === undefined || Index === '') {
         this.logger.log(`[syncEigenDaBatch] latestBatchIndex Index === undefined || Index === ''`);
@@ -943,7 +943,7 @@ export class L1IngestionService {
       let insertHashData = null;
       // if Confirmed = true then get EigenDa tx list, else skip
       if (Confirmed) {
-        const {txList} = await this.eigenlayerService.getTxn(StoreNumber) || [];
+        const {txList} = await this.eigenlayerService.getTxn(number) || [];
         const insertHashList = [];
         txList.forEach((item) => {
           insertHashList.push({
