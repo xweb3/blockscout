@@ -185,14 +185,17 @@ defmodule BlockScoutWeb.AddressView do
     case Enum.find(address_names, &(&1.primary == true)) do
       nil ->
         %Address.Name{name: name} = Enum.at(address_names, 0)
+        Logger.info("--------1")
         name
 
       %Address.Name{name: name} ->
+        Logger.info("--------2")
         name
     end
   end
 
   def primary_name(%Address{names: %Ecto.Association.NotLoaded{}} = address) do
+    Logger.info("--------3")
     primary_name(Repo.preload(address, [:names]))
   end
 
@@ -200,6 +203,7 @@ defmodule BlockScoutWeb.AddressView do
     with false <- is_nil(address.contract_code),
          twin <- Chain.get_verified_twin_contract(address),
          false <- is_nil(twin) do
+          Logger.info("--------4")
       twin.name
     else
       _ ->
@@ -420,6 +424,8 @@ defmodule BlockScoutWeb.AddressView do
   end
 
   def short_contract_name(name, max_length) do
+    Logger.info("----------")
+    Logger.info("#{inspect(name)}")
     short_string(name, max_length)
   end
 
