@@ -888,12 +888,17 @@ export class L1IngestionService {
       }
       const {
         dataStore: {
-          data_store_id: fromStoreNumber
-        }
+          data_store_id: fromStoreNumber,
+          upgrade_data_store_id
+        },
       } = await this.eigenlayerService.getRollupStoreByRollupBatchIndex(batchIndexParam);
       if (+fromStoreNumber === 0) {
         this.logger.log(`[syncEigenDaBatch] latestBatchIndex: ${fromStoreNumber}`);
         return false;
+      }
+      let number = fromStoreNumber;
+      if(upgrade_data_store_id && upgrade_data_store_id !== 0){
+        number += upgrade_data_store_id
       }
       const {
         dataStore:{
@@ -923,7 +928,7 @@ export class L1IngestionService {
           signatoryRecord: SignatoryRecord,
           confirmGasUsed: ConfirmGasUsed
         }
-      } = await this.eigenlayerService.getDataStore(fromStoreNumber);
+      } = await this.eigenlayerService.getDataStore(number);
       this.logger.log(`[syncEigenDaBatch] latestBatchIndex index:${Index}`);
       if (Index === undefined || Index === '') {
         this.logger.log(`[syncEigenDaBatch] latestBatchIndex Index === undefined || Index === ''`);
