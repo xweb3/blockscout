@@ -938,14 +938,26 @@ export class L1IngestionService {
       if (batchIndexParam > Number(batchIndex)) {
         return false;
       }
-      const {
-        dataStore: {
-          data_store_id: fromStoreNumber
-        }
-      } = await this.eigenlayerService.getRollupStoreByRollupBatchIndex(batchIndexParam);
+      
+      const res = await this.eigenlayerService.getRollupStoreByRollupBatchIndex(batchIndexParam);
+      if(!res) return Promise.reject();
+      let fromStoreNumber, upgrade_data_store_id
+      if(res?.dataStore?.data_store_id){
+        fromStoreNumber = res?.dataStore?.data_store_id;
+      }
+      if(res?.dataStore?.upgrade_data_store_id){
+        upgrade_data_store_id = res?.dataStore?.upgrade_data_store_id;
+      }
+      console.log('eigenda data', res)
+      console.log('store number', fromStoreNumber)
+      console.log('upgrade_data_store_id', upgrade_data_store_id)
       if (+fromStoreNumber === 0) {
         this.logger.log(`[syncEigenDaBatch] latestBatchIndex: ${fromStoreNumber}`);
         return false;
+      }
+      let number = fromStoreNumber;
+      if(upgrade_data_store_id && upgrade_data_store_id !== 0){
+        number += upgrade_data_store_id
       }
       const {
         dataStore:{
@@ -1015,7 +1027,7 @@ export class L1IngestionService {
       let insertHashData = null;
       // if Confirmed = true then get EigenDa tx list, else skip
       if (Confirmed) {
-        const {txList} = await this.eigenlayerService.getTxn(StoreNumber) || [];
+        const {txList} = await this.eigenlayerService.getTxn(number) || [];
         const insertHashList = [];
         insertBatchData.batch_size = txList.length || 0;
         txList.forEach((item) => {
