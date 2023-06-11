@@ -13,6 +13,7 @@ const TXN_BATCH = 'txn_batch_block_number';
 const STATE_BATCH = 'state_batch_block_number';
 const DA_BATCH_INDEX = 'DA_BATCH_INDEX';
 const SYNC_STEP = 10;
+const SYNC_STEP_L2 = 100;
 
 @Injectable()
 export class TasksService {
@@ -173,12 +174,12 @@ export class TasksService {
       await this.l2IngestionService.getCurrentBlockNumber();
     console.log('l2 sent currentBlockNumber: ', currentBlockNumber);
     const start = Number(await this.cacheManager.get(L2_SENT));
-    if (currentBlockNumber - start > SYNC_STEP) {
-      end = start + SYNC_STEP;
+    if (currentBlockNumber - start > SYNC_STEP_L2) {
+      end = start + SYNC_STEP_L2;
     } else {
       end =
-        start - SYNC_STEP > currentBlockNumber
-          ? start - SYNC_STEP
+        start - SYNC_STEP_L2 > currentBlockNumber
+          ? start - SYNC_STEP_L2
           : currentBlockNumber;
     }
     if (currentBlockNumber > start + 1) {
@@ -204,12 +205,12 @@ export class TasksService {
       await this.l2IngestionService.getCurrentBlockNumber();
     console.log('l2 relayed currentBlockNumber: ', currentBlockNumber);
     const start = Number(await this.cacheManager.get(L2_RELAYED));
-    if (currentBlockNumber - start > SYNC_STEP) {
-      end = start + SYNC_STEP;
+    if (currentBlockNumber - start > SYNC_STEP_L2) {
+      end = start + SYNC_STEP_L2;
     } else {
       end =
-        start - SYNC_STEP > currentBlockNumber
-          ? start - SYNC_STEP
+        start - SYNC_STEP_L2 > currentBlockNumber
+          ? start - SYNC_STEP_L2
           : currentBlockNumber;
     }
     if (currentBlockNumber > start + 1) {
