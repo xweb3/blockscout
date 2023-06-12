@@ -238,7 +238,7 @@
                     text: gettext("Eigenlayer Submission Hash") %>
                   <%= gettext "Eigenlayer Submission Hash" %>
                 </dt>
-                   <%= render "_link_to_detail.html", da_hash: @transaction.data_commitment, data_test: "address_hash_link" %>
+                   <%= render BlockScoutWeb.EigendaBatchView, "_link_to_detail.html", da_hash: @transaction.data_commitment, data_test: "address_hash_link" %>
                 </dd>
             </dl>
           <% end %>
