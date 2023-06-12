@@ -10,8 +10,8 @@
       <%= @l1_to_l2.queue_index %>
     </span>
     <%= if @l1_to_l2.l2_hash == nil do %>
-      <a style="width: 17%; text-align: center">
-         <p style="margin-right: 30px">Pending</p>
+      <a style="width: 17%; text-align: left">
+         Pending
       </a>
     <% else %>
       <a style="width: 17%;" href="/tx/<%= @l1_to_l2.l2_hash %>" >

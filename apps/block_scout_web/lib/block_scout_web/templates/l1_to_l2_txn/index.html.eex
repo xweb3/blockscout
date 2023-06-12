@@ -17,7 +17,7 @@
               _ ->
                 "All"
             end %>
-<section class="container" data-page="transaction-list">
+<section class="container" data-page="l1-to-l2-txn-list">
   <%= render BlockScoutWeb.Advertisement.TextAdView, "index.html", conn: @conn %>
   <div class="card">
     <div class="card-body txn-list-container" data-async-listing="<%= @current_path %>">
@@ -101,6 +101,5 @@
       <%= render BlockScoutWeb.CommonComponentsView, "_rap_pagination_container.html", position: "bottom" %>
 
   </div>
-  <script defer data-cfasync="false" src="<%= static_path(@conn, "/js/validated-transactions.js") %>"></script>
-  <script defer data-cfasync="false" src="<%= static_path(@conn, "/js/token-transfers-toggle.js") %>"></script>
+  <script defer data-cfasync="false" src="<%= static_path(@conn, "/js/l1-to-l2-txn.js") %>"></script>
 </section>

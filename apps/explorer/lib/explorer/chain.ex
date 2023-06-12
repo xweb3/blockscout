@@ -2212,7 +2212,7 @@ defmodule Explorer.Chain do
         left_join: d in DaBatch,
         on: d.batch_index == t.batch_index,
         where: t.tx_hash == ^hash,
-        select: %{batch_index: t.batch_index, data_commitment: d.data_commitment}
+        select: %{batch_index: t.batch_index, data_commitment: d.da_hash}
       )
 
     Repo.one(query)

@@ -238,7 +238,7 @@
                     text: gettext("Eigenlayer Submission Hash") %>
                   <%= gettext "Eigenlayer Submission Hash" %>
                 </dt>
-                  <dd class="col-sm-9 col-lg-9"> <%= @transaction.data_commitment %> </dd>
+                   <%= render "_link_to_detail.html", da_hash: @transaction.data_commitment, data_test: "address_hash_link" %>
                 </dd>
             </dl>
           <% end %>
