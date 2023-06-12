@@ -2,7 +2,7 @@ defmodule BlockScoutWeb.TokensController do
   use BlockScoutWeb, :controller
 
   import BlockScoutWeb.Chain, only: [paging_options: 1, next_page_params: 3, split_list_by_page: 1]
-require Logger
+
   alias BlockScoutWeb.{Controller, TokensView}
   alias Explorer.Chain
   alias Phoenix.View
@@ -50,8 +50,6 @@ require Logger
       tokens_page
       |> Enum.with_index(1)
       |> Enum.map(fn {token, index} ->
-        Logger.info("0-0-0-0-0")
-        Logger.info("#{inspect(token.contract_address)}")
         View.render_to_string(
           TokensView,
           "_tile.html",
