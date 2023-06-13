@@ -177,6 +177,11 @@ $card-tab-icon-color-active: #fff !default;
       font-family: Nunito;
       font-weight: 700;
       color: #6E767D;
+      .transaction_detail_status_item_right{
+        margin-right: 5px;
+        position: relative;
+        bottom:1px;
+      }
     }
     .transaction_detail_status_item_true{
       margin-right: 9px;

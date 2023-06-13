@@ -54,7 +54,9 @@ $dark-primary-alternate: #65B3AE !default;
 		border-radius: 12px;
 		position: relative;
 		max-width: 650px;
-
+		::-webkit-scrollbar {
+			background-color: transparent;
+		}
 		.transfers-list-mobile-scroll-notice{
 			position: absolute;
 			bottom: 0;

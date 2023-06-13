@@ -116,22 +116,22 @@
                 <%= if Map.has_key?(@transaction, :tx_status) do %>
                   <div class="transaction_detail_status_container">
                     <span class="transaction_detail_status_item transaction_detail_status_item_active">
-                      ✔️
+                      <img class="transaction_detail_status_item_right" src="/images/right_symbol_icon.svg" />
                       Accepted on L2
                     </span>
-                    <i class="transaction_detail_status_item_true">></i>
+                    <img class="transaction_detail_status_item_true" src="/images/arrow_right_icon.png" />
                     <span class="transaction_detail_status_item <%= BlockScoutWeb.TransactionView.get_tx_status_cls1(@transaction.tx_status) %>">
-                      ✔️
+                      <img class="transaction_detail_status_item_right" src="/images/right_symbol_icon.svg" />
                       Rollup to L1
                     </span>
-                    <i class="transaction_detail_status_item_true">></i>
+                    <img class="transaction_detail_status_item_true" src="/images/arrow_right_icon.png" />
                     <span class="transaction_detail_status_item <%= BlockScoutWeb.TransactionView.get_tx_status_cls2(@transaction.tx_status) %>">
-                      ✔️
+                      <img class="transaction_detail_status_item_right" src="/images/right_symbol_icon.svg" />
                       Finalized on L1
                     </span>
-                    <i class="transaction_detail_status_item_true">></i>
+                    <img class="transaction_detail_status_item_true" src="/images/arrow_right_icon.png" />
                     <span class="transaction_detail_status_item <%= BlockScoutWeb.TransactionView.get_tx_status_cls3(@transaction.tx_status) %>">
-                      ✔️
+                      <img class="transaction_detail_status_item_right" src="/images/right_symbol_icon.svg" />
                       Challenge Period Passed
                     </span>
                   </div>
@@ -238,6 +238,7 @@
                     text: gettext("Eigenlayer Submission Hash") %>
                   <%= gettext "Eigenlayer Submission Hash" %>
                 </dt>
+                <dd class="col-sm-9 col-lg-9">
                    <%= render BlockScoutWeb.EigendaBatchView, "_link_to_detail.html", da_hash: @transaction.data_commitment, data_test: "address_hash_link" %>
                 </dd>
             </dl>

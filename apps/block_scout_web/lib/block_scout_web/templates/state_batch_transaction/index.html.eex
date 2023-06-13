@@ -11,7 +11,7 @@
     <div class="card-body" data-async-listing="<%= @current_path %>">
       <h1 class="card-title list-title-description" style="position:relative;">
         <%= gettext "Validated Transactions" %>
-        <span style="font-size:16px;position:absolute;left:0;bottom:-24px;font-weight:400;color:#6c757d;">For State Batch <%= @conn.params["batch"] %></span>
+        <span style="font-family:Nunit;font-size:16px;font-weight:600;color:#585F65;margin-left:34px;">For State Batch <%= @conn.params["batch"] %></span>
       </h1>
       <div class="list-top-pagination-container-wrapper">
         <%= render BlockScoutWeb.CommonComponentsView, "_rap_pagination_container.html", position: "top", showing_limit: if Chain.transactions_available_count() >= Chain.limit_showing_transactions(), do: Chain.limit_showing_transactions(), else: nil %>
