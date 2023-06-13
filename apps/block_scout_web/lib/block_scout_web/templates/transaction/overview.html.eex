@@ -362,11 +362,11 @@
                     <%= gettext "Tokens Minted" %>
                   </dt>
                   <dd class="col-sm-9 col-lg-9 transfers-list-mobile-container">
-                    <table cellpadding="3" cellspacing="0">
+                    <div class="transfers-list-mobile-container-wrap">
                       <%= for minting <- mintings do %>
                         <%= render BlockScoutWeb.TransactionView, "_total_transfers_from_to.html", Map.put(assigns, :transfer, minting) %>
                       <% end %>
-                    </table>
+                    </div>
                   </dd>
                 </dl>
               <% end %>
@@ -379,9 +379,9 @@
                     <%= gettext "Tokens Burnt" %></dt>
                   <dd class="col-sm-9 col-lg-9 transfers-list-mobile-container">
                   <%= for burning  <- burnings do %>
-                    <table cellpadding="3" cellspacing="0">
+                    <div class="transfers-list-mobile-container-wrap">
                       <%= render BlockScoutWeb.TransactionView, "_total_transfers_from_to.html", Map.put(assigns, :transfer, burning) %>
-                    </table>
+                    </div>
                   <% end %>
                   </dd>
                 </dl>
@@ -395,9 +395,9 @@
                     <%= gettext "Tokens Created" %></dt>
                   <dd class="col-sm-9 col-lg-9 transfers-list-mobile-container">
                   <%= for creation  <- creations do %>
-                    <table cellpadding="3" cellspacing="0">
+                    <div class="transfers-list-mobile-container-wrap">
                       <%= render BlockScoutWeb.TransactionView, "_total_transfers_from_to.html", Map.put(assigns, :transfer, creation) %>
-                    </table>
+                    </div>
                   <% end %>
                   </dd>
                 </dl>

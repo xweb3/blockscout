@@ -47,9 +47,6 @@ const resultsListElement = (list, data) => {
   fetchTextAdData()
 }
 export const searchEngine = (query, record) => {
-  console.log(123123)
-  console.log(query)
-  console.log(record)
   const queryLowerCase = query.toLowerCase()
   if (record && (
     (record.name && record.name.toLowerCase().includes(queryLowerCase)) ||
