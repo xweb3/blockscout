@@ -13,6 +13,7 @@ const TXN_BATCH = 'txn_batch_block_number';
 const STATE_BATCH = 'state_batch_block_number';
 const DA_BATCH_INDEX = 'DA_BATCH_INDEX';
 const SYNC_STEP = 10;
+const SYNC_STEP_L2 = 100;
 
 @Injectable()
 export class TasksService {
@@ -103,6 +104,8 @@ export class TasksService {
       ttl: 0,
     });
     console.log('================end init cache================');
+    // TODO (Jayce) state batch missed data sync script
+    //this.miss_data_script_start(8489739)
   }
   @Interval(2000)
   async l1_sent() {
@@ -173,12 +176,12 @@ export class TasksService {
       await this.l2IngestionService.getCurrentBlockNumber();
     console.log('l2 sent currentBlockNumber: ', currentBlockNumber);
     const start = Number(await this.cacheManager.get(L2_SENT));
-    if (currentBlockNumber - start > SYNC_STEP) {
-      end = start + SYNC_STEP;
+    if (currentBlockNumber - start > SYNC_STEP_L2) {
+      end = start + SYNC_STEP_L2;
     } else {
       end =
-        start - SYNC_STEP > currentBlockNumber
-          ? start - SYNC_STEP
+        start - SYNC_STEP_L2 > currentBlockNumber
+          ? start - SYNC_STEP_L2
           : currentBlockNumber;
     }
     if (currentBlockNumber > start + 1) {
@@ -204,12 +207,12 @@ export class TasksService {
       await this.l2IngestionService.getCurrentBlockNumber();
     console.log('l2 relayed currentBlockNumber: ', currentBlockNumber);
     const start = Number(await this.cacheManager.get(L2_RELAYED));
-    if (currentBlockNumber - start > SYNC_STEP) {
-      end = start + SYNC_STEP;
+    if (currentBlockNumber - start > SYNC_STEP_L2) {
+      end = start + SYNC_STEP_L2;
     } else {
       end =
-        start - SYNC_STEP > currentBlockNumber
-          ? start - SYNC_STEP
+        start - SYNC_STEP_L2 > currentBlockNumber
+          ? start - SYNC_STEP_L2
           : currentBlockNumber;
     }
     if (currentBlockNumber > start + 1) {
@@ -228,13 +231,16 @@ export class TasksService {
       );
     }
   }
-  @Interval(2000)
+  @Interval(3000)
   async state_batch() {
     let end = 0;
-    const currentBlockNumber =
+    const currentL1BlockNumber =
       await this.l1IngestionService.getCurrentBlockNumber();
-    console.log('state batch currentBlockNumber: ', currentBlockNumber);
+    console.log('state batch currentBlockNumber: ', currentL1BlockNumber);
+    // the latest block might get empty passed events
+    const currentBlockNumber = currentL1BlockNumber - 1;
     const start = Number(await this.cacheManager.get(STATE_BATCH));
+    // current = 100   start = 94  SYNC_STEP = 10
     if (currentBlockNumber - start > SYNC_STEP) {
       end = start + SYNC_STEP;
     } else {
@@ -247,19 +253,42 @@ export class TasksService {
       const result = await this.l1IngestionService.createStateBatchesEvents(
         start + 1,
         end,
-      );
-      const insertData = !result || result.length <= 0 ?  [] : result[0].identifiers || []
-      this.logger.log(
-        `sync [${insertData.length}] state_batch from block [${start}] to [${end}]`,
-      );
-      await this.cacheManager.set(STATE_BATCH, end, { ttl: 0 });
+      ).catch(e=> {
+        console.error(`insert state batch failed, number: ${start} ${end}`)
+      });
+      if(result){
+        const insertData = !result || result.length <= 0 ?  [] : result[0].identifiers || []
+        this.logger.log(
+          `sync [${insertData.length}] state_batch from block [${start}] to [${end}]`,
+        );
+        await this.cacheManager.set(STATE_BATCH, end, { ttl: 0 });
+      }else {
+        console.error('result insert state batch data failed')
+      }
+      
     } else {
       this.logger.log(
         `sync state_batch finished and latest block number is: ${currentBlockNumber}`,
       );
     }
   }
-  @Interval(2000)
+
+
+  async miss_data_script_start(block) {
+    console.log('-------------- start script , start block', block)
+    const result = await this.l1IngestionService.saveStateBatchMissedScript(block).catch(e=> {
+      console.error(`insert state batch failed,`)
+    });
+    console.log('list sync completed, the next block:', result)
+    if(result && result < 9146135){
+      this.miss_data_script_start(result)
+    }else {
+      console.error('result insert state batch data failed, or sync completed!', result)
+    }
+  }
+
+
+  /* @Interval(2000)
   async txn_batch() {
     let end = 0;
     const currentBlockNumber =
@@ -289,7 +318,7 @@ export class TasksService {
         `sync txn_batch finished and latest block number is: ${currentBlockNumber}`,
       );
     }
-  }
+  } */
   @Interval(10000)
   async l1l2_merge() {
     try {
@@ -309,7 +338,7 @@ export class TasksService {
   @Interval(10000)
   async l2l1_merge_waiting() {
     try {
-      await this.l1IngestionService.handleWaitTransaction();
+      await this.l2IngestionService.handleWaitTransaction();
     } catch (error) {
       this.logger.error(`error l1l2 [handle_l2l1_merge_waiting]: ${error}`);
     }

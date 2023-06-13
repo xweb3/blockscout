@@ -12,6 +12,8 @@ import { EntityManager, getConnection, getManager, Repository } from 'typeorm';
 import Web3 from 'web3';
 import ABI from '../abi/L2CrossDomainMessenger.json';
 import { utils } from 'ethers';
+import { HttpService } from '@nestjs/axios';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class L2IngestionService {
@@ -27,6 +29,7 @@ export class L2IngestionService {
     private readonly sentEventsRepository: Repository<L2SentMessageEvents>,
     @InjectRepository(L2ToL1)
     private readonly l2ToL1Repository: Repository<L2ToL1>,
+    private readonly httpService: HttpService,
   ) {
     this.entityManager = getManager();
     const web3 = new Web3(
@@ -37,7 +40,6 @@ export class L2IngestionService {
       configService.get('L2_CROSS_DOMAIN_MESSENGER_ADDRESS'),
     );
     this.web3 = web3;
-    // this.sync();
   }
   async getSentMessageByBlockNumber(fromBlock: number, toBlock: number) {
     return this.crossDomainMessengerContract.getPastEvents('SentMessage', {
@@ -149,8 +151,8 @@ export class L2IngestionService {
           'finalizeBitWithdrawal',
           message,
         );
-        name = 'BIT';
-        symbol = 'BIT';
+        name = 'MNT';
+        symbol = 'MNT';
         from = decodeMsg._from;
         to = decodeMsg._to;
         value = this.web3.utils.hexToNumberString(decodeMsg._amount._hex);
@@ -421,5 +423,66 @@ export class L2IngestionService {
       this.logger.log(`create l1->l2 relation to l1_to_l2 table finish`);
     }
     return updateL2ToL1Data;
+  }
+  async getTxStatusDetailByHash(txHash) {
+    const { data } = await firstValueFrom(
+      this.httpService.post(`${this.configService.get('L2_RPC')}`, {
+        id: 0,
+        method: 'eth_getTxStatusDetailByHash',
+        params: [txHash]
+      }, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+    );
+    return data;
+  }
+  async handleWaitTransaction() {
+    const list = await this.l2ToL1Repository.find({
+      select: ['l2_hash'],
+      where: {
+        status: 'Waiting'
+      },
+      take: 10,
+      order: {
+        block: 'ASC'
+      }
+    });
+    const updateL2ToL1Data = []
+    for(let item of list) {
+      const l2_hash = item.l2_hash.toString();
+      const { result } = await this.getTxStatusDetailByHash(l2_hash);
+      console.log(result);
+      if (result.status === '0x3' || result.status === '0x03') {
+        updateL2ToL1Data.push({
+          l2_hash: l2_hash,
+          status: 'Ready for Relay'
+        })
+      }
+    }
+    const dataSource = getConnection();
+    const queryRunner = dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    try {
+      await queryRunner.manager
+        .createQueryBuilder()
+        .setLock('pessimistic_write')
+        .insert()
+        .into(L2ToL1)
+        .values(updateL2ToL1Data)
+        .orUpdate(['status'], ['l2_hash'], {
+          skipUpdateIfNoValuesChanged: true
+        })
+        .execute();
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      this.logger.error(`l2l1 change status error ${error}`);
+      await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
+      this.logger.log(`l2l1 change status to Waiting finish`);
+    }
   }
 }

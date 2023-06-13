@@ -9,6 +9,7 @@ defmodule Explorer.Chain.L1ToL2 do
           timestamp: DateTime.t(),
           tx_origin: %Ecto.Association.NotLoaded{} | Address.t(),
           queue_index: integer(),
+          type: integer(),
           target: %Ecto.Association.NotLoaded{} | Address.t(),
           gas_limit: Gas.t(),
         }
@@ -18,6 +19,7 @@ defmodule Explorer.Chain.L1ToL2 do
     field(:hash, :string)
     field(:l2_hash, :string)
     field(:block, :integer)
+    field(:type, :integer)
     field(:timestamp, :utc_datetime_usec)
     field(:tx_origin, :string)
     field(:target, :string)

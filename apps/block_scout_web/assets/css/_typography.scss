@@ -83,7 +83,7 @@ textarea.form-control {
 
 .contract-address {
   display: inline-block;
-  text-decoration: underline;
+  text-decoration: none;
   text-decoration-style: dashed;
   &:hover {
     text-decoration-style: none;

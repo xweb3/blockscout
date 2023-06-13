@@ -6,7 +6,7 @@ defmodule BlockScoutWeb.ChainController do
   alias BlockScoutWeb.API.V2.Helper
   alias BlockScoutWeb.{ChainView, Controller}
   alias Explorer.{Chain, PagingOptions, Repo}
-  alias Explorer.Chain.{Address, Block, Transaction}
+  alias Explorer.Chain.{Address, Block, Transaction, DaBatch}
   alias Explorer.Chain.Cache.Block, as: BlockCache
   alias Explorer.Chain.Cache.GasUsage
   alias Explorer.Chain.Cache.Transaction, as: TransactionCache
@@ -55,7 +55,7 @@ defmodule BlockScoutWeb.ChainController do
       transaction_estimated_count: transaction_estimated_count,
       total_gas_usage: total_gas_usage,
       transactions_path: recent_transactions_path(conn, :index),
-      txn_batches_path: recent_txn_batches_path(conn, :index),
+      eigenda_batches_path: recent_eigenda_batches_path(conn, :index),
       l1_to_l2_txn_path: recent_l1_to_l2_txn_path(conn, :index),
       transaction_stats: transaction_stats,
       block_count: block_count,
@@ -100,11 +100,18 @@ defmodule BlockScoutWeb.ChainController do
       |> Enum.map(fn item ->
         tx_hash_bytes = Map.get(item, :tx_hash)
         block_hash_bytes = Map.get(item, :block_hash)
+        type = Map.get(item, :type)
 
         item =
           if tx_hash_bytes do
-            item
-            |> Map.replace(:tx_hash, "0x" <> Base.encode16(tx_hash_bytes, case: :lower))
+
+            if type == "eigenda" do
+              item
+            else
+              item
+              |> Map.replace(:tx_hash, "0x" <> Base.encode16(tx_hash_bytes, case: :lower))
+            end
+
           else
             item
           end
@@ -119,7 +126,6 @@ defmodule BlockScoutWeb.ChainController do
 
         item
       end)
-
     json(conn, encoded_results)
   end
 
@@ -174,7 +180,10 @@ defmodule BlockScoutWeb.ChainController do
       conn
       |> transaction_path(:show, item)
       |> Controller.full_path()
-
     redirect(conn, to: transaction_path)
+  end
+
+  defp redirect_search_results(conn, %DaBatch{} = item) do
+    redirect(conn, to: "/eigenda-batch/#{item.da_hash}")
   end
 end

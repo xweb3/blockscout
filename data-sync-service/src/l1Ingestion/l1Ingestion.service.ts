@@ -140,6 +140,9 @@ export class L1IngestionService {
   async getSccTotalElements() {
     return this.sccContract.methods.getTotalElements().call();
   }
+  async getFRAUD_PROOF_WINDOW() {
+    return this.sccContract.methods.FRAUD_PROOF_WINDOW().call();
+  }
   verifyDomainCalldataHash({ target, sender, message, messageNonce }): string {
     const xDomainCalldata = this.web3.eth.abi.encodeFunctionCall(
       {
@@ -247,6 +250,74 @@ export class L1IngestionService {
     }
     return result;
   }
+
+  // save missed data, need be deleted
+  async saveStateBatchMissedScript(startBlock) {
+    console.log('state batch start block', startBlock)
+    const list = await this.getSccStateBatchAppendedByBlockNumber(
+      startBlock,
+      startBlock+1999,
+    );
+    const stateBatchesInsertData: any[] = [];
+    console.log('data list length', list.length)
+    for (const item of list) {
+      const {
+        blockNumber,
+        transactionHash,
+        returnValues: {
+          _batchIndex,
+          _batchRoot,
+          _batchSize,
+          _prevTotalElements,
+          _extraData,
+        },
+      } = item;
+      console.log(`the state batch index will be insert into db: ${_batchIndex}`)
+      const { timestamp } = await this.web3.eth.getBlock(blockNumber);
+      stateBatchesInsertData.push({
+        batch_index: _batchIndex,
+        block_number: blockNumber.toString(),
+        hash: transactionHash,
+        size: _batchSize,
+        l1_block_number: blockNumber,
+        batch_root: _batchRoot,
+        extra_data: _extraData,
+        pre_total_elements: _prevTotalElements,
+        timestamp: new Date(Number(timestamp) * 1000).toISOString(),
+        inserted_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      })
+    }
+    const result: any[] = [];
+    const dataSource = getConnection();
+    const queryRunner = dataSource.createQueryRunner();
+    await queryRunner.connect();
+    console.log('start insert into db')
+    try {
+      await queryRunner.startTransaction();
+      const savedResult = await queryRunner.manager
+      .createQueryBuilder()
+      .insert()
+      .into(StateBatches)
+      .values(stateBatchesInsertData)
+      .onConflict(`("batch_index") DO NOTHING`)
+      .execute()
+      result.push(savedResult);
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      this.logger.error(
+        `l1 createStateBatchesEvents ${error}, insert state batch failed, start and end block number ${startBlock}`,
+      );
+      await queryRunner.rollbackTransaction();
+      return Promise.reject(`insert state batch failed`)
+    } finally {
+      await queryRunner.release();
+    }
+    return startBlock+2000;
+  }
+
+
+
   async createStateBatchesEvents(startBlock, endBlock) {
     console.log('state batch start block', startBlock, endBlock)
     const list = await this.getSccStateBatchAppendedByBlockNumber(
@@ -266,6 +337,7 @@ export class L1IngestionService {
           _extraData,
         },
       } = item;
+      console.log(`the state batch index will be insert into db: ${_batchIndex}`)
       const { timestamp } = await this.web3.eth.getBlock(blockNumber);
       stateBatchesInsertData.push({
         batch_index: _batchIndex,
@@ -287,14 +359,21 @@ export class L1IngestionService {
     await queryRunner.connect();
     try {
       await queryRunner.startTransaction();
-      const savedResult = await queryRunner.manager.insert(StateBatches, stateBatchesInsertData);
+      const savedResult = await queryRunner.manager
+      .createQueryBuilder()
+      .insert()
+      .into(StateBatches)
+      .values(stateBatchesInsertData)
+      .onConflict(`("batch_index") DO NOTHING`)
+      .execute()
       result.push(savedResult);
       await queryRunner.commitTransaction();
     } catch (error) {
       this.logger.error(
-        `l1 createStateBatchesEvents ${error}`,
+        `l1 createStateBatchesEvents ${error}, insert state batch failed, start and end block number ${startBlock} ${endBlock}`,
       );
       await queryRunner.rollbackTransaction();
+      return Promise.reject(`insert state batch failed`)
     } finally {
       await queryRunner.release();
     }
@@ -306,6 +385,7 @@ export class L1IngestionService {
     const iface = new utils.Interface([
       'function claimReward(uint256 _blockStartHeight, uint32 _length, uint256 _batchTime, address[] calldata _tssMembers)',
       'function finalizeDeposit(address _l1Token, address _l2Token, address _from, address _to, uint256 _amount, bytes calldata _data)',
+      'function rollBackL2Chain(uint256 _shouldRollBack, uint256 _shouldStartAtElement, bytes memory _signature)',
     ]);
     let l1_token = '0x0000000000000000000000000000000000000000';
     let l2_token = '0x0000000000000000000000000000000000000000';
@@ -338,6 +418,9 @@ export class L1IngestionService {
         const decodeMsg = iface.decodeFunctionData('claimReward', message);
         type = 0; // reward
         this.logger.log(`reward tssMembers is [${decodeMsg._tssMembers}]`);
+      } else if (funName === '0xf523f40d') {
+        const decodeMsg = iface.decodeFunctionData('rollBackL2Chain', message);
+        type = 2; // rollBackL2Chain
       }
       const { timestamp } = await this.web3.eth.getBlock(blockNumber);
       const msgHash = this.verifyDomainCalldataHash({
@@ -537,7 +620,7 @@ export class L1IngestionService {
     try {
       await queryRunner.manager.save(DaBatches, insertBatchData);
       if (insertHashData) {
-        /* await queryRunner.manager
+        await queryRunner.manager
           .createQueryBuilder()
           .setLock('pessimistic_write')
           .insert()
@@ -546,8 +629,8 @@ export class L1IngestionService {
           .orUpdate(["block_number"], ["tx_hash"], {
             skipUpdateIfNoValuesChanged: true
           })
-          .execute(); */
-        await queryRunner.manager.insert(DaBatchTransactions, insertHashData);
+          .execute();
+        // await queryRunner.manager.insert(DaBatchTransactions, insertHashData);
       }
       await queryRunner.commitTransaction();
     } catch (error) {
@@ -558,38 +641,6 @@ export class L1IngestionService {
       await queryRunner.release();
     }
     return true;
-  }
-  async handleWaitTransaction() {
-    // const latestBlock = await this.getCurrentBlockNumber();
-    // const { timestamp } = await this.web3.eth.getBlock(latestBlock);
-    const totalElements = await this.getSccTotalElements();
-    // const lTimestamp = Number(waitTxList[i].timestamp) / 1000;
-    const dataSource = getConnection();
-    const queryRunner = dataSource.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
-    try {
-      // todo: lTimestamp + FraudProofWindow >= timestamp
-      await queryRunner.manager
-        .createQueryBuilder()
-        .setLock('pessimistic_write')
-        .update(L2ToL1)
-        .set({ status: 'Ready for Relay' })
-        .where('block <= :block', { block: totalElements })
-        .andWhere('status = :status', { status: 'Waiting' })
-        .execute();
-      // update transactions to Ready for Relay
-      // await queryRunner.manager.query(
-      //   `UPDATE transactions SET l1l2_status=$1 WHERE l1l2_status=$2;`,
-      //   [1, 0],
-      // );
-      await queryRunner.commitTransaction();
-    } catch (error) {
-      await queryRunner.rollbackTransaction();
-    } finally {
-      await queryRunner.release();
-      this.logger.log(`l2l1 change status to Waiting finish`);
-    }
   }
   async createL2L1Relation() {
     const unMergeTxList = await this.getRelayedEventByIsMerge(false);
@@ -694,6 +745,7 @@ export class L1IngestionService {
   async getRelayedEventByIsMerge(is_merge: boolean, take: number = 100) {
     return this.relayedEventsRepository.find({
       where: { is_merge: is_merge },
+      order: { block_number: 'DESC' },
       take
     });
   }
@@ -886,14 +938,26 @@ export class L1IngestionService {
       if (batchIndexParam > Number(batchIndex)) {
         return false;
       }
-      const {
-        dataStore: {
-          data_store_id: fromStoreNumber
-        }
-      } = await this.eigenlayerService.getRollupStoreByRollupBatchIndex(batchIndexParam);
+      
+      const res = await this.eigenlayerService.getRollupStoreByRollupBatchIndex(batchIndexParam);
+      if(!res) return Promise.reject();
+      let fromStoreNumber, upgrade_data_store_id
+      if(res?.dataStore?.data_store_id){
+        fromStoreNumber = res?.dataStore?.data_store_id;
+      }
+      if(res?.dataStore?.upgrade_data_store_id){
+        upgrade_data_store_id = res?.dataStore?.upgrade_data_store_id;
+      }
+      console.log('eigenda data', res)
+      console.log('store number', fromStoreNumber)
+      console.log('upgrade_data_store_id', upgrade_data_store_id)
       if (+fromStoreNumber === 0) {
         this.logger.log(`[syncEigenDaBatch] latestBatchIndex: ${fromStoreNumber}`);
         return false;
+      }
+      let number = fromStoreNumber;
+      if(upgrade_data_store_id && upgrade_data_store_id !== 0){
+        number += upgrade_data_store_id
       }
       const {
         dataStore:{
@@ -932,7 +996,7 @@ export class L1IngestionService {
       const CURRENT_TIMESTAMP = new Date().toISOString();
       const insertBatchData = {
         batch_index: batchIndexParam,
-        batch_size: StorePeriodLength,
+        batch_size: 0,
         status: Confirmed ? 'confirmed' : 'init',
         da_hash: utils.hexlify(MsgHash),
         store_id: DurationDataStoreId,
@@ -963,8 +1027,9 @@ export class L1IngestionService {
       let insertHashData = null;
       // if Confirmed = true then get EigenDa tx list, else skip
       if (Confirmed) {
-        const {txList} = await this.eigenlayerService.getTxn(StoreNumber) || [];
+        const {txList} = await this.eigenlayerService.getTxn(number) || [];
         const insertHashList = [];
+        insertBatchData.batch_size = txList.length || 0;
         txList.forEach((item) => {
           insertHashList.push({
             batch_index: batchIndexParam,
@@ -1023,7 +1088,7 @@ export class L1IngestionService {
   async getDepositList(address, offset, limit) {
     const result = []
     const deposits = await this.txnL1ToL2Repository.findAndCount({
-      where: { from: address },
+      where: { from: address, type: 1 },
       order: { queue_index: 'DESC' },
       // skip: offset,
       take: limit,

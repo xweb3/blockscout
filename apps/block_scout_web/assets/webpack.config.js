@@ -49,6 +49,8 @@ const appJs =
       'address-validations': './js/pages/address/validations.js',
       'validated-transactions': './js/pages/transactions.js',
       'verified-contracts': './js/pages/verified_contracts.js',
+      'l2-to-l1-txn': './js/pages/l2_to_l1_txn.js',
+      'l1-to-l2-txn': './js/pages/l1_to_l2_txn.js',
       'pending-transactions': './js/pages/pending_transactions.js',
       'transaction': './js/pages/transaction.js',
       'verification-form': './js/pages/verification_form.js',

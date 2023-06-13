@@ -6,7 +6,7 @@ import { appendTokenIcon } from './token_icon'
 import { escapeHtml } from './utils'
 import xss from 'xss'
 
-let placeHolder = 'Address/Txn hash/Block/Token'
+let placeHolder = 'Address/Txn Hash/Block/Token/DA Hash'
 const dataSrc = async (query, id) => {
   try {
     // Loading placeholder text
@@ -47,13 +47,17 @@ const resultsListElement = (list, data) => {
   fetchTextAdData()
 }
 export const searchEngine = (query, record) => {
+  console.log(123123)
+  console.log(query)
+  console.log(record)
   const queryLowerCase = query.toLowerCase()
   if (record && (
     (record.name && record.name.toLowerCase().includes(queryLowerCase)) ||
       (record.symbol && record.symbol.toLowerCase().includes(queryLowerCase)) ||
       (record.address_hash && record.address_hash.toLowerCase().includes(queryLowerCase)) ||
       (record.tx_hash && record.tx_hash.toLowerCase().includes(queryLowerCase)) ||
-      (record.block_hash && record.block_hash.toLowerCase().includes(queryLowerCase))
+      (record.block_hash && record.block_hash.toLowerCase().includes(queryLowerCase)) ||
+      (record.tx_hash && record.type === 'eigenda')
   )
   ) {
     let searchResult = '<div>'
@@ -148,6 +152,8 @@ const selection = (event) => {
     window.location = `/tx/${selectionValue.tx_hash}`
   } else if (selectionValue.type === 'block') {
     window.location = `/blocks/${selectionValue.block_hash}`
+  } else if (selectionValue.type === 'eigenda') {
+    window.location = `/eigenda-batch/${selectionValue.tx_hash}`
   }
 }
 

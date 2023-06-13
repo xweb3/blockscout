@@ -8,6 +8,7 @@ defmodule Explorer.Chain.L2ToL1 do
         block: integer(),
         msg_nonce: integer(),
         from_address: %Ecto.Association.NotLoaded{} | Address.t(),
+        from: %Ecto.Association.NotLoaded{} | Address.t(),
         txn_batch_index: integer(),
         state_batch_index: integer(),
         timestamp: DateTime.t(),
@@ -22,6 +23,7 @@ defmodule Explorer.Chain.L2ToL1 do
     field(:block, :integer)
     # field(:msg_nonce, :integer)
     field(:from_address, :string)
+    field(:from, :string)
     field(:txn_batch_index, :integer)
     field(:state_batch_index, :integer)
     field(:timestamp, :utc_datetime_usec)

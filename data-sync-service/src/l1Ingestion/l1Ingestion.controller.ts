@@ -6,7 +6,7 @@ import { isValidAddress, publicToAddress } from 'ethereumjs-util';
 @Controller('/')
 export class L1IngestionController {
   constructor(private readonly l1IngestionService: L1IngestionService,
-              private readonly L2IngestionService: L2IngestionService,
+              private readonly l2IngestionService: L2IngestionService,
     ) {}
 
   @Get('l1tol2')
