@@ -161,9 +161,41 @@ $card-tab-icon-color-active: #fff !default;
       display:none;
     }
   }
+  .transaction_detail_status_container{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    .transaction_detail_status_item {
+      height: 36px;
+      padding: 0 16px 0 18px;
+      text-align: center;
+      line-height: 36px;
+      border-radius: 18px;
+      background: #F0F1F2;
+      margin: 0 9px 8px 0;
+      font-size: 14px;
+      font-family: Nunito;
+      font-weight: 700;
+      color: #6E767D;
+      .transaction_detail_status_item_right{
+        margin-right: 5px;
+        position: relative;
+        bottom:1px;
+      }
+    }
+    .transaction_detail_status_item_true{
+      margin-right: 9px;
+      margin-bottom: 8px;
+    }
+    .transaction_detail_status_item_active {
+      color: #15181C;
+      background: rgba(6, 221, 118, 0.5);
+    }
+  }
 }
 
 .txn-list-container{
+
 
   .txn-list-table-head-container{
     background:#F8F8F9;;
@@ -177,6 +209,30 @@ $card-tab-icon-color-active: #fff !default;
     border-bottom:1px solid #F0F1F2;
     color:#6c757e;
     min-width: 1130px;
+    .l1-to-l2-tx-type-head{
+      color:#6c757e;
+    }
+    .dropdown-menu{
+      background: #F8F8F9;
+      border: 1px solid #F0F1F2;
+      box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.02);
+      border-radius: 6px !important;
+      padding: 6px;
+      min-width: 100px;
+      width: auto;
+      .dropdown-item{
+        color: #15181C;
+        border-radius: 4px;
+        width: 120px;
+        line-height: 38px;
+        padding:0 8px;
+        &:hover{
+          font-weight: 700;
+          background: rgba(207, 210, 212, 0.3);
+          
+        }
+      }
+    }
   }
   .recent-tx-list-page{
     min-width: 1130px;
@@ -190,6 +246,12 @@ $card-tab-icon-color-active: #fff !default;
     padding:0 10px;
     border-bottom:1px solid #e7eaf3;
   }
+  .display_tx_status_tooltip{
+    color: #212529;
+    &:hover {
+      color: #212529;
+    }
+  }
 }
 .dark-theme-applied{
   .card-body {
@@ -200,9 +262,30 @@ $card-tab-icon-color-active: #fff !default;
       background:  rgba(255, 255, 255, 0.05);
       color:#ffffff;
       border-color: rgba(255, 255, 255, 0.15);
+      .l1-to-l2-tx-type-head{
+        color:#ffffff;
+      }
+      .dropdown-menu{
+        background: #152928;
+        box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.02);
+        border:none;
+        .dropdown-item{
+          color: #ffffff;
+          background: #152928 !important;
+          &:hover{
+            background: #21413F !important;
+          }
+        }
+      }
     }
     .txn-list-table-item{
       border-color:rgba(255,255,255,.1);
+    }
+    .display_tx_status_tooltip{
+      color: #ffffff;
+      &:hover {
+        color: #ffffff;
+      }
     }
   }
 }
@@ -327,6 +410,9 @@ $card-tab-icon-color-active: #fff !default;
             width:80px;
           }
         }
+        .recent-preview-item-content-latest-txs-tag-wrap-time{
+          min-width: 100px;
+        }
         .recent-preview-item-content-latest-txs-tag-wrap{
           margin-left:5px;
           font-size:12px;position:relative;
@@ -337,6 +423,10 @@ $card-tab-icon-color-active: #fff !default;
           color:#091312;
           background:rgba(175, 208, 232, .35);
           height:20px;
+          max-width: 148px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
           .recent-preview-item-content-latest-txs-tag{
             position:absolute;
             left:0;
@@ -423,7 +513,20 @@ $card-tab-icon-color-active: #fff !default;
       }
     }
   }
-  
+  .transaction_detail_status_container{
+    
+    .transaction_detail_status_item {
+      background: #21413F;
+      color: #4F8F8B;
+      &:first-child {
+        margin-left: 0;
+      }
+    }
+    .transaction_detail_status_item_active {
+      color: #ffffff;
+      background: rgba(6, 221, 118, 0.5);
+    }
+  }
 }
 
 .card-tabs {

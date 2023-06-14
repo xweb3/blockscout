@@ -6,6 +6,7 @@ defmodule BlockScoutWeb.SearchController do
   alias BlockScoutWeb.{Controller, SearchView}
   alias Explorer.Chain
   alias Phoenix.View
+  require Logger
 
   def search_results(conn, %{"q" => query, "type" => "JSON"} = params) do
     [paging_options: paging_options] = paging_options(params)

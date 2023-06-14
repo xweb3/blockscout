@@ -1593,6 +1593,29 @@ defmodule Explorer.Chain do
     end
   end
 
+  defp search_eigenda_query(term) do
+    case Chain.string_to_transaction_hash(term) do
+      {:ok, tx_hash} ->
+        hash_string = Hash.to_string(tx_hash)
+        from(da_batch in DaBatch,
+          where: da_batch.da_hash == ^hash_string,
+          select: %{
+            address_hash: ^nil,
+            tx_hash: da_batch.da_hash,
+            block_hash: ^nil,
+            type: "eigenda",
+            name: ^nil,
+            symbol: ^nil,
+            holder_count: ^nil,
+            inserted_at: da_batch.init_time,
+            block_number: 0
+          }
+        )
+      _ ->
+        nil
+    end
+  end
+
   defp search_block_query(term) do
     case Chain.string_to_block_hash(term) do
       {:ok, block_hash} ->
@@ -1645,6 +1668,7 @@ defmodule Explorer.Chain do
         tx_query = search_tx_query(string)
         address_query = search_address_query(string)
         block_query = search_block_query(string)
+        eigenda_query = search_eigenda_query(string)
 
         basic_query =
           from(
@@ -1655,19 +1679,24 @@ defmodule Explorer.Chain do
         query =
           cond do
             address_query ->
+              Logger.info("111")
               basic_query
               |> union(^address_query)
 
             tx_query ->
+              Logger.info("222")
               basic_query
               |> union(^tx_query)
               |> union(^block_query)
+              |> union(^eigenda_query)
 
             block_query ->
+              Logger.info("333")
               basic_query
               |> union(^block_query)
 
             true ->
+              Logger.info("444")
               basic_query
           end
 
@@ -1677,13 +1706,10 @@ defmodule Explorer.Chain do
             limit: ^paging_options.page_size,
             offset: ^offset
           )
-
         paginated_ordered_query =
           ordered_query
           |> page_search_results(paging_options)
-
         search_results = Repo.all(paginated_ordered_query)
-
         search_results
         |> Enum.map(fn result ->
           result_checksummed_address_hash =
@@ -2141,8 +2167,8 @@ defmodule Explorer.Chain do
       `:required`, and the `t:Explorer.Chain.Transaction.t/0` has no associated record for that association, then the
       `t:Explorer.Chain.Transaction.t/0` will not be included in the page `entries`.
   """
-  @spec hash_to_transaction(Hash.Full.t(), [necessity_by_association_option]) ::
-          {:ok, Transaction.t()} | {:error, :not_found}
+  @spec hash_to_transaction(Hash.Full.t() | String.t(), [necessity_by_association_option]) ::
+          {:ok, Transaction.t()} | {:ok, DaBatch.t()} | {:error, :not_found}
   def hash_to_transaction(
         %Hash{byte_count: unquote(Hash.Full.byte_count())} = hash,
         options \\ []
@@ -2156,11 +2182,76 @@ defmodule Explorer.Chain do
     |> Repo.one()
     |> case do
       nil ->
-        {:error, :not_found}
+        hash_string = Hash.to_string(hash)
+        DaBatch
+        |> where([da_batch], da_batch.da_hash == ^hash_string)
+        |> limit(1)
+        |> Repo.one()
+        |> case do
+          nil -> {:error, :not_found}
+
+          da_transaction ->
+            {:ok, da_transaction}
+          end
 
       transaction ->
         {:ok, transaction}
     end
+  end
+
+  @spec hash_to_batch(String.t(), [necessity_by_association_option]) ::
+          {:ok, map()} | {:error, :not_found}
+  def hash_to_batch(
+      hash,
+      options \\ []
+    )
+  when is_list(options) do
+    query =
+      from(
+        t in DaBatchTransaction,
+        left_join: d in DaBatch,
+        on: d.batch_index == t.batch_index,
+        where: t.tx_hash == ^hash,
+        select: %{batch_index: t.batch_index, data_commitment: d.da_hash}
+      )
+
+    Repo.one(query)
+    |> case do
+      nil ->
+        {:error, :not_found}
+      batch ->
+        {:ok, batch}
+    end
+  end
+
+  @spec block_to_state_batch(Decimal.t(), [necessity_by_association_option]) ::
+          {:ok, StateBatch.t()} | {:error, :not_found}
+  def block_to_state_batch(
+      block_number,
+      options \\ []
+    )
+  when is_list(options) do
+    query =
+      from(
+        s in StateBatch,
+        where: ^block_number >= s.pre_total_elements and ^block_number < s.pre_total_elements + s.size,
+        select: %{batch_index: s.batch_index, submission_tx_hash: s.hash}
+      )
+
+    Repo.one(query)
+    |> case do
+      nil ->
+        {:error, :not_found}
+      batch ->
+        {:ok, batch}
+    end
+  end
+
+  defp hash_to_da_transaction(da_hash) do
+    DaBatch
+    |> where([da_batch], da_batch.da_hash == ^da_hash)
+    |> limit(1)
+    |> Repo.one()
   end
 
   # preload_to_detect_tt?: we don't need to preload more than one token transfer in case the tx inside the list (we dont't show any token transfers on tx tile in new UI)
@@ -3399,6 +3490,12 @@ defmodule Explorer.Chain do
       fetch_recent_collated_txn_batches(paging_options)
   end
 
+  @spec recent_collated_eigenda_batches([paging_options]) :: [DaBatch.t()]
+  def recent_collated_eigenda_batches(options \\ []) when is_list(options) do
+    paging_options = Keyword.get(options, :paging_options, @default_paging_options)
+      fetch_recent_collated_eigenda_batches(paging_options)
+  end
+
   @spec recent_collated_l1_to_l2([paging_options]) :: [L1ToL2.t()]
   def recent_collated_l1_to_l2(options \\ []) when is_list(options) do
     paging_options = Keyword.get(options, :paging_options, @default_paging_options)
@@ -3435,6 +3532,21 @@ defmodule Explorer.Chain do
     %{total_transactions_count: total_transactions_count, transactions: fetched_transactions}
   end
 
+
+  @spec recent_state_batch_transactions_for_rap([paging_options | necessity_by_association_option], Decimal.t(), Decimal.t()) :: %{
+          :total_transactions_count => non_neg_integer(),
+          :transactions => [Transaction.t()]
+        }
+  def recent_state_batch_transactions_for_rap(options \\ [], elements, size) when is_list(options) do
+    necessity_by_association = Keyword.get(options, :necessity_by_association, %{})
+    paging_options = Keyword.get(options, :paging_options, @default_paging_options)
+    total_transactions_count = state_batch_transactions_available_count(elements, size)
+    fetched_transactions = fetch_recent_collated_state_batch_transactions_for_rap(paging_options, necessity_by_association, elements, size)
+
+    %{total_transactions_count: total_transactions_count, transactions: fetched_transactions}
+  end
+
+
   def default_page_size, do: @default_page_size
 
   @spec recent_collated_state_batches_for_rap([paging_options]) :: %{
@@ -3464,16 +3576,15 @@ defmodule Explorer.Chain do
     %{total_l2_to_l1_count: l2_to_l1_count, l2_to_l1: fetched_l2_to_l1}
   end
 
-  @spec recent_collated_l1_to_l2_for_rap([paging_options]) :: %{
+  @spec recent_collated_l1_to_l2_for_rap([paging_options], Decimal.t()) :: %{
     :total_l1_to_l2_count => non_neg_integer(),
     :l1_to_l2 => [L1ToL2.t()]
   }
 
-  def recent_collated_l1_to_l2_for_rap(options \\ []) when is_list(options) do
+  def recent_collated_l1_to_l2_for_rap(options \\ [], tx_type) when is_list(options) do
     paging_options = Keyword.get(options, :paging_options, @default_paging_options)
-
-    l1_to_l2_count = l1_to_l2_available_count()
-    fetched_l1_to_l2=fetch_recent_collated_l1_to_l2_for_rap(paging_options)
+    l1_to_l2_count = l1_to_l2_available_count(tx_type)
+    fetched_l1_to_l2=fetch_recent_collated_l1_to_l2_for_rap(paging_options, tx_type)
     %{total_l1_to_l2_count: l1_to_l2_count, l1_to_l2: fetched_l1_to_l2}
   end
 
@@ -3486,14 +3597,24 @@ defmodule Explorer.Chain do
     |> Repo.all()
   end
 
+  def fetch_recent_collated_state_batch_transactions_for_rap(paging_options, necessity_by_association, elements, size) do
+    max = elements + size
+    fetch_transactions_for_rap()
+    |> where([transaction], not is_nil(transaction.block_number) and not is_nil(transaction.index) and  transaction.block_number >= ^elements and transaction.block_number < ^max)
+    |> handle_random_access_paging_options(paging_options)
+    |> join_associations(necessity_by_association)
+    |> preload([{:token_transfers, [:token, :from_address, :to_address]}])
+    |> Repo.all()
+  end
+
   def fetch_recent_collated_l2_to_l1_for_rap(paging_options) do
     fetch_l2_to_l1_for_rap()
     |> no_cache_handle_options(paging_options)
     |> Repo.all()
   end
 
-  def fetch_recent_collated_l1_to_l2_for_rap(paging_options) do
-    fetch_l1_to_l2_for_rap()
+  def fetch_recent_collated_l1_to_l2_for_rap(paging_options, tx_type) do
+    fetch_l1_to_l2_for_rap(tx_type)
     |> no_cache_handle_options(paging_options)
     |> Repo.all()
   end
@@ -3650,9 +3771,15 @@ defmodule Explorer.Chain do
     |> Repo.one()
   end
 
-  defp fetch_l1_to_l2_for_rap do
-    L1ToL2
-    |> order_by([l1_to_l2], desc: l1_to_l2.queue_index)
+  defp fetch_l1_to_l2_for_rap(tx_type) do
+    if is_nil(tx_type) do
+      L1ToL2
+      |> order_by([l1_to_l2], desc: l1_to_l2.queue_index)
+    else
+      L1ToL2
+      |> order_by([l1_to_l2], desc: l1_to_l2.queue_index)
+      |> where([l1_to_l2], l1_to_l2.type == ^tx_type)
+    end
   end
 
   defp fetch_l2_to_l1_for_rap do
@@ -3688,7 +3815,18 @@ defmodule Explorer.Chain do
     |> Repo.aggregate(:count, :hash)
   end
 
-  def l1_to_l2_available_count do
+  def l1_to_l2_available_count(tx_type) do
+      if is_nil(tx_type) do
+        l1_to_l2_available_count()
+      else
+        L1ToL2
+        |> where([l1_to_l2], not is_nil(l1_to_l2.queue_index) and l1_to_l2.type == ^tx_type)
+        |> limit(^@limit_showing_transactions)
+        |> Repo.aggregate(:count, :hash)
+      end
+  end
+
+  def l1_to_l2_available_count() do
     L1ToL2
     |> where([l1_to_l2], not is_nil(l1_to_l2.queue_index))
     |> limit(^@limit_showing_transactions)
@@ -3705,6 +3843,14 @@ defmodule Explorer.Chain do
   def transactions_available_count do
     Transaction
     |> where([transaction], not is_nil(transaction.block_number) and not is_nil(transaction.index))
+    |> limit(^@limit_showing_transactions)
+    |> Repo.aggregate(:count, :hash)
+  end
+
+  def state_batch_transactions_available_count(elements, size) do
+    max = elements + size
+    Transaction
+    |> where([transaction], not is_nil(transaction.block_number) and not is_nil(transaction.index) and transaction.block_number >= ^elements and transaction.block_number < ^max)
     |> limit(^@limit_showing_transactions)
     |> Repo.aggregate(:count, :hash)
   end
@@ -3736,6 +3882,12 @@ defmodule Explorer.Chain do
     #|> where([transaction], not is_nil(transaction.block_number) and not is_nil(transaction.index))
     #|> join_associations(necessity_by_association)
     #|> preload([{:token_transfers, [:token, :from_address, :to_address]}])
+    |> Repo.all()
+  end
+
+  def fetch_recent_collated_eigenda_batches(paging_options) do
+    paging_options
+    |> fetch_eigenda_batches()
     |> Repo.all()
   end
 
@@ -4752,6 +4904,13 @@ defmodule Explorer.Chain do
   defp fetch_txn_batches(paging_options \\ nil, from_index \\ nil, to_index \\ nil) do
     TxnBatch
     |> order_by([txn_batch], desc: txn_batch.batch_index)
+    |> where_batch_index_in_period(from_index, to_index)
+    |> handle_paging_options(paging_options)
+  end
+
+  defp fetch_eigenda_batches(paging_options \\ nil, from_index \\ nil, to_index \\ nil) do
+    DaBatch
+    |> order_by([da_batch], desc: da_batch.batch_index)
     |> where_batch_index_in_period(from_index, to_index)
     |> handle_paging_options(paging_options)
   end

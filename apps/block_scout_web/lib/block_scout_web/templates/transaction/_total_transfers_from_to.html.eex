@@ -12,12 +12,19 @@
                                 <%= render BlockScoutWeb.AddressView, "_labels.html", tags: from_tags %>
                         </span>
                         <span>
-                                <%= render BlockScoutWeb.CommonComponentsView, "_btn_copy_for_table.html",
-                                additional_classes: ["btn-copy-icon-small", "btn-copy-icon-custom", "btn-copy-icon-no-borders", "btn-copy-token-transfer"],
-                                clipboard_text: from_address,
-                                aria_label: gettext("Copy From Address"),
-                                title: gettext("Copy From Address"),
-                                style: "position: relative;" %>
+                                <span
+                                        aria-label='<%= gettext("Copy From Address") %>'
+                                        data-clipboard-text='<%= from_address %>'
+                                        id='<%= if assigns[:id] do @id end %>'
+                                        class="btn-copy-icon btn-copy-icon-small btn-copy-icon-custom btn-copy-icon-no-borders"
+                                        data-placement='top'
+                                        data-toggle='tooltip'
+                                >
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32.5 32.5" width="32" height="32">
+                                                <path fill-rule="evenodd" d="M23.5 20.5a1 1 0 0 1-1-1v-9h-9a1 1 0 0 1 0-2h10a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1zm-3-7v10a1 1 0 0 1-1 1h-10a1 1 0 0 1-1-1v-10a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1zm-2 1h-8v8h8v-8z"/>
+                                        </svg>
+                                </span>
+
                         </span>
 
                 </div>
@@ -30,12 +37,18 @@
                                 <%= render BlockScoutWeb.AddressView, "_labels.html", tags: to_tags %>
                         </span>
                         <span>
-                                <%= render BlockScoutWeb.CommonComponentsView, "_btn_copy_for_table.html",
-                                additional_classes: ["btn-copy-icon-small", "btn-copy-icon-custom", "btn-copy-icon-no-borders", "btn-copy-token-transfer"],
-                                clipboard_text: to_address,
-                                aria_label: gettext("Copy To Address"),
-                                title: gettext("Copy To Address"),
-                                style: "position: relative;" %>
+                                 <span
+                                        aria-label='<%= gettext("Copy To Address") %>'
+                                        data-clipboard-text='<%= to_address %>'
+                                        id='<%= if assigns[:id] do @id end %>'
+                                        class="btn-copy-icon btn-copy-icon-small btn-copy-icon-custom btn-copy-icon-no-borders"
+                                        data-placement='top'
+                                        data-toggle='tooltip'
+                                >
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32.5 32.5" width="32" height="32">
+                                                <path fill-rule="evenodd" d="M23.5 20.5a1 1 0 0 1-1-1v-9h-9a1 1 0 0 1 0-2h10a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1zm-3-7v10a1 1 0 0 1-1 1h-10a1 1 0 0 1-1-1v-10a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1zm-2 1h-8v8h8v-8z"/>
+                                        </svg>
+                                </span>
                         </span>
                 </div>
                 <div class="token-transfer-item-item">

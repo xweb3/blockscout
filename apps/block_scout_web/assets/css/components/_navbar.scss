@@ -92,6 +92,11 @@ $navbar-logo-width: 100% !default;
       }
     }
   }
+  .navbar-nav-custom{
+    .dropdown-toggle::after{
+      display: none;
+    }
+  }
 
   .navbar-toggler {
     outline: none;
@@ -133,7 +138,7 @@ $navbar-logo-width: 100% !default;
     position: relative;
     width: 100%;
     z-index: 1;
-    min-width: 320px;
+    min-width: 343px;
     &[placeholder]{
       text-overflow: ellipsis !important;
     }
@@ -158,7 +163,7 @@ $navbar-logo-width: 100% !default;
       min-width: 320px;
     } */
     @media (min-width: 1500px) {
-      width: 350px;
+      width: 383px;
     }
     @media (min-width: 1540px) {
       width: 550px;

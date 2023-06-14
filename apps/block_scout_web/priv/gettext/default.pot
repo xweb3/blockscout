@@ -2744,7 +2744,7 @@ msgstr ""
 msgid "Token Transfer"
 msgstr ""
 
-#: lib/block_scout_web/templates/address/_tabs.html.eex:13
+
 #: lib/block_scout_web/templates/address_token_transfer/index.html.eex:19
 #: lib/block_scout_web/templates/tokens/instance/overview/_tabs.html.eex:3
 #: lib/block_scout_web/templates/tokens/instance/transfer/index.html.eex:16
@@ -2758,6 +2758,10 @@ msgstr ""
 #: lib/block_scout_web/views/transaction_view.ex:509
 #, elixir-autogen, elixir-format
 msgid "Token Transfers"
+msgstr ""
+
+#: lib/block_scout_web/templates/address/_tabs.html.eex:13
+msgid "Token Transfers(ERC20)"
 msgstr ""
 
 #: lib/block_scout_web/templates/address/overview.html.eex:54
@@ -3068,7 +3072,7 @@ msgstr ""
 
 #, elixir-format
 #: lib/block_scout_web/templates/layout/_topnav.html.eex:49
-msgid "Eigenlayer Txn"
+msgid "Eigenlayer Txn Batches"
 msgstr ""
 
 #, elixir-format
@@ -3089,7 +3093,7 @@ msgstr "L1->L2 Transactions"
 #, elixir-format
 #: lib/block_scout_web/templates/layout/_topnav.html.eex:49
 msgid "L2 to L1 Transactions"
-msgstr "L2->L1 Transactions"
+msgstr "L2->L1 Withdrawals"
 
 #, elixir-format
 #: lib/block_scout_web/templates/layout/_topnav.html.eex:49

@@ -4,7 +4,7 @@
   }
   window.onload = ShowLayoutContainer()
 </script>
-<section class="container" data-page="transaction-list">
+<section class="container" data-page="l2-to-l1-txn-list">
   <%= render BlockScoutWeb.Advertisement.TextAdView, "index.html", conn: @conn %>
   <div class="card">
     <div class="card-body txn-list-container" data-async-listing="<%= @current_path %>">
@@ -23,36 +23,47 @@
       <button data-error-message class="alert alert-danger col-12 text-left" style="display: none;">
         <span href="#" class="alert-link"><%= gettext("Something went wrong, click to reload.") %></span>
       </button>
-
-      <div data-empty-response-message style="display: none;">
-        <div class="tile tile-muted text-center">
-          <span data-selector="empty-internal-transactions-list">
-            <%= gettext "There are no transactions." %>
-          </span>
-        </div>
-      </div>
       <div class="txn-list-table-head-container">
-        <span style="width: 10%;">
+        <span style="width: 9%;">
           Msg Nonce
         </span>
-        <span style="width: 20%;">
+        <span style="width: 19%;">
           From
         </span>
-        <span style="width: 20%;">
-          L2 Tx Hash
+        <span style="width: 19%;">
+          L2 Txn Hash
         </span>
         <span style="width: 10%;">
           Age
         </span>
-        <span style="width: 10%;">
+        <span style="width: 13%;">
           Status
+          <%= render BlockScoutWeb.CommonComponentsView, "_i_tooltip_2.html",
+              text: gettext("
+              <div class='custom-tooltip-container'>
+                <h3 class='custom-tooltip-total-title'>Whole status about the L2-L1 withdrawal</h3>
+                <p class='custom-tooltip-title'>· Waiting for Relay:</p>
+                <p class='custom-tooltip-content'>Withdrawn on L2 but not ready for claim on L1</p>
+                <p class='custom-tooltip-title'>· Ready for Claim:</p>
+                <p class='custom-tooltip-content'>Ready for claim on L1</p>
+                <p class='custom-tooltip-title'>· Claimed:</p>
+                <p class='custom-tooltip-content'>Withdrawal has been claimed on L1</p>
+              </div>
+              ") %>
         </span>
         <span style="width: 20%;">
-          L1 Tx Hash
+          L1 Txn Hash
         </span>
         <span style="width: 10%;">
           Time Left
         </span>
+      </div>
+      <div data-empty-response-message style="display: none;">
+        <div class="tile tile-muted text-center">
+          <span data-selector="empty-l2-to-l1-txn-list">
+            <%= gettext "There are no transactions." %>
+          </span>
+        </div>
       </div>
       <div data-selector="transactions-list" data-items class="recent-tx-list-page">
         <%= render BlockScoutWeb.CommonComponentsView, "_tile-loader.html" %>
@@ -60,6 +71,5 @@
       <%= render BlockScoutWeb.CommonComponentsView, "_rap_pagination_container.html", position: "bottom" %>
 
   </div>
-  <script defer data-cfasync="false" src="<%= static_path(@conn, "/js/validated-transactions.js") %>"></script>
-  <script defer data-cfasync="false" src="<%= static_path(@conn, "/js/token-transfers-toggle.js") %>"></script>
+  <script defer data-cfasync="false" src="<%= static_path(@conn, "/js/l2-to-l1-txn.js") %>"></script>
 </section>

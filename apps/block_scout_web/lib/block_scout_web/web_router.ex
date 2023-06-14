@@ -120,20 +120,20 @@ defmodule BlockScoutWeb.WebRouter do
     resources("/pending-transactions", PendingTransactionController, only: [:index])
 
     resources("/recent-transactions", RecentTransactionsController, only: [:index])
-    resources("/recent-txn-batches", RecentTxnBatchesController, only: [:index])
     resources("/recent-l1-to-l2-txn", RecentL1ToL2TxnController, only: [:index])
+    resources("/recent-eigenda-batches", RecentEigendaBatchesController, only: [:index])
 
     resources("/verified-contracts", VerifiedContractsController, only: [:index])
 
     get("/txs", TransactionController, :index)
+    get("/state-batch-txs/:elements/:size/:batch", StateBatchTransactionController, :index)
     get("/state-batches", StateBatchController, :index)
     resources("/state-batch", StateBatchController, only: [:show], param: "batch_index")
-    get("/txn-batches", TxnBatchController, :index)
-    resources("/txn-batch", TxnBatchController, only: [:show], param: "batch_index")
     get("/eigenda-batches", EigendaBatchController, :index)
     get("/da_batch_transactions", DaBatchTransactionController, :index, param: "batch_index")
     resources("/eigenda-batch", EigendaBatchController, only: [:show], param: "da_hash")
     get("/l1-to-l2-txns", L1ToL2TxnController, :index)
+    get("/l1-to-l2-txns/:tx_type", L1ToL2TxnController, :index)
     get("/l2-to-l1-txns", L2ToL1TxnController, :index)
 
     resources "/tx", TransactionController, only: [:show] do
