@@ -6,6 +6,8 @@ import { L2IngestionService } from '../l2Ingestion/l2Ingestion.service';
 import { ConfigService } from '@nestjs/config';
 
 const L1_SENT = 'l1_sent_block_number';
+const L1_SENT_CURRENT_START = 'l1_sent_current_start_block_number';
+const L1_SENT_CURRENT = 'l1_sent_current_block_number';
 const L1_RELAYED = 'l1_relayed_block_number';
 const L2_SENT = 'l2_sent_block_number';
 const L2_RELAYED = 'l2_relayed_block_number';
@@ -22,25 +24,39 @@ export class TasksService {
     private readonly l1IngestionService: L1IngestionService,
     private readonly l2IngestionService: L2IngestionService,
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
-    private schedulerRegistry: SchedulerRegistry
+    private schedulerRegistry: SchedulerRegistry,
   ) {
     this.initCache();
+
     const fixedL2ToL1TokenAddress0x000Bug = setInterval(async () => {
       try {
-        const result = await this.l2IngestionService.fixedL2ToL1TokenAddress0x000Bug();
+        const result =
+          await this.l2IngestionService.fixedL2ToL1TokenAddress0x000Bug();
         if (result.length <= 0) {
           console.log('deleteInterval fixedL2ToL1TokenAddress0x000Bug');
-          this.schedulerRegistry.deleteInterval('fixedL2ToL1TokenAddress0x000Bug');
+          this.schedulerRegistry.deleteInterval(
+            'fixedL2ToL1TokenAddress0x000Bug',
+          );
         }
       } catch (error) {
         this.logger.error(`error fixedL2ToL1TokenAddress0x000Bug: ${error}`);
       }
     }, 1000);
-    this.schedulerRegistry.addInterval('fixedL2ToL1TokenAddress0x000Bug', fixedL2ToL1TokenAddress0x000Bug);
+    this.schedulerRegistry.addInterval(
+      'fixedL2ToL1TokenAddress0x000Bug',
+      fixedL2ToL1TokenAddress0x000Bug,
+    );
   }
+
   private readonly logger = new Logger(TasksService.name);
   async initCache() {
     let l1_sent_block_number = await this.cacheManager.get(L1_SENT);
+    let l1_sent_current_start_block_number = await this.cacheManager.get(
+      L1_SENT_CURRENT_START,
+    );
+    let l1_sent_current_block_number = await this.cacheManager.get(
+      L1_SENT_CURRENT,
+    );
     let l1_relayed_block_number = await this.cacheManager.get(L1_RELAYED);
     let l2_sent_block_number = await this.cacheManager.get(L2_SENT);
     let l2_relayed_block_number = await this.cacheManager.get(L2_RELAYED);
@@ -52,11 +68,18 @@ export class TasksService {
         (await this.l1IngestionService.getSentEventsBlockNumber()) ||
         this.configService.get('L1_START_BLOCK_NUMBER');
     }
+    if (!l1_sent_current_block_number) {
+      l1_sent_current_block_number =
+        (await this.l1IngestionService.getCurrentBlockNumber()) ||
+        this.configService.get('L1_START_BACKTRACK_BLOCK_NUMBER');
+      l1_sent_current_start_block_number = l1_sent_current_block_number;
+    }
     if (!l1_relayed_block_number) {
       l1_relayed_block_number =
         (await this.l1IngestionService.getRelayedEventsBlockNumber()) ||
         this.configService.get('L1_START_BLOCK_NUMBER');
     }
+
     if (!l2_sent_block_number) {
       l2_sent_block_number =
         (await this.l2IngestionService.getSentEventsBlockNumber()) ||
@@ -79,12 +102,25 @@ export class TasksService {
     }
     if (!da_batch_index) {
       da_batch_index =
-        (await this.l1IngestionService.getLastBatchIndex() + 1) ||
-        1;
+        (await this.l1IngestionService.getLastBatchIndex()) + 1 || 1;
     }
     await this.cacheManager.set(L1_SENT, Number(l1_sent_block_number), {
       ttl: 0,
     });
+    await this.cacheManager.set(
+      L1_SENT_CURRENT,
+      Number(l1_sent_current_block_number),
+      {
+        ttl: 0,
+      },
+    );
+    await this.cacheManager.set(
+      L1_SENT_CURRENT_START,
+      Number(l1_sent_current_start_block_number),
+      {
+        ttl: 0,
+      },
+    );
     await this.cacheManager.set(L1_RELAYED, Number(l1_relayed_block_number), {
       ttl: 0,
     });
@@ -105,15 +141,67 @@ export class TasksService {
     });
     console.log('================end init cache================');
     // TODO (Jayce) state batch missed data sync script
-    //this.miss_data_script_start(8489739)
+    this.miss_data_script_start(9006135);
+  }
+
+  @Interval('l1_sent_history', 2000)
+  async l1_sent_history() {
+    // sync history block, stop when sync reach latest starting block.
+    let end = 0;
+    let reachSyncLatest = false;
+    const currentInterval =
+      this.schedulerRegistry.getInterval('l1_sent_history');
+    const l1SyncLatestStartBlock = Number(
+      await this.cacheManager.get(L1_SENT_CURRENT_START),
+    );
+    console.log(`l1 sent to latest start block: , ${l1SyncLatestStartBlock}`);
+    const start = Number(await this.cacheManager.get(L1_SENT));
+
+    if (l1SyncLatestStartBlock - start > SYNC_STEP) {
+      end = start + SYNC_STEP;
+    } else {
+      end = l1SyncLatestStartBlock - 1;
+      reachSyncLatest = true;
+      console.log(
+        `l1 sent reach: , ${start} to ${end}. latest start block is ${l1SyncLatestStartBlock}`,
+      );
+    }
+
+    if (l1SyncLatestStartBlock > start + 1) {
+      const result = await this.l1IngestionService.createSentEvents(
+        start + 1,
+        end,
+      );
+      const insertData =
+        !result || result.length <= 0 ? [] : result[0].identifiers || [];
+      this.logger.log(
+        `sync [${insertData.length}] l1_sent_history_message_events from block [${start}] to [${end}]`,
+      );
+
+      if (reachSyncLatest) {
+        this.logger.log(`sync l1_sent_history done, end job.`);
+        clearInterval(currentInterval);
+        return;
+      } else {
+        await this.cacheManager.set(L1_SENT, end, { ttl: 0 });
+      }
+    } else {
+      this.logger.log(
+        `sync l1_sent_history finished and latest block number is: ${l1SyncLatestStartBlock}`,
+      );
+    }
   }
   @Interval(2000)
-  async l1_sent() {
+  async l1_sent_latest() {
+    // sync from latest block
     let end = 0;
-    const currentBlockNumber =
-      await this.l1IngestionService.getCurrentBlockNumber();
-    console.log('l1 sent currentBlockNumber: ', currentBlockNumber);
-    const start = Number(await this.cacheManager.get(L1_SENT));
+    let start = 0;
+    const currentBlockNumber = Number(
+      await this.l1IngestionService.getCurrentBlockNumber(),
+    );
+    start = Number(await this.cacheManager.get(L1_SENT_CURRENT));
+    console.log(`l1 sentLatest currentBlockNumber: , ${currentBlockNumber} `);
+
     if (currentBlockNumber - start > SYNC_STEP) {
       end = start + SYNC_STEP;
     } else {
@@ -122,19 +210,22 @@ export class TasksService {
           ? start - SYNC_STEP
           : currentBlockNumber;
     }
+
     if (currentBlockNumber > start + 1) {
       const result = await this.l1IngestionService.createSentEvents(
         start + 1,
         end,
       );
-      const insertData = !result || result.length <= 0 ?  [] : result[0].identifiers || []
+      const insertData =
+        !result || result.length <= 0 ? [] : result[0].identifiers || [];
       this.logger.log(
-        `sync [${insertData.length}] l1_sent_message_events from block [${start}] to [${end}]`,
+        `sync [${insertData.length}] l1_sent_latest_message_events from block [${start}] to [${end}]`,
       );
-      await this.cacheManager.set(L1_SENT, end, { ttl: 0 });
+
+      await this.cacheManager.set(L1_SENT_CURRENT, end, { ttl: 0 });
     } else {
       this.logger.log(
-        `sync l1_sent finished and latest block number is: ${currentBlockNumber}`,
+        `sync l1_sent_latest finished and latest block number is: ${currentBlockNumber}`,
       );
     }
   }
@@ -158,7 +249,8 @@ export class TasksService {
         start + 1,
         end,
       );
-      const insertData = !result || result.length <= 0 ?  [] : result[0].identifiers || []
+      const insertData =
+        !result || result.length <= 0 ? [] : result[0].identifiers || [];
       this.logger.log(
         `sync [${insertData.length}] l1_relayed_message_events from block [${start}] to [${end}]`,
       );
@@ -189,7 +281,8 @@ export class TasksService {
         start + 1,
         end,
       );
-      const insertData = !result || result.length <= 0 ?  [] : result[0].identifiers || []
+      const insertData =
+        !result || result.length <= 0 ? [] : result[0].identifiers || [];
       this.logger.log(
         `sync [${insertData.length}] l2_sent_message_events from block [${start}] to [${end}]`,
       );
@@ -220,7 +313,8 @@ export class TasksService {
         start + 1,
         end,
       );
-      const insertData = !result || result.length <= 0 ?  [] : result[0].identifiers || []
+      const insertData =
+        !result || result.length <= 0 ? [] : result[0].identifiers || [];
       this.logger.log(
         `sync [${insertData.length}] l2_relayed_message_events from block [${start}] to [${end}]`,
       );
@@ -250,22 +344,21 @@ export class TasksService {
           : currentBlockNumber;
     }
     if (currentBlockNumber >= start + 1) {
-      const result = await this.l1IngestionService.createStateBatchesEvents(
-        start + 1,
-        end,
-      ).catch(e=> {
-        console.error(`insert state batch failed, number: ${start} ${end}`)
-      });
-      if(result){
-        const insertData = !result || result.length <= 0 ?  [] : result[0].identifiers || []
+      const result = await this.l1IngestionService
+        .createStateBatchesEvents(start + 1, end)
+        .catch((e) => {
+          console.error(`insert state batch failed, number: ${start} ${end}`);
+        });
+      if (result) {
+        const insertData =
+          !result || result.length <= 0 ? [] : result[0].identifiers || [];
         this.logger.log(
           `sync [${insertData.length}] state_batch from block [${start}] to [${end}]`,
         );
         await this.cacheManager.set(STATE_BATCH, end, { ttl: 0 });
-      }else {
-        console.error('result insert state batch data failed')
+      } else {
+        console.error('result insert state batch data failed');
       }
-      
     } else {
       this.logger.log(
         `sync state_batch finished and latest block number is: ${currentBlockNumber}`,
@@ -273,20 +366,23 @@ export class TasksService {
     }
   }
 
-
   async miss_data_script_start(block) {
-    console.log('-------------- start script , start block', block)
-    const result = await this.l1IngestionService.saveStateBatchMissedScript(block).catch(e=> {
-      console.error(`insert state batch failed,`)
-    });
-    console.log('list sync completed, the next block:', result)
-    if(result && result < 9146135){
-      this.miss_data_script_start(result)
-    }else {
-      console.error('result insert state batch data failed, or sync completed!', result)
+    console.log('-------------- start script , start block', block);
+    const result = await this.l1IngestionService
+      .saveStateBatchMissedScript(block)
+      .catch((e) => {
+        console.error(`insert state batch failed,`);
+      });
+    console.log('list sync completed, the next block:', result);
+    if (result && result < 9146135) {
+      this.miss_data_script_start(result);
+    } else {
+      console.error(
+        'result insert state batch data failed, or sync completed!',
+        result,
+      );
     }
   }
-
 
   /* @Interval(2000)
   async txn_batch() {
@@ -346,15 +442,26 @@ export class TasksService {
   @Interval(5000)
   async eigen_da_batch_txns() {
     try {
-      const fromStoreNumber = Number(await this.cacheManager.get(DA_BATCH_INDEX));
-      console.log('[syncEigenDaBatch] start eigenda service fromStoreNumber: ', fromStoreNumber);
-      const result = await this.l1IngestionService.syncEigenDaBatch(fromStoreNumber);
+      const fromStoreNumber = Number(
+        await this.cacheManager.get(DA_BATCH_INDEX),
+      );
+      console.log(
+        '[syncEigenDaBatch] start eigenda service fromStoreNumber: ',
+        fromStoreNumber,
+      );
+      const result = await this.l1IngestionService.syncEigenDaBatch(
+        fromStoreNumber,
+      );
       if (result) {
         console.log('[syncEigenDaBatch] add DA_BATCH_INDEX');
-        await this.cacheManager.set(DA_BATCH_INDEX, fromStoreNumber + 1, { ttl: 0 });
+        await this.cacheManager.set(DA_BATCH_INDEX, fromStoreNumber + 1, {
+          ttl: 0,
+        });
       }
     } catch (error) {
-      this.logger.error(`[syncEigenDaBatch] error eigen da batches err: ${error}`);
+      this.logger.error(
+        `[syncEigenDaBatch] error eigen da batches err: ${error}`,
+      );
     }
   }
 }
