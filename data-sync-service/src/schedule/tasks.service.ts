@@ -6,8 +6,8 @@ import { L2IngestionService } from '../l2Ingestion/l2Ingestion.service';
 import { ConfigService } from '@nestjs/config';
 
 const L1_SENT = 'l1_sent_block_number';
-const L1_SENT_BACKTRACK = 'l1_sent_backtrack_block_number';
-const L1_SENT_BACKTRACK_START = 'l1_sent_backtrack_start_block_number';
+const L1_SENT_CURRENT_START = 'l1_sent_current_start_block_number';
+const L1_SENT_CURRENT = 'l1_sent_current_block_number';
 const L1_RELAYED = 'l1_relayed_block_number';
 const L2_SENT = 'l2_sent_block_number';
 const L2_RELAYED = 'l2_relayed_block_number';
@@ -27,6 +27,7 @@ export class TasksService {
     private schedulerRegistry: SchedulerRegistry,
   ) {
     this.initCache();
+
     const fixedL2ToL1TokenAddress0x000Bug = setInterval(async () => {
       try {
         const result =
@@ -46,14 +47,15 @@ export class TasksService {
       fixedL2ToL1TokenAddress0x000Bug,
     );
   }
+
   private readonly logger = new Logger(TasksService.name);
   async initCache() {
     let l1_sent_block_number = await this.cacheManager.get(L1_SENT);
-    let l1_sent_backtrack_block_number = await this.cacheManager.get(
-      L1_SENT_BACKTRACK,
+    let l1_sent_current_start_block_number = await this.cacheManager.get(
+      L1_SENT_CURRENT_START,
     );
-    let l1_sent_backtrack_start_block_number = await this.cacheManager.get(
-      L1_SENT_BACKTRACK_START,
+    let l1_sent_current_block_number = await this.cacheManager.get(
+      L1_SENT_CURRENT,
     );
     let l1_relayed_block_number = await this.cacheManager.get(L1_RELAYED);
     let l2_sent_block_number = await this.cacheManager.get(L2_SENT);
@@ -66,11 +68,11 @@ export class TasksService {
         (await this.l1IngestionService.getSentEventsBlockNumber()) ||
         this.configService.get('L1_START_BLOCK_NUMBER');
     }
-    if (!l1_sent_backtrack_block_number) {
-      l1_sent_backtrack_block_number =
+    if (!l1_sent_current_block_number) {
+      l1_sent_current_block_number =
         (await this.l1IngestionService.getCurrentBlockNumber()) ||
         this.configService.get('L1_START_BACKTRACK_BLOCK_NUMBER');
-      l1_sent_backtrack_start_block_number = l1_sent_backtrack_block_number;
+      l1_sent_current_start_block_number = l1_sent_current_block_number;
     }
     if (!l1_relayed_block_number) {
       l1_relayed_block_number =
@@ -106,15 +108,15 @@ export class TasksService {
       ttl: 0,
     });
     await this.cacheManager.set(
-      L1_SENT_BACKTRACK,
-      Number(l1_sent_backtrack_block_number),
+      L1_SENT_CURRENT,
+      Number(l1_sent_current_block_number),
       {
         ttl: 0,
       },
     );
     await this.cacheManager.set(
-      L1_SENT_BACKTRACK_START,
-      Number(l1_sent_backtrack_start_block_number),
+      L1_SENT_CURRENT_START,
+      Number(l1_sent_current_start_block_number),
       {
         ttl: 0,
       },
@@ -141,20 +143,22 @@ export class TasksService {
     // TODO (Jayce) state batch missed data sync script
     this.miss_data_script_start(9006135);
   }
-  @Interval(2000)
+
+  @Interval('l1_sent', 2000)
   async l1_sent() {
     let end = 0;
-    let reach_backtrack = false;
+    let reachSyncLatest = false;
+    const currentInterval = this.schedulerRegistry.getInterval('l1_sent');
     const currentBlockNumber =
       await this.l1IngestionService.getCurrentBlockNumber();
-    const backtrackBlockNumber = Number(
-      await this.cacheManager.get(L1_SENT_BACKTRACK),
+    const l1SyncLatestStartBlock = Number(
+      await this.cacheManager.get(L1_SENT_CURRENT_START),
     );
-    const backtractStartBlock = Number(
-      await this.cacheManager.get(L1_SENT_BACKTRACK_START),
+    console.log(
+      `l1 sent currentBlockNumber: , ${currentBlockNumber}, latest start block is ${l1SyncLatestStartBlock}`,
     );
-    console.log('l1 sent currentBlockNumber: ', currentBlockNumber);
     const start = Number(await this.cacheManager.get(L1_SENT));
+
     if (currentBlockNumber - start > SYNC_STEP) {
       end = start + SYNC_STEP;
     } else {
@@ -165,11 +169,14 @@ export class TasksService {
     }
 
     if (
-      backtrackBlockNumber > start &&
-      backtrackBlockNumber - start < SYNC_STEP
+      l1SyncLatestStartBlock > start &&
+      l1SyncLatestStartBlock - start < SYNC_STEP
     ) {
-      end = backtrackBlockNumber - 1;
-      reach_backtrack = true;
+      end = l1SyncLatestStartBlock - 1;
+      reachSyncLatest = true;
+      console.log(
+        `l1 sent reach: , ${start} to ${end}. latest start block is ${l1SyncLatestStartBlock}`,
+      );
     }
 
     if (currentBlockNumber > start + 1) {
@@ -183,8 +190,10 @@ export class TasksService {
         `sync [${insertData.length}] l1_sent_message_events from block [${start}] to [${end}]`,
       );
 
-      if (reach_backtrack) {
-        await this.cacheManager.set(L1_SENT, backtractStartBlock, { ttl: 0 });
+      if (reachSyncLatest) {
+        this.logger.log(`sync l1_sent done, end job.`);
+        clearInterval(currentInterval);
+        return;
       } else {
         await this.cacheManager.set(L1_SENT, end, { ttl: 0 });
       }
@@ -194,47 +203,28 @@ export class TasksService {
       );
     }
   }
-  @Interval(3000)
-  async l1_sent_backtrack() {
+  @Interval(2000)
+  async l1_sent_from_latest() {
     let end = 0;
     let start = 0;
-    const backtrackBlockNumber = Number(
-      await this.cacheManager.get(L1_SENT_BACKTRACK),
+    const currentBlockNumber = Number(
+      await this.l1IngestionService.getCurrentBlockNumber(),
     );
-    if (!backtrackBlockNumber) {
-      this.logger.log(`backtrackBlockNumber not found`);
-      return;
-    }
-    const currentL1SentBlockNumber = Number(
-      await this.cacheManager.get(L1_SENT),
-    );
+    start = Number(await this.cacheManager.get(L1_SENT_CURRENT));
     console.log(
-      'l1 backtrackBlockNumber: ',
-      backtrackBlockNumber,
-      'l1 current sent block: ',
-      currentL1SentBlockNumber,
+      `l1 sentFromLatest currentBlockNumber: , ${currentBlockNumber} `,
     );
 
-    if (
-      backtrackBlockNumber - currentL1SentBlockNumber < SYNC_STEP * 3 ||
-      currentL1SentBlockNumber > backtrackBlockNumber
-    ) {
-      // triple SYNC_STEP to prevent execute during transaction in progress
-      this.logger.log(`sync l1_sent_backtrack finished`);
-      return;
-    }
-    end = backtrackBlockNumber;
-
-    // above have anotther safe guard
-    if (end - currentL1SentBlockNumber > SYNC_STEP) {
-      start = end - SYNC_STEP;
+    if (currentBlockNumber - start > SYNC_STEP) {
+      end = start + SYNC_STEP;
     } else {
-      start =
-        end - SYNC_STEP > currentL1SentBlockNumber
-          ? end - SYNC_STEP
-          : currentL1SentBlockNumber;
+      end =
+        start - SYNC_STEP > currentBlockNumber
+          ? start - SYNC_STEP
+          : currentBlockNumber;
     }
-    if (end > start + 1) {
+
+    if (currentBlockNumber > start + 1) {
       const result = await this.l1IngestionService.createSentEvents(
         start + 1,
         end,
@@ -242,11 +232,14 @@ export class TasksService {
       const insertData =
         !result || result.length <= 0 ? [] : result[0].identifiers || [];
       this.logger.log(
-        `sync [${insertData.length}] l1_sent_message_events_backtrack from block [${start}] to [${end}]`,
+        `sync [${insertData.length}] l1_sent_from_latest_message_events from block [${start}] to [${end}]`,
       );
-      await this.cacheManager.set(L1_SENT_BACKTRACK, start, { ttl: 0 });
+
+      await this.cacheManager.set(L1_SENT_CURRENT, end, { ttl: 0 });
     } else {
-      this.logger.log(`sync l1_sent_backtrack finished`);
+      this.logger.log(
+        `sync l1_sent_from_latest finished and latest block number is: ${currentBlockNumber}`,
+      );
     }
   }
   @Interval(2000)
