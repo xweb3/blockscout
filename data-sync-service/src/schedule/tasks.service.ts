@@ -144,34 +144,22 @@ export class TasksService {
     this.miss_data_script_start(9006135);
   }
 
-  @Interval('l1_sent', 2000)
-  async l1_sent() {
+  @Interval('l1_sent_history', 2000)
+  async l1_sent_history() {
+    // sync history block, stop when sync reach latest starting block.
     let end = 0;
     let reachSyncLatest = false;
-    const currentInterval = this.schedulerRegistry.getInterval('l1_sent');
-    const currentBlockNumber =
-      await this.l1IngestionService.getCurrentBlockNumber();
+    const currentInterval =
+      this.schedulerRegistry.getInterval('l1_sent_history');
     const l1SyncLatestStartBlock = Number(
       await this.cacheManager.get(L1_SENT_CURRENT_START),
     );
-    console.log(
-      `l1 sent currentBlockNumber: , ${currentBlockNumber}, latest start block is ${l1SyncLatestStartBlock}`,
-    );
+    console.log(`l1 sent to latest start block: , ${l1SyncLatestStartBlock}`);
     const start = Number(await this.cacheManager.get(L1_SENT));
 
-    if (currentBlockNumber - start > SYNC_STEP) {
+    if (l1SyncLatestStartBlock - start > SYNC_STEP) {
       end = start + SYNC_STEP;
     } else {
-      end =
-        start - SYNC_STEP > currentBlockNumber
-          ? start - SYNC_STEP
-          : currentBlockNumber;
-    }
-
-    if (
-      l1SyncLatestStartBlock > start &&
-      l1SyncLatestStartBlock - start < SYNC_STEP
-    ) {
       end = l1SyncLatestStartBlock - 1;
       reachSyncLatest = true;
       console.log(
@@ -179,7 +167,7 @@ export class TasksService {
       );
     }
 
-    if (currentBlockNumber > start + 1) {
+    if (l1SyncLatestStartBlock > start + 1) {
       const result = await this.l1IngestionService.createSentEvents(
         start + 1,
         end,
@@ -187,11 +175,11 @@ export class TasksService {
       const insertData =
         !result || result.length <= 0 ? [] : result[0].identifiers || [];
       this.logger.log(
-        `sync [${insertData.length}] l1_sent_message_events from block [${start}] to [${end}]`,
+        `sync [${insertData.length}] l1_sent_history_message_events from block [${start}] to [${end}]`,
       );
 
       if (reachSyncLatest) {
-        this.logger.log(`sync l1_sent done, end job.`);
+        this.logger.log(`sync l1_sent_history done, end job.`);
         clearInterval(currentInterval);
         return;
       } else {
@@ -199,21 +187,20 @@ export class TasksService {
       }
     } else {
       this.logger.log(
-        `sync l1_sent finished and latest block number is: ${currentBlockNumber}`,
+        `sync l1_sent_history finished and latest block number is: ${l1SyncLatestStartBlock}`,
       );
     }
   }
   @Interval(2000)
-  async l1_sent_from_latest() {
+  async l1_sent_latest() {
+    // sync from latest block
     let end = 0;
     let start = 0;
     const currentBlockNumber = Number(
       await this.l1IngestionService.getCurrentBlockNumber(),
     );
     start = Number(await this.cacheManager.get(L1_SENT_CURRENT));
-    console.log(
-      `l1 sentFromLatest currentBlockNumber: , ${currentBlockNumber} `,
-    );
+    console.log(`l1 sentLatest currentBlockNumber: , ${currentBlockNumber} `);
 
     if (currentBlockNumber - start > SYNC_STEP) {
       end = start + SYNC_STEP;
@@ -232,13 +219,13 @@ export class TasksService {
       const insertData =
         !result || result.length <= 0 ? [] : result[0].identifiers || [];
       this.logger.log(
-        `sync [${insertData.length}] l1_sent_from_latest_message_events from block [${start}] to [${end}]`,
+        `sync [${insertData.length}] l1_sent_latest_message_events from block [${start}] to [${end}]`,
       );
 
       await this.cacheManager.set(L1_SENT_CURRENT, end, { ttl: 0 });
     } else {
       this.logger.log(
-        `sync l1_sent_from_latest finished and latest block number is: ${currentBlockNumber}`,
+        `sync l1_sent_latest finished and latest block number is: ${currentBlockNumber}`,
       );
     }
   }
