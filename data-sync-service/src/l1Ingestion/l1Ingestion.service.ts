@@ -429,6 +429,12 @@ export class L1IngestionService {
         message: message.toString(),
         messageNonce: messageNonce.toString(),
       });
+      console.log("-------------- l1 sent message block", blockNumber)
+      console.log("target", target)
+      console.log("sender", sender)
+      console.log("message", message)
+      console.log("messageNonce", messageNonce)
+      console.log("msgHash", msgHash)
       l1SentMessageEventsInsertData.push({
         tx_hash: transactionHash,
         block_number: blockNumber.toString(),
