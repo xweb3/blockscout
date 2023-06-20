@@ -24,7 +24,9 @@
         <li>
         <a class="sign-in-button nav-link topnav-nav-link" href="<%= BlockScoutWeb.LayoutView.sign_in_link %>" id="navbarBlocksDropdown" role="button" aria-haspopup="true">
             <span class="nav-link-icon">
-            <%= render BlockScoutWeb.IconsView, "_accounts_icon.html" %>
+                <svg data-icon="user" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7.50006 17.5H5.46803C4.38374 17.5 3.58814 16.481 3.85112 15.4291L4.52665 12.727C4.80488 11.6141 5.80484 10.8333 6.95201 10.8333H13.0481C14.1953 10.8333 15.1953 11.6141 15.4735 12.727L16.149 15.4291C16.412 16.481 15.6164 17.5 14.5321 17.5H12.5001M10.0001 8.33333C8.84949 8.33333 7.91675 7.40059 7.91675 6.25V4.58333C7.91675 3.43274 8.84949 2.5 10.0001 2.5C11.1507 2.5 12.0834 3.43274 12.0834 4.58333V6.25C12.0834 7.40059 11.1507 8.33333 10.0001 8.33333Z" stroke="#21413F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
             </span>
             <%= gettext "Sign in" %>
         </a>
