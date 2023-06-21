@@ -105,9 +105,9 @@ export class TasksService {
     });
     console.log('================end init cache================');
     // TODO (Jayce) state batch missed data sync script
-    this.miss_data_script_start(9006135)
+    //this.miss_data_script_start(9006135)
   }
-  @Interval(2000)
+  @Interval(300)
   async l1_sent() {
     let end = 0;
     const currentBlockNumber =
