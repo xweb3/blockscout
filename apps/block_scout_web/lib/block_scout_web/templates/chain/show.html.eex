@@ -3,6 +3,7 @@
     <div class="dashboard-banner">
       <!-- Graph and legend -->
       <div class="dashboard-banner-network-graph">
+        <p class="test"><%= gettext("Action") %></p>
         <p class="dashboard-banner-daily-tx-title">
           Daily Transactions
         </p>
