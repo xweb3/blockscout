@@ -207,7 +207,7 @@ $('#search-btn').on('click', function (event) {
   const value = $('.main-search-autocomplete').val() || $('.main-search-autocomplete-mobile').val()
   search(value)
 })
-if(window.innerWidth <= 992){
+if(window.innerWidth <= 1199){
   if(document.getElementsByClassName('search-btn-cls') && document.getElementsByClassName('search-btn-cls').length > 1){
     document.getElementsByClassName('search-btn-cls')[1].addEventListener('click', function (){
       const els = document.getElementsByClassName('main-search-autocomplete');
@@ -221,7 +221,7 @@ if(window.innerWidth <= 992){
   }
 }
 
-if(window.innerWidth <= 992){
+if(window.innerWidth <= 1199){
   if(document.getElementsByClassName('search-icon-cls') && document.getElementsByClassName('search-icon-cls').length > 1){
     document.getElementsByClassName('search-icon-cls')[1].addEventListener('click', function (){
       const els = document.getElementsByClassName('main-search-autocomplete');
