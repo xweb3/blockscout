@@ -12,8 +12,9 @@ defmodule Explorer.Account.Notifier.Email do
   import Bamboo.{Email, SendGridHelper}
 
   def compose(notification, %{notify_email: notify}) when notify do
-    notification = preload(notification)
 
+    notification = preload(notification)
+    email = compose_email(notification)
     email = compose_email(notification)
     Logger.debug("--- composed email", fetcher: :account)
     Logger.debug(email, fetcher: :account)
@@ -24,7 +25,6 @@ defmodule Explorer.Account.Notifier.Email do
 
   defp compose_email(notification) do
     email = new_email(from: sender(), to: email(notification))
-
     email
     |> with_template(template())
     |> add_dynamic_field("username", username(notification))
@@ -47,6 +47,7 @@ defmodule Explorer.Account.Notifier.Email do
   end
 
   defp amount(%WatchlistNotification{amount: amount, subject: subject, type: type}) do
+
     case type do
       "COIN" ->
         amount
@@ -70,8 +71,11 @@ defmodule Explorer.Account.Notifier.Email do
              }
            }
          }
-       }),
-       do: email
+       }) do
+        Logger.info("receive email address:")
+        Logger.info("#{inspect(email)}")
+        email
+       end
 
   defp username(%WatchlistNotification{
          watchlist_address: %WatchlistAddress{

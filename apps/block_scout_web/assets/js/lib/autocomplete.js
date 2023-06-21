@@ -55,6 +55,7 @@ export const searchEngine = (query, record) => {
       (record.address_hash && record.address_hash.toLowerCase().includes(queryLowerCase)) ||
       (record.tx_hash && record.tx_hash.toLowerCase().includes(queryLowerCase)) ||
       (record.block_hash && record.block_hash.toLowerCase().includes(queryLowerCase)) ||
+      (record.block_number && record.block_number === Number(queryLowerCase)) ||
       (record.tx_hash && record.type === 'eigenda')
   )
   ) {

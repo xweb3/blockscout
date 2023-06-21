@@ -29,7 +29,7 @@
                     class="recent-preview-item-content-l1-2-l2-link"
                 >
                     #<%= @l1_to_l2.l2_hash %>
-                </a>...
+                </a>
                 <% else %>
                 Pendding
             <% end %>

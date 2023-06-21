@@ -11,6 +11,9 @@ $dark-primary-alternate: #65b3ae !default;
 
 $dropdown-menu-item-hover-background-dark: #305a57;
 $dropdown-menu-background-dark: #3f7470;
+a {
+	text-decoration: none !important;
+}
 
 .dashboard-banner-info-container {
   width: 100%;
@@ -183,7 +186,7 @@ $dropdown-menu-background-dark: #3f7470;
     }
   }
   .transfers-list-mobile-container {
-    background: none;
+    background: rgba(255, 255, 255, 0.05);
   }
 
   // navbar
@@ -591,11 +594,12 @@ $dropdown-menu-background-dark: #3f7470;
     background-color: $dark-light !important;
   }
 
-  .btn-dropdown-line {
-    background-color: $dark-light;
-    border-color: $dark-light;
-    color: $labels-dark;
-  }
+	.btn-dropdown-line {
+		background-color: $dark-light;
+		border-color: $dark-light;
+		color: $labels-dark;
+		border-radius: 8px;
+	}
 
   // table
   .stakes-table-head,

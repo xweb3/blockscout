@@ -140,7 +140,7 @@
   <img class="dashboard-banner-img" src="<%= static_path(@conn, "/images/banner_inner_bg.png") %>"/>
 </div>
 <section class="container">
-  <div class="card card-chain-blocks js-ad-dependant-mb-3" style="margin-bottom: 10px;">
+  <div class="card card-chain-blocks js-ad-dependant-mb-3" style="margin-bottom: 24px;overflow:hidden;">
     <div class="card-body">
       <%= link(gettext("View All Blocks"), to: blocks_path(BlockScoutWeb.Endpoint, :index), class: "btn-line float-right") %>
       <h2 class="card-title"><%= gettext "Blocks" %></h2>
@@ -204,7 +204,7 @@
     <div class="tile recent-preview-item">
       <p class="recent-preview-item-title-container">
         <span style="font-size:16px;" class="tile-title">
-          Latest EigenLayer Txn Batches
+          Latest Mantle DA Txn Batches
         </span>
       </p>
       <span
@@ -219,7 +219,7 @@
         </button>
 
       </span>
-      <a href="/eigenda-batches">
+      <a href="/eigenda-batches" style="padding:0 10px;width:100%;display:inline-block">
         <button class="col-12 text-center view-btn">View all EigenLyaer Txn batches</button>
       </a>
     </div>
@@ -251,7 +251,7 @@
         </button>
 
       </span>
-      <a href="/txs">
+      <a href="/txs" style="padding:0 10px;width:100%;display:inline-block">
         <button class="col-12 text-center view-btn">View all Transactions</button>
       </a>
     </div>
@@ -275,7 +275,7 @@
           </span>
         </button>
       </span>
-      <a href="/l1-to-l2-txns">
+      <a href="/l1-to-l2-txns" style="padding:0 10px;width:100%;display:inline-block">
         <button class="col-12 text-center view-btn">View all L1→L2 Transactions</button>
       </a>
     </div>
