@@ -1,17 +1,20 @@
-$dropdown-menu-item-color: #333 !default;
+$dropdown-menu-item-color: #15181c !default;
 $dropdown-menu-item-hover-color: $secondary !default;
-$dropdown-menu-item-hover-background: rgba($secondary, 0.1) !default;
+$dropdown-menu-item-hover-background: rgba(101, 179, 174, 0.3);
+
+$dropdown-menu-background: #cbe9e7;
 
 // These styles extend the default Bootstrap styles
 .dropdown-menu {
   border-bottom: 1px solid #e2e5ec;
   border-left: 1px solid #e2e5ec;
-  border-radius: 0 0 2px 2px !important;
+  border-radius: 12px !important;
   border-right: 1px solid #e2e5ec;
   border-top: none;
-  box-shadow: $box-shadow;
-  padding: 0;
+  // box-shadow: $box-shadow;
+  padding: 12px;
   width: 100%;
+  background-color: $dropdown-menu-background;
 
   &.right {
     left: auto;
@@ -19,14 +22,14 @@ $dropdown-menu-item-hover-background: rgba($secondary, 0.1) !default;
   }
 
   .nav-item & {
-    border-top-left-radius: 0 !important;
-    border-top-right-radius: 0 !important;
+    // border-top-left-radius: 0 !important;
+    // border-top-right-radius: 0 !important;
     top: 45px;
 
-    .dropdown-item:first-child {
-      border-top-left-radius: 0;
-      border-top-right-radius: 0;
-    }
+    // .dropdown-item:first-child {
+    //   border-top-left-radius: 0;
+    //   border-top-right-radius: 0;
+    // }
   }
 
   &.exponention-dropdown {
@@ -38,16 +41,21 @@ $dropdown-menu-item-hover-background: rgba($secondary, 0.1) !default;
 .dropdown-item {
   color: $dropdown-menu-item-color;
   font-size: 12px;
-  padding: 10px 15px;
+  padding: 15px 15px;
   transition: $transition-cont;
   white-space: initial;
+  border-radius: 6px;
+
+  &:not(:last-child) {
+    margin-bottom: 2px;
+  }
 
   & {
     &.active,
     &:hover,
     &:focus {
       background-color: $dropdown-menu-item-hover-background;
-      color: $dropdown-menu-item-hover-color;
+      color: $dropdown-menu-item-color;
 
       .external-link-icon {
         path {
@@ -55,17 +63,20 @@ $dropdown-menu-item-hover-background: rgba($secondary, 0.1) !default;
         }
       }
     }
+    &.active {
+      font-weight: bold;
+    }
   }
 
-  &:first-child {
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-  }
+  // &:first-child {
+  //   border-top-left-radius: 0;
+  //   border-top-right-radius: 0;
+  // }
 
-  &:last-child {
-    border-bottom-left-radius: 2px;
-    border-bottom-right-radius: 2px;
-  }
+  // &:last-child {
+  //   border-bottom-left-radius: 2px;
+  //   border-bottom-right-radius: 2px;
+  // }
 
   &.header {
     &,
