@@ -49,6 +49,9 @@ $tile-body-a-color: #007bff;
       border-right: 1px solid $color;
       border-top: 1px solid $color;
       color: $color;
+      border-radius: 12px;
+      box-sizing: border-box;
+      overflow: hidden;
     }
   }
 }
@@ -144,6 +147,7 @@ $tile-body-a-color: #007bff;
   background-color: $gray-100;
   border-left: 1px solid $border-color;
   box-shadow: none;
+  border-radius: 8px;
 }
 
 .tile-code {

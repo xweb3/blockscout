@@ -327,7 +327,7 @@ $card-tab-icon-color-active: #fff !default;
   display:flex;
   flex-direction:row;
   box-shadow:none;
-  margin-bottom:10px;
+  margin-bottom:24px;
   @media (max-width: 1254px) {
     flex-direction: column;
   }
@@ -338,13 +338,15 @@ $card-tab-icon-color-active: #fff !default;
     box-shadow:0 0 30px 0 rgb(202 199 226 / 50%);
     border:1px solid #e7eaf3;
     border-radius: 20px;
+    background: #ffffff;
     .recent-preview-item-content{
       width:100%;
       box-sizing:border-box;
       height:80px;
       display:flex;
       align-items:center;
-      font-size:14px;padding:0;
+      font-size:12px;
+      padding:0;
       border-bottom:1px solid #e7eaf3;
       .recent-preview-item-content-title{
         width:44px;
@@ -449,7 +451,7 @@ $card-tab-icon-color-active: #fff !default;
     }
   }
   .recent-preview-item-center{
-    margin: 0 10px;
+    margin: 0 24px;
     @media (max-width: 1254px) {
       margin: 10px 0;
     }

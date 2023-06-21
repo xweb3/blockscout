@@ -1679,24 +1679,20 @@ defmodule Explorer.Chain do
         query =
           cond do
             address_query ->
-              Logger.info("111")
               basic_query
               |> union(^address_query)
 
             tx_query ->
-              Logger.info("222")
               basic_query
               |> union(^tx_query)
               |> union(^block_query)
               |> union(^eigenda_query)
 
             block_query ->
-              Logger.info("333")
               basic_query
               |> union(^block_query)
 
             true ->
-              Logger.info("444")
               basic_query
           end
 

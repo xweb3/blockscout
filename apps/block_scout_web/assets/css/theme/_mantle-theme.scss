@@ -9,6 +9,10 @@ $primary: #65B3AE !default;
 $dark-primary: #65B3AE !default;
 $dark-primary-alternate: #65B3AE !default;
 
+a {
+	text-decoration: none !important;
+	
+}
 
 // Switcher
 .dark-mode-changer {
@@ -145,7 +149,7 @@ $dark-primary-alternate: #65B3AE !default;
 		}
 	}
 	.transfers-list-mobile-container{
-		background: none;
+		background: rgba(255, 255, 255, 0.05);
 	}
 
 	// navbar
@@ -524,6 +528,7 @@ $dark-primary-alternate: #65B3AE !default;
 		background-color: $dark-light;
 		border-color: $dark-light;
 		color: $labels-dark;
+		border-radius: 8px;
 	}
 
 	// table
