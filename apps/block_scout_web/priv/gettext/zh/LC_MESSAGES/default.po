@@ -173,24 +173,24 @@ msgstr ""
 #: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:69
 #, elixir-autogen, elixir-format
 msgid "Action"
-msgstr "你好"
+msgstr "执行"
 
 #: lib/block_scout_web/templates/account/watchlist/show.html.eex:25
 #, elixir-autogen, elixir-format
 msgid "Actions"
-msgstr ""
+msgstr "执行"
 
 #: lib/block_scout_web/templates/transaction/overview.html.eex:425
 #, elixir-autogen, elixir-format
 msgid "Actual gas amount used by the transaction."
-msgstr ""
+msgstr "交易实际使用的燃气数量"
 
 #: lib/block_scout_web/templates/account/api_key/form.html.eex:7
 #: lib/block_scout_web/templates/account/custom_abi/form.html.eex:8
 #: lib/block_scout_web/templates/layout/_add_chain_to_mm.html.eex:11
 #, elixir-autogen, elixir-format
 msgid "Add"
-msgstr ""
+msgstr "添加"
 
 #: lib/block_scout_web/templates/account/api_key/index.html.eex:44
 #, elixir-autogen, elixir-format
@@ -248,7 +248,7 @@ msgstr ""
 #: lib/block_scout_web/views/address_view.ex:107
 #, elixir-autogen, elixir-format
 msgid "Address"
-msgstr ""
+msgstr "地址"
 
 #: lib/block_scout_web/templates/transaction/overview.html.eex:217
 #, elixir-autogen, elixir-format
@@ -303,7 +303,7 @@ msgstr ""
 #: lib/block_scout_web/views/verified_contracts_view.ex:11
 #, elixir-autogen, elixir-format
 msgid "All"
-msgstr ""
+msgstr "全部"
 
 #: lib/block_scout_web/templates/smart_contract/_functions.html.eex:13
 #, elixir-autogen, elixir-format
@@ -381,7 +381,7 @@ msgstr ""
 #: lib/block_scout_web/templates/verified_contracts/index.html.eex:57
 #, elixir-autogen, elixir-format
 msgid "Balance"
-msgstr ""
+msgstr "余额"
 
 #: lib/block_scout_web/templates/transaction_state/index.html.eex:35
 #, elixir-autogen, elixir-format
@@ -419,14 +419,14 @@ msgstr ""
 #: lib/block_scout_web/templates/transaction/overview.html.eex:158
 #, elixir-autogen, elixir-format
 msgid "Block"
-msgstr ""
+msgstr "区块"
 
 #: lib/block_scout_web/templates/block/_link.html.eex:2
 #: lib/block_scout_web/templates/internal_transaction/_tile.html.eex:32
 #: lib/block_scout_web/templates/tokens/transfer/_token_transfer.html.eex:43
 #, elixir-autogen, elixir-format
 msgid "Block #%{number}"
-msgstr ""
+msgstr "区块 #%{number}"
 
 #: lib/block_scout_web/templates/block/_metatags.html.eex:3
 #, elixir-autogen, elixir-format
@@ -826,7 +826,7 @@ msgstr ""
 #: lib/block_scout_web/templates/tokens/overview/_details.html.eex:44
 #, elixir-autogen, elixir-format
 msgid "Copy Address"
-msgstr ""
+msgstr "复制地址"
 
 #: lib/block_scout_web/templates/address_contract/index.html.eex:139
 #, elixir-autogen, elixir-format
@@ -997,7 +997,7 @@ msgstr ""
 #: lib/block_scout_web/templates/chain/show.html.eex:69
 #, elixir-autogen, elixir-format
 msgid "Daily Transactions"
-msgstr ""
+msgstr "每日交易"
 
 #: lib/block_scout_web/templates/address_logs/_logs.html.eex:101
 #: lib/block_scout_web/templates/log/_data_decoded_view.html.eex:7
@@ -1098,7 +1098,7 @@ msgstr ""
 #: lib/block_scout_web/templates/csv_export/index.html.eex:24
 #, elixir-autogen, elixir-format
 msgid "Download"
-msgstr ""
+msgstr "下载"
 
 #: lib/block_scout_web/templates/address_contract_verification_via_multi_part_files/new.html.eex:72
 #, elixir-autogen, elixir-format
@@ -1401,7 +1401,7 @@ msgstr ""
 #: lib/block_scout_web/templates/chain/gas_price_oracle_legend_item.html.eex:18
 #, elixir-autogen, elixir-format
 msgid "Gas Tracker"
-msgstr ""
+msgstr "燃气跟踪器"
 
 #: lib/block_scout_web/templates/address/overview.html.eex:239
 #, elixir-autogen, elixir-format
@@ -3308,7 +3308,7 @@ msgstr ""
 #: lib/block_scout_web/templates/chain/show.html.eex:138
 #, elixir-autogen, elixir-format
 msgid "Wallet addresses"
-msgstr ""
+msgstr "钱包地址"
 
 #: lib/block_scout_web/templates/common_components/_changed_bytecode_warning.html.eex:3
 #, elixir-autogen, elixir-format

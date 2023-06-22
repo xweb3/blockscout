@@ -134,6 +134,16 @@
               Mantle Testnet
             </span>
           </li>
+           <!--  language-changer -->
+          <li class="nav-item dropdown language-changer">
+              <a href="#" role="button" id="languageChangerDropdown" class="nav-link topnav-nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                EN
+              </a>
+              <div class="dropdown-menu" aria-labeledby="languageChangerDropdown">
+                <button class="dropdown-item" data-lang="en">EN</button>
+                <button class="dropdown-item" data-lang="zh">ZH</button>
+              </div>
+            </li>
         </ul>
       </div>
       <!-- Dark mode changer -->
