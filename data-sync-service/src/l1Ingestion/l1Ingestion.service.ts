@@ -1244,7 +1244,13 @@ export class L1IngestionService {
     await queryRunner.connect();
     try {
       await queryRunner.startTransaction();
-      const savedResult = await queryRunner.manager.insert(TokenPriceHistory, historyData);
+      const savedResult = await queryRunner.manager
+      .createQueryBuilder()
+      .insert()
+      .into(TokenPriceHistory)
+      .values(historyData)
+      .onConflict(`("start_time") DO NOTHING`)
+      .execute()
       console.log('save result from token price', savedResult);
       if(savedResult){
         console.log("restart sync data")
