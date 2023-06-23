@@ -1191,6 +1191,7 @@ export class L1IngestionService {
       console.error(`query start time from token price history failed`, e)
       throw Error('')
     });
+    console.log('latest history time', historyLatestTime)
     let startTime = historyLatestTime + 3600000;
     console.log('sync token price start time', startTime)
     if(startTime){
