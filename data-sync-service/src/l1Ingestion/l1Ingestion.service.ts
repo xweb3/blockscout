@@ -1254,7 +1254,7 @@ export class L1IngestionService {
       console.log('save result from token price', savedResult);
       if(savedResult){
         console.log("restart sync data")
-        setTimeout(this.syncTokenPriceHistory, 50)
+        setTimeout(()=> {this.syncTokenPriceHistory()}, 50)
       }
       await queryRunner.commitTransaction();
     } catch (error) {
