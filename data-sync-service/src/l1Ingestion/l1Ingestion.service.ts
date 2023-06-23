@@ -1249,12 +1249,12 @@ export class L1IngestionService {
       .insert()
       .into(TokenPriceHistory)
       .values(historyData)
-      .onConflict(`("start_time") DO NOTHING`)
+      //.onConflict(`("start_time") DO NOTHING`)
       .execute()
       console.log('save result from token price', savedResult);
       if(savedResult){
         console.log("restart sync data")
-        this.syncTokenPriceHistory();
+        setTimeout(this.syncTokenPriceHistory, 50)
       }
       await queryRunner.commitTransaction();
     } catch (error) {
