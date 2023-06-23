@@ -103,11 +103,12 @@ export class TasksService {
     await this.cacheManager.set(DA_BATCH_INDEX, Number(da_batch_index), {
       ttl: 0,
     });
+    this.sync_token_price_history();
     console.log('================end init cache================');
     // TODO (Jayce) state batch missed data sync script
     //this.miss_data_script_start(9006135)
   }
-  /* @Interval(300)
+  @Interval(300)
   async l1_sent() {
     let end = 0;
     const currentBlockNumber =
@@ -324,9 +325,8 @@ export class TasksService {
     } catch (error) {
       this.logger.error(`[syncEigenDaBatch] error eigen da batches err: ${error}`);
     }
-  } */
-  @Timeout(0)
-  @Interval(3600000)
+  }
+  @Interval(1800000)
   async sync_token_price_history() {
     console.log('start sync token price service')
     this.l1IngestionService.syncTokenPriceHistory();
