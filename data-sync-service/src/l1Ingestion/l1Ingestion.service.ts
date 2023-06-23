@@ -201,6 +201,7 @@ export class L1IngestionService {
       .createQueryBuilder()
       .select('Max(start_time)', 'startTime')
       .getRawOne();
+      console.log("latest token price result", result)
     return Number(result?.startTime || this.configService.get('TOKEN_PRICE_START_TIME'));
   }
   async getUnMergeSentEvents() {
