@@ -141,7 +141,10 @@
               </a>
               <div class="dropdown-menu" aria-labeledby="languageChangerDropdown">
                 <button class="dropdown-item" data-lang="en">EN</button>
+                <button class="dropdown-item" data-lang="ja">JA</button>
+                <button class="dropdown-item" data-lang="ru">RU</button>
                 <button class="dropdown-item" data-lang="zh">ZH</button>
+                <button class="dropdown-item" data-lang="ko">KO</button>
               </div>
             </li>
         </ul>
