@@ -14,6 +14,7 @@ import {
   Tokens,
   DaBatches,
   DaBatchTransactions,
+  TokenPriceHistory,
 } from 'src/typeorm';
 import {
   EntityManager,
@@ -36,6 +37,8 @@ import { from } from 'rxjs';
 const FraudProofWindow = 0;
 let l1l2MergerIsProcessing = false;
 import { decode, encode } from 'rlp';
+import { HttpService } from '@nestjs/axios';
+import { firstValueFrom } from 'rxjs';
 
 
 
@@ -62,6 +65,8 @@ export class L1IngestionService {
     private readonly txnL2ToL1Repository: Repository<L2ToL1>,
     @InjectRepository(L1ToL2)
     private readonly txnL1ToL2Repository: Repository<L1ToL2>,
+    @InjectRepository(TokenPriceHistory)
+    private readonly tokenPriceHistory: Repository<TokenPriceHistory>,
     @InjectRepository(Transactions)
     private readonly transactions: Repository<Transactions>,
     @InjectRepository(Tokens)
@@ -72,6 +77,7 @@ export class L1IngestionService {
     private readonly DaBatchTransactionsRepository: Repository<DaBatchTransactions>,
     private readonly l2IngestionService: L2IngestionService,
     private readonly eigenlayerService: EigenlayerService,
+    private readonly httpService: HttpService,
   ) {
     this.entityManager = getManager();
     const web3 = new Web3(
@@ -189,6 +195,13 @@ export class L1IngestionService {
       .select('Max(block_number)', 'blockNumber')
       .getRawOne();
     return Number(result.blockNumber) || 0;
+  }
+  async getTokenPriceStartTime(): Promise<number> {
+    const result = await this.tokenPriceHistory
+      .createQueryBuilder()
+      .select('Max(start_time)', 'startTime')
+      .getRawOne();
+    return Number(result?.startTime || this.configService.get('TOKEN_PRICE_START_TIME'));
   }
   async getUnMergeSentEvents() {
     return this.sentEventsRepository.find({ where: { is_merge: false } });
@@ -1171,4 +1184,76 @@ export class L1IngestionService {
       }
     };
   }
+  
+  async syncTokenPriceHistory(){
+    const startTime = await this.getTokenPriceStartTime().catch(e=> {
+      console.error(`query start time from token price history failed`, e)
+      throw Error('')
+    });
+    if(startTime){
+      if((startTime + 3600000) <= (new Date().getTime() * 1000)){
+        this.fetchTokenPriceHistory(startTime);
+      } else {
+        console.log('token price has synced the latest one')
+      }
+    }
+  }
+
+  async fetchTokenPriceHistory(startTime){
+    const endTime = startTime + 3599999;
+    //TODO(Jayce) use BIT token price temp
+    console.log('start fetch token price')
+    try {
+      const {data} = await firstValueFrom(
+        this.httpService.get(
+          `https://api.bybit.com/v5/market/kline?symbol=BITUSDT&category=spot&interval=60&start=${startTime}&end=${endTime}`,
+          {
+            timeout: 5000,
+          }
+        )
+      )
+      console.log('-=-=-=-')
+      console.log(data)
+      if(data?.retCode === 0 && data?.result?.list?.length > 0){
+        const keyLineData = data.result.list[0];
+        if(keyLineData[4]){
+          const price = Number(keyLineData[4]);
+          this.saveTokenPriceData(startTime, endTime, price)
+        }
+        
+      }
+    } catch (e) {
+      console.error(e)
+      console.error(`fetch token price failed, ${e.message}`)
+    }
+  }
+
+  async saveTokenPriceData(startTime, endTime, price){
+    const historyData = [{
+      start_time: startTime, 
+      end_time: endTime, 
+      mnt_to_usd: price
+    }]
+    const dataSource = getConnection();
+    const queryRunner = dataSource.createQueryRunner();
+    await queryRunner.connect();
+    try {
+      await queryRunner.startTransaction();
+      const savedResult = await queryRunner.manager.insert(TokenPriceHistory, historyData);
+      console.log('save result from token price', savedResult);
+      if(savedResult){
+        this.syncTokenPriceHistory();
+      }
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      this.logger.error(
+        `insert token price data failed ${error}`,
+      );
+      await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
+    }
+
+  }
+
 }

@@ -287,38 +287,6 @@ export class TasksService {
     }
   }
 
-
-  /* @Interval(2000)
-  async txn_batch() {
-    let end = 0;
-    const currentBlockNumber =
-      await this.l1IngestionService.getCurrentBlockNumber();
-    console.log('txn batch currentBlockNumber: ', currentBlockNumber);
-    const start = Number(await this.cacheManager.get(TXN_BATCH));
-    if (currentBlockNumber - start > SYNC_STEP) {
-      end = start + SYNC_STEP;
-    } else {
-      end =
-        start - SYNC_STEP > currentBlockNumber
-          ? start - SYNC_STEP
-          : currentBlockNumber;
-    }
-    if (currentBlockNumber >= start + 1) {
-      const result = await this.l1IngestionService.createTxnBatchesEvents(
-        start + 1,
-        end,
-      );
-      const insertData = !result || result.length <= 0 ?  [] : result[0].identifiers || []
-      this.logger.log(
-        `sync [${insertData.length}] txn_batch from block [${start}] to [${end}]`,
-      );
-      await this.cacheManager.set(TXN_BATCH, end, { ttl: 0 });
-    } else {
-      this.logger.log(
-        `sync txn_batch finished and latest block number is: ${currentBlockNumber}`,
-      );
-    }
-  } */
   @Interval(10000)
   async l1l2_merge() {
     try {
@@ -356,5 +324,9 @@ export class TasksService {
     } catch (error) {
       this.logger.error(`[syncEigenDaBatch] error eigen da batches err: ${error}`);
     }
+  }
+  @Interval(10000)
+  async sync_token_price_history() {
+    this.l1IngestionService.syncTokenPriceHistory();
   }
 }
