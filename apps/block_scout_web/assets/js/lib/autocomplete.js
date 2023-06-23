@@ -31,6 +31,7 @@ const dataSrc = async (query, id) => {
 }
 const resultsListElement = (list, data) => {
   const info = document.createElement('p')
+  info.classList.add('result-counter')
   const adv = `
   <div class="ad mb-3" style="display: none;">
   <span class='ad-prefix'></span>: <img class="ad-img-url" width=20 height=20 /> <b><span class="ad-name"></span></b> - <span class="ad-short-description"></span> <a class="ad-url"><b><span class="ad-cta-button"></span></a></b>
@@ -90,7 +91,7 @@ const resultItemElement = async (item, data) => {
 
   item.innerHTML = `
   <div id='token-icon-${data.value.address_hash}' style='margin-top: -1px;'></div>
-  <div style="padding-left: 10px; padding-right: 10px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
+  <div class="result-match" style="padding-left: 10px; padding-right: 10px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
     ${data.match}
   </div>
   <div class="autocomplete-category">
@@ -100,8 +101,8 @@ const resultItemElement = async (item, data) => {
   const $tokenIconContainer = $(item).find(`#token-icon-${data.value.address_hash}`)
   const $searchInput = $('#main-search-autocomplete')
   const chainID = $searchInput.data('chain-id')
-  const displayTokenIcons = $searchInput.data('display-token-icons')
-  appendTokenIcon($tokenIconContainer, chainID, data.value.address_hash, displayTokenIcons, 15)
+  // const displayTokenIcons = $searchInput.data('display-token-icons')
+  appendTokenIcon($tokenIconContainer, chainID, data.value.address_hash, true, 24)
 }
 const config = (id) => {
   return {

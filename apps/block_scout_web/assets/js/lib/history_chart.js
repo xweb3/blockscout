@@ -19,7 +19,7 @@ const grid = {
 
 function getTxChartColor () {
   if (Cookies.get('chakra-ui-color-mode') === 'dark') {
-    return sassVariables.dashboardLineColorTransactionsDarkTheme
+    return '#BFF6F2'
   } else {
     return '#305A57'
   }
@@ -41,6 +41,14 @@ function getMarketCapChartColor () {
   }
 }
 
+function getAxisColor(){
+  if (Cookies.get('chakra-ui-color-mode') === 'dark') {
+    return "#FFFFFF"
+  } else {
+    return "#41474D"
+  }
+}
+
 function xAxe () {
   let color
   if (localStorage.getItem('current-color-mode') === 'dark') {
@@ -57,7 +65,7 @@ function xAxe () {
       stepSize: 14
     },
     ticks: {
-      color
+      color: getAxisColor()
     }
   }
 }
@@ -125,7 +133,7 @@ const config = {
           beginAtZero: true,
           callback: (value, _index, _values) => formatValue(value),
           maxTicksLimit: 4,
-          color
+          color: getAxisColor()
         }
       }
     },
