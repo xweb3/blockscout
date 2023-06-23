@@ -1,6 +1,6 @@
 import { Injectable, Logger, Inject, CACHE_MANAGER } from '@nestjs/common';
 import { Cache } from 'cache-manager';
-import { Interval, SchedulerRegistry } from '@nestjs/schedule';
+import { Interval, SchedulerRegistry, Timeout } from '@nestjs/schedule';
 import { L1IngestionService } from '../l1Ingestion/l1Ingestion.service';
 import { L2IngestionService } from '../l2Ingestion/l2Ingestion.service';
 import { ConfigService } from '@nestjs/config';
@@ -325,7 +325,8 @@ export class TasksService {
       this.logger.error(`[syncEigenDaBatch] error eigen da batches err: ${error}`);
     }
   } */
-  @Interval(20000)
+  @Timeout(0)
+  @Interval(3600000)
   async sync_token_price_history() {
     console.log('start sync token price service')
     this.l1IngestionService.syncTokenPriceHistory();

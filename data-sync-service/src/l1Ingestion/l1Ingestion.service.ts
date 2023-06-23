@@ -1245,6 +1245,7 @@ export class L1IngestionService {
       const savedResult = await queryRunner.manager.insert(TokenPriceHistory, historyData);
       console.log('save result from token price', savedResult);
       if(savedResult){
+        console.log("restart sync data")
         this.syncTokenPriceHistory();
       }
       await queryRunner.commitTransaction();
