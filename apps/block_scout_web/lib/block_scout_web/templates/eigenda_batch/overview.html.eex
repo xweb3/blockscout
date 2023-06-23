@@ -6,7 +6,7 @@
         <div class="card-body">
           <h1 class="card-title">
             <div style="display: inline-block; vertical-align: bottom; line-height: 25px;">
-              EigenDA Batch Details
+              MantleDA Batch Details
             </div>
           </h1>
           <dl class="row">

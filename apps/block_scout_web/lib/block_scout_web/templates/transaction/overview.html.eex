@@ -221,8 +221,8 @@
             <dl class="row">
                 <dt class="col-sm-3 col-lg-3 text-muted">
                   <%= render BlockScoutWeb.CommonComponentsView, "_i_tooltip_2.html",
-                    text: gettext("Eigenlayer Txn Batch Index.") %>
-                  <%= gettext "Eigenlayer Txn Batch Index" %>
+                    text: gettext("Mantle DA Txn Batch Index.") %>
+                  <%= gettext "Mantle DA Txn Batch Index" %>
                 </dt>
                 <dd class="col-sm-9 col-lg-9" data-selector="block-timestamp">
                   <%= render "_batch_link.html", batch_index: @transaction.batch_index, data_test: "address_hash_link" %>
@@ -235,8 +235,8 @@
             <dl class="row">
                 <dt class="col-sm-3 col-lg-3 text-muted">
                   <%= render BlockScoutWeb.CommonComponentsView, "_i_tooltip_2.html",
-                    text: gettext("Eigenlayer Submission Hash") %>
-                  <%= gettext "Eigenlayer Submission Hash" %>
+                    text: gettext("Mantle DA Submission Hash") %>
+                  <%= gettext "Mantle DA Submission Hash" %>
                 </dt>
                 <dd class="col-sm-9 col-lg-9">
                    <%= render BlockScoutWeb.EigendaBatchView, "_link_to_detail.html", da_hash: @transaction.data_commitment, data_test: "address_hash_link" %>
@@ -425,6 +425,15 @@
             </dd>
           </dl>
           <hr>
+          <!-- L2 Txn Fee -->
+          <dl class="row">
+            <dt class="col-sm-3 col-lg-3 text-muted">
+              <%= render BlockScoutWeb.CommonComponentsView, "_i_tooltip_2.html",
+                text: gettext("Transaction fee on layer2.") %>
+              <%= gettext "L2 Txn Fee" %>
+            </dt>
+            <dd class="col-sm-9 col-lg-9"> <%= l2_fee(@transaction, :gwei) %> <%= Explorer.coin_name() %> </dd>
+          </dl>
           <!-- Gas Price -->
           <dl class="row">
             <dt class="col-sm-3 col-lg-3 text-muted">
@@ -432,7 +441,9 @@
                 text: gettext("Price per unit of gas specified by the sender. Higher gas prices can prioritize transaction inclusion during times of high usage.") %>
               <%= gettext "Gas Price on L2" %>
             </dt>
-            <dd class="col-sm-9 col-lg-9"> <%= gas_price(@transaction, :gwei) %> </dd>
+            <dd class="col-sm-9 col-lg-9">
+              <%= gas_price_native(@transaction, :ether) %>(<%= gas_price(@transaction, :gwei) %>)
+            </dd>
           </dl>
           <%= if !is_nil(type) do %>
             <dl class="row">
@@ -453,15 +464,7 @@
             </dt>
             <dd class="col-sm-9 col-lg-9"> <%= format_gas_limit(@transaction.gas) %> </dd>
           </dl>
-          <!-- L2 Fee -->
-          <dl class="row">
-            <dt class="col-sm-3 col-lg-3 text-muted">
-              <%= render BlockScoutWeb.CommonComponentsView, "_i_tooltip_2.html",
-                text: gettext("Transaction fee on layer2.") %>
-              <%= gettext "L2 Fee" %>
-            </dt>
-            <dd class="col-sm-9 col-lg-9"> <%= l2_fee(@transaction, :gwei) %> <%= Explorer.coin_name() %> </dd>
-          </dl>
+
           <%= if !is_nil(max_fee_per_gas) do %>
             <dl class="row">
               <dt class="col-sm-3 col-lg-3 text-muted">
@@ -538,7 +541,7 @@
                 <div class="d-flex mb-3 justify-content-between">
                   <!-- Dropdown -->
                   <div class="dropdown">
-                    <button class="btn-dropdown-line large dropdown-toggle" type="button" id="tx-input-decoding-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button style="border-radius:8px;" class="btn-dropdown-line large dropdown-toggle" type="button" id="tx-input-decoding-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <%= gettext("Hex (Default)") %>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="transaction-input-decoding-button">
@@ -569,13 +572,13 @@
                 </div>
                 <!-- Textarea -->
                 <div class="tx-raw-input">
-                  <div class="tile tile-muted">
+                  <div class="tile tile-muted" style="border-radius: 8px;">
                     <pre class="pre-scrollable pre-scrollable-shorty pre-wrap mb-0"><code><%= @transaction.input %></code></pre>
                   </div>
                 </div>
                 <!-- Textfield -->
                 <div class="tx-utf8-input" style="display: none;">
-                  <div class="tile tile-muted">
+                  <div class="tile tile-muted" style="border-radius: 8px;">
                     <pre class="pre-scrollable pre-scrollable-shorty pre-wrap mb-0"><code><%= @transaction.input.bytes %></code></pre>
                   </div>
                 </div>
@@ -583,6 +586,15 @@
             </dl>
           <% end %>
           <hr>
+          <!-- L1 Rollup Fee -->
+          <dl class="row">
+            <dt class="col-sm-3 col-lg-3 text-muted">
+              <%= render BlockScoutWeb.CommonComponentsView, "_i_tooltip_2.html",
+                text: gettext("L1 Gas Price*L1 Gas Used*L1 Fee Scalar") %>
+              <%= gettext "L1 Rollup Fee" %>
+            </dt>
+            <dd class="col-sm-9 col-lg-9"> <%= l1_fee(@transaction, :ether) %> </dd>
+          </dl>
           <!-- L1 Gas Price -->
           <dl class="row">
             <dt class="col-sm-3 col-lg-3 text-muted">
@@ -592,22 +604,14 @@
             </dt>
             <dd class="col-sm-9 col-lg-9" style="display:flex;flex-direction:column;">
               <span>
-                <%= l1_gas_price(@transaction, :gwei) %>
+                 <%= l1_gas_price_native(@transaction, :ether) %>(<%= l1_gas_price(@transaction, :gwei) %>)
               </span>
               <span style="font-size:12px;color:#585F65;">
                 Display with gwei on Mantle, converted from L1 gas price
               </span>
              </dd>
           </dl>
-          <!-- L1 Fee -->
-          <dl class="row">
-            <dt class="col-sm-3 col-lg-3 text-muted">
-              <%= render BlockScoutWeb.CommonComponentsView, "_i_tooltip_2.html",
-                text: gettext("L1 Fee") %>
-              <%= gettext "L1 Fee" %>
-            </dt>
-            <dd class="col-sm-9 col-lg-9"> <%= l1_fee(@transaction, :ether) %> </dd>
-          </dl>
+
           <!-- L1 Fee Scalar-->
           <dl class="row">
             <dt class="col-sm-3 col-lg-3 text-muted">

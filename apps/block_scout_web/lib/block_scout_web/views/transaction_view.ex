@@ -426,6 +426,10 @@ require Logger
     format_wei_value(gas_price, unit)
   end
 
+  def gas_price_native(%Transaction{gas_price: gas_price}, unit) when unit in ~w(wei gwei ether)a do
+    format_wei_value(gas_price, unit)
+  end
+
   def da_gas_price(%Transaction{da_gas_price: da_gas_price}, unit) when unit in ~w(wei gwei ether)a do
     if da_gas_price == nil, do: format_wei_value(%Wei{value: Decimal.new(0)}, unit), else: format_wei_value(da_gas_price, unit)
   end
@@ -464,6 +468,11 @@ require Logger
   #end
 
   def l1_gas_price(%Transaction{} = transaction, unit) when unit in ~w(wei gwei ether)a do
+    l1_gas_price = if transaction.l1_gas_price == nil, do: 0, else: transaction.l1_gas_price
+    format_wei_value(l1_gas_price, unit)
+  end
+
+  def l1_gas_price_native(%Transaction{} = transaction, unit) when unit in ~w(wei gwei ether)a do
     l1_gas_price = if transaction.l1_gas_price == nil, do: 0, else: transaction.l1_gas_price
     format_wei_value(l1_gas_price, unit)
   end

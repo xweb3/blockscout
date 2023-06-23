@@ -115,10 +115,7 @@ export function placeHolderBlock (blockNumber) {
         class="tile tile-type-block d-flex align-items-center fade-up"
         style="min-height: 90px;"
       >
-        <span class="loading-spinner-small ml-1 mr-4">
-          <span class="loading-spinner-block-1"></span>
-          <span class="loading-spinner-block-2"></span>
-        </span>
+       
         <div>
           <span class="tile-title pr-0 pl-0">${blockNumber}</span>
           <div class="tile-transactions">${window.localized['Block Processing']}</div>
