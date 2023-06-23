@@ -34,19 +34,19 @@
       </div>
       <div class="txn-list-table-head-container">
         <span style="width: 13%;">
-          Batch Index
+          <%= gettext "Batch Index" %>
         </span>
         <span style="width: 13%;">
-          Store Period(s)
+          <%= gettext "Store Period(s)" %>
         </span>
         <span style="width: 14%;">
-          Status
+            <%= gettext "Status" %>
         </span>
         <span style="width: 50%;">
-          DA Hash
+          <%= gettext "DA Hash" %>
         </span>
         <span style="width: 10%;">
-          Store Number
+            <%= gettext "Store Number" %>
         </span>
       </div>
       <div data-selector="txn-batch-list" data-items class="recent-tx-list-page">

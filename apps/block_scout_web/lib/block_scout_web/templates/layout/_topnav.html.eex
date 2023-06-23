@@ -135,7 +135,7 @@
               <span class="nav-link-icon">
                 <%= render BlockScoutWeb.IconsView, "_active_icon.html" %>
               </span>
-              Mantle Testnet
+              <%= gettext("Mantle Testnet") %>
             </span>
           </li>
            <!--  language-changer -->
