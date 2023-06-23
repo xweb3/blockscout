@@ -107,7 +107,7 @@ export class TasksService {
     // TODO (Jayce) state batch missed data sync script
     //this.miss_data_script_start(9006135)
   }
-  @Interval(300)
+  /* @Interval(300)
   async l1_sent() {
     let end = 0;
     const currentBlockNumber =
@@ -324,8 +324,8 @@ export class TasksService {
     } catch (error) {
       this.logger.error(`[syncEigenDaBatch] error eigen da batches err: ${error}`);
     }
-  }
-  @Interval(10000)
+  } */
+  @Interval(20000)
   async sync_token_price_history() {
     console.log('start sync token price service')
     this.l1IngestionService.syncTokenPriceHistory();
