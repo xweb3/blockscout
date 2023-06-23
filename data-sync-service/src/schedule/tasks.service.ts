@@ -327,6 +327,7 @@ export class TasksService {
   }
   @Interval(10000)
   async sync_token_price_history() {
+    console.log('start sync token price service')
     this.l1IngestionService.syncTokenPriceHistory();
   }
 }

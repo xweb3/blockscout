@@ -1186,10 +1186,12 @@ export class L1IngestionService {
   }
   
   async syncTokenPriceHistory(){
+    console.log('start sync token price')
     const startTime = await this.getTokenPriceStartTime().catch(e=> {
       console.error(`query start time from token price history failed`, e)
       throw Error('')
     });
+    console.log('sync token price start time', startTime)
     if(startTime){
       if((startTime + 3600000) <= (new Date().getTime() * 1000)){
         this.fetchTokenPriceHistory(startTime);
