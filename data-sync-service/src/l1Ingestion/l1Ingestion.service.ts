@@ -1279,7 +1279,7 @@ export class L1IngestionService {
           }
         )
       )
-      console.log('-=-=-=-')
+      console.log('token price real time data')
       console.log(data)
       if(data?.retCode === 0 && data?.result?.list?.length > 0){
         const realtimePrice = data.result.list[0];
