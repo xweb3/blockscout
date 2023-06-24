@@ -1274,7 +1274,7 @@ export class L1IngestionService {
       console.log('start sync token price real time')
       const {data} = await firstValueFrom(
         this.httpService.get(
-          `https://api.bybit.com/v5/market/tickers?category=inverse&symbol=BTCUSD`,
+          `https://api.bybit.com/v5/market/tickers?category=inverse&symbol=BITUSD`,
           {
             timeout: 5000,
           }
