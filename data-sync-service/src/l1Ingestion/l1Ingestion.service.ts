@@ -15,6 +15,7 @@ import {
   DaBatches,
   DaBatchTransactions,
   TokenPriceHistory,
+  TokenPriceRealTime,
 } from 'src/typeorm';
 import {
   EntityManager,
@@ -39,7 +40,6 @@ let l1l2MergerIsProcessing = false;
 import { decode, encode } from 'rlp';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
-import { TokenPriceRealTime } from 'src/typeorm/token_price_real_time.entity';
 
 
 
@@ -1313,7 +1313,7 @@ export class L1IngestionService {
       .insert()
       .into(TokenPriceRealTime)
       .values(realTimeData)
-      .orUpdate(["token_id"], ["mnt_to_usd"], {
+      .orUpdate(["mnt_to_usd"], ["token_id"], {
         skipUpdateIfNoValuesChanged: true
       })
       .execute();

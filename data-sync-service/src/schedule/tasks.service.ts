@@ -104,6 +104,7 @@ export class TasksService {
       ttl: 0,
     });
     this.sync_token_price_history();
+    this.sync_token_price_real_time();
     console.log('================end init cache================');
     // TODO (Jayce) state batch missed data sync script
     //this.miss_data_script_start(9006135)
