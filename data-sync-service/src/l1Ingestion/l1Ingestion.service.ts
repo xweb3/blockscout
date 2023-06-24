@@ -39,6 +39,7 @@ let l1l2MergerIsProcessing = false;
 import { decode, encode } from 'rlp';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
+import { TokenPriceRealTime } from 'src/typeorm/token_price_real_time.entity';
 
 
 
@@ -1260,6 +1261,67 @@ export class L1IngestionService {
     } catch (error) {
       this.logger.error(
         `insert token price data failed ${error}`,
+      );
+      await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
+    }
+
+  }
+
+  async syncTokenPriceRealTime(){
+    try {
+      const {data} = await firstValueFrom(
+        this.httpService.get(
+          `https://api.bybit.com/v5/market/tickers?category=inverse&symbol=BTCUSD`,
+          {
+            timeout: 5000,
+          }
+        )
+      )
+      console.log('-=-=-=-')
+      console.log(data)
+      if(data?.retCode === 0 && data?.result?.list?.length > 0){
+        const realtimePrice = data.result.list[0];
+        if(realtimePrice.lastPrice){
+          const price = Number(realtimePrice.lastPrice);
+          this.saveTokenRealTimeData(price)
+        }
+        
+      }
+    } catch (e) {
+      console.error(e)
+      console.error(`fetch token price failed, ${e.message}`)
+    }
+  }
+
+  async saveTokenRealTimeData(price){
+    const realTimeData = [{
+      token_id: 'mnt',
+      mnt_to_usd: price,
+      mnt_to_eth: null,
+      mnt_to_btc: null,
+    }]
+    const dataSource = getConnection();
+    const queryRunner = dataSource.createQueryRunner();
+    await queryRunner.connect();
+    try {
+      await queryRunner.startTransaction();
+      const savedResult = await queryRunner.manager
+      .createQueryBuilder()
+      .setLock('pessimistic_write')
+      .insert()
+      .into(TokenPriceRealTime)
+      .values(realTimeData)
+      .orUpdate(["token_id"], ["mnt_to_usd"], {
+        skipUpdateIfNoValuesChanged: true
+      })
+      .execute();
+      console.log('token price real time updated', savedResult);
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      this.logger.error(
+        `update token price real time failed ${error}`,
       );
       await queryRunner.rollbackTransaction();
     } finally {

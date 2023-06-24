@@ -331,4 +331,9 @@ export class TasksService {
     console.log('start sync token price service')
     this.l1IngestionService.syncTokenPriceHistory();
   }
+
+  @Interval(10000)
+  async sync_token_price_real_time() {
+    this.l1IngestionService.syncTokenPriceRealTime();
+  }
 }
