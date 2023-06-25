@@ -2216,10 +2216,14 @@ defmodule Explorer.Chain do
   @spec get_token_price_history(Block.t()) ::
           {:ok, TokenPriceHistory.t()} | {:error, :not_found}
   def get_token_price_history(%Block{timestamp: timestamp}) do
+    unix = DateTime.to_unix(timestamp) * 1000
+    Logger.info("=================")
+    Logger.info("#{inspect(unix)}")
     query =
       from(
         t in TokenPriceHistory,
-        #where: t.tx_hash == ^hash,
+        where: t.start_time <= ^unix and t.end_time > ^unix,
+        order_by: [desc: t.start_time],
         limit: 1,
         select: t
       )
@@ -2227,8 +2231,10 @@ defmodule Explorer.Chain do
     Repo.one(query)
     |> case do
       nil ->
+        Logger.info("=================11111")
         {:error, :not_found}
       token_price_history ->
+        Logger.info("=================22222")
         {:ok, token_price_history}
     end
 

@@ -153,15 +153,15 @@ require Logger
   def show(conn, %{"id" => id} = params) do
     with {:ok, transaction_hash} <- Chain.string_to_transaction_hash(id),
          :ok <- Chain.check_transaction_exists(transaction_hash) do
-          #tx_status = EthereumJSONRPC.request(%{id: 0, method: "eth_getTxStatusDetailByHash", params: [id]})
-          #|> json_rpc(Application.get_env(:indexer, :json_rpc_named_arguments))
-          #|> case do
-          #  {:ok, tx}  ->
-          #    tx["status"]
-          #  {:error, _} ->
-          #    nil
-          #end
-          tx_status = "0x1"
+          tx_status = EthereumJSONRPC.request(%{id: 0, method: "eth_getTxStatusDetailByHash", params: [id]})
+          |> json_rpc(Application.get_env(:indexer, :json_rpc_named_arguments))
+          |> case do
+            {:ok, tx}  ->
+              tx["status"]
+            {:error, _} ->
+              nil
+          end
+          #tx_status = "0x1"
       if Chain.transaction_has_token_transfers?(transaction_hash) do
         with {:ok, transaction} <-
                Chain.hash_to_transaction(
@@ -192,9 +192,14 @@ require Logger
                 {:error, _} ->
                   updated_display_tx_status_state_transaction
                 {:ok, %{mnt_to_usd: mnt_to_usd}} ->
-                  Logger.info("---------")
-                  Logger.info("#{inspect(mnt_to_usd)}")
-                  Map.put(transaction, :real_time_price, mnt_to_usd)
+                  Map.put(updated_display_tx_status_state_transaction, :real_time_price, mnt_to_usd)
+              end
+
+              updated_token_price_history_transaction = case Chain.get_token_price_history(updated_token_price_transaction.block) do
+                {:error, _} ->
+                  updated_token_price_transaction
+                {:ok, %{mnt_to_usd: mnt_to_usd}} ->
+                  Map.put(updated_token_price_transaction, :token_price_history, mnt_to_usd)
               end
 
 
@@ -206,7 +211,7 @@ require Logger
             current_path: Controller.current_full_path(conn),
             current_user: current_user(conn),
             show_token_transfers: true,
-            transaction: updated_token_price_transaction,
+            transaction: updated_token_price_history_transaction,
             from_tags: get_address_tags(transaction.from_address_hash, current_user(conn)),
             to_tags: get_address_tags(transaction.to_address_hash, current_user(conn)),
             tx_tags:
@@ -264,13 +269,8 @@ require Logger
                 {:error, _} ->
                   updated_token_price_transaction
                 {:ok, %{mnt_to_usd: mnt_to_usd}} ->
-                  Logger.info("---1-2-2--2-2-2-1-21")
-                  Logger.info("#{inspect(mnt_to_usd)}")
                   Map.put(updated_token_price_transaction, :token_price_history, mnt_to_usd)
               end
-
-              Logger.info("---------")
-              Logger.info("#{inspect(updated_token_price_history_transaction)}")
 
           render(
             conn,
