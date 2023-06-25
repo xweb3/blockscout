@@ -127,6 +127,19 @@ require Logger
           end
 
           updated_display_tx_status_state_transaction = if tx_status == nil, do: updated_state_transaction, else: Map.put(updated_state_transaction, :tx_status, tx_status)
+          updated_token_price_transaction = case Chain.get_real_time_token_price() do
+            {:error, _} ->
+              updated_display_tx_status_state_transaction
+            {:ok, %{mnt_to_usd: mnt_to_usd}} ->
+              Map.put(updated_display_tx_status_state_transaction, :real_time_price, mnt_to_usd)
+          end
+
+          updated_token_price_history_transaction = case Chain.get_token_price_history(updated_token_price_transaction.block) do
+            {:error, _} ->
+              updated_token_price_transaction
+            {:ok, %{mnt_to_usd: mnt_to_usd}} ->
+              Map.put(updated_token_price_transaction, :token_price_history, mnt_to_usd)
+            end
       render(
         conn,
         "index.html",
@@ -135,7 +148,7 @@ require Logger
         current_path: Controller.current_full_path(conn),
         current_user: current_user(conn),
         show_token_transfers: true,
-        transaction: updated_display_tx_status_state_transaction,
+        transaction: updated_token_price_history_transaction,
         from_tags: get_address_tags(transaction.from_address_hash, current_user(conn)),
         to_tags: get_address_tags(transaction.to_address_hash, current_user(conn)),
         tx_tags:

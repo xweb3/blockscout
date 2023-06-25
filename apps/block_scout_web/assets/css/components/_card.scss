@@ -162,11 +162,11 @@ $card-tab-icon-color-active: #fff !default;
     }
   }
   .tx-fee-price-can-click{
-    color: #007bff;
+    color: rgba(10, 143, 246, 1);
     cursor: pointer;
   }
   .tx-fee-price-disable-click{
-    color: #6c757d;
+    color: rgba(110, 118, 125, 1);
     cursor: auto;
   }
   .transaction_detail_status_container {
@@ -519,12 +519,9 @@ $card-tab-icon-color-active: #fff !default;
       }
     }
   }
-  .tx-fee-price-can-click{
-    color: #007bff;
-    cursor: pointer;
-  }
+  
   .tx-fee-price-disable-click{
-    color: #6c757d;
+    color: rgba(159, 165, 169, 1);
     cursor: auto;
   }
   .transaction_detail_status_container {
