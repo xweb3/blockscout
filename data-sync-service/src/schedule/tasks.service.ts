@@ -335,6 +335,6 @@ export class TasksService {
 
   @Interval(10000)
   async sync_token_price_real_time() {
-   // this.l1IngestionService.syncTokenPriceRealTime();
+   this.l1IngestionService.syncTokenPriceRealTime();
   }
 }
