@@ -1197,7 +1197,7 @@ export class L1IngestionService {
     let startTime = historyLatestTime + 3600000;
     console.log('sync token price start time', startTime)
     if(startTime){
-      if((startTime + 3600000) <= (new Date().getTime() * 1000)){
+      if((startTime + 3600000) <= (new Date().getTime())){
         this.fetchTokenPriceHistory(startTime);
       } else {
         console.log('token price has synced the latest one')
