@@ -67,6 +67,8 @@ defmodule Explorer.Chain do
     DaBatchTransaction,
     L1ToL2,
     L2ToL1,
+    TokenPriceHistory,
+    TokenPriceRealTime,
   }
 
   alias Explorer.Chain.Block.{EmissionReward, Reward}
@@ -2193,6 +2195,43 @@ defmodule Explorer.Chain do
       transaction ->
         {:ok, transaction}
     end
+  end
+
+  @spec get_real_time_token_price() ::
+          {:ok, TokenPriceRealTime.t()} | {:error, :not_found}
+  def get_real_time_token_price() do
+
+    TokenPriceRealTime
+    |> where(token_id: "mnt")
+    |> Repo.one()
+    |> case do
+      nil ->
+        {:error, :not_found}
+
+      realTime ->
+        {:ok, realTime}
+    end
+  end
+
+  @spec get_token_price_history(Block.t()) ::
+          {:ok, TokenPriceHistory.t()} | {:error, :not_found}
+  def get_token_price_history(%Block{timestamp: timestamp}) do
+    query =
+      from(
+        t in TokenPriceHistory,
+        #where: t.tx_hash == ^hash,
+        limit: 1,
+        select: t
+      )
+
+    Repo.one(query)
+    |> case do
+      nil ->
+        {:error, :not_found}
+      token_price_history ->
+        {:ok, token_price_history}
+    end
+
   end
 
   @spec hash_to_batch(String.t(), [necessity_by_association_option]) ::

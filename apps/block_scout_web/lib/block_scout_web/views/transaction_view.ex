@@ -441,6 +441,45 @@ require Logger
     |> Decimal.to_string(:normal)
   end
 
+  def formatted_fee_to_real_time_usd(%Transaction{} = transaction, opts) do
+    l1_fee = if transaction.l1_fee == nil, do: Wei.from(Decimal.new(0), :wei), else: transaction.l1_fee
+    da_fee = if transaction.da_fee == nil, do: Wei.from(Decimal.new(0), :wei), else: transaction.da_fee
+    real_time_price = transaction.real_time_price
+    transaction
+    |> Chain.fee(:wei)
+    |> fee_to_denomination_with_no_unit(l1_fee, da_fee, opts, real_time_price)
+  end
+
+  def formatted_l2_fee_to_real_time_usd(%Transaction{} = transaction) do
+    gas_price = transaction.gas_price
+    gas = transaction.gas
+    gas_used = transaction.gas_used
+    actual_gas = if gas_used == nil, do: gas, else: gas_used
+    real_time_price = transaction.real_time_price
+    gas_price
+    |> Wei.multi(actual_gas)
+    |> Decimal.mult(real_time_price)
+    |> Decimal.round(8)
+  end
+
+  def l1_fee_to_real_time_usd(%Transaction{} = transaction) do
+    l1_fee = transaction.l1_fee
+    real_time_price = transaction.real_time_price
+    value = format_wei_value(l1_fee, :ether, include_unit_label: false)
+    decimal = Decimal.new(value)
+    token_value = Decimal.mult(decimal, real_time_price)
+    Decimal.round(token_value, 8)
+  end
+
+  def da_fee_to_real_time_usd(%Transaction{} = transaction) do
+    da_fee = transaction.da_fee
+    real_time_price = transaction.real_time_price
+    value = format_wei_value(da_fee, :ether, include_unit_label: false)
+    decimal = Decimal.new(value)
+    token_value = Decimal.mult(decimal, real_time_price)
+    Decimal.round(token_value, 8)
+  end
+
   def gas_used(%Transaction{gas_used: nil}), do: gettext("Pending")
 
   def gas_used(%Transaction{gas_used: gas_used}) do
@@ -597,6 +636,15 @@ require Logger
     include_label? = Keyword.get(opts, :include_label, true)
     l1_and_da_fee = Wei.sum(l1_fee, da_fee)
     {fee_type, format_wei_value(Wei.sum(Wei.from(fee, :wei), l1_and_da_fee), denomination, include_unit_label: include_label?)}
+  end
+
+  defp fee_to_denomination_with_no_unit({fee_type, fee}, l1_fee, da_fee, opts, token_price) do
+    denomination = Keyword.get(opts, :denomination)
+    l1_and_da_fee = Wei.sum(l1_fee, da_fee)
+    value = format_wei_value(Wei.sum(Wei.from(fee, :wei), l1_and_da_fee), denomination, include_unit_label: false)
+    decimal = Decimal.new(value)
+    token_value = Decimal.mult(decimal, token_price)
+    Decimal.round(token_value, 8)
   end
 
   @doc """

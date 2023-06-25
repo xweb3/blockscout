@@ -161,6 +161,10 @@ $card-tab-icon-color-active: #fff !default;
       display: none;
     }
   }
+  .tx-fee-price-can-click{
+    color: #007bff;
+    cursor: pointer;
+  }
   .transaction_detail_status_container {
     display: flex;
     align-items: center;
