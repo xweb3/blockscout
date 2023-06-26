@@ -14,6 +14,8 @@ import ABI from '../abi/L2CrossDomainMessenger.json';
 import { utils } from 'ethers';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
+import { Gauge } from "prom-client";
+import { InjectMetric } from "@willsoto/nestjs-prometheus";
 
 @Injectable()
 export class L2IngestionService {
@@ -30,6 +32,12 @@ export class L2IngestionService {
     @InjectRepository(L2ToL1)
     private readonly l2ToL1Repository: Repository<L2ToL1>,
     private readonly httpService: HttpService,
+    @InjectMetric('msg_nonce')
+    public metricMsgNonce: Gauge<string>,
+    @InjectMetric('l1_to_l2_l2_hash')
+    public metricL1ToL2L2Hash: Gauge<string>,
+    @InjectMetric('l2_to_l1_status')
+    public metricL2ToL1Status: Gauge<string>,
   ) {
     this.entityManager = getManager();
     const web3 = new Web3(
@@ -209,6 +217,7 @@ export class L2IngestionService {
         inserted_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       })
+      this.metricMsgNonce.set(Number(messageNonce))
     }
     const dataSource = getConnection();
     const queryRunner = dataSource.createQueryRunner();
@@ -259,6 +268,7 @@ export class L2IngestionService {
         inserted_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       })
+      this.metricL1ToL2L2Hash.set(blockNumber)
     }
     const dataSource = getConnection();
     const queryRunner = dataSource.createQueryRunner();
@@ -449,6 +459,9 @@ export class L2IngestionService {
         block: 'ASC'
       }
     });
+    if (list.length > 0) {
+      this.metricL2ToL1Status.set(list[0].msg_nonce)
+    }
     const updateL2ToL1Data = []
     for(let item of list) {
       const l2_hash = item.l2_hash.toString();

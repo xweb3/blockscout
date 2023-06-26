@@ -32,12 +32,12 @@ import DAABI from '../abi/BVM_EigenDataLayrChain.json';
 import { L2IngestionService } from '../l2Ingestion/l2Ingestion.service';
 import { EigenlayerService } from '../grpc/eigenlayer.service';
 import { utils } from 'ethers';
+import { Gauge } from "prom-client";
+import { InjectMetric } from "@willsoto/nestjs-prometheus";
 import { from } from 'rxjs';
 const FraudProofWindow = 0;
 let l1l2MergerIsProcessing = false;
 import { decode, encode } from 'rlp';
-
-
 
 @Injectable()
 export class L1IngestionService {
@@ -72,6 +72,14 @@ export class L1IngestionService {
     private readonly DaBatchTransactionsRepository: Repository<DaBatchTransactions>,
     private readonly l2IngestionService: L2IngestionService,
     private readonly eigenlayerService: EigenlayerService,
+    @InjectMetric('eigenlayer_batch_index')
+    public metricEigenlayerBatchIndex: Gauge<string>,
+    @InjectMetric('state_batch_index')
+    public metricStateBatchIndex: Gauge<string>,
+    @InjectMetric('queue_index')
+    public metricQueueIndex: Gauge<string>,
+    @InjectMetric('l2_to_l1_l1_hash')
+    public metricL2ToL1L1Hash: Gauge<string>,
   ) {
     this.entityManager = getManager();
     const web3 = new Web3(
@@ -352,6 +360,7 @@ export class L1IngestionService {
         inserted_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       })
+      this.metricStateBatchIndex.set(_batchIndex);
     }
     const result: any[] = [];
     const dataSource = getConnection();
@@ -467,6 +476,7 @@ export class L1IngestionService {
         inserted_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       })
+      this.metricQueueIndex.set(Number(messageNonce))
     }
     const dataSource = getConnection();
     const queryRunner = dataSource.createQueryRunner();
@@ -512,7 +522,7 @@ export class L1IngestionService {
         inserted_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       })
-      
+      this.metricL2ToL1L1Hash.set(blockNumber)
     }
     const dataSource = getConnection();
     const queryRunner = dataSource.createQueryRunner();
@@ -938,6 +948,7 @@ export class L1IngestionService {
       if (batchIndexParam > Number(batchIndex)) {
         return false;
       }
+      this.metricEigenlayerBatchIndex.set(batchIndex)
       
       const res = await this.eigenlayerService.getRollupStoreByRollupBatchIndex(batchIndexParam);
       if(!res) return Promise.reject();
