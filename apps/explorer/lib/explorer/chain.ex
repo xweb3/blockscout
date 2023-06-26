@@ -2217,8 +2217,6 @@ defmodule Explorer.Chain do
           {:ok, TokenPriceHistory.t()} | {:error, :not_found}
   def get_token_price_history(%Block{timestamp: timestamp}) do
     unix = DateTime.to_unix(timestamp) * 1000
-    Logger.info("=================")
-    Logger.info("#{inspect(unix)}")
     query =
       from(
         t in TokenPriceHistory,
@@ -2231,10 +2229,8 @@ defmodule Explorer.Chain do
     Repo.one(query)
     |> case do
       nil ->
-        Logger.info("=================11111")
         {:error, :not_found}
       token_price_history ->
-        Logger.info("=================22222")
         {:ok, token_price_history}
     end
 
