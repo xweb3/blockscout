@@ -4,6 +4,7 @@ import { Interval, SchedulerRegistry } from '@nestjs/schedule';
 import { L1IngestionService } from '../l1Ingestion/l1Ingestion.service';
 import { L2IngestionService } from '../l2Ingestion/l2Ingestion.service';
 import { ConfigService } from '@nestjs/config';
+import { MonitorService } from 'src/monitor/monitor.service';
 
 const L1_SENT = 'l1_sent_block_number';
 const L1_RELAYED = 'l1_relayed_block_number';
@@ -21,6 +22,7 @@ export class TasksService {
     private configService: ConfigService,
     private readonly l1IngestionService: L1IngestionService,
     private readonly l2IngestionService: L2IngestionService,
+    private readonly monitorService: MonitorService,
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private schedulerRegistry: SchedulerRegistry
   ) {
@@ -356,5 +358,10 @@ export class TasksService {
     } catch (error) {
       this.logger.error(`[syncEigenDaBatch] error eigen da batches err: ${error}`);
     }
+  }
+  @Interval(1000)
+  async monitor_service() {
+    this.monitorService.missBlockNumber();
+    this.monitorService.syncBridgeData();
   }
 }
