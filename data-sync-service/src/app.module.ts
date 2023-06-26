@@ -8,6 +8,7 @@ import { L1IngestionModule } from './l1Ingestion/l1Ingestion.module';
 import { L2IngestionModule } from './l2Ingestion/l2Ingestion.module';
 import { StatusMonitorModule } from 'nest-status-monitor';
 import statusMonitorConfig from './config/statusMonitor';
+import { PrometheusModule } from "@willsoto/nestjs-prometheus";
 
 @Module({
   imports: [
@@ -32,6 +33,11 @@ import statusMonitorConfig from './config/statusMonitor';
     TasksModule,
     L1IngestionModule,
     L2IngestionModule,
+    PrometheusModule.register({
+      defaultMetrics: {
+        enabled: false,
+      },
+    })
   ],
   controllers: [],
   providers: [],

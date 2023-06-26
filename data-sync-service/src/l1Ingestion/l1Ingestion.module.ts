@@ -18,7 +18,9 @@ import {
   TokenPriceHistory,
 } from 'src/typeorm';
 import { EigenlayerModule } from '../grpc/eigenlayer.module';
-
+import {
+  makeGaugeProvider,
+} from "@willsoto/nestjs-prometheus";
 
 @Module({
   imports: [
@@ -40,7 +42,25 @@ import { EigenlayerModule } from '../grpc/eigenlayer.module';
     EigenlayerModule,
   ],
   controllers: [L1IngestionController],
-  providers: [L1IngestionService],
+  providers: [
+    L1IngestionService,
+    makeGaugeProvider({
+      name: "eigenlayer_batch_index",
+      help: "eigenlayer batch index",
+    }),
+    makeGaugeProvider({
+      name: "state_batch_index",
+      help: "state batch index",
+    }),
+    makeGaugeProvider({
+      name: "queue_index",
+      help: "queue index",
+    }),
+    makeGaugeProvider({
+      name: "l2_to_l1_l1_hash",
+      help: "l1_hash in l2_to_l1 table",
+    }),
+  ],
   exports: [L1IngestionService],
 })
 export class L1IngestionModule {}
