@@ -957,7 +957,8 @@ export class L1IngestionService {
       number += upgrade_data_store_id
     }
     const dataStoreData = await this.eigenlayerService.getDataStore(fromStoreNumber);
-    if (dataStoreData?.dataStore) {
+    console.log('current data store data:', dataStoreData?.dataStore, fromStoreNumber)
+    if (dataStoreData?.dataStore !== null) {
       const {
         index: Index,
         storePeriodLength: StorePeriodLength,
@@ -1039,6 +1040,8 @@ export class L1IngestionService {
         insertHashData = insertHashList
       }
       await this.createEigenBatchTransaction(insertBatchData, insertHashData);
+    }else {
+      console.log('------ da_batch data response null')
     }
     return Promise.resolve(true);
   }
