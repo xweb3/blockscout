@@ -495,26 +495,26 @@ export class L1IngestionService {
     try {
       await queryRunner.startTransaction();
       await queryRunner.manager
-      .createQueryBuilder()
-      .insert()
-      .into(L1SentMessageEvents)
-      .values(l1SentMessageEventsInsertData)
-      .onConflict(`("message_nonce") DO NOTHING`)
-      .execute().catch(e => {
-        console.error('insert l1 sent message events failed:', e.message)
-        throw Error(e.message)
-      });
+        .createQueryBuilder()
+        .insert()
+        .into(L1SentMessageEvents)
+        .values(l1SentMessageEventsInsertData)
+        .onConflict(`("message_nonce") DO NOTHING`)
+        .execute().catch(e => {
+          console.error('insert l1 sent message events failed:', e.message)
+          throw Error(e.message)
+        });
 
       await queryRunner.manager
-      .createQueryBuilder()
-      .insert()
-      .into(L1ToL2)
-      .values(l1ToL2InsertData)
-      .onConflict(`("queue_index") DO NOTHING`)
-      .execute().catch(e => {
-        console.error('insert l1 to l2 failed:', e.message)
-        throw Error(e.message)
-      });
+        .createQueryBuilder()
+        .insert()
+        .into(L1ToL2)
+        .values(l1ToL2InsertData)
+        .onConflict(`("queue_index") DO NOTHING`)
+        .execute().catch(e => {
+          console.error('insert l1 to l2 failed:', e.message)
+          throw Error(e.message)
+        });
       await queryRunner.commitTransaction();
     } catch (error) {
       inserted = false;
@@ -548,15 +548,15 @@ export class L1IngestionService {
       })
     }
     return getConnection()
-    .createQueryBuilder()
-    .insert()
-    .into(L1RelayedMessageEvents)
-    .values(l1RelayedMessageEventsInsertData)
-    .onConflict(`("msg_hash") DO NOTHING`)
-    .execute().catch(e=> {
-      console.error(`insert l1 relayed message events failed,`, e.message)
-      throw Error(e.message)
-    });
+      .createQueryBuilder()
+      .insert()
+      .into(L1RelayedMessageEvents)
+      .values(l1RelayedMessageEventsInsertData)
+      .onConflict(`("msg_hash") DO NOTHING`)
+      .execute().catch(e => {
+        console.error(`insert l1 relayed message events failed,`, e.message)
+        throw Error(e.message)
+      });
 
   }
   async createL1L2Relation() {
@@ -731,7 +731,7 @@ export class L1IngestionService {
       this.logger.log(`create l2->l1 relation to l2_to_l1 table finish`);
     }
   }
- 
+
   async getRelayedEventByMsgHash(msgHash: string) {
     return this.relayedEventsRepository.findOne({
       where: { msg_hash: msgHash },
@@ -956,8 +956,10 @@ export class L1IngestionService {
     if (upgrade_data_store_id && upgrade_data_store_id !== 0) {
       number += upgrade_data_store_id
     }
-    const {
-      dataStore: {
+    const dataStoreData = await this.eigenlayerService.getDataStore(fromStoreNumber);
+    console.log('current data store data:', dataStoreData?.dataStore, fromStoreNumber)
+    if (dataStoreData?.dataStore !== null) {
+      const {
         index: Index,
         storePeriodLength: StorePeriodLength,
         confirmed: Confirmed,
@@ -983,62 +985,64 @@ export class L1IngestionService {
         eigenSigned: EigenSigned,
         signatoryRecord: SignatoryRecord,
         confirmGasUsed: ConfirmGasUsed
+      } = dataStoreData.dataStore
+      this.logger.log(`[syncEigenDaBatch] latestBatchIndex index:${Index}`);
+      if (Index === undefined || Index === '') {
+        this.logger.log(`[syncEigenDaBatch] latestBatchIndex Index === undefined || Index === ''`);
+        return Promise.resolve(true);
       }
-    } = await this.eigenlayerService.getDataStore(fromStoreNumber);
-    this.logger.log(`[syncEigenDaBatch] latestBatchIndex index:${Index}`);
-    if (Index === undefined || Index === '') {
-      this.logger.log(`[syncEigenDaBatch] latestBatchIndex Index === undefined || Index === ''`);
-      return Promise.resolve(true);
-    }
-    const CURRENT_TIMESTAMP = new Date().toISOString();
-    const insertBatchData = {
-      batch_index: batchIndexParam,
-      batch_size: 0,
-      status: Confirmed ? 'confirmed' : 'init',
-      da_hash: utils.hexlify(MsgHash),
-      store_id: DurationDataStoreId,
-      store_number: StoreNumber,
-      da_fee: Fee,
-      da_init_hash: utils.hexlify(InitTxHash),
-      da_store_hash: utils.hexlify(ConfirmTxHash),
-      from_store_number: fromStoreNumber,
-      inserted_at: CURRENT_TIMESTAMP,
-      updated_at: CURRENT_TIMESTAMP,
-      data_commitment: DataCommitment,
-      stakes_from_block_number: StakesFromBlockNumber,
-      init_time: new Date(Number(InitTime) * 1000).toISOString(),
-      expire_time: new Date(Number(ExpireTime) * 1000).toISOString(),
-      duration: Duration,
-      num_sys: NumSys,
-      num_par: NumPar,
-      degree: Degree,
-      confirmer: Confirmer,
-      header: Header,
-      init_gas_used: InitGasUsed,
-      init_block_number: InitBlockNumber,
-      eth_signed: EthSigned,
-      eigen_signed: EigenSigned,
-      signatory_record: SignatoryRecord,
-      confirm_gas_used: ConfirmGasUsed
-    }
-    let insertHashData = null;
-    // if Confirmed = true then get EigenDa tx list, else skip
-    if (Confirmed) {
-      const { txList } = await this.eigenlayerService.getTxn(number) || [];
-      const insertHashList = [];
-      insertBatchData.batch_size = txList.length || 0;
-      txList.forEach((item) => {
-        insertHashList.push({
-          batch_index: batchIndexParam,
-          block_number: item.blockNumber,
-          tx_hash: item.txHash,
-          inserted_at: CURRENT_TIMESTAMP,
-          updated_at: CURRENT_TIMESTAMP
+      const CURRENT_TIMESTAMP = new Date().toISOString();
+      const insertBatchData = {
+        batch_index: batchIndexParam,
+        batch_size: 0,
+        status: Confirmed ? 'confirmed' : 'init',
+        da_hash: utils.hexlify(MsgHash),
+        store_id: DurationDataStoreId,
+        store_number: StoreNumber,
+        da_fee: Fee,
+        da_init_hash: utils.hexlify(InitTxHash),
+        da_store_hash: utils.hexlify(ConfirmTxHash),
+        from_store_number: fromStoreNumber,
+        inserted_at: CURRENT_TIMESTAMP,
+        updated_at: CURRENT_TIMESTAMP,
+        data_commitment: DataCommitment,
+        stakes_from_block_number: StakesFromBlockNumber,
+        init_time: new Date(Number(InitTime) * 1000).toISOString(),
+        expire_time: new Date(Number(ExpireTime) * 1000).toISOString(),
+        duration: Duration,
+        num_sys: NumSys,
+        num_par: NumPar,
+        degree: Degree,
+        confirmer: Confirmer,
+        header: Header,
+        init_gas_used: InitGasUsed,
+        init_block_number: InitBlockNumber,
+        eth_signed: EthSigned,
+        eigen_signed: EigenSigned,
+        signatory_record: SignatoryRecord,
+        confirm_gas_used: ConfirmGasUsed
+      }
+      let insertHashData = null;
+      // if Confirmed = true then get EigenDa tx list, else skip
+      if (Confirmed) {
+        const { txList } = await this.eigenlayerService.getTxn(number) || [];
+        const insertHashList = [];
+        insertBatchData.batch_size = txList.length || 0;
+        txList.forEach((item) => {
+          insertHashList.push({
+            batch_index: batchIndexParam,
+            block_number: item.blockNumber,
+            tx_hash: item.txHash,
+            inserted_at: CURRENT_TIMESTAMP,
+            updated_at: CURRENT_TIMESTAMP
+          })
         })
-      })
-      insertHashData = insertHashList
+        insertHashData = insertHashList
+      }
+      await this.createEigenBatchTransaction(insertBatchData, insertHashData);
+    }else {
+      console.log('------ da_batch data response null')
     }
-    await this.createEigenBatchTransaction(insertBatchData, insertHashData);
     return Promise.resolve(true);
   }
   async getLastFromStoreNumber() {
