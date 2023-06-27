@@ -202,7 +202,7 @@ export class L1IngestionService {
       .createQueryBuilder()
       .select('Max(start_time)', 'startTime')
       .getRawOne();
-      console.log("latest token price result", result)
+    console.log("latest token price result", result)
     return Number(result?.startTime || this.configService.get('TOKEN_PRICE_START_TIME'));
   }
   async getUnMergeSentEvents() {
@@ -271,7 +271,7 @@ export class L1IngestionService {
     console.log('state batch start block', startBlock)
     const list = await this.getSccStateBatchAppendedByBlockNumber(
       startBlock,
-      startBlock+1999,
+      startBlock + 1999,
     );
     const stateBatchesInsertData: any[] = [];
     console.log('data list length', list.length)
@@ -311,12 +311,12 @@ export class L1IngestionService {
     try {
       await queryRunner.startTransaction();
       const savedResult = await queryRunner.manager
-      .createQueryBuilder()
-      .insert()
-      .into(StateBatches)
-      .values(stateBatchesInsertData)
-      .onConflict(`("batch_index") DO NOTHING`)
-      .execute()
+        .createQueryBuilder()
+        .insert()
+        .into(StateBatches)
+        .values(stateBatchesInsertData)
+        .onConflict(`("batch_index") DO NOTHING`)
+        .execute()
       result.push(savedResult);
       await queryRunner.commitTransaction();
     } catch (error) {
@@ -328,7 +328,7 @@ export class L1IngestionService {
     } finally {
       await queryRunner.release();
     }
-    return startBlock+2000;
+    return startBlock + 2000;
   }
 
 
@@ -375,12 +375,12 @@ export class L1IngestionService {
     try {
       await queryRunner.startTransaction();
       const savedResult = await queryRunner.manager
-      .createQueryBuilder()
-      .insert()
-      .into(StateBatches)
-      .values(stateBatchesInsertData)
-      .onConflict(`("batch_index") DO NOTHING`)
-      .execute()
+        .createQueryBuilder()
+        .insert()
+        .into(StateBatches)
+        .values(stateBatchesInsertData)
+        .onConflict(`("batch_index") DO NOTHING`)
+        .execute()
       result.push(savedResult);
       await queryRunner.commitTransaction();
     } catch (error) {
@@ -396,7 +396,6 @@ export class L1IngestionService {
   }
   async createSentEvents(startBlock, endBlock) {
     const list = await this.getSentMessageByBlockNumber(startBlock, endBlock);
-    const result: any[] = [];
     const iface = new utils.Interface([
       'function claimReward(uint256 _blockStartHeight, uint32 _length, uint256 _batchTime, address[] calldata _tssMembers)',
       'function finalizeDeposit(address _l1Token, address _l2Token, address _from, address _to, uint256 _amount, bytes calldata _data)',
@@ -492,31 +491,45 @@ export class L1IngestionService {
     const dataSource = getConnection();
     const queryRunner = dataSource.createQueryRunner();
     await queryRunner.connect();
+    let inserted = true;
     try {
       await queryRunner.startTransaction();
-      const savedResult = await queryRunner.manager.insert(
-        L1SentMessageEvents,
-        l1SentMessageEventsInsertData,
-      );
-      await queryRunner.manager.insert(L1ToL2, l1ToL2InsertData);
-      result.push(savedResult);
+      await queryRunner.manager
+      .createQueryBuilder()
+      .insert()
+      .into(L1SentMessageEvents)
+      .values(l1SentMessageEventsInsertData)
+      .onConflict(`("message_nonce") DO NOTHING`)
+      .execute().catch(e => {
+        console.error('insert l1 sent message events failed:', e.message)
+        throw Error(e.message)
+      });
+
+      await queryRunner.manager
+      .createQueryBuilder()
+      .insert()
+      .into(L1ToL2)
+      .values(l1ToL2InsertData)
+      .onConflict(`("queue_index") DO NOTHING`)
+      .execute().catch(e => {
+        console.error('insert l1 to l2 failed:', e.message)
+        throw Error(e.message)
+      });
       await queryRunner.commitTransaction();
     } catch (error) {
-      this.logger.error(
-        `l1 createSentEvents ${error}`,
-      );
+      inserted = false;
+      console.error(error)
       await queryRunner.rollbackTransaction();
     } finally {
       await queryRunner.release();
     }
-    return result;
+    return Promise.resolve(inserted);
   }
   async createRelayedEvents(startBlock, endBlock) {
     const list = await this.getRelayedMessageByBlockNumber(
       startBlock,
       endBlock,
     );
-    const result: any = [];
     const l1RelayedMessageEventsInsertData: any[] = [];
     for (const item of list) {
       const {
@@ -533,28 +546,18 @@ export class L1IngestionService {
         inserted_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       })
-      
     }
-    const dataSource = getConnection();
-    const queryRunner = dataSource.createQueryRunner();
-    await queryRunner.connect();
-    try {
-      await queryRunner.startTransaction();
-      const savedResult = await queryRunner.manager.insert(
-        L1RelayedMessageEvents,
-        l1RelayedMessageEventsInsertData,
-      );
-      result.push(savedResult);
-      await queryRunner.commitTransaction();
-    } catch (error) {
-      this.logger.error(
-        `l1 createRelayedEvents ${error}`,
-      );
-      await queryRunner.rollbackTransaction();
-    } finally {
-      await queryRunner.release();
-    }
-    return result;
+    return getConnection()
+    .createQueryBuilder()
+    .insert()
+    .into(L1RelayedMessageEvents)
+    .values(l1RelayedMessageEventsInsertData)
+    .onConflict(`("msg_hash") DO NOTHING`)
+    .execute().catch(e=> {
+      console.error(`insert l1 relayed message events failed,`, e.message)
+      throw Error(e.message)
+    });
+
   }
   async createL1L2Relation() {
     if (!l1l2MergerIsProcessing) {
@@ -634,34 +637,32 @@ export class L1IngestionService {
     }
   }
   async createEigenBatchTransaction(insertBatchData, insertHashData) {
-    const dataSource = getConnection();
-    const queryRunner = dataSource.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
-    try {
-      await queryRunner.manager.save(DaBatches, insertBatchData);
-      if (insertHashData) {
-        await queryRunner.manager
-          .createQueryBuilder()
-          .setLock('pessimistic_write')
-          .insert()
-          .into(DaBatchTransactions)
-          .values(insertHashData)
-          .orUpdate(["block_number"], ["tx_hash"], {
-            skipUpdateIfNoValuesChanged: true
-          })
-          .execute();
-        // await queryRunner.manager.insert(DaBatchTransactions, insertHashData);
-      }
-      await queryRunner.commitTransaction();
-    } catch (error) {
-      this.logger.error(`create eigenlayer batch transaction error: ${error}`);
-      await queryRunner.rollbackTransaction();
-      return false;
-    } finally {
-      await queryRunner.release();
-    }
-    return true;
+
+    await getConnection()
+      .createQueryBuilder()
+      .insert()
+      .into(DaBatches)
+      .values(insertBatchData)
+      .onConflict(`("da_hash") DO NOTHING`)
+      .execute().catch(e => {
+        console.error('insert da batches failed', e.message)
+        throw Error(e.message)
+      });
+
+    await getConnection()
+      .createQueryBuilder()
+      .setLock('pessimistic_write')
+      .insert()
+      .into(DaBatchTransactions)
+      .values(insertHashData)
+      .orUpdate(["block_number"], ["tx_hash"], {
+        skipUpdateIfNoValuesChanged: true
+      })
+      .execute().catch(e => {
+        console.error('insert da batch transactions failed', e.message)
+        throw Error(e.message)
+      });
+
   }
   async createL2L1Relation() {
     const unMergeTxList = await this.getRelayedEventByIsMerge(false);
@@ -730,34 +731,7 @@ export class L1IngestionService {
       this.logger.log(`create l2->l1 relation to l2_to_l1 table finish`);
     }
   }
-  async syncSentEvents() {
-    const startBlockNumber = await this.getSentEventsBlockNumber();
-    const currentBlockNumber = await this.getCurrentBlockNumber();
-    for (let i = startBlockNumber; i < currentBlockNumber; i += 10) {
-      const start = i === 0 ? 0 : i + 1;
-      const end = Math.min(i + 10, currentBlockNumber);
-      const result = await this.createSentEvents(start, end);
-      this.logger.log(
-        `sync [${result.length}] l1_sent_message_events from block [${start}] to [${end}]`,
-      );
-    }
-  }
-  async syncRelayedEvents() {
-    const startBlockNumber = await this.getRelayedEventsBlockNumber();
-    const currentBlockNumber = await this.getCurrentBlockNumber();
-    for (let i = startBlockNumber; i < currentBlockNumber; i += 10) {
-      const start = i === 0 ? 0 : i + 1;
-      const end = Math.min(i + 10, currentBlockNumber);
-      const result = await this.createRelayedEvents(start, end);
-      this.logger.log(
-        `sync [${result.length}] l1_relayed_message_events from block [${start}] to [${end}]`,
-      );
-    }
-  }
-  async sync() {
-    this.syncSentEvents();
-    this.syncRelayedEvents();
-  }
+ 
   async getRelayedEventByMsgHash(msgHash: string) {
     return this.relayedEventsRepository.findOne({
       where: { msg_hash: msgHash },
@@ -953,121 +927,119 @@ export class L1IngestionService {
     };
   }
   async syncEigenDaBatch(batchIndexParam) {
-    try {
-      const { batchIndex } = await this.eigenlayerService.getLatestTransactionBatchIndex();
-      this.logger.log(`[syncEigenDaBatch] latestBatchIndex: ${batchIndex}`);
-      if (batchIndexParam > Number(batchIndex)) {
-        return false;
-      }
-      
-      const res = await this.eigenlayerService.getRollupStoreByRollupBatchIndex(batchIndexParam);
-      if(!res) return Promise.reject();
-      let fromStoreNumber, upgrade_data_store_id
-      if(res?.dataStore?.data_store_id){
-        fromStoreNumber = res?.dataStore?.data_store_id;
-      }
-      if(res?.dataStore?.upgrade_data_store_id){
-        upgrade_data_store_id = res?.dataStore?.upgrade_data_store_id;
-      }
-      console.log('eigenda data', res)
-      console.log('store number', fromStoreNumber)
-      console.log('upgrade_data_store_id', upgrade_data_store_id)
-      if (+fromStoreNumber === 0) {
-        this.logger.log(`[syncEigenDaBatch] latestBatchIndex: ${fromStoreNumber}`);
-        return false;
-      }
-      let number = fromStoreNumber;
-      if(upgrade_data_store_id && upgrade_data_store_id !== 0){
-        number += upgrade_data_store_id
-      }
-      const {
-        dataStore:{
-          index: Index,
-          storePeriodLength: StorePeriodLength,
-          confirmed: Confirmed,
-          msgHash: MsgHash,
-          durationDataStoreId: DurationDataStoreId,
-          storeNumber: StoreNumber,
-          fee: Fee,
-          initTxHash: InitTxHash,
-          confirmTxHash: ConfirmTxHash,
-          dataCommitment: DataCommitment,
-          stakesFromBlockNumber: StakesFromBlockNumber,
-          initTime: InitTime,
-          expireTime: ExpireTime,
-          duration: Duration,
-          numSys: NumSys,
-          numPar: NumPar,
-          degree: Degree,
-          confirmer: Confirmer,
-          header: Header,
-          initGasUsed: InitGasUsed,
-          initBlockNumber: InitBlockNumber,
-          ethSigned: EthSigned,
-          eigenSigned: EigenSigned,
-          signatoryRecord: SignatoryRecord,
-          confirmGasUsed: ConfirmGasUsed
-        }
-      } = await this.eigenlayerService.getDataStore(fromStoreNumber);
-      this.logger.log(`[syncEigenDaBatch] latestBatchIndex index:${Index}`);
-      if (Index === undefined || Index === '') {
-        this.logger.log(`[syncEigenDaBatch] latestBatchIndex Index === undefined || Index === ''`);
-        return true;
-      }
-      const CURRENT_TIMESTAMP = new Date().toISOString();
-      const insertBatchData = {
-        batch_index: batchIndexParam,
-        batch_size: 0,
-        status: Confirmed ? 'confirmed' : 'init',
-        da_hash: utils.hexlify(MsgHash),
-        store_id: DurationDataStoreId,
-        store_number: StoreNumber,
-        da_fee: Fee,
-        da_init_hash: utils.hexlify(InitTxHash),
-        da_store_hash: utils.hexlify(ConfirmTxHash),
-        from_store_number: fromStoreNumber,
-        inserted_at: CURRENT_TIMESTAMP,
-        updated_at: CURRENT_TIMESTAMP,
-        data_commitment: DataCommitment,
-        stakes_from_block_number: StakesFromBlockNumber,
-        init_time: new Date(Number(InitTime) * 1000).toISOString(),
-        expire_time: new Date(Number(ExpireTime) * 1000).toISOString(),
+
+    const { batchIndex } = await this.eigenlayerService.getLatestTransactionBatchIndex();
+    this.logger.log(`[syncEigenDaBatch] latestBatchIndex: ${batchIndex}`);
+    if (batchIndexParam > Number(batchIndex)) {
+      return Promise.resolve(false);
+    }
+
+    const res = await this.eigenlayerService.getRollupStoreByRollupBatchIndex(batchIndexParam);
+    if (!res) {
+      return Promise.resolve(false);
+    }
+    let fromStoreNumber, upgrade_data_store_id
+    if (res?.dataStore?.data_store_id) {
+      fromStoreNumber = res?.dataStore?.data_store_id;
+    }
+    if (res?.dataStore?.upgrade_data_store_id) {
+      upgrade_data_store_id = res?.dataStore?.upgrade_data_store_id;
+    }
+    console.log('eigenda data', res)
+    console.log('store number', fromStoreNumber)
+    console.log('upgrade_data_store_id', upgrade_data_store_id)
+    if (+fromStoreNumber === 0) {
+      this.logger.log(`[syncEigenDaBatch] latestBatchIndex: ${fromStoreNumber}`);
+      return Promise.resolve(false);
+    }
+    let number = fromStoreNumber;
+    if (upgrade_data_store_id && upgrade_data_store_id !== 0) {
+      number += upgrade_data_store_id
+    }
+    const {
+      dataStore: {
+        index: Index,
+        storePeriodLength: StorePeriodLength,
+        confirmed: Confirmed,
+        msgHash: MsgHash,
+        durationDataStoreId: DurationDataStoreId,
+        storeNumber: StoreNumber,
+        fee: Fee,
+        initTxHash: InitTxHash,
+        confirmTxHash: ConfirmTxHash,
+        dataCommitment: DataCommitment,
+        stakesFromBlockNumber: StakesFromBlockNumber,
+        initTime: InitTime,
+        expireTime: ExpireTime,
         duration: Duration,
-        num_sys: NumSys,
-        num_par: NumPar,
+        numSys: NumSys,
+        numPar: NumPar,
         degree: Degree,
         confirmer: Confirmer,
         header: Header,
-        init_gas_used: InitGasUsed,
-        init_block_number: InitBlockNumber,
-        eth_signed: EthSigned,
-        eigen_signed: EigenSigned,
-        signatory_record: SignatoryRecord,
-        confirm_gas_used: ConfirmGasUsed
+        initGasUsed: InitGasUsed,
+        initBlockNumber: InitBlockNumber,
+        ethSigned: EthSigned,
+        eigenSigned: EigenSigned,
+        signatoryRecord: SignatoryRecord,
+        confirmGasUsed: ConfirmGasUsed
       }
-      let insertHashData = null;
-      // if Confirmed = true then get EigenDa tx list, else skip
-      if (Confirmed) {
-        const {txList} = await this.eigenlayerService.getTxn(number) || [];
-        const insertHashList = [];
-        insertBatchData.batch_size = txList.length || 0;
-        txList.forEach((item) => {
-          insertHashList.push({
-            batch_index: batchIndexParam,
-            block_number: item.blockNumber,
-            tx_hash: item.txHash,
-            inserted_at: CURRENT_TIMESTAMP,
-            updated_at: CURRENT_TIMESTAMP
-          })
-        })
-        insertHashData = insertHashList
-      }
-      const result = await this.createEigenBatchTransaction(insertBatchData, insertHashData);
-      return result;
-    } catch (error) {
-      this.logger.error(`[syncEigenDaBatch] error: ${error}`);
-      return false;
+    } = await this.eigenlayerService.getDataStore(fromStoreNumber);
+    this.logger.log(`[syncEigenDaBatch] latestBatchIndex index:${Index}`);
+    if (Index === undefined || Index === '') {
+      this.logger.log(`[syncEigenDaBatch] latestBatchIndex Index === undefined || Index === ''`);
+      return Promise.resolve(true);
     }
+    const CURRENT_TIMESTAMP = new Date().toISOString();
+    const insertBatchData = {
+      batch_index: batchIndexParam,
+      batch_size: 0,
+      status: Confirmed ? 'confirmed' : 'init',
+      da_hash: utils.hexlify(MsgHash),
+      store_id: DurationDataStoreId,
+      store_number: StoreNumber,
+      da_fee: Fee,
+      da_init_hash: utils.hexlify(InitTxHash),
+      da_store_hash: utils.hexlify(ConfirmTxHash),
+      from_store_number: fromStoreNumber,
+      inserted_at: CURRENT_TIMESTAMP,
+      updated_at: CURRENT_TIMESTAMP,
+      data_commitment: DataCommitment,
+      stakes_from_block_number: StakesFromBlockNumber,
+      init_time: new Date(Number(InitTime) * 1000).toISOString(),
+      expire_time: new Date(Number(ExpireTime) * 1000).toISOString(),
+      duration: Duration,
+      num_sys: NumSys,
+      num_par: NumPar,
+      degree: Degree,
+      confirmer: Confirmer,
+      header: Header,
+      init_gas_used: InitGasUsed,
+      init_block_number: InitBlockNumber,
+      eth_signed: EthSigned,
+      eigen_signed: EigenSigned,
+      signatory_record: SignatoryRecord,
+      confirm_gas_used: ConfirmGasUsed
+    }
+    let insertHashData = null;
+    // if Confirmed = true then get EigenDa tx list, else skip
+    if (Confirmed) {
+      const { txList } = await this.eigenlayerService.getTxn(number) || [];
+      const insertHashList = [];
+      insertBatchData.batch_size = txList.length || 0;
+      txList.forEach((item) => {
+        insertHashList.push({
+          batch_index: batchIndexParam,
+          block_number: item.blockNumber,
+          tx_hash: item.txHash,
+          inserted_at: CURRENT_TIMESTAMP,
+          updated_at: CURRENT_TIMESTAMP
+        })
+      })
+      insertHashData = insertHashList
+    }
+    await this.createEigenBatchTransaction(insertBatchData, insertHashData);
+    return Promise.resolve(true);
   }
   async getLastFromStoreNumber() {
     const result = await this.daBatchesRepository
@@ -1186,18 +1158,18 @@ export class L1IngestionService {
       }
     };
   }
-  
-  async syncTokenPriceHistory(){
+
+  async syncTokenPriceHistory() {
     console.log('start sync token price')
-    const historyLatestTime = await this.getTokenPriceStartTime().catch(e=> {
+    const historyLatestTime = await this.getTokenPriceStartTime().catch(e => {
       console.error(`query start time from token price history failed`, e)
       throw Error('')
     });
     console.log('latest history time', historyLatestTime)
     let startTime = historyLatestTime + 3600000;
     console.log('sync token price start time', startTime)
-    if(startTime){
-      if((startTime + 3600000) <= (new Date().getTime())){
+    if (startTime) {
+      if ((startTime + 3600000) <= (new Date().getTime())) {
         this.fetchTokenPriceHistory(startTime);
       } else {
         console.log('token price has synced the latest one')
@@ -1205,12 +1177,12 @@ export class L1IngestionService {
     }
   }
 
-  async fetchTokenPriceHistory(startTime){
+  async fetchTokenPriceHistory(startTime) {
     const endTime = startTime + 3599999;
     //TODO(Jayce) use BIT token price temp
     console.log('start fetch token price')
     try {
-      const {data} = await firstValueFrom(
+      const { data } = await firstValueFrom(
         this.httpService.get(
           `https://api.bybit.com/v5/market/kline?symbol=BITUSDT&category=spot&interval=60&start=${startTime}&end=${endTime}`,
           {
@@ -1220,13 +1192,13 @@ export class L1IngestionService {
       )
       console.log('-=-=-=-')
       console.log(data)
-      if(data?.retCode === 0 && data?.result?.list?.length > 0){
+      if (data?.retCode === 0 && data?.result?.list?.length > 0) {
         const keyLineData = data.result.list[0];
-        if(keyLineData[4]){
+        if (keyLineData[4]) {
           const price = Number(keyLineData[4]);
           this.saveTokenPriceData(startTime, endTime, price)
         }
-        
+
       }
     } catch (e) {
       console.error(e)
@@ -1234,10 +1206,10 @@ export class L1IngestionService {
     }
   }
 
-  async saveTokenPriceData(startTime, endTime, price){
+  async saveTokenPriceData(startTime, endTime, price) {
     const historyData = [{
-      start_time: startTime, 
-      end_time: endTime, 
+      start_time: startTime,
+      end_time: endTime,
       mnt_to_usd: price
     }]
     const dataSource = getConnection();
@@ -1246,16 +1218,16 @@ export class L1IngestionService {
     try {
       await queryRunner.startTransaction();
       const savedResult = await queryRunner.manager
-      .createQueryBuilder()
-      .insert()
-      .into(TokenPriceHistory)
-      .values(historyData)
-      //.onConflict(`("start_time") DO NOTHING`)
-      .execute()
+        .createQueryBuilder()
+        .insert()
+        .into(TokenPriceHistory)
+        .values(historyData)
+        //.onConflict(`("start_time") DO NOTHING`)
+        .execute()
       console.log('save result from token price', savedResult);
-      if(savedResult){
+      if (savedResult) {
         console.log("restart sync data")
-        setTimeout(()=> {this.syncTokenPriceHistory()}, 50)
+        setTimeout(() => { this.syncTokenPriceHistory() }, 50)
       }
       await queryRunner.commitTransaction();
     } catch (error) {
@@ -1269,10 +1241,10 @@ export class L1IngestionService {
 
   }
 
-  async syncTokenPriceRealTime(){
+  async syncTokenPriceRealTime() {
     try {
       console.log('start sync token price real time')
-      const {data} = await firstValueFrom(
+      const { data } = await firstValueFrom(
         this.httpService.get(
           `https://api.bybit.com/v5/market/tickers?category=inverse&symbol=BITUSD`,
           {
@@ -1282,13 +1254,13 @@ export class L1IngestionService {
       )
       console.log('token price real time data')
       console.log(data)
-      if(data?.retCode === 0 && data?.result?.list?.length > 0){
+      if (data?.retCode === 0 && data?.result?.list?.length > 0) {
         const realtimePrice = data.result.list[0];
-        if(realtimePrice.lastPrice){
+        if (realtimePrice.lastPrice) {
           const price = Number(realtimePrice.lastPrice);
           this.saveTokenRealTimeData(price)
         }
-        
+
       }
     } catch (e) {
       console.error(e)
@@ -1296,7 +1268,7 @@ export class L1IngestionService {
     }
   }
 
-  async saveTokenRealTimeData(price){
+  async saveTokenRealTimeData(price) {
     const realTimeData = [{
       token_id: 'mnt',
       mnt_to_usd: price,
@@ -1309,15 +1281,15 @@ export class L1IngestionService {
     try {
       await queryRunner.startTransaction();
       const savedResult = await queryRunner.manager
-      .createQueryBuilder()
-      .setLock('pessimistic_write')
-      .insert()
-      .into(TokenPriceRealTime)
-      .values(realTimeData)
-      .orUpdate(["mnt_to_usd"], ["token_id"], {
-        skipUpdateIfNoValuesChanged: true
-      })
-      .execute();
+        .createQueryBuilder()
+        .setLock('pessimistic_write')
+        .insert()
+        .into(TokenPriceRealTime)
+        .values(realTimeData)
+        .orUpdate(["mnt_to_usd"], ["token_id"], {
+          skipUpdateIfNoValuesChanged: true
+        })
+        .execute();
       console.log('token price real time updated', savedResult);
       await queryRunner.commitTransaction();
     } catch (error) {

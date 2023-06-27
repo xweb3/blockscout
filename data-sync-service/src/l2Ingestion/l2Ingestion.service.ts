@@ -88,7 +88,6 @@ export class L2IngestionService {
   }
   async createSentEvents(startBlock, endBlock) {
     const list = await this.getSentMessageByBlockNumber(startBlock, endBlock);
-    const result: any[] = [];
     const iface = new utils.Interface([
       'function finalizeETHWithdrawal(address _from, address _to, uint256 _amount, bytes calldata _data)',
       'function finalizeBitWithdrawal(address _from, address _to, uint256 _amount, bytes calldata _data)',
@@ -213,34 +212,46 @@ export class L2IngestionService {
     const dataSource = getConnection();
     const queryRunner = dataSource.createQueryRunner();
     await queryRunner.connect();
+    let inserted = true;
     try {
       await queryRunner.startTransaction();
-      const savedResult = await queryRunner.manager.insert(
-        L2SentMessageEvents,
-        l2SentMessageEventsInsertData,
-      );
-      await queryRunner.manager.insert(L2ToL1, l2ToL1InsertData);
-      result.push(savedResult);
-      this.logger.log(
-        `l2 createSentEvents success:${JSON.stringify(savedResult)}`,
-      );
+      await queryRunner.manager
+      .createQueryBuilder()
+      .insert()
+      .into(L2SentMessageEvents)
+      .values(l2SentMessageEventsInsertData)
+      .onConflict(`("message_nonce") DO NOTHING`)
+      .execute().catch(e => {
+        console.error('insert l2 sent message events failed:', e.message)
+        throw Error(e.message)
+      });
+
+      await queryRunner.manager
+      .createQueryBuilder()
+      .insert()
+      .into(L2ToL1)
+      .values(l2ToL1InsertData)
+      .onConflict(`("l2_hash") DO NOTHING`)
+      .execute().catch(e => {
+        console.error('insert l2 to l1 failed:', e.message)
+        throw Error(e.message)
+      });
       await queryRunner.commitTransaction();
     } catch (error) {
-      this.logger.error(
-        `l2 createSentEvents ${error}`,
-      );
+      inserted = false;
+      console.error(error)
       await queryRunner.rollbackTransaction();
     } finally {
       await queryRunner.release();
     }
-    return result;
+    return Promise.resolve(inserted);
   }
   async createRelayedEvents(startBlock, endBlock) {
     const list = await this.getRelayedMessageByBlockNumber(
       startBlock,
       endBlock,
     );
-    const result: any = [];
+    console.log('---------------------------------- l2 relayed message events start and end:', startBlock, endBlock)
     const l2RelayedMessageEventsInsertData: any = [];
     for (const item of list) {
       const {
@@ -260,58 +271,20 @@ export class L2IngestionService {
         updated_at: new Date().toISOString(),
       })
     }
-    const dataSource = getConnection();
-    const queryRunner = dataSource.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
-    try {
-      const savedResult = await queryRunner.manager.insert(
-        L2RelayedMessageEvents,
-        l2RelayedMessageEventsInsertData,
-      );
-      result.push(savedResult);
-      this.logger.log(
-        `l2 createRelayedEvents success:${JSON.stringify(savedResult)}`,
-      );
-      await queryRunner.commitTransaction();
-    } catch (error) {
-      this.logger.error(
-        `l2 createRelayedEvents ${error}`,
-      );
-      await queryRunner.rollbackTransaction();
-    } finally {
-      await queryRunner.release();
-    }
-    return result;
+
+    return getConnection()
+    .createQueryBuilder()
+    .insert()
+    .into(L2RelayedMessageEvents)
+    .values(l2RelayedMessageEventsInsertData)
+    .onConflict(`("msg_hash") DO NOTHING`)
+    .execute().catch(e=> {
+      console.error(`insert l2 relayed message events failed,`, e.message)
+      throw Error(e.message)
+    });
+
   }
-  async syncSentEvents() {
-    const startBlockNumber = await this.getSentEventsBlockNumber();
-    const currentBlockNumber = await this.getCurrentBlockNumber();
-    for (let i = startBlockNumber; i < currentBlockNumber; i += 1) {
-      const start = i === 0 ? 0 : i + 1;
-      const end = Math.min(i + 1, currentBlockNumber);
-      const result = await this.createSentEvents(start, end);
-      this.logger.log(
-        `sync [${result.length}] l2_sent_message_events from block [${start}] to [${end}]`,
-      );
-    }
-  }
-  async syncRelayedEvents() {
-    const startBlockNumber = await this.getRelayedEventsBlockNumber();
-    const currentBlockNumber = await this.getCurrentBlockNumber();
-    for (let i = startBlockNumber; i < currentBlockNumber; i += 1) {
-      const start = i === 0 ? 0 : i + 1;
-      const end = Math.min(i + 1, currentBlockNumber);
-      const result = await this.createRelayedEvents(start, end);
-      this.logger.log(
-        `sync [${result.length}] l2_relayed_message_events from block [${start}] to [${end}]`,
-      );
-    }
-  }
-  async sync() {
-    this.syncSentEvents();
-    this.syncRelayedEvents();
-  }
+  
   async getAllSentEvents() {
     return this.sentEventsRepository.find();
   }
@@ -453,12 +426,14 @@ export class L2IngestionService {
     for(let item of list) {
       const l2_hash = item.l2_hash.toString();
       const { result } = await this.getTxStatusDetailByHash(l2_hash);
-      console.log(result);
-      if (result.status === '0x3' || result.status === '0x03') {
+      console.log('tx detail:',result);
+      if (result && (result.status === '0x3' || result.status === '0x03')) {
         updateL2ToL1Data.push({
           l2_hash: l2_hash,
           status: 'Ready for Relay'
         })
+      } else {
+        console.log('this l2 hash can not find its status detail', l2_hash)
       }
     }
     const dataSource = getConnection();
