@@ -12,9 +12,16 @@ $dropdown-menu-background: #cbe9e7;
   border-right: 1px solid #e2e5ec;
   border-top: none;
   // box-shadow: $box-shadow;
-  padding: 12px;
+  padding: 10px;
   width: 100%;
   background-color: $dropdown-menu-background;
+
+  &.center {
+    @media (min-width: 992px) {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
 
   &.right {
     left: auto;
