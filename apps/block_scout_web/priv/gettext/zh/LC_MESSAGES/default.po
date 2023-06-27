@@ -848,7 +848,7 @@ msgid "Max Priority Fee per Gas"
 msgstr "每个Gas的最大优先费用"
 
 msgid "Max of"
-msgstr "I'm sorry, but 'Max of' is not a complete sentence or phrase, and without further context it is impossible to accurately translate into Chinese (zh). Please provide more information or a complete sentence for translation."
+msgstr "最大值"
 
 msgid "Maximum gas amount approved for the transaction."
 msgstr "交易批准的最大燃气金额。"
