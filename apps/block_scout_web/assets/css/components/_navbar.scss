@@ -22,6 +22,12 @@ $navbar-network-label-background-color: #bae1d7;
   @media (min-width: 1200px) {
     height: 96px;
   }
+  &#top-navbar{
+    & > .container-fluid.navbar-container{
+      padding-left:0 ;
+      padding-right:0 ;
+    }
+  }
   .nav-item {
     font-size: 14px;
     &:last-child {
@@ -55,6 +61,9 @@ $navbar-network-label-background-color: #bae1d7;
         font-weight: 600;
         padding-left: $header-link-horizontal-padding;
         padding-right: $header-link-horizontal-padding;
+        @media (min-width: 992px) {
+          margin: 0 10px;
+        }
         &.active,
         &:hover,
         &.active-icon {
@@ -113,7 +122,10 @@ $navbar-network-label-background-color: #bae1d7;
   }
   .navbar-nav-custom {
     .dropdown-toggle::after {
-      display: none;
+      // display: none;
+      content: "\e900";
+      font-family: 'icomoon';
+      border: none;
     }
   }
 

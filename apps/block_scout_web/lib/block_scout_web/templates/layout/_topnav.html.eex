@@ -135,9 +135,22 @@
               <span class="nav-link-icon">
                 <%= render BlockScoutWeb.IconsView, "_active_icon.html" %>
               </span>
-              Mantle Testnet
+              <%= gettext("Mantle Testnet") %>
             </span>
           </li>
+           <!--  language-changer -->
+          <li class="nav-item dropdown language-changer">
+              <a href="#" role="button" id="languageChangerDropdown" class="nav-link topnav-nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                EN
+              </a>
+              <div class="dropdown-menu right" aria-labeledby="languageChangerDropdown">
+                <button class="dropdown-item" data-lang="en">EN</button>
+                <button class="dropdown-item" data-lang="ja">JA</button>
+                <button class="dropdown-item" data-lang="ru">RU</button>
+                <button class="dropdown-item" data-lang="zh">ZH</button>
+                <button class="dropdown-item" data-lang="ko">KO</button>
+              </div>
+            </li>
         </ul>
       </div>
       <!-- Dark mode changer -->

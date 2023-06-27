@@ -173,6 +173,7 @@ $dashboard-banner-chart-axis-font-color-alt: #333;
     max-width: 100%;
     width: 100%;
     height: 100% !important;
+    min-height: 150px !important;
   }
 
   @include media-breakpoint-down(sm) {
@@ -352,7 +353,7 @@ $dashboard-banner-chart-axis-font-color-alt: #333;
       // align-items: flex-start;
       // justify-content: center;
       // flex-direction: column;
-
+      height: 100%;
       display: grid;
       grid-template-columns: repeat(1, minmax(0, 1fr));
 

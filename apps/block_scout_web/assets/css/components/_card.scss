@@ -349,7 +349,7 @@ $card-tab-icon-color-active: #fff !default;
       height: 90px;
       display: flex;
       align-items: center;
-      font-size: 12px;
+      font-size: 14px;
       padding: 0;
       border-bottom: 1px solid #e7eaf3;
       .recent-preview-item-content-title {
@@ -417,6 +417,7 @@ $card-tab-icon-color-active: #fff !default;
         }
         .recent-preview-item-content-latest-txs-tag-wrap-time {
           min-width: 100px;
+          font-size: 12px;
         }
         .recent-preview-item-content-latest-txs-tag-wrap {
           margin-left: 5px;

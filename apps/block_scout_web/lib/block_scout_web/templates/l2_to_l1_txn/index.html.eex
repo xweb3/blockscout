@@ -25,37 +25,35 @@
       </button>
       <div class="txn-list-table-head-container">
         <span style="width: 9%;">
-          Msg Nonce
+          <%= gettext "Msg Nonce" %>
         </span>
         <span style="width: 19%;">
-          From
+          <%= gettext "From" %>
         </span>
         <span style="width: 19%;">
-          L2 Txn Hash
+          <%= gettext "L2 Txn Hash" %>
         </span>
         <span style="width: 10%;">
-          Age
+          <%= gettext "Age" %>
         </span>
         <span style="width: 13%;">
-          Status
+          <%= gettext "Status" %>
           <%= render BlockScoutWeb.CommonComponentsView, "_i_tooltip_2.html",
-              text: gettext("
-              <div class='custom-tooltip-container'>
-                <h3 class='custom-tooltip-total-title'>Whole status about the L2-L1 withdrawal</h3>
-                <p class='custom-tooltip-title'>· Waiting for Relay:</p>
-                <p class='custom-tooltip-content'>Withdrawn on L2 but not ready for claim on L1</p>
-                <p class='custom-tooltip-title'>· Ready for Claim:</p>
-                <p class='custom-tooltip-content'>Ready for claim on L1</p>
-                <p class='custom-tooltip-title'>· Claimed:</p>
-                <p class='custom-tooltip-content'>Withdrawal has been claimed on L1</p>
-              </div>
-              ") %>
+              text: " <div class='custom-tooltip-container'>
+                <h3 class='custom-tooltip-total-title'>#{gettext("Whole status about the L2-L1 withdrawal")}</h3>
+                <p class='custom-tooltip-title'>· #{gettext("Waiting for Relay")}:</p>
+                <p class='custom-tooltip-content'>#{gettext("Withdrawn on L2 but not ready for claim on L1")}</p>
+                <p class='custom-tooltip-title'>· #{gettext("Ready for Claim")}:</p>
+                <p class='custom-tooltip-content'>#{gettext("Ready for claim on L1")}</p>
+                <p class='custom-tooltip-title'>· #{gettext("Claimed")}:</p>
+                <p class='custom-tooltip-content'>#{gettext("Withdrawal has been claimed on L1")}</p>
+              </div>" %>
         </span>
         <span style="width: 20%;">
-          L1 Txn Hash
+          <%= gettext "L1 Txn Hash" %>
         </span>
         <span style="width: 10%;">
-          Time Left
+          <%= gettext "Time Left" %>
         </span>
       </div>
       <div data-empty-response-message style="display: none;">
