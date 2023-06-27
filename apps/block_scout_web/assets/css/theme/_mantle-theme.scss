@@ -72,10 +72,19 @@ a {
   }
 
   [data-icon="moon"] {
-    display: inline-block;
+    display: none;
+    path{
+      stroke:#65B3AE;
+    }
   }
   [data-icon="sun"] {
-    display: none;
+    display: inline-block;
+    path{
+      stroke:#21413F;
+    }
+    circle{
+      stroke:#21413F;
+    }
   }
 }
 
@@ -179,10 +188,10 @@ a {
 
   .dark-mode-changer {
     [data-icon="moon"] {
-      display: none;
+      display: inline-block;
     }
     [data-icon="sun"] {
-      display: inline-block;
+      display: none;
     }
   }
   .transfers-list-mobile-container {
