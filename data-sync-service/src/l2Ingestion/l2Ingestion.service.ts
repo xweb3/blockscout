@@ -426,12 +426,14 @@ export class L2IngestionService {
     for(let item of list) {
       const l2_hash = item.l2_hash.toString();
       const { result } = await this.getTxStatusDetailByHash(l2_hash);
-      console.log(result);
-      if (result.status === '0x3' || result.status === '0x03') {
+      console.log('tx detail:',result);
+      if (result && result.status === '0x3' || result.status === '0x03') {
         updateL2ToL1Data.push({
           l2_hash: l2_hash,
           status: 'Ready for Relay'
         })
+      } else {
+        console.log('this l2 hash can not find its status detail', l2_hash)
       }
     }
     const dataSource = getConnection();
