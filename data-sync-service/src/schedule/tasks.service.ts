@@ -1,6 +1,6 @@
 import { Injectable, Logger, Inject, CACHE_MANAGER } from '@nestjs/common';
 import { Cache } from 'cache-manager';
-import { Interval, SchedulerRegistry } from '@nestjs/schedule';
+import { Interval, SchedulerRegistry, Timeout } from '@nestjs/schedule';
 import { L1IngestionService } from '../l1Ingestion/l1Ingestion.service';
 import { L2IngestionService } from '../l2Ingestion/l2Ingestion.service';
 import { ConfigService } from '@nestjs/config';
@@ -103,6 +103,8 @@ export class TasksService {
     await this.cacheManager.set(DA_BATCH_INDEX, Number(da_batch_index), {
       ttl: 0,
     });
+    this.sync_token_price_history();
+    this.sync_token_price_real_time();
     console.log('================end init cache================');
     // TODO (Jayce) state batch missed data sync script
     //this.miss_data_script_start(9006135)
@@ -287,38 +289,6 @@ export class TasksService {
     }
   }
 
-
-  /* @Interval(2000)
-  async txn_batch() {
-    let end = 0;
-    const currentBlockNumber =
-      await this.l1IngestionService.getCurrentBlockNumber();
-    console.log('txn batch currentBlockNumber: ', currentBlockNumber);
-    const start = Number(await this.cacheManager.get(TXN_BATCH));
-    if (currentBlockNumber - start > SYNC_STEP) {
-      end = start + SYNC_STEP;
-    } else {
-      end =
-        start - SYNC_STEP > currentBlockNumber
-          ? start - SYNC_STEP
-          : currentBlockNumber;
-    }
-    if (currentBlockNumber >= start + 1) {
-      const result = await this.l1IngestionService.createTxnBatchesEvents(
-        start + 1,
-        end,
-      );
-      const insertData = !result || result.length <= 0 ?  [] : result[0].identifiers || []
-      this.logger.log(
-        `sync [${insertData.length}] txn_batch from block [${start}] to [${end}]`,
-      );
-      await this.cacheManager.set(TXN_BATCH, end, { ttl: 0 });
-    } else {
-      this.logger.log(
-        `sync txn_batch finished and latest block number is: ${currentBlockNumber}`,
-      );
-    }
-  } */
   @Interval(10000)
   async l1l2_merge() {
     try {
@@ -356,5 +326,15 @@ export class TasksService {
     } catch (error) {
       this.logger.error(`[syncEigenDaBatch] error eigen da batches err: ${error}`);
     }
+  }
+  @Interval(1800000)
+  async sync_token_price_history() {
+    console.log('start sync token price service')
+    this.l1IngestionService.syncTokenPriceHistory();
+  }
+
+  @Interval(10000)
+  async sync_token_price_real_time() {
+   this.l1IngestionService.syncTokenPriceRealTime();
   }
 }

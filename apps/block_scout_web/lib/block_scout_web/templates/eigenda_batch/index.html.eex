@@ -37,7 +37,7 @@
           <%= gettext "Batch Index" %>
         </span>
         <span style="width: 13%;">
-          <%= gettext "Store Period(s)" %>
+         <%= gettext "Batch Size" %>
         </span>
         <span style="width: 14%;">
             <%= gettext "Status" %>

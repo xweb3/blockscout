@@ -161,6 +161,14 @@ $card-tab-icon-color-active: #fff !default;
       display: none;
     }
   }
+  .tx-fee-price-can-click{
+    color: rgba(10, 143, 246, 1);
+    cursor: pointer;
+  }
+  .tx-fee-price-disable-click{
+    color: rgba(110, 118, 125, 1);
+    cursor: auto;
+  }
   .transaction_detail_status_container {
     display: flex;
     align-items: center;
@@ -341,7 +349,7 @@ $card-tab-icon-color-active: #fff !default;
       height: 90px;
       display: flex;
       align-items: center;
-      font-size: 12px;
+      font-size: 14px;
       padding: 0;
       border-bottom: 1px solid #e7eaf3;
       .recent-preview-item-content-title {
@@ -409,6 +417,7 @@ $card-tab-icon-color-active: #fff !default;
         }
         .recent-preview-item-content-latest-txs-tag-wrap-time {
           min-width: 100px;
+          font-size: 12px;
         }
         .recent-preview-item-content-latest-txs-tag-wrap {
           margin-left: 5px;
@@ -510,6 +519,11 @@ $card-tab-icon-color-active: #fff !default;
         border-color: rgba(255, 255, 255, 0.15);
       }
     }
+  }
+  
+  .tx-fee-price-disable-click{
+    color: rgba(159, 165, 169, 1);
+    cursor: auto;
   }
   .transaction_detail_status_container {
     .transaction_detail_status_item {

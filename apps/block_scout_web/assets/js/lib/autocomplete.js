@@ -6,7 +6,41 @@ import { appendTokenIcon } from './token_icon'
 import { escapeHtml } from './utils'
 import xss from 'xss'
 
-let placeHolder = 'Address/Txn Hash/Block/Token/DA Hash'
+const placeHolder = 'Address/Txn Hash/Block/Token/DA Hash'
+
+const pushData = (type, data, storage) => {
+  if (storage[type]) {
+    storage[type].push(data)
+  } else {
+    storage[type] = [data]
+  }
+}
+
+const getLabel = (type)=> {
+  switch (type) {
+    case 'token':
+      return 'TOKENS(ERC 20)'
+    case 'nft':
+      return 'NFTs(ERC 721&1155)'
+    default:
+      return type.toUpperCase()
+  }
+}
+
+const getType = (data) => {
+  if (data.type === 'token') {
+    if (data.token_type === 'ERC-20') {
+      return 'token'
+    } else {
+      return 'nft'
+    }
+  } else {
+    return data.type
+  }
+}
+
+let localResult = {}
+
 const dataSrc = async (query, id) => {
   try {
     // Loading placeholder text
@@ -24,26 +58,72 @@ const dataSrc = async (query, id) => {
 
     searchInput.setAttribute('placeholder', placeHolder)
     // Returns Fetched data
-    return data
+    localResult = {}
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].type === 'token') {
+        if (data[i].token_type === 'ERC-20') {
+          pushData('token', data[i], localResult)
+        } else {
+          pushData('nft', data[i], localResult)
+        }
+      } else {
+        pushData(data[i].type, data[i], localResult)
+      }
+    }
+    let resultArray = []
+    Object.keys(localResult).map(r => {
+      resultArray = resultArray.concat(localResult[r])
+    })
+    return resultArray
   } catch (error) {
     return error
   }
 }
 const resultsListElement = (list, data) => {
-  const info = document.createElement('p')
-  info.classList.add('result-counter')
-  const adv = `
-  <div class="ad mb-3" style="display: none;">
-  <span class='ad-prefix'></span>: <img class="ad-img-url" width=20 height=20 /> <b><span class="ad-name"></span></b> - <span class="ad-short-description"></span> <a class="ad-url"><b><span class="ad-cta-button"></span></a></b>
-  </div>`
-  info.innerHTML = adv
-  if (data.results.length > 0) {
-    info.innerHTML += `Displaying <strong>${data.results.length}</strong> results`
-  } else if (data.query !== '###') {
-    info.innerHTML += `Found <strong>${data.matches.length}</strong> matching results for <strong>"${data.query}"</strong>`
-  }
+  // const info = document.createElement('p')
+  // info.classList.add('result-counter')
+  // const adv = `
+  // <div class="ad mb-3" style="display: none;">
+  // <span class='ad-prefix'></span>: <img class="ad-img-url" width=20 height=20 /> <b><span class="ad-name"></span></b> - <span class="ad-short-description"></span> <a class="ad-url"><b><span class="ad-cta-button"></span></a></b>
+  // </div>`
+  // info.innerHTML = adv
+  // if (data.results.length > 0) {
+  //   info.innerHTML += `Displaying <strong>${data.results.length}</strong> results`
+  // } else if (data.query !== '###') {
+  //   info.innerHTML += `Found <strong>${data.matches.length}</strong> matching results for <strong>"${data.query}"</strong>`
+  // }
+ // list.prepend(info)
 
-  list.prepend(info)
+  if (data.results.length) {
+    Object.keys(localResult).map(k => {
+      const $firstItem = $(`.item[data-type='${k}']`, list).first().parent()
+      const info = document.createElement('div')
+      info.classList.add('result-counter')
+      const adv = `
+      <div class="ad mb-3" style="display: none;">
+      <span class='ad-prefix'></span>: <img class="ad-img-url" width=20 height=20 /> <b><span class="ad-name"></span></b> - <span class="ad-short-description"></span> <a class="ad-url"><b><span class="ad-cta-button"></span></a></b>
+      </div>`
+      info.innerHTML = adv
+      const label = getLabel(k)
+      info.innerHTML += `<div class="counter-content" data-type="${k}"><p class="label">${label}</p> <p class="count">Displaying <strong>${localResult[k].length}</strong> results</p></div>`
+
+      $(info).insertBefore($firstItem)
+    })
+
+    const listHeader = document.createElement('div')
+    listHeader.classList.add('result-header')
+    const headerContent = `<div class="result-header-content">${Object.keys(localResult).map((k, i) => `<div data-target="${k}" class="list-toggle ${i === 0 ? 'active' : ''}">${getLabel(k)}</div>`).join('')}</div>`
+    listHeader.innerHTML = headerContent
+    list.prepend(listHeader)
+    $('.list-toggle', list).on('click', function () {
+      if ($(this).hasClass('active')) return
+      $('.list-toggle', list).removeClass('active')
+      $(this).addClass('active')
+      const target = $(this).data('target')
+      const targetTopPosition = $(`.counter-content[data-type='${target}']`, list).parent().position().top
+      $(list).animate({ scrollTop: targetTopPosition - 45 })
+    })
+  }
 
   fetchTextAdData()
 }
@@ -90,7 +170,7 @@ const resultItemElement = async (item, data) => {
   item.style = 'display: flex;'
 
   item.innerHTML = `
-  <div id='token-icon-${data.value.address_hash}' style='margin-top: -1px;'></div>
+  <div data-type='${getType(data.value)}' class='item' id='token-icon-${data.value.address_hash}' style='margin-top: -1px;'></div>
   <div class="result-match" style="padding-left: 10px; padding-right: 10px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
     ${data.match}
   </div>
@@ -122,11 +202,13 @@ const config = (id) => {
     },
     resultItem: {
       element: (item, data) => resultItemElement(item, data),
-      highlight: 'autoComplete_highlight'
+      highlight: 'autoComplete_highlight',
+      class: 'item-wrapper'
     },
     query: (input) => {
       return xss(input)
     },
+    debounce: 300,
     events: {
       input: {
         focus: () => {

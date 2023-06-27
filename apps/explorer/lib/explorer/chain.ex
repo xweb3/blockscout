@@ -67,6 +67,8 @@ defmodule Explorer.Chain do
     DaBatchTransaction,
     L1ToL2,
     L2ToL1,
+    TokenPriceHistory,
+    TokenPriceRealTime,
   }
 
   alias Explorer.Chain.Block.{EmissionReward, Reward}
@@ -1517,6 +1519,7 @@ defmodule Explorer.Chain do
         tx_hash: fragment("CAST(NULL AS bytea)"),
         block_hash: fragment("CAST(NULL AS bytea)"),
         type: "token",
+        token_type: token.type,
         name: token.name,
         symbol: token.symbol,
         holder_count: token.holder_count,
@@ -1536,6 +1539,7 @@ defmodule Explorer.Chain do
         tx_hash: fragment("CAST(NULL AS bytea)"),
         block_hash: fragment("CAST(NULL AS bytea)"),
         type: "contract",
+        token_type: ^nil,
         name: smart_contract.name,
         symbol: ^nil,
         holder_count: ^nil,
@@ -1557,6 +1561,7 @@ defmodule Explorer.Chain do
             tx_hash: fragment("CAST(NULL AS bytea)"),
             block_hash: fragment("CAST(NULL AS bytea)"),
             type: "address",
+            token_type: ^nil,
             name: address_name.name,
             symbol: ^nil,
             holder_count: ^nil,
@@ -1580,6 +1585,7 @@ defmodule Explorer.Chain do
             tx_hash: transaction.hash,
             block_hash: fragment("CAST(NULL AS bytea)"),
             type: "transaction",
+            token_type: ^nil,
             name: ^nil,
             symbol: ^nil,
             holder_count: ^nil,
@@ -1604,6 +1610,7 @@ defmodule Explorer.Chain do
             tx_hash: da_batch.da_hash,
             block_hash: ^nil,
             type: "eigenda",
+            token_type: ^nil,
             name: ^nil,
             symbol: ^nil,
             holder_count: ^nil,
@@ -1626,6 +1633,7 @@ defmodule Explorer.Chain do
             tx_hash: fragment("CAST(NULL AS bytea)"),
             block_hash: block.hash,
             type: "block",
+            token_type: ^nil,
             name: ^nil,
             symbol: ^nil,
             holder_count: ^nil,
@@ -1644,6 +1652,7 @@ defmodule Explorer.Chain do
                 tx_hash: fragment("CAST(NULL AS bytea)"),
                 block_hash: block.hash,
                 type: "block",
+                token_type: ^nil,
                 name: ^nil,
                 symbol: ^nil,
                 holder_count: ^nil,
@@ -2193,6 +2202,45 @@ defmodule Explorer.Chain do
       transaction ->
         {:ok, transaction}
     end
+  end
+
+  @spec get_real_time_token_price() ::
+          {:ok, TokenPriceRealTime.t()} | {:error, :not_found}
+  def get_real_time_token_price() do
+
+    TokenPriceRealTime
+    |> where(token_id: "mnt")
+    |> Repo.one()
+    |> case do
+      nil ->
+        {:error, :not_found}
+
+      realTime ->
+        {:ok, realTime}
+    end
+  end
+
+  @spec get_token_price_history(Block.t()) ::
+          {:ok, TokenPriceHistory.t()} | {:error, :not_found}
+  def get_token_price_history(%Block{timestamp: timestamp}) do
+    unix = DateTime.to_unix(timestamp) * 1000
+    query =
+      from(
+        t in TokenPriceHistory,
+        where: t.start_time <= ^unix and t.end_time > ^unix,
+        order_by: [desc: t.start_time],
+        limit: 1,
+        select: t
+      )
+
+    Repo.one(query)
+    |> case do
+      nil ->
+        {:error, :not_found}
+      token_price_history ->
+        {:ok, token_price_history}
+    end
+
   end
 
   @spec hash_to_batch(String.t(), [necessity_by_association_option]) ::

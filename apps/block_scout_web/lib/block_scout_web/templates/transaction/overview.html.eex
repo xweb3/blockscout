@@ -422,6 +422,40 @@
             </dt>
             <dd class="col-sm-9 col-lg-9">
               <%= formatted_fee(@transaction, denomination: :ether) %>
+              <%= if Map.has_key?(@transaction, :real_time_price) do %>
+                <%= if Map.has_key?(@transaction, :token_price_history) do %>
+                  <span
+                      class="display_tx_status_tooltip i-tooltip-2 <%= if assigns[:additional_classes] do @additional_classes |> Enum.join(" ") end %>"
+                      data-boundary="window"
+                      data-container="body"
+                      data-html="true"
+                      data-placement="top"
+                      data-toggle="tooltip"
+                      title="Display current value, click to view value on time of Txn occured"
+                  >
+                      <span id="tx-fee-price-transaction-fee-real-time" class="tx-fee-price tx-fee-price-can-click">
+                        ($<%= formatted_fee_to_real_time_usd(@transaction, denomination: :ether) %>)
+                      </span>
+                  </span>
+                   <span
+                      class="display_tx_status_tooltip i-tooltip-2 <%= if assigns[:additional_classes] do @additional_classes |> Enum.join(" ") end %>"
+                      data-boundary="window"
+                      data-container="body"
+                      data-html="true"
+                      data-placement="top"
+                      data-toggle="tooltip"
+                      title="Estimated value on time of Txn occured"
+                  >
+                      <span id="tx-fee-price-transaction-fee-history" style="display:none" class="tx-fee-price tx-fee-price-can-click">
+                            ($<%= formatted_fee_to_history_usd(@transaction, denomination: :ether) %>)
+                      </span>
+                  </span>
+                <% else %>
+                   <span class="tx-fee-price tx-fee-price-disable-click">
+                    ($<%= formatted_fee_to_real_time_usd(@transaction, denomination: :ether) %>)
+                  </span>
+                <% end %>
+              <% end %>
             </dd>
           </dl>
           <hr>
@@ -432,7 +466,44 @@
                 text: gettext("Transaction fee on layer2.") %>
               <%= gettext "L2 Txn Fee" %>
             </dt>
-            <dd class="col-sm-9 col-lg-9"> <%= l2_fee(@transaction, :gwei) %> <%= Explorer.coin_name() %> </dd>
+            <dd class="col-sm-9 col-lg-9">
+              <%= l2_fee(@transaction, :gwei) %> <%= Explorer.coin_name() %>
+              <%= if Map.has_key?(@transaction, :real_time_price) do %>
+                <%= if Map.has_key?(@transaction, :token_price_history) do %>
+                  <span
+                      class="display_tx_status_tooltip i-tooltip-2 <%= if assigns[:additional_classes] do @additional_classes |> Enum.join(" ") end %>"
+                      data-boundary="window"
+                      data-container="body"
+                      data-html="true"
+                      data-placement="top"
+                      data-toggle="tooltip"
+                      title="Display current value, click to view value on time of Txn occured"
+                  >
+                      <span id="tx-fee-price-l2-fee-real-time" class="tx-fee-price tx-fee-price-can-click">
+                        ($<%= formatted_l2_fee_to_real_time_usd(@transaction) %>)
+                      </span>
+                  </span>
+                  <span
+                      class="display_tx_status_tooltip i-tooltip-2 <%= if assigns[:additional_classes] do @additional_classes |> Enum.join(" ") end %>"
+                      data-boundary="window"
+                      data-container="body"
+                      data-html="true"
+                      data-placement="top"
+                      data-toggle="tooltip"
+                      title="Estimated value on time of Txn occured"
+                  >
+                      <span id="tx-fee-price-l2-fee-history" style="display:none" class="tx-fee-price tx-fee-price-can-click">
+                        ($<%= formatted_l2_fee_to_history_usd(@transaction) %>)
+                      </span>
+                  </span>
+
+                <% else %>
+                   <span class="tx-fee-price tx-fee-price-disable-click">
+                      ($<%= formatted_l2_fee_to_real_time_usd(@transaction) %>)
+                    </span>
+                <% end %>
+              <% end %>
+            </dd>
           </dl>
           <!-- Gas Price -->
           <dl class="row">
@@ -593,7 +664,44 @@
                 text: gettext("L1 Gas Price*L1 Gas Used*L1 Fee Scalar") %>
               <%= gettext "L1 Rollup Fee" %>
             </dt>
-            <dd class="col-sm-9 col-lg-9"> <%= l1_fee(@transaction, :ether) %> </dd>
+            <dd class="col-sm-9 col-lg-9">
+              <%= l1_fee(@transaction, :ether) %>
+              <%= if Map.has_key?(@transaction, :real_time_price) do %>
+                <%= if Map.has_key?(@transaction, :token_price_history) do %>
+                  <span
+                      class="display_tx_status_tooltip i-tooltip-2 <%= if assigns[:additional_classes] do @additional_classes |> Enum.join(" ") end %>"
+                      data-boundary="window"
+                      data-container="body"
+                      data-html="true"
+                      data-placement="top"
+                      data-toggle="tooltip"
+                      title="Display current value, click to view value on time of Txn occured"
+                  >
+                      <span id="tx-fee-price-l1-fee-real-time" class="tx-fee-price tx-fee-price-can-click">
+                        ($<%= l1_fee_to_real_time_usd(@transaction) %>)
+                      </span>
+                  </span>
+                  <span
+                      class="display_tx_status_tooltip i-tooltip-2 <%= if assigns[:additional_classes] do @additional_classes |> Enum.join(" ") end %>"
+                      data-boundary="window"
+                      data-container="body"
+                      data-html="true"
+                      data-placement="top"
+                      data-toggle="tooltip"
+                      title="Estimated value on time of Txn occured"
+                  >
+                      <span id="tx-fee-price-l1-fee-history" style="display:none" class="tx-fee-price tx-fee-price-can-click">
+                        ($<%= l1_fee_to_history_usd(@transaction) %>)
+                      </span>
+                  </span>
+
+                <% else %>
+                   <span class="tx-fee-price tx-fee-price-disable-click">
+                  ($<%= l1_fee_to_real_time_usd(@transaction) %>)
+                </span>
+                <% end %>
+              <% end %>
+            </dd>
           </dl>
           <!-- L1 Gas Price -->
           <dl class="row">
@@ -645,19 +753,57 @@
           <dl class="row">
             <dt class="col-sm-3 col-lg-3 text-muted">
               <%= render BlockScoutWeb.CommonComponentsView, "_i_tooltip_2.html",
+                text: gettext("DA Fee") %>
+              <%= gettext "DA Fee" %>
+            </dt>
+            <dd class="col-sm-9 col-lg-9">
+              <%= da_fee(@transaction, :ether) %>
+              <%= if Map.has_key?(@transaction, :real_time_price) do %>
+                <%= if Map.has_key?(@transaction, :token_price_history) do %>
+                  <span
+                      class="display_tx_status_tooltip i-tooltip-2 <%= if assigns[:additional_classes] do @additional_classes |> Enum.join(" ") end %>"
+                      data-boundary="window"
+                      data-container="body"
+                      data-html="true"
+                      data-placement="top"
+                      data-toggle="tooltip"
+                      title="Display current value, click to view value on time of Txn occured"
+                  >
+                      <span id="tx-fee-price-da-fee-real-time" class="tx-fee-price tx-fee-price-can-click">
+                        ($<%= da_fee_to_real_time_usd(@transaction) %>)
+                      </span>
+                  </span>
+                  <span
+                      class="display_tx_status_tooltip i-tooltip-2 <%= if assigns[:additional_classes] do @additional_classes |> Enum.join(" ") end %>"
+                      data-boundary="window"
+                      data-container="body"
+                      data-html="true"
+                      data-placement="top"
+                      data-toggle="tooltip"
+                      title="Estimated value on time of Txn occured"
+                  >
+                       <span id="tx-fee-price-da-fee-history" style="display:none" class="tx-fee-price tx-fee-price-can-click">
+                        ($<%= da_fee_to_history_usd(@transaction) %>)
+                      </span>
+                  </span>
+
+                <% else %>
+                   <span class="tx-fee-price tx-fee-price-disable-click">
+                        ($<%= da_fee_to_real_time_usd(@transaction) %>)
+                      </span>
+                <% end %>
+              <% end %>
+            </dd>
+          </dl>
+          <dl class="row">
+            <dt class="col-sm-3 col-lg-3 text-muted">
+              <%= render BlockScoutWeb.CommonComponentsView, "_i_tooltip_2.html",
                 text: gettext("DA Gas Price") %>
               <%= gettext "DA Gas Price" %>
             </dt>
             <dd class="col-sm-9 col-lg-9"> <%= da_gas_price(@transaction, :gwei) %> </dd>
           </dl>
-          <dl class="row">
-            <dt class="col-sm-3 col-lg-3 text-muted">
-              <%= render BlockScoutWeb.CommonComponentsView, "_i_tooltip_2.html",
-                text: gettext("DA Fee") %>
-              <%= gettext "DA Fee" %>
-            </dt>
-            <dd class="col-sm-9 col-lg-9"> <%= da_fee(@transaction, :ether) %> </dd>
-          </dl>
+
           <dl class="row">
             <dt class="col-sm-3 col-lg-3 text-muted">
               <%= render BlockScoutWeb.CommonComponentsView, "_i_tooltip_2.html",
@@ -681,4 +827,57 @@
     </div>
   <% end %>
   <script defer data-cfasync="false" src="<%= static_path(@conn, "/js/transaction.js") %>"></script>
+  <script defer data-cfasync="false">
+    window.onload = function(){
+      var transactionFeeEle = document.getElementById("tx-fee-price-transaction-fee-real-time")
+      var transactionFeeHistoryEle = document.getElementById("tx-fee-price-transaction-fee-history")
+      var l2FeeEle = document.getElementById("tx-fee-price-l2-fee-real-time")
+      var l2FeeHistoryEle = document.getElementById("tx-fee-price-l2-fee-history")
+      var l1FeeEle = document.getElementById("tx-fee-price-l1-fee-real-time")
+      var l1FeeHistoryEle = document.getElementById("tx-fee-price-l1-fee-history")
+      var daFeeEle = document.getElementById("tx-fee-price-da-fee-real-time")
+      var daFeeHistoryEle = document.getElementById("tx-fee-price-da-fee-history")
+
+      if(transactionFeeEle && transactionFeeHistoryEle){
+        transactionFeeEle.onclick = function(){
+          transactionFeeEle.style.display = "none";
+          transactionFeeHistoryEle.style.display = "inline";
+        }
+        transactionFeeHistoryEle.onclick = function(){
+          transactionFeeEle.style.display = "inline";
+          transactionFeeHistoryEle.style.display = "none";
+        }
+      }
+      if(l2FeeEle && l2FeeHistoryEle){
+        l2FeeEle.onclick = function(){
+          l2FeeEle.style.display = "none";
+          l2FeeHistoryEle.style.display = "inline";
+        }
+        l2FeeHistoryEle.onclick = function(){
+          l2FeeEle.style.display = "inline";
+          l2FeeHistoryEle.style.display = "none";
+        }
+      }
+      if(l1FeeEle && l1FeeHistoryEle){
+        l1FeeEle.onclick = function(){
+          l1FeeEle.style.display = "none";
+          l1FeeHistoryEle.style.display = "inline";
+        }
+        l1FeeHistoryEle.onclick = function(){
+          l1FeeEle.style.display = "inline";
+          l1FeeHistoryEle.style.display = "none";
+        }
+      }
+      if(daFeeEle && daFeeHistoryEle){
+        daFeeEle.onclick = function(){
+          daFeeEle.style.display = "none";
+          daFeeHistoryEle.style.display = "inline";
+        }
+        daFeeHistoryEle.onclick = function(){
+          daFeeEle.style.display = "inline";
+          daFeeHistoryEle.style.display = "none";
+        }
+      }
+    }
+  </script>
 </section>

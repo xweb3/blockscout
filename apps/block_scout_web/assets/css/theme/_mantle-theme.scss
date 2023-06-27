@@ -1452,9 +1452,34 @@ a {
 
   ul[id^="autoComplete_list_"] {
     background-color: $dropdown-menu-background-dark;
+    .result-header{
+      background-color: $dropdown-menu-background-dark;
+      border-bottom-color:#4F8F8B;
+      .result-header-content{
+        .list-toggle{
+          border-color: #65B3AE;
+          color: #BFF6F2;
+          &.active,&:hover{
+            background-color: #65B3AE;
+            color: #070D0C;
+            border-color: #65B3AE;
+          }
+        }
+      }
+    }
     .result-counter{
       color: $dark-text-content-color;
       border-bottom-color:#4F8F8B;
+      .counter-content{
+        p{
+          &.label{
+            color: #BFF6F2;
+          }
+          &.count{
+            color: #7FD8D2;
+          }
+        }
+      }  
     }
   }
 
