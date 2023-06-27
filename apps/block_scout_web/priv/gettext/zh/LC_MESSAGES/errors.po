@@ -11,9 +11,6 @@ msgstr ""
 "Language: zh\n"
 "Plural-Forms: nplurals=1\n"
 
-msgid "must be equal to %{number}"
-msgstr "必须等于%{number}"
-
 msgid "can't be blank"
 msgstr "不能为空"
 
@@ -79,3 +76,6 @@ msgstr "必须小于或等于%{number}"
 
 msgid "must be greater than or equal to %{number}"
 msgstr "必须大于或等于%{number}"
+
+msgid "must be equal to %{number}"
+msgstr "必须等于%{number}"

@@ -12,70 +12,70 @@ msgstr ""
 "Plural-Forms: nplurals=1\n"
 
 msgid "can't be blank"
-msgstr ""
+msgstr "空欄にできません。"
 
 msgid "has already been taken"
-msgstr ""
+msgstr "すでに取られています。"
 
 msgid "is invalid"
-msgstr ""
+msgstr "無効です。"
 
 msgid "must be accepted"
-msgstr ""
+msgstr "受け入れられる必要があります。"
 
 msgid "has invalid format"
-msgstr ""
+msgstr "形式が無効です。"
 
 msgid "has an invalid entry"
-msgstr ""
+msgstr "無効なエントリーがあります。"
 
 msgid "is reserved"
-msgstr ""
+msgstr "予約されました"
 
 msgid "does not match confirmation"
-msgstr ""
+msgstr "確認と一致しません"
 
 msgid "is still associated with this entry"
-msgstr ""
+msgstr "このエントリーにはまだ関連しています。"
 
 msgid "are still associated with this entry"
-msgstr ""
+msgstr "このエントリーにはまだ関連があります。"
 
 msgid "should be %{count} character(s)"
 msgid_plural "should be %{count} character(s)"
-msgstr[0] ""
+msgstr[0] "「%{count}文字である必要があります。」"
 
 msgid "should have %{count} item(s)"
 msgid_plural "should have %{count} item(s)"
-msgstr[0] ""
+msgstr[0] "%{count} 個のアイテムがある必要があります。"
 
 msgid "should be at least %{count} character(s)"
 msgid_plural "should be at least %{count} character(s)"
-msgstr[0] ""
+msgstr[0] "最低でも%{count}文字である必要があります。"
 
 msgid "should have at least %{count} item(s)"
 msgid_plural "should have at least %{count} item(s)"
-msgstr[0] ""
+msgstr[0] "少なくとも%{count}個のアイテムを持つ必要があります。"
 
 msgid "should be at most %{count} character(s)"
 msgid_plural "should be at most %{count} character(s)"
-msgstr[0] ""
+msgstr[0] "最大で%{count}文字以下である必要があります。"
 
 msgid "should have at most %{count} item(s)"
 msgid_plural "should have at most %{count} item(s)"
-msgstr[0] ""
+msgstr[0] "最大で%{count}個のアイテムを持つべきです。"
 
 msgid "must be less than %{number}"
-msgstr ""
+msgstr "%{number}未満でなければなりません。"
 
 msgid "must be greater than %{number}"
-msgstr ""
+msgstr "%{number} よりも大きくなければなりません。"
 
 msgid "must be less than or equal to %{number}"
-msgstr ""
+msgstr "%{number}以下である必要があります。"
 
 msgid "must be greater than or equal to %{number}"
-msgstr ""
+msgstr "%{number}以上でなければなりません。"
 
 msgid "must be equal to %{number}"
-msgstr ""
+msgstr "%{number}に等しくなければなりません。"

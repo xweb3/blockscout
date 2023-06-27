@@ -19,6 +19,12 @@ $navbar-network-label-background-color: #bae1d7;
   position: relative;
   z-index: 100;
   align-items: center;
+  padding-left: 24px;
+  padding-right: 24px;
+  @media (min-width: 992px) {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
   @media (min-width: 1200px) {
     height: 96px;
   }
@@ -61,6 +67,7 @@ $navbar-network-label-background-color: #bae1d7;
         font-weight: 600;
         padding-left: $header-link-horizontal-padding;
         padding-right: $header-link-horizontal-padding;
+        width: fit-content;
         @media (min-width: 992px) {
           margin: 0 10px;
         }

@@ -346,7 +346,6 @@ export function createMarketHistoryChart (el) {
   Object.keys(dataPaths).forEach(function (historySource) {
     $.getJSON(dataPaths[historySource], { type: 'JSON' })
       .done(data => {
-        console.log({data})
         switch (historySource) {
           case 'market': {
             const availableSupply = JSON.parse(data.supply_data)

@@ -32,7 +32,7 @@
               </a>
               <% json_rpc_named_arguments = Application.fetch_env!(:indexer, :json_rpc_named_arguments)%>
               <% variant = Keyword.fetch!(json_rpc_named_arguments, :variant) %>
-              <div class="dropdown-menu" aria-labeledby="navbarTransactionsDropdown">
+              <div class="dropdown-menu center" style="min-width:180px" aria-labeledby="navbarTransactionsDropdown">
                 <%= link(
                   gettext("Validated"),
                   to: transaction_path(@conn, :index),
@@ -85,7 +85,7 @@
                 </span>
                 <%= gettext("APIs") %>
               </a>
-              <div class="dropdown-menu" aria-labeledby="navbarTransactionsDropdown">
+              <div class="dropdown-menu center" aria-labeledby="navbarTransactionsDropdown">
                 <%= link(
                       gettext("GraphQL"),
                       class: "dropdown-item #{tab_status("graphiql", @conn.request_path)}",
