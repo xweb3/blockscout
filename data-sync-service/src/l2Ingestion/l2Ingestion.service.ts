@@ -427,7 +427,7 @@ export class L2IngestionService {
       const l2_hash = item.l2_hash.toString();
       const { result } = await this.getTxStatusDetailByHash(l2_hash);
       console.log('tx detail:',result);
-      if (result && result.status === '0x3' || result.status === '0x03') {
+      if (result && (result.status === '0x3' || result.status === '0x03')) {
         updateL2ToL1Data.push({
           l2_hash: l2_hash,
           status: 'Ready for Relay'
