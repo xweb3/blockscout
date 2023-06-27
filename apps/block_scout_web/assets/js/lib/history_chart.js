@@ -49,6 +49,14 @@ function getAxisColor(){
   }
 }
 
+function getAxisBorderColor(){
+  if (Cookies.get('chakra-ui-color-mode') === 'dark') {
+    return "rgba(255, 255, 255, 0.15)"
+  } else {
+    return "#7FD8D2"
+  }
+}
+
 function xAxe () {
   let color
   if (localStorage.getItem('current-color-mode') === 'dark') {
@@ -65,7 +73,9 @@ function xAxe () {
       stepSize: 14
     },
     ticks: {
-      color: getAxisColor()
+      color: getAxisColor(),
+      align: 'start',
+      stepSize: 14
     }
   }
 }
@@ -74,7 +84,7 @@ const padding = {
   left: 20,
   right: 20,
   top:1,
-  bottom:20
+  bottom:1
 }
 
 const legend = {
@@ -128,11 +138,14 @@ const config = {
       },
       numTransactions: {
         position: 'right',
-        grid,
+        grid: {
+          color: getAxisBorderColor(),
+          drawBorder: false
+        },
         ticks: {
           beginAtZero: true,
           callback: (value, _index, _values) => formatValue(value),
-          maxTicksLimit: 4,
+          maxTicksLimit: 3,
           color: getAxisColor()
         }
       }
@@ -333,6 +346,7 @@ export function createMarketHistoryChart (el) {
   Object.keys(dataPaths).forEach(function (historySource) {
     $.getJSON(dataPaths[historySource], { type: 'JSON' })
       .done(data => {
+        console.log({data})
         switch (historySource) {
           case 'market': {
             const availableSupply = JSON.parse(data.supply_data)

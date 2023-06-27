@@ -1,0 +1,2057 @@
+## "msgid"s in this file come from POT (.pot) files.
+###
+### Do not add, change, or remove "msgid"s manually here as
+### they're tied to the ones in the corresponding POT file
+### (with the same domain).
+###
+### Use "mix gettext.extract --merge" or "mix gettext.merge"
+### to merge POT files into PO files.
+msgid ""
+msgstr ""
+"Language: zh\n"
+"Plural-Forms: nplurals=1\n"
+
+msgid "%{count} token"
+msgid_plural "%{count} token"
+msgstr[0] "%{count} 代币"
+
+msgid "%{count} transaction"
+msgid_plural "%{count} transaction"
+msgstr[0] "%{count} 交易"
+
+msgid " - minimal bytecode implementation that delegates all calls to a known address"
+msgstr " - 最小字节代码实现，将所有调用委托给已知地址"
+
+msgid " is recommended."
+msgstr " 建议使用。"
+
+msgid "%{address} - %{subnetwork} Explorer"
+msgstr "%{address} - %{subnetwork} 浏览器"
+
+msgid "%{block_type} Details"
+msgstr "%{block_type} 详细信息"
+
+msgid "%{block_type} Height"
+msgstr "%{block_type} 高度"
+
+msgid "%{block_type}s"
+msgstr "%{block_type}们"
+
+msgid "%{count} Transaction"
+msgstr "%{count} 交易"
+
+msgid "%{count} Transactions"
+msgstr "%{count} 交易"
+
+msgid "%{subnetwork} Explorer - BlockScout"
+msgstr "%{subnetwork} 浏览器 - BlockScout"
+
+msgid "(Awaiting internal transactions for status)"
+msgstr "（等待内部交易进行状态更新）"
+
+msgid "(query)"
+msgstr "（查询）"
+
+msgid ") may be added for each contract. Click the Add Library button to add an additional one."
+msgstr "）可以被添加到每个合约。点击“添加库”按钮添加一个额外的库。"
+
+msgid "64-bit hash of value verifying proof-of-work (note: null for POA chains)."
+msgstr "64位哈希值，用于验证工作量证明（注：POA链为null）。"
+
+msgid "A block producer who successfully included the block onto the blockchain."
+msgstr "成功将块包含到区块链的块生产者。"
+
+msgid "A library name called in the .sol file. Multiple libraries (up to "
+msgstr "在.sol文件中调用的库名称。多个库（最多"
+
+msgid "A string with the name of the action to be invoked."
+msgstr "要调用的操作的名称字符串。"
+
+msgid "A string with the name of the module to be invoked."
+msgstr "要调用的模块的名称字符串。"
+
+msgid "ABI"
+msgstr "ABI"
+
+msgid "ABI-encoded Constructor Arguments (if required by the contract)"
+msgstr "ABI编码的构造函数参数（如果合约需要）"
+
+msgid "API Documentation"
+msgstr "API文档"
+
+msgid "API endpoints for the %{subnetwork}"
+msgstr "%{subnetwork}的API端点"
+
+msgid "API for the %{subnetwork} - BlockScout"
+msgstr "%{subnetwork}的API-BlockScout"
+
+msgid "API key"
+msgstr "API密钥"
+
+msgid "API keys"
+msgstr "API密钥"
+
+msgid "APIs"
+msgstr "API"
+
+msgid "Action"
+msgstr "操作"
+
+msgid "Actions"
+msgstr "操作"
+
+msgid "Actual gas amount used by the transaction."
+msgstr "交易实际使用的gas量。"
+
+msgid "Add"
+msgstr "添加"
+
+msgid "Add API key"
+msgstr "添加API密钥"
+
+msgid "Add Contract Libraries"
+msgstr "添加合约库"
+
+msgid "Add Custom ABI"
+msgstr "添加自定义ABI"
+
+msgid "Add Library"
+msgstr "添加库"
+
+msgid "Add address"
+msgstr "添加地址"
+
+msgid "Add address tag"
+msgstr "添加地址标签"
+
+msgid "Add address to the Watch list"
+msgstr "将地址添加到监视列表"
+
+msgid "Add transaction tag"
+msgstr "添加交易标签"
+
+msgid "Address"
+msgstr "地址"
+
+msgid "Address (external or contract) receiving the transaction."
+msgstr "接收交易的地址（外部或合约）。"
+
+msgid "Address (external or contract) sending the transaction."
+msgstr "发送交易的地址（外部或合约）"
+
+msgid "Address Tags"
+msgstr "地址标签"
+
+msgid "Address balance in"
+msgstr "地址余额为"
+
+msgid "Address of the token contract"
+msgstr "代币合约地址"
+
+msgid "Address used in token mintings and burnings."
+msgstr "在代币铸造和销毁中使用的地址。"
+
+msgid "Address*"
+msgstr "地址*"
+
+msgid "Addresses"
+msgstr "地址"
+
+msgid "All"
+msgstr "全部"
+
+msgid "All functions displayed below are from ABI of that contract. In order to verify current contract, proceed with"
+msgstr "下面显示的所有功能都来自该合约的ABI。为了验证当前合约，请继续"
+
+msgid "All metadata displayed below is from that contract. In order to verify current contract, click"
+msgstr "下列所有的元数据都是来自此合约。若要验证当前合约，请单击。"
+
+msgid "All tokens in the account and total value."
+msgstr "账户中的所有代币和总价值。"
+
+msgid "Amount of"
+msgstr "数量为"
+
+msgid "Amount of distributed reward. Miners receive a static block reward + Tx fees + uncle fees."
+msgstr "分布式奖励的数量。矿工获得一个固定的块奖励+交易费+叔奖励。"
+
+msgid "Anything not in this list is not supported. Click on the method to be taken to the documentation for that method, and check the notes section for any potential differences."
+msgstr "不在此列表中的任何内容都不受支持。单击要使用的方法以转到该方法的文档，并检查注释部分是否有潜在差异。"
+
+msgid "Apps"
+msgstr "应用程序"
+
+msgid "Back to API keys (Cancel)"
+msgstr "返回API密钥（取消）"
+
+msgid "Back to Address Tags (Cancel)"
+msgstr "返回地址标签（取消）"
+
+msgid "Back to Custom ABI (Cancel)"
+msgstr "返回自定义ABI（取消）"
+
+msgid "Back to Transaction Tags (Cancel)"
+msgstr "返回交易标签（取消）"
+
+msgid "Back to Watch list (Cancel)"
+msgstr "返回观察列表（取消）"
+
+msgid "Balance"
+msgstr "余额"
+
+msgid "Balance after"
+msgstr "余额后"
+
+msgid "Balance before"
+msgstr "余额前"
+
+msgid "Balances"
+msgstr "余额"
+
+msgid "Base Fee per Gas"
+msgstr "每个Gas的基础费用"
+
+msgid "Base URL:"
+msgstr "基础URL："
+
+msgid "Binary data included with the transaction. See input / logs below for additional info."
+msgstr "二进制数据包含在交易中。有关更多信息，请参见下面的输入/日志。"
+
+msgid "Block"
+msgstr "块"
+
+msgid "Block #%{number}"
+msgstr "第%{number}块"
+
+msgid "Block %{block_number} - %{subnetwork} Explorer"
+msgstr "区块 %{block_number} - %{subnetwork} 浏览器"
+
+msgid "Block Details"
+msgstr "区块详情"
+
+msgid "Block Height"
+msgstr "区块高度"
+
+msgid "Block Mined, awaiting import..."
+msgstr "区块已被挖掘，等待导入..."
+
+msgid "Block Pending"
+msgstr "区块待处理"
+
+msgid "Block difficulty for miner, used to calibrate block generation time (Note: constant in POA based networks)."
+msgstr "矿工的块难度，用于校准块生成时间（注意：在基于POA的网络中是不变的）。"
+
+msgid "Block not found, please try again later."
+msgstr "未找到块，请稍后再试。"
+
+msgid "Block number containing the transaction."
+msgstr "包含交易的块号。"
+
+msgid "Block number in which the address was updated."
+msgstr "地址更新的块号。"
+
+msgid "Blocks"
+msgstr "块"
+
+msgid "Blocks Indexed"
+msgstr "区块编号"
+
+msgid "Blocks Validated"
+msgstr "区块验证"
+
+msgid "Blocks With Internal Transactions Indexed"
+msgstr "具有内部交易的区块编号"
+
+msgid "Burn address"
+msgstr "销毁地址"
+
+msgid "Burnt Fees"
+msgstr "已销毁费用"
+
+msgid "CRC Worth"
+msgstr "CRC 价值"
+
+msgid "CSV"
+msgstr "CSV"
+
+msgid "Call"
+msgstr "呼叫"
+
+msgid "Call Code"
+msgstr "呼叫代码"
+
+msgid "Cancel"
+msgstr "取消"
+
+msgid "Change"
+msgstr "改变"
+
+msgid "Chore Reward"
+msgstr "家务奖励"
+
+msgid "Clear"
+msgstr "清除"
+
+msgid "Close"
+msgstr "关闭"
+
+msgid "Code"
+msgstr "代码"
+
+msgid "Coin Balance History"
+msgstr "货币余额历史记录"
+
+msgid "Withdraw"
+msgstr "提款"
+
+msgid "Deposit"
+msgstr "存款"
+
+msgid "Collapse"
+msgstr "折叠"
+
+msgid "Company name"
+msgstr "公司名称"
+
+msgid "Company website"
+msgstr "公司网站"
+
+msgid "Compiler"
+msgstr "编译器"
+
+msgid "Compiler Settings"
+msgstr "编译器设置"
+
+msgid "Compiler version"
+msgstr "编译器版本"
+
+msgid "Confirmed"
+msgstr "已确认"
+
+msgid "Confirmed by "
+msgstr ""
+
+msgid "Confirmed within"
+msgstr ""
+
+msgid "Connection Lost"
+msgstr "连接已断开"
+
+msgid "Connection Lost, click to load newer blocks"
+msgstr "连接已断开，请单击以加载更新的区块"
+
+msgid "Connection Lost, click to load newer internal transactions"
+msgstr "连接已断开，请单击以加载更新的内部交易"
+
+msgid "Connection Lost, click to load newer transactions"
+msgstr "连接丢失，点击加载更新的交易"
+
+msgid "Connection Lost, click to load newer validations"
+msgstr "连接丢失，点击加载更新的验证"
+
+msgid "Constructor Arguments"
+msgstr "构造函数参数"
+
+msgid "Constructor args"
+msgstr "构造参数"
+
+msgid "Contract"
+msgstr "合约"
+
+msgid "Contract ABI"
+msgstr "合约ABI"
+
+msgid "Contract Address"
+msgstr "合约地址"
+
+msgid "Contract Address Pending"
+msgstr "待定合约地址"
+
+msgid "Contract Call"
+msgstr "合约调用"
+
+msgid "Contract Creation"
+msgstr "合约创建"
+
+msgid "Contract Creation Code"
+msgstr "合约创造代码"
+
+msgid "Contract Libraries"
+msgstr "合约库"
+
+msgid "Contract Name"
+msgstr "合约名称"
+
+msgid "Contract is not verified. However, we found a verified contract with the same bytecode in Blockscout DB"
+msgstr "该合约未经验证。但是，在Blockscout DB中，我们找到了一个具有相同字节码的已验证合约"
+
+msgid "Contract name or address"
+msgstr "合约名称或地址"
+
+msgid "Contract name:"
+msgstr "合约名称："
+
+msgid "Contract source code"
+msgstr "合约源代码"
+
+msgid "Contract was precompiled and created at genesis"
+msgstr "合约已预编译并在创世块创建"
+
+msgid "Contracts"
+msgstr "合约"
+
+msgid "Contracts that self destruct in their constructors have no contract code published and cannot be verified."
+msgstr "在构造函数中自毁的合约没有发布合约代码，无法进行验证。"
+
+msgid "Copy ABI"
+msgstr "复制 ABI"
+
+msgid "Copy API key"
+msgstr "复制 API 密钥"
+
+msgid "Copy Address"
+msgstr "复制地址"
+
+msgid "Copy Compiler Settings"
+msgstr "复制编译器设置"
+
+msgid "Copy Contract Address"
+msgstr "复制合约地址"
+
+msgid "Copy Contract Creation Code"
+msgstr "复制合约创建代码"
+
+msgid "Copy Decompiled Contract Code"
+msgstr "复制反编译合约代码"
+
+msgid "Copy Deployed ByteCode"
+msgstr "复制已部署的字节码"
+
+msgid "Copy From Address"
+msgstr "复制从地址"
+
+msgid "Copy Hash"
+msgstr "复制哈希"
+
+msgid "Copy Metadata"
+msgstr "复制元数据"
+
+msgid "Copy Parent Hash"
+msgstr "复制父哈希值"
+
+msgid "Copy Raw Trace"
+msgstr "复制原始跟踪"
+
+msgid "Copy Source Code"
+msgstr "复制源代码"
+
+msgid "Copy To Address"
+msgstr "复制到地址"
+
+msgid "Copy Token ID"
+msgstr "复制代币ID"
+
+msgid "Copy Transaction Hash"
+msgstr "复制交易哈希"
+
+msgid "Copy Txn Hash"
+msgstr "复制Txn哈希"
+
+msgid "Copy Txn Hex Input"
+msgstr "复制Txn十六进制输入"
+
+msgid "Copy Txn UTF-8 Input"
+msgstr "复制Txn UTF-8输入"
+
+msgid "Copy Value"
+msgstr "复制值"
+
+msgid "Create"
+msgstr "创建"
+
+msgid "Create a Custom ABI to interact with contracts."
+msgstr "创建自定义ABI以与合约交互。"
+
+msgid "Create an API key to use with your RPC и EthRPC API requests."
+msgstr "创建API密钥以与您的RPC和EthRPC API请求一起使用。"
+
+msgid "Create2"
+msgstr "创建2"
+
+msgid "Creator"
+msgstr "创建者"
+
+msgid "Curl"
+msgstr "卷曲"
+
+msgid "Current transaction state: Success, Failed (Error), or Pending (In Process)"
+msgstr "当前交易状态：成功，失败(错误)，或待处理(处理中)"
+
+msgid "Custom"
+msgstr "自定义"
+
+msgid "Custom ABI"
+msgstr "自定义ABI"
+
+msgid "Custom ABI from account"
+msgstr "帐户自定义ABI"
+
+msgid "Daily Transactions"
+msgstr "每日交易"
+
+msgid "Data"
+msgstr "数据"
+
+msgid "Date & time at which block was produced."
+msgstr "区块生产的日期和时间。"
+
+msgid "Date & time of transaction inclusion, including length of time for confirmation."
+msgstr "交易包含的日期和时间，包括确认所需的时间。"
+
+msgid "Decimals"
+msgstr "小数点"
+
+msgid "Decoded"
+msgstr "已解码"
+
+msgid "Decompiled Code"
+msgstr "反编译代码"
+
+msgid "Decompiled code"
+msgstr "反编译代码"
+
+msgid "Decompiled contract code"
+msgstr "反编译合约代码"
+
+msgid "Decompiler version"
+msgstr "反编译器版本"
+
+msgid "Delegate Call"
+msgstr "委托调用"
+
+msgid "Deployed ByteCode"
+msgstr "部署的字节码"
+
+msgid "Description"
+msgstr "描述"
+
+msgid "Description*"
+msgstr "描述*"
+
+msgid "Details"
+msgstr "详细信息"
+
+msgid "Difficulty"
+msgstr "难度"
+
+msgid "Displaying the init data provided of the creating transaction."
+msgstr "显示创建交易提供的初始数据。"
+
+msgid "Download"
+msgstr "下载"
+
+msgid "Drop all Solidity contract source files into the drop zone."
+msgstr "将所有Solidity合约源文件拖放到拖放区域中。"
+
+msgid "Drop all Solidity or Yul contract source files into the drop zone."
+msgstr "将所有Solidity或Yul合约源文件拖放到拖放区域中。"
+
+msgid "Drop sources and metadata JSON file or click here"
+msgstr "放入源文件和元数据JSON文件或点击此处。"
+
+msgid "Drop sources or click here"
+msgstr "将源文件拖放或点击此处。"
+
+msgid "Drop the standard input JSON file or click here"
+msgstr "将标准输入JSON文件拖放或点击此处。"
+
+msgid "E-mail*"
+msgstr "电子邮件*"
+
+msgid "EIP-1167"
+msgstr "EIP-1167"
+
+msgid "ERC-1155 "
+msgstr "ERC-1155 "
+
+msgid "ERC-20 "
+msgstr "ERC-20 "
+
+msgid "ERC-20 tokens (beta)"
+msgstr "ERC-20代币（测试版）"
+
+msgid "ERC-721 "
+msgstr "ERC-721"
+
+msgid "ERC-721, ERC-1155 tokens (NFT) (beta)"
+msgstr "ERC-721、ERC-1155 代币（NFT）（测试版）"
+
+msgid "ETH RPC API Documentation"
+msgstr "ETH RPC API 文档"
+
+msgid "EVM Version"
+msgstr "EVM 版本"
+
+msgid "EVM version details"
+msgstr "EVM 版本详情"
+
+msgid "Easy Cowboy! This block does not exist yet!"
+msgstr "注意！该区块尚未存在！"
+
+msgid "Edit"
+msgstr "编辑"
+
+msgid "Edit Watch list address"
+msgstr "编辑观察列表地址"
+
+msgid "Email notifications"
+msgstr "电子邮件通知"
+
+msgid "Emission Contract"
+msgstr "发行合约"
+
+msgid "Emission Reward"
+msgstr "发行奖励"
+
+msgid "Enter the Solidity Contract Code"
+msgstr "输入Solidity合约代码"
+
+msgid "Enter the Vyper Contract Code"
+msgstr "输入Vyper合约代码"
+
+msgid "Error"
+msgstr "错误"
+
+msgid "Error in internal transactions"
+msgstr "内部事务错误"
+
+msgid "Error rendering value"
+msgstr "渲染数值错误"
+
+msgid "Error trying to fetch balances."
+msgstr "尝试获取余额时出错。"
+
+msgid "Error: %{reason}"
+msgstr "错误: %{reason}"
+
+msgid "Error: (Awaiting internal transactions for reason)"
+msgstr "错误: (等待内部交易的原因)"
+
+msgid "Eth RPC"
+msgstr "Eth RPC"
+
+msgid "Example Value"
+msgstr "示例值"
+
+msgid "Execute"
+msgstr "执行"
+
+msgid "Expand"
+msgstr "展开"
+
+msgid "Export Data"
+msgstr "导出数据"
+
+msgid "External libraries"
+msgstr "外部库"
+
+msgid "Failed to decode input data."
+msgstr "解码输入数据失败。"
+
+msgid "Failed to decode log data."
+msgstr "解码日志数据失败。"
+
+msgid "Fetching gas used..."
+msgstr "获取已用气体..."
+
+msgid "Fetching holders..."
+msgstr "获取持有人..."
+
+msgid "Fetching tokens..."
+msgstr "获取代币..."
+
+msgid "Fetching transactions..."
+msgstr "获取交易..."
+
+msgid "Fetching transfers..."
+msgstr ""
+
+msgid "Filter by compiler:"
+msgstr ""
+
+msgid "For any existing contracts in the database, insert all ABI entries into the contract_methods table. Use this in case you have verified smart contracts before early March 2019 and you want other contracts with the same functions to show those ABI's as candidate matches."
+msgstr ""
+
+msgid "For contract"
+msgstr ""
+
+msgid "From"
+msgstr ""
+
+msgid "GET"
+msgstr "获取"
+
+msgid "Gas Limit"
+msgstr "燃气限制"
+
+msgid "Gas Price"
+msgstr "燃气价格"
+
+msgid "Gas Used"
+msgstr "已用燃气"
+
+msgid "Gas Used by Transaction"
+msgstr "交易所用燃气"
+
+msgid "Gas Tracker"
+msgstr "气体跟踪器"
+
+msgid "Gas used by the address."
+msgstr "地址使用的气体。"
+
+msgid "Genesis Block"
+msgstr "创世区块"
+
+msgid "Github"
+msgstr "GitHub"
+
+msgid "Go to"
+msgstr "转到"
+
+msgid "GraphQL"
+msgstr "GraphQL"
+
+msgid "Gwei"
+msgstr "Gwei"
+
+msgid "Hash"
+msgstr "哈希"
+
+msgid "Hex (Default)"
+msgstr "十六进制（默认）"
+
+msgid "Holders"
+msgstr "持有者"
+
+msgid "However, in general, the"
+msgstr "然而，总的来说，"
+
+msgid "IMPORTANT: This information is a best guess based on similar functions from other verified contracts."
+msgstr "重要提示：此信息仅基于其他已验证合同的类似功能而进行推测。"
+
+msgid "IN"
+msgstr "在"
+
+msgid "If you enabled optimization during compilation, select yes."
+msgstr "如果您在编译时启用了优化，请选择是。"
+
+msgid "Implementation"
+msgstr "实施"
+
+msgid "Implementation address of the proxy contract."
+msgstr "代理合约的实现地址。"
+
+msgid "Include nightly builds"
+msgstr "包括夜间构建"
+
+msgid "Incoming"
+msgstr "进来的"
+
+msgid "Index position of Transaction in the block."
+msgstr "交易在块中的索引位置。"
+
+msgid "Index position(s) of referenced stale blocks."
+msgstr "引用过期块的索引位置。"
+
+msgid "Indexed?"
+msgstr "被索引？"
+
+msgid "Input"
+msgstr "输入"
+
+msgid "Interacted With (To)"
+msgstr "互动"
+
+msgid "Internal Transaction"
+msgstr "内部交易"
+
+msgid "Internal Transactions"
+msgstr "内部交易"
+
+msgid "Inventory"
+msgstr "库存"
+
+msgid "Is Yul contract"
+msgstr "Yul有合同吗？"
+
+msgid "Last 24h"
+msgstr "过去24小时"
+
+msgid "Last Balance Update"
+msgstr "最近余额更新"
+
+msgid "Learn more"
+msgstr "学习更多"
+
+msgid "Less than"
+msgstr "小于"
+
+msgid "Library"
+msgstr "图书馆"
+
+msgid "License Expires"
+msgstr "许可证到期"
+
+msgid "License ID"
+msgstr "许可证 ID"
+
+msgid "List of ERC-1155 tokens created in the transaction."
+msgstr "交易中创建的ERC-1155代币列表。"
+
+msgid "List of token burnt in the transaction."
+msgstr "交易中被烧毁的代币清单。"
+
+msgid "List of token minted in the transaction."
+msgstr "交易中铸造的代币清单。"
+
+msgid "List of token transferred in the transaction."
+msgstr "交易中转移的代币清单。"
+
+msgid "Loading chart..."
+msgstr "加载图表中..."
+
+msgid "Loading..."
+msgstr "正在加载..."
+
+msgid "Log Data"
+msgstr "日志数据"
+
+msgid "Log Index"
+msgstr "日志索引"
+
+msgid "Logs"
+msgstr "日志"
+
+msgid "Main Networks"
+msgstr "主要网络"
+
+msgid "Market Cap"
+msgstr "市值"
+
+msgid "Market cap"
+msgstr "市值"
+
+msgid "Max Fee per Gas"
+msgstr "每个Gas的最大费用。"
+
+msgid "Max Priority Fee per Gas"
+msgstr "每个Gas的最大优先费用"
+
+msgid "Max of"
+msgstr "I'm sorry, but 'Max of' is not a complete sentence or phrase, and without further context it is impossible to accurately translate into Chinese (zh). Please provide more information or a complete sentence for translation."
+
+msgid "Maximum gas amount approved for the transaction."
+msgstr "交易批准的最大燃气金额。"
+
+msgid "Maximum total amount per unit of gas a user is willing to pay for a transaction, including base fee and priority fee."
+msgstr "每单位气体用户愿意支付的交易最高总额，包括基础费用和优先费用。"
+
+msgid "Metadata"
+msgstr "元数据"
+
+msgid "Method Id"
+msgstr "方法 ID"
+
+msgid "Miner"
+msgstr "矿工"
+
+msgid "Miner Reward"
+msgstr "矿工奖励"
+
+msgid "Minimal Proxy Contract for"
+msgstr "最小代理合约"
+
+msgid "Minimum fee required per unit of gas. Fee adjusts based on network congestion."
+msgstr "每单位天然气需要最低费用。费用会根据网络拥堵情况进行调整。"
+
+msgid "Model"
+msgstr "模型"
+
+msgid "Module"
+msgstr "模块"
+
+msgid "More internal transactions have come in"
+msgstr "更多的内部交易已经到账。"
+
+msgid "More transactions have come in"
+msgstr "更多的交易已经到达。"
+
+msgid "Must be set to:"
+msgstr "必须设置为："
+
+msgid "Must match the name specified in the code. For example, in <span class=\"tooltip-quote\">contract MyContract {..}</span> <strong>MyContract</strong> is the contract name."
+msgstr "必须与代码中指定的名称匹配。例如，在 <span class=\"tooltip-quote\">合约 MyContract {..}</span> 中，<strong>MyContract</strong> 是合约名称。"
+
+msgid "N/A"
+msgstr "N/A (This is an acronym that stands for \"not applicable\" and does not require translation.)"
+
+msgid "N/A bytes"
+msgstr "N/A字节"
+
+msgid "Name"
+msgstr "姓名"
+
+msgid "Name this API key"
+msgstr "给这个API键命名"
+
+msgid "Name this Custom ABI"
+msgstr "给这个自定义ABI命名"
+
+msgid "Name this address"
+msgstr "给这个地址命名"
+
+msgid "Name this transaction"
+msgstr "给这个交易命名"
+
+msgid "Net Worth"
+msgstr "净资产"
+
+msgid "New Smart Contract Verification"
+msgstr "新智能合约验证"
+
+msgid "New Solidity Smart Contract Verification"
+msgstr "新的Solidity智能合约验证"
+
+msgid "New Solidity/Yul Smart Contract Verification"
+msgstr "新的 Solidity/Yul 智能合约验证"
+
+msgid "New Vyper Smart Contract Verification"
+msgstr "新的Vyper智能合约验证"
+
+msgid "Next"
+msgstr "下一个"
+
+msgid "No"
+msgstr "无"
+
+msgid "No trace entries found."
+msgstr "没有找到迹象的条目。"
+
+msgid "Nonce"
+msgstr "Nonce (随机数)"
+
+msgid "Not unique Token"
+msgstr "不唯一的代币"
+
+msgid "Number of accounts holding the token"
+msgstr "持有代币的账户数。"
+
+msgid "Number of blocks validated by this validator."
+msgstr "此验证节点验证的区块数量。"
+
+msgid "Number of digits that come after the decimal place when displaying token value"
+msgstr "显示代币价值时小数点后的位数"
+
+msgid "Number of transactions related to this address."
+msgstr "与此地址相关的交易数量。"
+
+msgid "Number of transfers for the token"
+msgstr "代币的转移次数"
+
+msgid "Number of transfers to/from this address."
+msgstr "向/从此地址的转账数量。"
+
+msgid "OUT"
+msgstr "退出"
+
+msgid "Only the first"
+msgstr "只有第一。"
+
+msgid "Optimization"
+msgstr "优化"
+
+msgid "Optimization enabled"
+msgstr "优化已启用"
+
+msgid "Optimization runs"
+msgstr "优化运行"
+
+msgid "Other Explorers"
+msgstr "其他探险家"
+
+msgid "Outgoing"
+msgstr "出站的"
+
+msgid "Owner Address"
+msgstr "所有人地址"
+
+msgid "POA solidity flattener or the"
+msgstr "POA solidity拼合器或者the"
+
+msgid "POST"
+msgstr "岗位"
+
+msgid "Page"
+msgstr "页 (yè)"
+
+msgid "Page not found"
+msgstr "页面不存在"
+
+msgid "Parameters"
+msgstr "参数"
+
+msgid "Parent Hash"
+msgstr "母哈希"
+
+msgid "Pending"
+msgstr "待处理"
+
+msgid "Pending Transactions"
+msgstr "待处理交易"
+
+msgid "Play"
+msgstr "玩游戏"
+
+msgid "Please select notification methods:"
+msgstr "请选择通知方式："
+
+msgid "Please select what types of notifications you will receive:"
+msgstr "请选择您将收到的通知类型："
+
+msgid "Position"
+msgstr "职位"
+
+msgid "Position %{index}"
+msgstr "位置 %{index}"
+
+msgid "Potential matches from our contract method database:"
+msgstr "我们合同方法数据库中的潜在匹配项："
+
+msgid "Price"
+msgstr "价格"
+
+msgid "Price per token on the exchanges"
+msgstr "交易所上每个代币的价格"
+
+msgid "Price per unit of gas specified by the sender. Higher gas prices can prioritize transaction inclusion during times of high usage."
+msgstr "由寄件人指定的每单位气体价格。在高使用期间，较高的气体价格可以优先考虑事务包容。"
+
+msgid "Priority Fee / Tip"
+msgstr "优先手续费/小费"
+
+msgid "Priority Fees"
+msgstr "优先费用"
+
+msgid "Profile"
+msgstr "档案"
+
+msgid "Public Tags"
+msgstr "公共标签"
+
+msgid "Public tag"
+msgstr "公开标签"
+
+msgid "Public tags"
+msgstr "公共标签"
+
+msgid "QR Code"
+msgstr "QR码"
+
+msgid "Query"
+msgstr "查询"
+
+msgid "RPC"
+msgstr "RPC (Remote Procedure Call) -> 远程过程调用"
+
+msgid "Raw Input"
+msgstr "原始输入"
+
+msgid "Raw Trace"
+msgstr "生的痕迹"
+
+msgid "Read Contract"
+msgstr "阅读合同"
+
+msgid "Read Proxy"
+msgstr "阅读代理"
+
+msgid "Records"
+msgstr "记录"
+
+msgid "Remove"
+msgstr "删除"
+
+msgid "Remove from Watch list"
+msgstr "从观察列表中移除"
+
+msgid "Request URL"
+msgstr "请求网址"
+
+msgid "Request a public tag/label"
+msgstr "请求公开标签/标签"
+
+msgid "Request to add public tag"
+msgstr "请求添加公共标签。"
+
+msgid "Request to edit a public tag/label"
+msgstr "请求编辑公共标签/标签"
+
+msgid "Reset"
+msgstr "重置"
+
+msgid "Response Body"
+msgstr "响应体"
+
+msgid "Responses"
+msgstr "回应"
+
+msgid "Result"
+msgstr "结果"
+
+msgid "Revert reason"
+msgstr "回复原因"
+
+msgid "Reward"
+msgstr "奖励"
+
+msgid "Run"
+msgstr "运行"
+
+msgid "Save"
+msgstr "保存"
+
+msgid "Search"
+msgstr "搜索"
+
+msgid "Search Results"
+msgstr "搜索结果"
+
+msgid "Search by address, token symbol name, transaction hash, or block number"
+msgstr "按地址、代币符号名称、交易哈希或区块号搜索。"
+
+msgid "Search tokens"
+msgstr "搜索代币"
+
+msgid "Select Yes if you want to vefify Yul contract."
+msgstr "如果您想验证Yul合同，请选择“是”。"
+
+msgid "Select yes if you want to show nightly builds."
+msgstr "如果您想显示每夜构建，请选择“是”。"
+
+msgid "Self-Destruct"
+msgstr "自毁"
+
+msgid "Send request"
+msgstr "发送请求"
+
+msgid "Server Response"
+msgstr "服务器响应 (Sērvèr xiǎngyìng)"
+
+msgid "Show"
+msgstr "展示"
+
+msgid "Show QR Code"
+msgstr "显示 QR 码"
+
+msgid "Shows the current"
+msgstr "显示当前"
+
+msgid "Shows the tokens held in the address (includes ERC-20, ERC-721 and ERC-1155)."
+msgstr "显示地址中持有的代币（包括 ERC-20、ERC-721 和 ERC-1155）。"
+
+msgid "Shows the total CRC balance in the address."
+msgstr "显示地址中的总CRC余额。"
+
+msgid "Shows total assets held in the address"
+msgstr "显示地址中持有的总资产"
+
+msgid "Sign out"
+msgstr "退出登录"
+
+msgid "Size"
+msgstr "尺寸"
+
+msgid "Size of the block in bytes."
+msgstr "以字节为单位的块大小。"
+
+msgid "Smart contract / Address"
+msgstr "智能合约 / 地址"
+
+msgid "Smart contract / Address (0x...)"
+msgstr "智能合约 / 地址（0x...)"
+
+msgid "Solidity"
+msgstr "坚固性"
+
+msgid "Something went wrong, click to reload."
+msgstr "出现问题，请单击重新加载。"
+
+msgid "Something went wrong, click to retry."
+msgstr "出了些问题，请点击重试。"
+
+msgid "Sources *.sol files"
+msgstr "来源*.sol文件"
+
+msgid "Sources *.sol or *.yul files"
+msgstr "来源*.sol或*.yul文件"
+
+msgid "Sources and Metadata JSON"
+msgstr "来源和元数据 JSON"
+
+msgid "Stakes"
+msgstr "桩。"
+
+msgid "Standard Input JSON"
+msgstr "标准输入 JSON"
+
+msgid "State changes"
+msgstr "状态变化"
+
+msgid "Static Call"
+msgstr "静态调用"
+
+msgid "Status"
+msgstr "状态 (Zhuàngtài)"
+
+msgid "Submission date"
+msgstr "提交日期"
+
+msgid "Success"
+msgstr "成功"
+
+msgid "TX Fee"
+msgstr "TX 费用"
+
+msgid "Telegram"
+msgstr "电报"
+
+msgid "Test Networks"
+msgstr "测试网络"
+
+msgid "The 0x library address. This can be found in the generated json file or Truffle output (if using truffle)."
+msgstr "0x库地址。可以在生成的json文件或Truffle输出中找到（如果使用truffle）。"
+
+msgid "The EVM version the contract is written for. If the bytecode does not match the version, we try to verify using the latest EVM version."
+msgstr "合约书写的EVM版本。如果字节码不匹配版本，我们尝试使用最新的EVM版本进行验证。"
+
+msgid "The SHA256 hash of the block."
+msgstr "区块的SHA256哈希值。"
+
+msgid "The block height of a particular block is defined as the number of blocks preceding it in the blockchain."
+msgstr "特定区块的区块高度被定义为其在区块链中之前的区块数量。"
+
+msgid "The changes from this transaction have not yet happened since the transaction is still pending."
+msgstr "该交易尚未发生变化，因为该交易仍处于挂起状态。"
+
+msgid "The compiler version is specified in <span class=\"tooltip-quote\">pragma solidity X.X.X</span>. Use the compiler version rather than the nightly build. If using the Solidity compiler, run <span class=\"tooltip-quote\">solc —version</span> to check."
+msgstr "编译器版本在 <span class=\"tooltip-quote\">pragma solidity X.X.X</span> 中指定。使用编译器版本而不是每晚的版本。如果使用 Solidity 编译器，请运行 <span class=\"tooltip-quote\">solc —version</span> 进行检查。"
+
+msgid "The fallback function is executed on a call to the contract if none of the other functions match the given function signature, or if no data was supplied at all and there is no receive Ether function. The fallback function always receives data, but in order to also receive Ether it must be marked payable."
+msgstr "如果没有其他函数与给定函数签名匹配，或者根本没有提供数据且也没有“接收以太”函数，则在调用合约时执行后备函数。回退函数始终接收数据，但为了也能接收以太，必须标记为 payable。 后备功能将在调用合同时执行，如果没有其他功能与给定功能签名匹配，或者如果根本没有提供数据，并且没有接收以太功能。 后备功能始终接收数据，但是为了也接收以太，必须标记为可支付。"
+
+msgid "The hash of the block from which this block was generated."
+msgstr "生成此区块的上一区块的哈希值。"
+
+msgid "The name found in the source code of the Contract."
+msgstr "合同源代码中找到的名称。"
+
+msgid "The name of the validator."
+msgstr "验证者的名称。"
+
+msgid "The number of transactions in the block."
+msgstr "区块中的交易数量。"
+
+msgid "The receive function is executed on a call to the contract with empty calldata. This is the function that is executed on plain Ether transfers (e.g. via .send() or .transfer()). If no such function exists, but a payable fallback function exists, the fallback function will be called on a plain Ether transfer. If neither a receive Ether nor a payable fallback function is present, the contract cannot receive Ether through regular transactions and throws an exception."
+msgstr "当对合同进行空calldata的调用时，将执行接收函数。这是针对纯以太币转移（例如通过.send()或.transfer()）进行执行的函数。如果不存在此类函数但存在可付款的回退函数，则在进行纯以太币转移时将调用回退函数。如果既未存在接收以太币函数，也未存在可付款的回退函数，则合同无法通过常规交易接收以太币并引发异常。"
+
+msgid "The revert reason of the transaction."
+msgstr "交易的撤销原因。"
+
+msgid "The status of the transaction: Confirmed or Unconfirmed."
+msgstr "交易状态：已确认或未确认。"
+
+msgid "The total amount of tokens issued"
+msgstr "发行的代币总量"
+
+msgid "The total gas amount used in the block and its percentage of gas filled in the block."
+msgstr "区块中使用的总气体量及其占区块总容积的百分比。"
+
+msgid "There are no blocks validated by this address."
+msgstr "这个地址没有验证的区块。"
+
+msgid "There are no blocks."
+msgstr "没有方块。"
+
+msgid "There are no holders for this Token."
+msgstr "这个代币没有持有人。"
+
+msgid "There are no internal transactions for this address."
+msgstr "此地址没有内部交易。"
+
+msgid "There are no internal transactions for this transaction."
+msgstr "此交易没有内部交易。"
+
+msgid "There are no logs for this address."
+msgstr "此地址没有日志。"
+
+msgid "There are no logs for this transaction."
+msgstr "此交易没有日志。"
+
+msgid "There are no pending transactions."
+msgstr "没有待处理的交易。"
+
+msgid "There are no token transfers for this address."
+msgstr "该地址没有代币转移。"
+
+msgid "There are no token transfers for this transaction"
+msgstr "此交易没有代币转移。"
+
+msgid "There are no tokens for this address."
+msgstr "该地址没有代币。"
+
+msgid "There are no tokens."
+msgstr "没有代币。"
+
+msgid "There are no transactions for this address."
+msgstr "这个地址没有交易记录。"
+
+msgid "There are no transactions for this block."
+msgstr "这个区块没有交易。"
+
+msgid "There are no transactions."
+msgstr "没有交易。"
+
+msgid "There are no transfers for this Token."
+msgstr "此代币无转账。"
+
+msgid "There are no verified contracts."
+msgstr "没有经过验证的合同。"
+
+msgid "There is no coin history for this address."
+msgstr "该地址没有硬币历史记录。"
+
+msgid "There is no decompilded contracts for this address."
+msgstr "该地址没有反编译的合约。"
+
+msgid "There was a problem loading the chart."
+msgstr "加载图表时遇到问题。"
+
+msgid "This API is provided for developers transitioning their applications from Etherscan to BlockScout. It supports GET and POST requests."
+msgstr "此 API 是为了帮助开发人员将他们的应用程序从 Etherscan 转移到 BlockScout 而提供的。它支持 GET 和 POST 请求。"
+
+msgid "This API is provided to support some rpc methods in the exact format specified for ethereum nodes, which can be found in ethereum's JSON-RPC documentation. "
+msgstr "这个 API 是提供支持一些在以太坊节点指定的精确格式的 RPC 方法，可以在以太坊的 JSON-RPC 文档中找到。"
+
+msgid "This block has not been processed yet."
+msgstr "此块尚未处理。"
+
+msgid "This contract has been partially verified via Sourcify."
+msgstr "此合同已通过Sourcify部分验证。"
+
+msgid "This contract has been verified via Sourcify."
+msgstr "该合约已通过Sourcify验证。"
+
+msgid "This is useful to allow sending requests to blockscout without having to change anything about the request."
+msgstr "这很有用，可以允许发送请求至blockscout，而无需更改请求的任何内容。"
+
+msgid "This transaction hasn't changed state."
+msgstr "这笔交易状态没有改变。"
+
+msgid "This transaction is pending confirmation."
+msgstr "该交易正在等待确认。"
+
+msgid "Timestamp"
+msgstr "时间戳"
+
+msgid "To"
+msgstr "至"
+
+msgid "To have guaranteed accuracy, use the link above to verify the contract's source code."
+msgstr "为保证准确性，请使用上面的链接验证合同源代码。"
+
+msgid "To see accurate decoded input data, the contract must be verified."
+msgstr "为了查看准确的解码输入数据，必须验证合约。"
+
+msgid "Toggle navigation"
+msgstr "切换导航"
+
+msgid "Token"
+msgstr "代币"
+
+msgid "Token Burning"
+msgstr "代币销毁"
+
+msgid "Token Creation"
+msgstr "代币创建"
+
+msgid "Token Details"
+msgstr "代币详情"
+
+msgid "Token Holders"
+msgstr "代币持有者"
+
+msgid "Token ID"
+msgstr "代币ID"
+
+msgid "Token Minting"
+msgstr "代币铸造"
+
+msgid "Token Transfer"
+msgstr "代币转账"
+
+msgid "Token Transfers"
+msgstr "代币转移"
+
+msgid "Token Transfers(ERC20)"
+msgstr "代币转账（ERC20）"
+
+msgid "Token name and symbol."
+msgstr "代币名称和符号。"
+
+msgid "Token type"
+msgstr "代币类型"
+
+msgid "Tokens"
+msgstr "代币"
+
+msgid "Tokens Burnt"
+msgstr "代币已销毁"
+
+msgid "Tokens Created"
+msgstr "代币已创建"
+
+msgid "Tokens Minted"
+msgstr "tokens铸造"
+
+msgid "Tokens Transferred"
+msgstr "代币已转移"
+
+msgid "Top Accounts - %{subnetwork} Explorer"
+msgstr "顶级账户 - %{subnetwork} 浏览器"
+
+msgid "Topic"
+msgstr "主题"
+
+msgid "Topics"
+msgstr "话题"
+
+msgid "Total"
+msgstr "总计"
+
+msgid "Total Difficulty"
+msgstr "总难度"
+
+msgid "Total Supply * Price"
+msgstr "总供应量 * 价格"
+
+msgid "Total blocks"
+msgstr "总块数"
+
+msgid "Total difficulty of the chain until this block."
+msgstr "直到该区块的链总难度。"
+
+msgid "Total gas limit provided by all transactions in the block."
+msgstr "块中所有交易提供的总燃料限制。"
+
+msgid "Total supply"
+msgstr "总供应量"
+
+msgid "Total transaction fee."
+msgstr "总交易费用"
+
+msgid "Total transactions"
+msgstr "总交易量"
+
+msgid "Transaction"
+msgstr "交易"
+
+msgid "Transaction %{transaction} - %{subnetwork} Explorer"
+msgstr "交易 %{transaction} - %{subnetwork} 浏览器"
+
+msgid "Transaction %{transaction}, %{subnetwork} %{transaction}"
+msgstr "交易%{transaction}，%{subnetwork}%{transaction}"
+
+msgid "Transaction Burnt Fee"
+msgstr "交易燃烧费"
+
+msgid "Transaction Details"
+msgstr "交易细节"
+
+msgid "Transaction Fee"
+msgstr "交易手续费"
+
+msgid "Transaction Hash"
+msgstr "交易哈希"
+
+msgid "Transaction Inputs"
+msgstr "交易输入"
+
+msgid "Transaction Tags"
+msgstr "交易标签"
+
+msgid "Transaction Type"
+msgstr "交易类型"
+
+msgid "Transaction number from the sending address. Each transaction sent from an address increments the nonce by 1."
+msgstr "从发送地址的交易编号。每个从地址发送的交易都会将nonce值增加1。"
+
+msgid "Transaction type, introduced in EIP-2718."
+msgstr "交易类型，引入自 EIP-2718。"
+
+msgid "Transactions"
+msgstr "交易"
+
+msgid "Transactions and address of creation."
+msgstr "交易和地址创建。"
+
+msgid "Transactions sent"
+msgstr "交易已发送"
+
+msgid "Transfers"
+msgstr "转账"
+
+msgid "Try it out"
+msgstr "试一试"
+
+msgid "Try to fetch constructor arguments automatically"
+msgstr "尝试自动获取构造函数参数"
+
+msgid "Twitter"
+msgstr "推特"
+
+msgid "Tx/day"
+msgstr "每日Tx"
+
+msgid "Txns"
+msgstr "交易数"
+
+msgid "Type"
+msgstr "类型"
+
+msgid "Type of the token standard"
+msgstr "代币标准类型"
+
+msgid "UML diagram"
+msgstr "UML 图表"
+
+msgid "UTF-8"
+msgstr "\"UTF-8\"：UTF-8"
+
+msgid "Uncle Reward"
+msgstr "叔块奖励"
+
+msgid "Uncles"
+msgstr "叔块"
+
+msgid "Unconfirmed"
+msgstr "未确认"
+
+msgid "Unique Token"
+msgstr "独特代币"
+
+msgid "Unique character string (TxID) assigned to every verified transaction."
+msgstr "每个已验证交易分配的唯一字符串（TxID）。"
+
+msgid "Update"
+msgstr "更新"
+
+msgid "User defined maximum fee (tip) per unit of gas paid to validator for transaction prioritization."
+msgstr "用户定义的最大费用（小费），每单位气体支付给验证器以优先处理交易。"
+
+msgid "User-defined tip sent to validator for transaction priority/inclusion."
+msgstr "用戶自定義費用發送給驗證器以進行交易優先/包含。"
+
+msgid "User-defined tips sent to validator for transaction priority/inclusion."
+msgstr "用户定义的提示发送给验证器，以确定交易的优先级/包含性。"
+
+msgid "Validated"
+msgstr "验证的"
+
+msgid "L1 State Batches"
+msgstr "L1 状态批次"
+
+msgid "Mantle DA Txn Batches"
+msgstr "Mantle DA 交易批次"
+
+msgid "L1 Txn Batches"
+msgstr "L1交易批次"
+
+msgid "L1 to L2 Txns"
+msgstr "L1 到 L2 交易"
+
+msgid "L1 to L2 Transactions"
+msgstr "L1 到 L2 交易"
+
+msgid "L2 to L1 Transactions"
+msgstr "L2到L1交易"
+
+msgid "State Batches"
+msgstr "州份批次"
+
+msgid "Txn Batches"
+msgstr "交易批次"
+
+msgid "Validated Transactions"
+msgstr "验证交易"
+
+msgid "Validator Creation Date"
+msgstr "验证器创建日期"
+
+msgid "Validator Data"
+msgstr "验证器数据"
+
+msgid "Validator Name"
+msgstr "验证器名称"
+
+msgid "Value"
+msgstr "价值"
+
+msgid "Value sent in the native token (and USD) if applicable."
+msgstr "如适用，以本地代币（和美元）发送的价值。"
+
+msgid "Verifed contracts, %{subnetwork}, %{coin}"
+msgstr "已验证的合同，%{subnetwork}，%{coin}"
+
+msgid "Verified"
+msgstr "已验证"
+
+msgid "Verified Contracts"
+msgstr "已验证合同"
+
+msgid "Verified at"
+msgstr "确认于"
+
+msgid "Verified contracts"
+msgstr "已验证合同"
+
+msgid "Verified contracts - %{subnetwork} Explorer"
+msgstr "验证合约 - %{subnetwork} 浏览器"
+
+msgid "Verify & Publish"
+msgstr "验证并发布"
+
+msgid "Verify & publish"
+msgstr "验证并发布"
+
+msgid "Verify the contract "
+msgstr "验证合同"
+
+msgid "Version"
+msgstr "版本"
+
+msgid "Via Sourcify: Sources and metadata JSON file"
+msgstr "通过Sourcify：源和元数据JSON文件"
+
+msgid "Via Standard Input JSON"
+msgstr "通过标准输入JSON"
+
+msgid "Via flattened source code"
+msgstr "通过压缩的源代码"
+
+msgid "Via multi-part files"
+msgstr "通过多部分文件"
+
+msgid "View All Blocks"
+msgstr "查看所有区块"
+
+msgid "View Contract"
+msgstr "查看合同"
+
+msgid "View next block"
+msgstr "查看下一块"
+
+msgid "View previous block"
+msgstr "查看以前的区块"
+
+msgid "View the account balance, transactions, and other data for %{address} on the %{network}"
+msgstr "在%{network}上查看%{address}的帐户余额，交易和其他数据"
+
+msgid "View the transactions, token transfers, and uncles for block number %{block_number}"
+msgstr "查看区块号为%{block_number}的交易、代币转移和叔叔。"
+
+msgid "View the verified contracts on %{subnetwork}"
+msgstr "查看在 %{subnetwork} 上已验证的合约。"
+
+msgid "View transaction %{transaction} on %{subnetwork}"
+msgstr "在子网络%{subnetwork}上查看交易%{transaction}"
+
+msgid "Vyper"
+msgstr "Vyper"
+
+msgid "Vyper contract"
+msgstr "Vyper合约"
+
+msgid "Waiting for transaction's confirmation..."
+msgstr "等待交易确认..."
+
+msgid "Wallet addresses"
+msgstr "钱包地址"
+
+msgid "Warning! Contract bytecode has been changed and doesn't match the verified one. Therefore, interaction with this smart contract may be risky."
+msgstr "警告！合约 bytecode 已经被更改，与验证的 bytecode 不匹配。因此，与该智能合约的交互可能存在风险。"
+
+msgid "Watch list"
+msgstr "监视列表"
+
+msgid "We recommend using flattened code. This is necessary if your code utilizes a library or inherits dependencies. Use the"
+msgstr "我们建议使用扁平化的代码。如果您的代码使用库或继承依赖关系，则这是必需的。使用以下内容。"
+
+msgid "Wei"
+msgstr "未"
+
+msgid "Write"
+msgstr "写"
+
+msgid "Write Contract"
+msgstr "撰写合同"
+
+msgid "Write Proxy"
+msgstr "写代理"
+
+msgid "Yes"
+msgstr "是"
+
+msgid "You can create 3 API keys per account."
+msgstr "您可以在一个帐户中创建3个API密钥。"
+
+msgid "You can create up to 15 Custom ABIs per account."
+msgstr "您可以在每个账户中创建15个自定义ABI。"
+
+msgid "You can request a public category tag which is displayed to all Blockscout users. Public tags may be added to contract or external addresses, and any associated transactions will inherit that tag. Clicking a tag opens a page with related information and helps provide context and data organization. Requests are sent to a moderator for review and approval. This process can take several days."
+msgstr "您可以请求公共分类标签，该标签将显示给所有Blockscout用户。公共标签可以添加到合约或外部地址，任何相关的交易都将继承该标签。单击标签会打开一个相关信息的页面，并有助于提供上下文和数据组织。请求将发送给审核员进行审查和批准。该过程可能需要几天时间。"
+
+msgid "You don't have address tags yet"
+msgstr "你还没有地址标签。"
+
+msgid "You don't have addresses on you watchlist yet"
+msgstr "您的监视列表中尚无地址。"
+
+msgid "You don't have transaction tags yet"
+msgstr "您还没有交易标签"
+
+msgid "Your name"
+msgstr "你的名字"
+
+msgid "Your name*"
+msgstr "您的姓名*"
+
+msgid "at"
+msgstr "在"
+
+msgid "balance of the address"
+msgstr "地址账户余额"
+
+msgid "burned for this transaction. Equals Block Base Fee per Gas * Gas Used."
+msgstr "为此交易烧毁。等于每个 Gas 的区块基础费 * 所使用的 Gas。"
+
+msgid "burned from transactions included in the block (Base fee (per unit of gas) * Gas Used)."
+msgstr "从包含在区块中的交易中消耗的燃料（基础费用（每单位燃气）* 使用的燃气）。"
+
+msgid "button"
+msgstr "按钮"
+
+msgid "created"
+msgstr "创建的"
+
+msgid "custom RPC"
+msgstr "自定义 RPC"
+
+msgid "doesn't include ERC20, ERC721, ERC1155 tokens)."
+msgstr "不包括ERC20、ERC721、ERC1155代币。"
+
+msgid "elements are displayed"
+msgstr "元素被显示"
+
+msgid "fallback"
+msgstr "回退"
+
+msgid "false"
+msgstr "错误的"
+
+msgid "here"
+msgstr "这里"
+
+msgid "here."
+msgstr "这里。"
+
+msgid "method Response"
+msgstr "方法响应"
+
+msgid "of"
+msgstr "的"
+
+msgid "page"
+msgstr "页"
+
+msgid "receive"
+msgstr "收到"
+
+msgid "required"
+msgstr "必需的"
+
+msgid "string"
+msgstr "线"
+
+msgid "true"
+msgstr "真实"
+
+msgid "truffle flattener"
+msgstr "松露压平机"
+
+msgid "Sign in"
+msgstr "登录"
+
+msgid "Signed in as "
+msgstr "以以下身份签入："
+
+msgid "1. If you have just submitted this transaction please wait for at least 30 seconds before refreshing this page."
+msgstr "1. 如果您刚刚提交了此交易，请等待至少30秒然后再刷新此页面。"
+
+msgid "2. It could still be in the TX Pool of a different node, waiting to be broadcasted."
+msgstr "2. 可能仍在不同节点的TX池中等待广播。"
+
+msgid "3. During times when the network is busy (i.e during ICOs) it can take a while for your transaction to propagate through the network and for us to index it."
+msgstr "3. 在网络繁忙时期（如 ICO 期间），您的交易可能需要一段时间才能通过网络传播并被我们索引。"
+
+msgid "4. If it still does not show up after 1 hour, please check with your sender/exchange/wallet/transaction provider for additional information."
+msgstr "4. 如果一小时后仍然没有显示，请与您的发送者/交换所/钱包/交易提供者联系以获取更多信息。"
+
+msgid "An unexpected error has occurred. Try reloading the page, or come back soon and try again."
+msgstr "发生了意外错误。尝试重新加载页面，或稍后再试一次。"
+
+msgid "Back to home"
+msgstr "返回主页"
+
+msgid "Internal server error"
+msgstr "内部服务器错误"
+
+msgid "Request cannot be processed"
+msgstr "请求无法处理。"
+
+msgid "Sorry, we are unable to locate this transaction hash"
+msgstr "抱歉，我们无法定位此交易哈希。"
+
+msgid "This page is no longer explorable! If you are lost, use the search bar to find what you are looking for."
+msgstr "该页面已经无法浏览！如果您迷路了，请使用搜索栏查找您要查找的内容。"
+
+msgid "Your request contained an error, perhaps a mistyped tx/block/address hash. Try again, and check the developer tools console for more info."
+msgstr "您的请求出现了错误，可能是由于 tx/block/address 哈希值打错了，请重新尝试并在开发者工具控制台中查看更多信息。"
+
+msgid " L1 State Batch Index"
+msgstr "L1状态批次索引"
+
+msgid " L1 State Batch Index."
+msgstr "L1状态批量索引"
+
+msgid "Back Home"
+msgstr "返回家中"
+
+msgid "DA Fee"
+msgstr "DA 费"
+
+msgid "DA Gas Price"
+msgstr "DA 气价"
+
+msgid "DA Gas Used"
+msgstr "DA气体使用"
+
+msgid "During times when the network is busy (i.e during ICOs) it can take a while for your transaction to propagate through the network and for us to index it."
+msgstr "在网络繁忙的时候（比如ICO期间），您的交易需要一定时间才能在网络中传播并被我们索引。"
+
+msgid "Gas Price on L2"
+msgstr "L2的天然气价格"
+
+msgid "If it still does not show up after 1 hour, please check with your sender/exchange/wallet/transaction provider for additional information."
+msgstr "如果一个小时后仍未显示，请与您的寄件人/交易所/钱包/交易提供方联系获取更多信息。"
+
+msgid "If you have just submitted this transaction please wait for at least 30 seconds before refreshing this page."
+msgstr "如果您刚刚提交了此交易，请在刷新此页面之前等待至少30秒。"
+
+msgid "Indicates by which contract was this Txn synced to Mantle Bridge"
+msgstr "此交易通过哪个合同与Mantle Bridge同步。"
+
+msgid "Indicates the L1-L2 transactions volume"
+msgstr "指示L1-L2交易量"
+
+msgid "Invalid Transaction Hash"
+msgstr "无效交易哈希。"
+
+msgid "It could still be in the TX Pool of a different node, waiting to be broadcasted."
+msgstr "它仍然可能在不同节点的TX池中，等待广播。"
+
+msgid "L1 Fee"
+msgstr "L1费用"
+
+msgid "L1 Fee Scalar"
+msgstr "L1 费用 标量"
+
+msgid "L1 Gas Price"
+msgstr "L1 气价"
+
+msgid "L1 Gas Used"
+msgstr "L1 气体使用"
+
+msgid "L1 Origin Txn Hash"
+msgstr "L1原始交易哈希"
+
+msgid "L1 State Root Submission Txn Hash"
+msgstr "L1状态根提交Txn哈希"
+
+msgid "L2 Fee"
+msgstr "L2费用"
+
+msgid "L2 to L1 Txns"
+msgstr "L2到L1交易"
+
+msgid "Mantle is the first modular layer-2 blockchain, combining hyperscale performance with security from Ethereum. Mantle powers whatever builders can dream."
+msgstr "Mantle是第一个模块化的Layer-2区块链，将超大规模的性能与Ethereum的安全性相结合。 Mantle为建造者梦想的一切提供动力。"
+
+msgid "Sorry, We are unable to locate this transaction Hash"
+msgstr "抱歉，我们无法定位此笔交易哈希。"
+
+msgid "There are no deposit for this address."
+msgstr "此地址无需付押金。"
+
+msgid "There are no withdraw for this address."
+msgstr "该地址无可提取金额。"
+
+msgid "Total transaction fee spent on L1 and L2."
+msgstr "L1和L2上总交易手续费用。"
+
+msgid "Transaction fee on layer2."
+msgstr "第二层交易手续费。"
+
+msgid "is not a valid transaction hash"
+msgstr "不是有效的交易哈希值"
+
+msgid "L1 Gas Price*L1 Gas Used*L1 Fee Scalar"
+msgstr "L1 气价*L1 气量*L1 费用比例因子"
+
+msgid "L1 Rollup Fee"
+msgstr "L1 捆绑费用"
+
+msgid "L2 Txn Fee"
+msgstr "L2 交易费"
+
+msgid "Mantle DA Submission Hash"
+msgstr "Mantle DA 提交哈希值"
+
+msgid "Mantle DA Txn"
+msgstr "Mantle DA Txn"
+
+msgid "Mantle DA Txn Batch Index"
+msgstr "Mantle DA 交易批次索引"
+
+msgid "Mantle DA Txn Batch Index."
+msgstr "Mantle DA Txn批次索引。"
+
+msgid "Contact Us"
+msgstr "联系我们"
+
+msgid "Mantle Testnet"
+msgstr "Mantle测试网"
+
+msgid "Latest Transactions"
+msgstr "最新交易"
+
+msgid "View all EigenLyaer Txn batches"
+msgstr "查看所有EigenLayer Txn批次。"
+
+msgid "Latest Mantle DA Txn Batches"
+msgstr "最新的Mantle DA交易批次"
+
+msgid "View all Transactions"
+msgstr "查看所有交易"
+
+msgid "Latest L1->L2 Transactions"
+msgstr "最新的L1->L2交易"
+
+msgid "View all L1->L2 Transactions"
+msgstr "查看所有L1->L2交易"
+
+msgid "Block No"
+msgstr "街区号"
+
+msgid "Queue Index"
+msgstr "排队指数"
+
+msgid "L2 Txn Hash"
+msgstr "L2 交易哈希"
+
+msgid "Txn Type"
+msgstr "交易类型"
+
+msgid "User Deposit"
+msgstr "用户存款"
+
+msgid "Tss Reward"
+msgstr "Tss 奖励"
+
+msgid "L2 Txn Rollback"
+msgstr "L2 交易回滚"
+
+msgid "Age"
+msgstr "年龄"
+
+msgid "L1 Txn Hash"
+msgstr "L1 事务哈希"
+
+msgid "Msg Nonce"
+msgstr "信息随机数"
+
+msgid "Time Left"
+msgstr "剩余时间"
+
+msgid "Whole status about the L2-L1 withdrawal"
+msgstr "L2-L1撤回的完整状态"
+
+msgid "Waiting for Relay"
+msgstr "等待接力"
+
+msgid "Withdrawn on L2 but not ready for claim on L1"
+msgstr "在L2中已撤回但在L1上尚未准备好进行索赔。"
+
+msgid "Ready for Claim"
+msgstr "准备领取"
+
+msgid "Ready for claim on L1"
+msgstr "L1准备认领"
+
+msgid "Claimed"
+msgstr "声称的"
+
+msgid "Withdrawal has been claimed on L1"
+msgstr "L1已提取。"
+
+msgid "Batch Index"
+msgstr "批次索引"
+
+msgid "Store Period(s)"
+msgstr "存储期限"
+
+msgid "DA Hash"
+msgstr "DA 哈希"
+
+msgid "Store Number"
+msgstr "店铺编号"
+
+msgid "State Batch"
+msgstr "州批 (zhōu pī)"
+
+msgid "Batch Size"
+msgstr "批量大小"
+
+msgid "Pre Total Elements"
+msgstr "预测总元素"
+
+msgid "Txn Batch"
+msgstr "交易批次"
+
+msgid "Holders Count"
+msgstr "持有者数量"
+
+msgid "L1 Txn Origin"
+msgstr "L1交易来源"
+
+msgid "Total Supply"
+msgstr "总供应量"

@@ -14,6 +14,7 @@ defmodule BlockScoutWeb.WebRouter do
     plug(:protect_from_forgery)
     plug(BlockScoutWeb.CSPHeader)
     plug(BlockScoutWeb.ChecksumAddress)
+    plug(BlockScoutWeb.Plug.SetLocale)
   end
 
   pipeline :account do

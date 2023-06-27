@@ -34,19 +34,19 @@
       </div>
       <div class="txn-list-table-head-container">
         <span style="width: 18%;">
-          Txn Batch
+          <%= gettext "Txn Batch" %>
         </span>
         <span style="width: 18%;">
-          Age
+          <%= gettext "Age" %>
         </span>
         <span style="width: 18%;">
-          Batch Size
+          <%= gettext "Batch Size" %>
         </span>
         <span style="width: 30%;">
-          L1 Txn Hash
+            <%= gettext "L1 Txn Hash" %>
         </span>
         <span style="width: 16%;">
-          Pre Total Elements
+          <%= gettext "Pre Total Elements" %>
         </span>
       </div>
       <div data-selector="txn-batch-list" data-items class="recent-tx-list-page">
