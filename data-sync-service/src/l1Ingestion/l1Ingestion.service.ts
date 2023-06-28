@@ -939,6 +939,9 @@ export class L1IngestionService {
     if (!res) {
       return Promise.resolve(false);
     }
+    if(!res || res?.batchIndex === null || res?.dataStore === null){
+      return Promise.resolve(true);
+    }
     let fromStoreNumber, upgrade_data_store_id
     if (res?.dataStore?.data_store_id) {
       fromStoreNumber = res?.dataStore?.data_store_id;
@@ -946,6 +949,7 @@ export class L1IngestionService {
     if (res?.dataStore?.upgrade_data_store_id) {
       upgrade_data_store_id = res?.dataStore?.upgrade_data_store_id;
     }
+    
     console.log('eigenda data', res)
     console.log('store number', fromStoreNumber)
     console.log('upgrade_data_store_id', upgrade_data_store_id)

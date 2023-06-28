@@ -252,6 +252,7 @@ export class L2IngestionService {
       endBlock,
     );
     console.log('---------------------------------- l2 relayed message events start and end:', startBlock, endBlock)
+    console.log(list)
     const l2RelayedMessageEventsInsertData: any = [];
     for (const item of list) {
       const {
