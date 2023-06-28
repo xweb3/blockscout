@@ -221,7 +221,7 @@
       </span>
       <a href="/eigenda-batches" style="padding:0 10px;width:100%;display:inline-block">
         <button class="col-12 text-center view-btn">
-           <%= gettext "View all EigenLyaer Txn batches" %>
+           <%= gettext "View all Mantle DA batches" %>
         </button>
       </a>
     </div>
