@@ -51,7 +51,7 @@ msgstr "%{block_type} 高度"
 #: lib/block_scout_web/templates/block/index.html.eex:7
 #, elixir-autogen, elixir-format
 msgid "%{block_type}s"
-msgstr "%{block_type}们"
+msgstr ""
 
 #: lib/block_scout_web/templates/block/overview.html.eex:84
 #, elixir-autogen, elixir-format
@@ -1518,7 +1518,7 @@ msgstr "获取交易..."
 #: lib/block_scout_web/templates/tokens/overview/_details.html.eex:123
 #, elixir-autogen, elixir-format
 msgid "Fetching transfers..."
-msgstr ""
+msgstr "获取转账..."
 
 #: lib/block_scout_web/templates/verified_contracts/index.html.eex:15
 #, elixir-autogen, elixir-format

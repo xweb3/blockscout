@@ -1363,7 +1363,7 @@ msgstr "排出契約"
 #: lib/block_scout_web/views/block_view.ex:72
 #, elixir-autogen, elixir-format
 msgid "Emission Reward"
-msgstr "排出報酬 (Haishutsu Hōshū)"
+msgstr "排出報酬"
 
 #: lib/block_scout_web/templates/address_contract_verification_via_flattened_code/new.html.eex:72
 #, elixir-autogen, elixir-format
@@ -1438,13 +1438,13 @@ msgstr "エラー：（理由のために内部トランザクションが待機
 #: lib/block_scout_web/templates/layout/_topnav.html.eex:100
 #, elixir-autogen, elixir-format
 msgid "Eth RPC"
-msgstr "Eth RPCの日本語への翻訳：イーサリアムRPC"
+msgstr "Eth RPC"
 
 #: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:211
 #: lib/block_scout_web/templates/api_docs/_eth_rpc_item.html.eex:164
 #, elixir-autogen, elixir-format
 msgid "Example Value"
-msgstr "例の値 (Rei no atai)"
+msgstr "例の値"
 
 #: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:128
 #: lib/block_scout_web/templates/api_docs/_eth_rpc_item.html.eex:99

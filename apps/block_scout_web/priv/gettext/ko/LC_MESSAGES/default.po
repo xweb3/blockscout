@@ -51,7 +51,7 @@ msgstr "%{block_type} 높이"
 #: lib/block_scout_web/templates/block/index.html.eex:7
 #, elixir-autogen, elixir-format
 msgid "%{block_type}s"
-msgstr "%{block_type}s를 한국어로 번역하면 다음과 같습니다: %{block_type}s"
+msgstr ""
 
 #: lib/block_scout_web/templates/block/overview.html.eex:84
 #, elixir-autogen, elixir-format
@@ -1438,7 +1438,7 @@ msgstr "오류: (이유로 인해 내부 거래를 기다리고 있습니다)"
 #: lib/block_scout_web/templates/layout/_topnav.html.eex:100
 #, elixir-autogen, elixir-format
 msgid "Eth RPC"
-msgstr "에테르 RPC"
+msgstr "Eth RPC"
 
 #: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:211
 #: lib/block_scout_web/templates/api_docs/_eth_rpc_item.html.eex:164
@@ -1548,12 +1548,12 @@ msgstr "계약서를 위해"
 #: lib/block_scout_web/views/address_transaction_view.ex:10
 #, elixir-autogen, elixir-format
 msgid "From"
-msgstr "에서 (Please provide more context or information to translate accurate sentence.)"
+msgstr "에서"
 
 #: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:18
 #, elixir-autogen, elixir-format
 msgid "GET"
-msgstr "GET - 얻다, 받다, 가져오다, 구하다, 가지다"
+msgstr "얻다"
 
 #: lib/block_scout_web/templates/block/_tile.html.eex:67
 #: lib/block_scout_web/templates/block/overview.html.eex:184
@@ -4482,7 +4482,7 @@ msgstr "L1 Txn 해시"
 #: lib/block_scout_web/templates/l2_to_l1_txn/index.html.eex:28
 #, elixir-autogen
 msgid "Msg Nonce"
-msgstr "\"Msg Nonce\" would be translated to \"메시지 논스\" in Korean."
+msgstr "메시지 논스"
 
 #: lib/block_scout_web/templates/l2_to_l1_txn/index.html.eex:56
 #, elixir-autogen
