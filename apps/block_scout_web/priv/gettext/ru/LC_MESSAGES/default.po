@@ -4579,4 +4579,4 @@ msgstr "Происхождение L1 Txn"
 #: lib/block_scout_web/templates/tokens/index.html.eex:42
 #, elixir-autogen, elixir-format
 msgid "Total Supply"
-msgstr "Общее количество (or \"кол-во\") предложения."
+msgstr "кол-во"

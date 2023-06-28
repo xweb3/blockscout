@@ -4482,7 +4482,7 @@ msgstr "L1 Txn 해시"
 #: lib/block_scout_web/templates/l2_to_l1_txn/index.html.eex:28
 #, elixir-autogen
 msgid "Msg Nonce"
-msgstr "\"Msg Nonce\" would be translated to \"메시지 논스\" in Korean."
+msgstr "메시지 논스"
 
 #: lib/block_scout_web/templates/l2_to_l1_txn/index.html.eex:56
 #, elixir-autogen
