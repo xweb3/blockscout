@@ -151,7 +151,7 @@ $navbar-network-label-background-color: #bae1d7;
     display: flex;
     @media (min-width: 1200px) {
       flex: 1;
-      max-width: 550px;
+      max-width: 440px;
       .form-control{
         min-width: 100%;
       }
@@ -216,7 +216,7 @@ $navbar-network-label-background-color: #bae1d7;
       width: 383px;
     }
     @media (min-width: 1540px) {
-      width: 550px;
+      width: 440px;
     }
   }
   .input-group-append {
