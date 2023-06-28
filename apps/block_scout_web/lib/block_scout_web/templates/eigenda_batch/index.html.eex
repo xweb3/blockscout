@@ -9,7 +9,7 @@
   <%= render BlockScoutWeb.Advertisement.TextAdView, "index.html", conn: @conn %>
   <div class="card">
     <div class="card-body txn-list-container" data-async-listing="<%= @current_path %>">
-      <h1 class="card-title list-title-description"><%= gettext "EigenLayer Txn" %></h1>
+      <h1 class="card-title list-title-description"><%= gettext "Mantle DA Txn" %></h1>
       <div class="list-top-pagination-container-wrapper">
         <%= render BlockScoutWeb.CommonComponentsView, "_rap_pagination_container.html", position: "top", showing_limit: if Chain.transactions_available_count() == Chain.limit_showing_transactions(), do: Chain.limit_showing_transactions(), else: nil %>
       </div>
@@ -34,19 +34,19 @@
       </div>
       <div class="txn-list-table-head-container">
         <span style="width: 13%;">
-          Batch Index
+          <%= gettext "Batch Index" %>
         </span>
         <span style="width: 13%;">
-          Store Period(s)
+         <%= gettext "Batch Size" %>
         </span>
         <span style="width: 14%;">
-          Status
+            <%= gettext "Status" %>
         </span>
         <span style="width: 50%;">
-          DA Hash
+          <%= gettext "DA Hash" %>
         </span>
         <span style="width: 10%;">
-          Store Number
+            <%= gettext "Store Number" %>
         </span>
       </div>
       <div data-selector="txn-batch-list" data-items class="recent-tx-list-page">

@@ -28,19 +28,23 @@
 			<div>&nbsp;</div>
 		  </th>
 	      <th class="stakes-table-th">
-			<div class="stakes-table-th-content">Token</div>
-	      </th>
-	      <th class="stakes-table-th">
-			<div class="stakes-table-th-content">Address</div>
-	      </th>
-	      <th class="stakes-table-th">
 			<div class="stakes-table-th-content">
-			Total Supply
+				<%= gettext "Token" %>
 			</div>
 	      </th>
 	      <th class="stakes-table-th">
 			<div class="stakes-table-th-content">
-			Holders Count
+				<%= gettext "Address" %>
+			</div>
+	      </th>
+	      <th class="stakes-table-th">
+			<div class="stakes-table-th-content">
+				<%= gettext "Total Supply" %>
+			</div>
+	      </th>
+	      <th class="stakes-table-th">
+			<div class="stakes-table-th-content">
+				<%= gettext "Holders Count" %>
 			</div>
 	      </th>
 	    </tr>

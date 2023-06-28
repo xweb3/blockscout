@@ -11,28 +11,22 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <div style="display:flex;justify-content:space-between;align-items:center;flex:1;">
-        <%= render BlockScoutWeb.LayoutView, "_search.html", conn: @conn, id: "main-search-autocomplete", additional_classes: ["mobile-search-hide"] %>
+      <div style="display:flex;justify-content:flex-end;align-items:center;flex:1;">
+        <%= render BlockScoutWeb.LayoutView, "_search.html", conn: @conn, id: "main-search-autocomplete", additional_classes: ["desktop-sm-search-hide"] %>
         <ul class="navbar-nav navbar-nav-custom">
           <%= if Application.get_env(:block_scout_web, BlockScoutWeb.WebRouter)[:enabled] do %>
             <li class="nav-item dropdown">
               <%= link to: blocks_path(@conn, :index), class: "nav-link" do %>
-                  <span class="nav-link-icon">
-                    <%= render BlockScoutWeb.IconsView, "_block_icon.html" %>
-                  </span>
                   <%= gettext("Blocks") %>
                 <% end %>
             </li>
             <li class="nav-item dropdown" id="activeTransactions">
               <a href="#" role="button" id="navbarTransactionsDropdown" class="nav-link topnav-nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="nav-link-icon">
-                  <%= render BlockScoutWeb.IconsView, "_transaction_icon.html" %>
-                </span>
                 <%= gettext("Transactions") %>
               </a>
               <% json_rpc_named_arguments = Application.fetch_env!(:indexer, :json_rpc_named_arguments)%>
               <% variant = Keyword.fetch!(json_rpc_named_arguments, :variant) %>
-              <div class="dropdown-menu" aria-labeledby="navbarTransactionsDropdown">
+              <div class="dropdown-menu center" style="min-width:180px" aria-labeledby="navbarTransactionsDropdown">
                 <%= link(
                   gettext("Validated"),
                   to: transaction_path(@conn, :index),
@@ -49,7 +43,7 @@
                   to: l2_to_l1_txn_path(@conn, :index)
                 ) %>
                 <%= link(
-                  gettext("Eigenlayer Txn Batches"),
+                  gettext("Mantle DA Txn Batches"),
                   class: "dropdown-item #{tab_status("eigenda-batches", @conn.request_path)}",
                   to: eigenda_batch_path(@conn, :index)
                 ) %>
@@ -66,9 +60,6 @@
 
             <li class="nav-item dropdown">
               <%= link to: tokens_path(@conn, :index), class: "nav-link" do %>
-                  <span class="nav-link-icon">
-                    <%= render BlockScoutWeb.IconsView, "_tokens_icon.html" %>
-                  </span>
                   <%= gettext("Tokens") %>
                 <% end %>
             </li>
@@ -76,12 +67,9 @@
           <%= if Application.get_env(:block_scout_web, BlockScoutWeb.ApiRouter)[:reading_enabled] || Application.get_env(:block_scout_web, :api_url) do %>
             <li class="nav-item dropdown">
               <a href="#" role="button" id="navbarAPIsDropdown" class="nav-link topnav-nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="nav-link-icon">
-                  <%= render BlockScoutWeb.IconsView, "_api_icon.html" %>
-                </span>
                 <%= gettext("APIs") %>
               </a>
-              <div class="dropdown-menu" aria-labeledby="navbarTransactionsDropdown">
+              <div class="dropdown-menu center" aria-labeledby="navbarTransactionsDropdown">
                 <%= link(
                       gettext("GraphQL"),
                       class: "dropdown-item #{tab_status("graphiql", @conn.request_path)}",
@@ -127,23 +115,43 @@
           <% end %>
           <%= render BlockScoutWeb.LayoutView, "_account_menu_item.html", conn: @conn, current_user: @current_user %>
           <li class="nav-item dropdown">
-            <span class="nav-link topnav-nav-link active-icon">
+            <span class="nav-link topnav-nav-link active-icon network-label">
               <span class="nav-link-icon">
                 <%= render BlockScoutWeb.IconsView, "_active_icon.html" %>
               </span>
-              Mantle Testnet
+              <%= gettext("Mantle Testnet") %>
             </span>
           </li>
+           <!--  language-changer -->
+          <li class="nav-item dropdown language-changer">
+              <a href="#" role="button" id="languageChangerDropdown" class="nav-link topnav-nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                EN
+              </a>
+              <div class="dropdown-menu right" aria-labeledby="languageChangerDropdown">
+                <button class="dropdown-item" data-lang="en">EN</button>
+                <button class="dropdown-item" data-lang="ja">JA</button>
+                <button class="dropdown-item" data-lang="ru">RU</button>
+                <button class="dropdown-item" data-lang="zh">ZH</button>
+                <button class="dropdown-item" data-lang="ko">KO</button>
+              </div>
+            </li>
+            <li class="nav-item">
+              <!-- Dark mode changer -->
+              <button class="dark-mode-changer" id="dark-mode-changer">
+                <svg data-icon="moon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12.0833 7.08333H14.0803C14.2659 7.08333 14.3589 7.30774 14.2276 7.43898L12.4389 9.22769C12.3077 9.35893 12.4006 9.58333 12.5863 9.58333H14.5833M15.8333 2.5H17.8303C18.0159 2.5 18.1089 2.7244 17.9776 2.85565L16.1889 4.64435C16.0577 4.7756 16.1506 5 16.3363 5H18.3333M14.4648 16.3506C10.9385 18.5538 6.28521 17.4948 4.07149 13.9852C1.85778 10.4756 2.92187 5.8444 6.44821 3.64118C7.58697 2.9297 8.84325 2.55842 10.0969 2.5C7.82752 4.64105 7.31123 8.14541 9.03761 10.8824C10.764 13.6194 14.1595 14.6797 17.0833 13.5761C16.4855 14.6745 15.6036 15.6391 14.4648 16.3506Z" stroke="#21413F" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <svg data-icon="sun" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M10 2.5V3.5M10 16.5V17.5M3.5 10H2.5M5.5 5.5L4.67493 4.67493M14.5 5.5L15.3251 4.67493M5.5 14.5031L4.67493 15.3282M14.5 14.5031L15.3251 15.3282M17.5 10H16.5" stroke="#65B3AE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <circle cx="10" cy="10" r="4" stroke="#65B3AE" stroke-width="2"/>
+                </svg>
+              </button>
+            </li>
         </ul>
       </div>
-      <!-- Dark mode changer -->
-      <button class="dark-mode-changer" id="dark-mode-changer">
-        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="16">
-            <path fill="#65B3AE" fill-rule="evenodd" d="M14.88 11.578a.544.544 0 0 0-.599-.166 5.7 5.7 0 0 1-1.924.321c-3.259 0-5.91-2.632-5.91-5.866 0-1.947.968-3.759 2.59-4.849a.534.534 0 0 0-.225-.97A5.289 5.289 0 0 0 8.059 0C3.615 0 0 3.588 0 8s3.615 8 8.059 8c2.82 0 5.386-1.423 6.862-3.806a.533.533 0 0 0-.041-.616z"/>
-        </svg>
-      </button>
+
     </div>
     <hr class="navbar-container-bottom-line" id='navbar-container-bottom-line'>
   </div>
-  <%= render BlockScoutWeb.LayoutView, "_search.html", conn: @conn, id: "main-search-autocomplete-mobile", additional_classes: ["mobile-search-show"] %>
+  <%= render BlockScoutWeb.LayoutView, "_search.html", conn: @conn, id: "main-search-autocomplete-mobile", additional_classes: ["desktop-sm-search-show"] %>
 </nav>

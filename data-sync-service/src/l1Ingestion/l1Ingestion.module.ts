@@ -3,6 +3,7 @@ import { L1IngestionService } from './l1Ingestion.service';
 import { L1IngestionController } from './l1Ingestion.controller';
 import { L2IngestionModule } from '../l2Ingestion/l2Ingestion.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { HttpModule } from '@nestjs/axios';
 import {
   L1RelayedMessageEvents,
   L1SentMessageEvents,
@@ -14,6 +15,7 @@ import {
   Tokens,
   DaBatches,
   DaBatchTransactions,
+  TokenPriceHistory,
 } from 'src/typeorm';
 import { EigenlayerModule } from '../grpc/eigenlayer.module';
 
@@ -21,6 +23,7 @@ import { EigenlayerModule } from '../grpc/eigenlayer.module';
 @Module({
   imports: [
     L2IngestionModule,
+    HttpModule,
     TypeOrmModule.forFeature([
       L1RelayedMessageEvents,
       L1SentMessageEvents,
@@ -32,6 +35,7 @@ import { EigenlayerModule } from '../grpc/eigenlayer.module';
       Tokens,
       DaBatches,
       DaBatchTransactions,
+      TokenPriceHistory,
     ]),
     EigenlayerModule,
   ],

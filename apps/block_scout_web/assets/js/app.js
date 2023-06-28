@@ -21,6 +21,7 @@ import './locale'
 
 import './pages/layout'
 import './pages/dark-mode-switcher'
+import './pages/language-switcher'
 
 import './lib/clipboard_buttons'
 import './lib/currency'

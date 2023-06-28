@@ -7,7 +7,7 @@ defmodule BlockScoutWeb.WeiHelpers do
 
   alias BlockScoutWeb.CldrHelper
   alias Explorer.Chain.Wei
-
+require Logger
   @valid_units ~w(wei gwei ether bit)a
 
   @type format_option :: {:include_unit_label, boolean()}
@@ -57,7 +57,9 @@ defmodule BlockScoutWeb.WeiHelpers do
     converted_value =
       wei
       |> Wei.to(unit)
-
+#Logger.info("-----------")
+#Logger.info("#{inspect(wei)}")
+#Logger.info("#{inspect(converted_value)}")
     formatted_value =
       if Decimal.compare(converted_value, 1_000_000_000_000) == :gt do
         CldrHelper.Number.to_string!(converted_value, format: "0.###E+0")
