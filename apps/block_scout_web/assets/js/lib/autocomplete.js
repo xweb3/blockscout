@@ -180,7 +180,7 @@ const resultItemElement = async (item, data) => {
   const $searchInput = $('#main-search-autocomplete')
   const chainID = $searchInput.data('chain-id')
   // const displayTokenIcons = $searchInput.data('display-token-icons')
-  appendTokenIcon($tokenIconContainer, chainID, data.value.address_hash, true, 24)
+  appendTokenIcon($tokenIconContainer, chainID, data.value.address_hash, false, 24)
 }
 const config = (id) => {
   return {
