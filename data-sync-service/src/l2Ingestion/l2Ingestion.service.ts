@@ -90,7 +90,7 @@ export class L2IngestionService {
     const list = await this.getSentMessageByBlockNumber(startBlock, endBlock);
     const iface = new utils.Interface([
       'function finalizeETHWithdrawal(address _from, address _to, uint256 _amount, bytes calldata _data)',
-      'function finalizeBitWithdrawal(address _from, address _to, uint256 _amount, bytes calldata _data)',
+      'function finalizeMantleWithdrawal(address _from, address _to, uint256 _amount, bytes calldata _data)',
       'function finalizeERC20Withdrawal(address _l1Token, address _l2Token, address _from, address _to, uint256 _amount, bytes calldata _data)',
     ]);
     const l2SentMessageEventsInsertData: any[] = [];
@@ -144,10 +144,10 @@ export class L2IngestionService {
           `finalizeERC20Withdrawal: l1_token: [${l1_token}], l2_token: [${l2_token}], from: [${from}], to: [${to}], value: [${value}]`,
         );
       }
-      // finalizeBitWithdrawal
-      if (funName === '0x839f0ec6') {
+      // finalizeMantleWithdrawal
+      if (funName === '0xf82b418e') {
         const decodeMsg = iface.decodeFunctionData(
-          'finalizeBitWithdrawal',
+          'finalizeMantleWithdrawal',
           message,
         );
         name = 'MNT';
@@ -158,7 +158,7 @@ export class L2IngestionService {
         l1_token = '0x1a4b46696b2bb4794eb3d4c26f1c55f9170fa4c5'
         l2_token = '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'
         this.logger.log(
-          `finalizeBitWithdrawal: from: [${from}], to: [${to}], value: [${value}]`,
+          `finalizeMantleWithdrawal: from: [${from}], to: [${to}], value: [${value}]`,
         );
       }
       const { timestamp } = await this.web3.eth.getBlock(blockNumber);
@@ -216,26 +216,26 @@ export class L2IngestionService {
     try {
       await queryRunner.startTransaction();
       await queryRunner.manager
-      .createQueryBuilder()
-      .insert()
-      .into(L2SentMessageEvents)
-      .values(l2SentMessageEventsInsertData)
-      .onConflict(`("message_nonce") DO NOTHING`)
-      .execute().catch(e => {
-        console.error('insert l2 sent message events failed:', e.message)
-        throw Error(e.message)
-      });
+        .createQueryBuilder()
+        .insert()
+        .into(L2SentMessageEvents)
+        .values(l2SentMessageEventsInsertData)
+        .onConflict(`("message_nonce") DO NOTHING`)
+        .execute().catch(e => {
+          console.error('insert l2 sent message events failed:', e.message)
+          throw Error(e.message)
+        });
 
       await queryRunner.manager
-      .createQueryBuilder()
-      .insert()
-      .into(L2ToL1)
-      .values(l2ToL1InsertData)
-      .onConflict(`("l2_hash") DO NOTHING`)
-      .execute().catch(e => {
-        console.error('insert l2 to l1 failed:', e.message)
-        throw Error(e.message)
-      });
+        .createQueryBuilder()
+        .insert()
+        .into(L2ToL1)
+        .values(l2ToL1InsertData)
+        .onConflict(`("l2_hash") DO NOTHING`)
+        .execute().catch(e => {
+          console.error('insert l2 to l1 failed:', e.message)
+          throw Error(e.message)
+        });
       await queryRunner.commitTransaction();
     } catch (error) {
       inserted = false;
@@ -273,18 +273,18 @@ export class L2IngestionService {
     }
 
     return getConnection()
-    .createQueryBuilder()
-    .insert()
-    .into(L2RelayedMessageEvents)
-    .values(l2RelayedMessageEventsInsertData)
-    .onConflict(`("msg_hash") DO NOTHING`)
-    .execute().catch(e=> {
-      console.error(`insert l2 relayed message events failed,`, e.message)
-      throw Error(e.message)
-    });
+      .createQueryBuilder()
+      .insert()
+      .into(L2RelayedMessageEvents)
+      .values(l2RelayedMessageEventsInsertData)
+      .onConflict(`("msg_hash") DO NOTHING`)
+      .execute().catch(e => {
+        console.error(`insert l2 relayed message events failed,`, e.message)
+        throw Error(e.message)
+      });
 
   }
-  
+
   async getAllSentEvents() {
     return this.sentEventsRepository.find();
   }
@@ -342,8 +342,8 @@ export class L2IngestionService {
         l1_token = '0x0000000000000000000000000000000000000000'
         l2_token = '0xdeaddeaddeaddeaddeaddeaddeaddeaddead1111'
       }
-      // finalizeBitWithdrawal
-      if (funName === '0x839f0ec6') {
+      // finalizeMantleWithdrawal
+      if (funName === '0xf82b418e') {
         // mainnet BitDAO
         l1_token = '0x1a4b46696b2bb4794eb3d4c26f1c55f9170fa4c5'
         l2_token = '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'
@@ -375,15 +375,15 @@ export class L2IngestionService {
         })
         .execute();
       await queryRunner.manager
-      .createQueryBuilder()
-      .setLock('pessimistic_write')
-      .insert()
-      .into(L2SentMessageEvents)
-      .values(updateSentEventsData)
-      .orUpdate(['l1_token', 'l2_token'], ['message_nonce'], {
-        skipUpdateIfNoValuesChanged: true
-      })
-      .execute();
+        .createQueryBuilder()
+        .setLock('pessimistic_write')
+        .insert()
+        .into(L2SentMessageEvents)
+        .values(updateSentEventsData)
+        .orUpdate(['l1_token', 'l2_token'], ['message_nonce'], {
+          skipUpdateIfNoValuesChanged: true
+        })
+        .execute();
       await queryRunner.commitTransaction();
       this.logger.log(`commit l1->l2 data successes`);
     } catch (error) {
@@ -423,10 +423,10 @@ export class L2IngestionService {
       }
     });
     const updateL2ToL1Data = []
-    for(let item of list) {
+    for (let item of list) {
       const l2_hash = item.l2_hash.toString();
       const { result } = await this.getTxStatusDetailByHash(l2_hash);
-      console.log('tx detail:',result);
+      console.log('tx detail:', result);
       if (result && (result.status === '0x3' || result.status === '0x03')) {
         updateL2ToL1Data.push({
           l2_hash: l2_hash,
