@@ -35,7 +35,7 @@ $dashboard-banner-chart-axis-font-color-alt: #333;
   padding: 0;
   position: relative;
   overflow: visible;
-  @media (max-width: 1200px) {
+  @media (max-width: 1199px) {
     height: 450px;
   }
   @include media-breakpoint-down(sm) {
@@ -67,7 +67,7 @@ $dashboard-banner-chart-axis-font-color-alt: #333;
     height: 249px;
   } */
 
-  @media (max-width: 1200px) {
+  @media (max-width: 1199px) {
     flex-direction: column;
     height: 450px;
     padding-top: 29px;
@@ -80,7 +80,7 @@ $dashboard-banner-chart-axis-font-color-alt: #333;
 }
 .dashboard-banner-network-plain-container {
   .dashboard-banner-daily-tx-title-empty {
-    @media (max-width: 1200px) {
+    @media (max-width: 1199px) {
       display: none;
     }
   }
@@ -123,7 +123,7 @@ $dashboard-banner-chart-axis-font-color-alt: #333;
     //   rgba(255, 255, 255, 0) 95.24%
     // );
 
-    @media (max-width: 1200px) {
+    @media (max-width: 1199px) {
       padding-right: 0;
     }
 
