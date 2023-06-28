@@ -1,6 +1,6 @@
 import { Injectable, Logger, Inject, CACHE_MANAGER } from '@nestjs/common';
 import { Cache } from 'cache-manager';
-import { Interval, SchedulerRegistry, Timeout } from '@nestjs/schedule';
+import { Interval, SchedulerRegistry } from '@nestjs/schedule';
 import { L1IngestionService } from '../l1Ingestion/l1Ingestion.service';
 import { L2IngestionService } from '../l2Ingestion/l2Ingestion.service';
 import { ConfigService } from '@nestjs/config';
@@ -104,8 +104,8 @@ export class TasksService {
       ttl: 0,
     });
     // TODO (Jayce) hide temp
-    //this.sync_token_price_history();
-    //this.sync_token_price_real_time();
+    this.sync_token_price_history();
+    this.sync_token_price_real_time();
     console.log('================end init cache================');
     // TODO (Jayce) state batch missed data sync script
     //this.miss_data_script_start(9006135)

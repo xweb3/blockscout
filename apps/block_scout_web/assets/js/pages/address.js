@@ -129,7 +129,7 @@ const elements = {
       if (state.countersFetched) {
         if (oldState.transactionCount === state.transactionCount) return
         const transactionsDSName = (state.transactionCount === 1) ? ' Transaction' : ' Transactions'
-        $el.empty().append(numeral(state.transactionCount).format() + transactionsDSName)
+        $el.empty().append(numeral(state.transactionCount).format())
       }
     }
   },
@@ -141,7 +141,7 @@ const elements = {
       if (state.countersFetched) {
         if (oldState.tokenTransferCount === state.tokenTransferCount) return
         const transfersDSName = (state.tokenTransferCount === 1) ? ' Transfer' : ' Transfers'
-        $el.empty().append(numeral(state.tokenTransferCount).format() + transfersDSName)
+        $el.empty().append(numeral(state.tokenTransferCount).format())
       }
     }
   },
