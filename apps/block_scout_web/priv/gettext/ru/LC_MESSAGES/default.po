@@ -55,7 +55,7 @@ msgstr "Высота блока %{block_type}"
 #: lib/block_scout_web/templates/block/index.html.eex:7
 #, elixir-autogen, elixir-format
 msgid "%{block_type}s"
-msgstr "%{block_type}s (Перевод на русский язык не требуется, так как это является переменной в коде и ее значения может быть разным в каждом случае использования)."
+msgstr ""
 
 #: lib/block_scout_web/templates/block/overview.html.eex:84
 #, elixir-autogen, elixir-format
@@ -1442,7 +1442,7 @@ msgstr "Ошибка: (Ожидание внутренних транзакци�
 #: lib/block_scout_web/templates/layout/_topnav.html.eex:100
 #, elixir-autogen, elixir-format
 msgid "Eth RPC"
-msgstr "Eth RPC (Эфириум RPC)"
+msgstr "Eth RPC"
 
 #: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:211
 #: lib/block_scout_web/templates/api_docs/_eth_rpc_item.html.eex:164
