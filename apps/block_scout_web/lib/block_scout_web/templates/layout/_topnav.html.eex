@@ -151,18 +151,21 @@
                 <button class="dropdown-item" data-lang="ko">KO</button>
               </div>
             </li>
+            <li class="nav-item">
+              <!-- Dark mode changer -->
+              <button class="dark-mode-changer" id="dark-mode-changer">
+                <svg data-icon="moon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12.0833 7.08333H14.0803C14.2659 7.08333 14.3589 7.30774 14.2276 7.43898L12.4389 9.22769C12.3077 9.35893 12.4006 9.58333 12.5863 9.58333H14.5833M15.8333 2.5H17.8303C18.0159 2.5 18.1089 2.7244 17.9776 2.85565L16.1889 4.64435C16.0577 4.7756 16.1506 5 16.3363 5H18.3333M14.4648 16.3506C10.9385 18.5538 6.28521 17.4948 4.07149 13.9852C1.85778 10.4756 2.92187 5.8444 6.44821 3.64118C7.58697 2.9297 8.84325 2.55842 10.0969 2.5C7.82752 4.64105 7.31123 8.14541 9.03761 10.8824C10.764 13.6194 14.1595 14.6797 17.0833 13.5761C16.4855 14.6745 15.6036 15.6391 14.4648 16.3506Z" stroke="#21413F" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <svg data-icon="sun" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M10 2.5V3.5M10 16.5V17.5M3.5 10H2.5M5.5 5.5L4.67493 4.67493M14.5 5.5L15.3251 4.67493M5.5 14.5031L4.67493 15.3282M14.5 14.5031L15.3251 15.3282M17.5 10H16.5" stroke="#65B3AE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <circle cx="10" cy="10" r="4" stroke="#65B3AE" stroke-width="2"/>
+                </svg>
+              </button>
+            </li>
         </ul>
       </div>
-      <!-- Dark mode changer -->
-      <button class="dark-mode-changer" id="dark-mode-changer">
-        <svg data-icon="moon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12.0833 7.08333H14.0803C14.2659 7.08333 14.3589 7.30774 14.2276 7.43898L12.4389 9.22769C12.3077 9.35893 12.4006 9.58333 12.5863 9.58333H14.5833M15.8333 2.5H17.8303C18.0159 2.5 18.1089 2.7244 17.9776 2.85565L16.1889 4.64435C16.0577 4.7756 16.1506 5 16.3363 5H18.3333M14.4648 16.3506C10.9385 18.5538 6.28521 17.4948 4.07149 13.9852C1.85778 10.4756 2.92187 5.8444 6.44821 3.64118C7.58697 2.9297 8.84325 2.55842 10.0969 2.5C7.82752 4.64105 7.31123 8.14541 9.03761 10.8824C10.764 13.6194 14.1595 14.6797 17.0833 13.5761C16.4855 14.6745 15.6036 15.6391 14.4648 16.3506Z" stroke="#21413F" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <svg data-icon="sun" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M10 2.5V3.5M10 16.5V17.5M3.5 10H2.5M5.5 5.5L4.67493 4.67493M14.5 5.5L15.3251 4.67493M5.5 14.5031L4.67493 15.3282M14.5 14.5031L15.3251 15.3282M17.5 10H16.5" stroke="#65B3AE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="10" cy="10" r="4" stroke="#65B3AE" stroke-width="2"/>
-        </svg>
-      </button>
+
     </div>
     <hr class="navbar-container-bottom-line" id='navbar-container-bottom-line'>
   </div>

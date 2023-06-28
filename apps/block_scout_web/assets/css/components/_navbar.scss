@@ -107,7 +107,8 @@ $navbar-network-label-background-color: #bae1d7;
       .nav-link-icon {
         align-items: center;
         display: flex;
-        margin-right: 0.71em;
+        // margin-right: 0.71em;
+        margin-right: 8px;
         position: relative;
         top: -1px;
         circle {
@@ -148,6 +149,13 @@ $navbar-network-label-background-color: #bae1d7;
   }
   .search-form {
     display: flex;
+    @media (min-width: 1200px) {
+      flex: 1;
+      max-width: 550px;
+      .form-control{
+        min-width: 100%;
+      }
+    }
 
     @include media-breakpoint-up(xl) {
       height: 42px;

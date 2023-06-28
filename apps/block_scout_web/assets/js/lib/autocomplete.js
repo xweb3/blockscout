@@ -80,20 +80,6 @@ const dataSrc = async (query, id) => {
   }
 }
 const resultsListElement = (list, data) => {
-  // const info = document.createElement('p')
-  // info.classList.add('result-counter')
-  // const adv = `
-  // <div class="ad mb-3" style="display: none;">
-  // <span class='ad-prefix'></span>: <img class="ad-img-url" width=20 height=20 /> <b><span class="ad-name"></span></b> - <span class="ad-short-description"></span> <a class="ad-url"><b><span class="ad-cta-button"></span></a></b>
-  // </div>`
-  // info.innerHTML = adv
-  // if (data.results.length > 0) {
-  //   info.innerHTML += `Displaying <strong>${data.results.length}</strong> results`
-  // } else if (data.query !== '###') {
-  //   info.innerHTML += `Found <strong>${data.matches.length}</strong> matching results for <strong>"${data.query}"</strong>`
-  // }
- // list.prepend(info)
-
   if (data.results.length) {
     Object.keys(localResult).map(k => {
       const $firstItem = $(`.item[data-type='${k}']`, list).first().parent()
@@ -115,12 +101,13 @@ const resultsListElement = (list, data) => {
     const headerContent = `<div class="result-header-content">${Object.keys(localResult).map((k, i) => `<div data-target="${k}" class="list-toggle ${i === 0 ? 'active' : ''}">${getLabel(k)}</div>`).join('')}</div>`
     listHeader.innerHTML = headerContent
     list.prepend(listHeader)
+
     $('.list-toggle', list).on('click', function () {
-      if ($(this).hasClass('active')) return
+      // if ($(this).hasClass('active')) return
       $('.list-toggle', list).removeClass('active')
       $(this).addClass('active')
       const target = $(this).data('target')
-      const targetTopPosition = $(`.counter-content[data-type='${target}']`, list).parent().position().top
+      const targetTopPosition = $(`.counter-content[data-type='${target}']`, list).parent().position().top + $(list).scrollTop() - $(list).offset().top
       $(list).animate({ scrollTop: targetTopPosition - 45 })
     })
   }
