@@ -396,6 +396,7 @@ export class L1IngestionService {
   }
   async createSentEvents(startBlock, endBlock) {
     const list = await this.getSentMessageByBlockNumber(startBlock, endBlock);
+    console.log(`l1 sent message fetched list start block & end block & list length: `, startBlock, endBlock, list.length)
     const iface = new utils.Interface([
       'function claimReward(uint256 _blockStartHeight, uint32 _length, uint256 _batchTime, address[] calldata _tssMembers)',
       'function finalizeDeposit(address _l1Token, address _l2Token, address _from, address _to, uint256 _amount, bytes calldata _data)',
