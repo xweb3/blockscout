@@ -80,7 +80,7 @@ const dataSrc = async (query, id) => {
   }
 }
 const resultsListElement = (list, data) => {
-  if (data.results.length) {
+  if (data.results.length > 0) {
     Object.keys(localResult).map(k => {
       const $firstItem = $(`.item[data-type='${k}']`, list).first().parent()
       const info = document.createElement('div')
@@ -110,6 +110,17 @@ const resultsListElement = (list, data) => {
       const targetTopPosition = $(`.counter-content[data-type='${target}']`, list).parent().position().top + $(list).scrollTop() - $(list).offset().top
       $(list).animate({ scrollTop: targetTopPosition - 45 })
     })
+  } else {
+    const info = document.createElement('p')
+    info.classList.add('result-counter', 'no-result')
+    const adv = ` <div class="ad mb-3" style="display: none;">
+    <span class='ad-prefix'></span>: <img class="ad-img-url" width=20 height=20 /> <b><span class="ad-name"></span></b> - <span class="ad-short-description"></span> <a class="ad-url"><b><span class="ad-cta-button"></span></a></b>
+    </div>`
+    info.innerHTML = adv
+    if (data.query !== '###') {
+      info.innerHTML += `Found <strong>${data.matches.length}</strong> matching results for <strong>"${data.query}"</strong>`
+    }
+    list.prepend(info)
   }
 
   fetchTextAdData()
@@ -169,7 +180,7 @@ const resultItemElement = async (item, data) => {
   const $searchInput = $('#main-search-autocomplete')
   const chainID = $searchInput.data('chain-id')
   // const displayTokenIcons = $searchInput.data('display-token-icons')
-  appendTokenIcon($tokenIconContainer, chainID, data.value.address_hash, true, 24)
+  appendTokenIcon($tokenIconContainer, chainID, data.value.address_hash, false, 24)
 }
 const config = (id) => {
   return {

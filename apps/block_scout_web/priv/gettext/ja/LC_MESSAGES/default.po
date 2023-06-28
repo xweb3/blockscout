@@ -530,7 +530,7 @@ msgstr "CRCワース"
 #: lib/block_scout_web/templates/common_components/_csv_export_button.html.eex:2
 #, elixir-autogen, elixir-format
 msgid "CSV"
-msgstr "CSV (Comma-Separated Values) とは、テキストベースのフォーマットであり、データを表形式に整理することができます。データは、カンマで区切られた各列から成り立ちます。CSV形式は、さまざまなプログラムやスプレッドシートソフトウェアによってサポートされています。"
+msgstr "CSV"
 
 #: lib/block_scout_web/templates/da_batch_transaction/_decoded_input_body.html.eex:10
 #: lib/block_scout_web/templates/eigenda_batch/_decoded_input_body.html.eex:10
@@ -739,7 +739,7 @@ msgstr "コンストラクタ引数"
 #: lib/block_scout_web/templates/transaction/overview.html.eex:308
 #, elixir-autogen, elixir-format
 msgid "Contract"
-msgstr "契約 (Keiyaku)"
+msgstr "契約"
 
 #: lib/block_scout_web/templates/address_contract/index.html.eex:152
 #, elixir-autogen, elixir-format
@@ -1019,7 +1019,7 @@ msgstr "トランザクションハッシュをコピーする"
 #: lib/block_scout_web/templates/transaction/overview.html.eex:634
 #, elixir-autogen, elixir-format
 msgid "Copy Txn Hex Input"
-msgstr "コピーTxn16進入力"
+msgstr "コピー取引16進入力"
 
 #: lib/block_scout_web/templates/l1_to_l2_txn/overview.html.eex:404
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:404
@@ -1027,7 +1027,7 @@ msgstr "コピーTxn16進入力"
 #: lib/block_scout_web/templates/transaction/overview.html.eex:640
 #, elixir-autogen, elixir-format
 msgid "Copy Txn UTF-8 Input"
-msgstr "コピー Txn UTF-8 入力"
+msgstr "コピー 取引 UTF-8 入力"
 
 #: lib/block_scout_web/templates/da_batch_transaction/_decoded_input_body.html.eex:41
 #: lib/block_scout_web/templates/eigenda_batch/_decoded_input_body.html.eex:41
@@ -2046,7 +2046,7 @@ msgstr "コードで指定された名前と一致する必要があります。
 #: lib/block_scout_web/templates/verified_contracts/_contract.html.eex:58
 #, elixir-autogen, elixir-format
 msgid "N/A"
-msgstr "N/A (There is no meaning or content to translate as \"N/A\" stands for \"not applicable\" or \"not available.\")"
+msgstr "N/A"
 
 #: lib/block_scout_web/templates/block/overview.html.eex:113
 #, elixir-autogen, elixir-format
@@ -2453,7 +2453,7 @@ msgstr "生の入力"
 #: lib/block_scout_web/views/txn_batch_view.ex:527
 #, elixir-autogen, elixir-format
 msgid "Raw Trace"
-msgstr "生のトレース"
+msgstr "Raw Trace"
 
 #: lib/block_scout_web/templates/address/_tabs.html.eex:93
 #: lib/block_scout_web/templates/tokens/overview/_tabs.html.eex:27
@@ -2548,7 +2548,7 @@ msgstr "理由を元に戻す"
 #: lib/block_scout_web/views/internal_transaction_view.ex:28
 #, elixir-autogen, elixir-format
 msgid "Reward"
-msgstr "報酬 (ほうしゅう)"
+msgstr "報酬"
 
 #: lib/block_scout_web/templates/admin/dashboard/index.html.eex:21
 #, elixir-autogen, elixir-format
@@ -2594,7 +2594,7 @@ msgstr "ユルの契約を確認する場合は「はい」を選択してくだ
 #: lib/block_scout_web/templates/address_contract_verification_common_fields/_include_nightly_builds_field.html.eex:19
 #, elixir-autogen, elixir-format
 msgid "Select yes if you want to show nightly builds."
-msgstr "夜間ビルドを表示する場合は「はい」を選択してください。"
+msgstr "nightly buildsを表示したい場合は、「はい」を選択してください。"
 
 #: lib/block_scout_web/views/internal_transaction_view.ex:27
 #, elixir-autogen, elixir-format
@@ -3511,7 +3511,7 @@ msgstr "一日あたり Tx"
 #: lib/block_scout_web/templates/verified_contracts/index.html.eex:60
 #, elixir-autogen, elixir-format
 msgid "Txns"
-msgstr "Txns (取引)"
+msgstr "取引"
 
 #: lib/block_scout_web/templates/da_batch_transaction/_decoded_input_body.html.eex:22
 #: lib/block_scout_web/templates/eigenda_batch/_decoded_input_body.html.eex:22
@@ -3605,7 +3605,7 @@ msgstr "トランザクションの優先度/含まれ方に関するユーザ�
 #: lib/block_scout_web/templates/layout/_topnav.html.eex:37
 #, elixir-autogen, elixir-format
 msgid "Validated"
-msgstr "検証済み (Kenshō-zumi)"
+msgstr "検証済み"
 
 #: lib/block_scout_web/templates/layout/_topnav.html.eex:57
 #, elixir-format, elixir-autogen
@@ -3615,12 +3615,12 @@ msgstr "L1 状態バッチ"
 #: lib/block_scout_web/templates/layout/_topnav.html.eex:52
 #, elixir-format, elixir-autogen
 msgid "Mantle DA Txn Batches"
-msgstr "マントル DA Txn バッチ"
+msgstr "マントル DA 取引 バッチ"
 
 #: lib/block_scout_web/templates/layout/_topnav.html.eex:49
 #, elixir-format
 msgid "L1 Txn Batches"
-msgstr "L1 トランザクションバッチ。"
+msgstr "L1 トランザクションバッチ"
 
 #: lib/block_scout_web/templates/layout/_topnav.html.eex:42
 #, elixir-format, elixir-autogen
@@ -3645,7 +3645,7 @@ msgstr "ステートバッチ。"
 #: lib/block_scout_web/templates/txn_batch/index.html.eex:12
 #, elixir-format, elixir-autogen
 msgid "Txn Batches"
-msgstr "Txn バッチ"
+msgstr "取引 バッチ"
 
 #: lib/block_scout_web/templates/state_batch_transaction/index.html.eex:13
 #: lib/block_scout_web/templates/transaction/index.html.eex:12
@@ -3667,7 +3667,7 @@ msgstr "バリデータデータ"
 #: lib/block_scout_web/templates/address/overview.html.eex:86
 #, elixir-autogen, elixir-format
 msgid "Validator Name"
-msgstr "バリデーター名 (Baridētā mei)"
+msgstr "バリデーター名"
 
 #: lib/block_scout_web/templates/l1_to_l2_txn/overview.html.eex:306
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:306
@@ -3701,12 +3701,12 @@ msgstr "検証済み"
 #: lib/block_scout_web/templates/verified_contracts/index.html.eex:6
 #, elixir-autogen, elixir-format
 msgid "Verified Contracts"
-msgstr "検証済みの契約 (Kenshōzumi no Keiyaku)"
+msgstr "検証済みの契約"
 
 #: lib/block_scout_web/templates/address_contract/index.html.eex:83
 #, elixir-autogen, elixir-format
 msgid "Verified at"
-msgstr "「Verified at」を日本語に翻訳すると、「確認済み」になります。"
+msgstr "確認済み"
 
 #: lib/block_scout_web/templates/layout/_topnav.html.eex:61
 #, elixir-autogen, elixir-format
@@ -4279,7 +4279,7 @@ msgstr "L1ガス使用済み"
 #: lib/block_scout_web/templates/transaction/overview.html.eex:747
 #, elixir-autogen, elixir-format
 msgid "L1 Origin Txn Hash"
-msgstr "L1オリジンTxnハッシュ"
+msgstr "L1オリジン取引ハッシュ"
 
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:241
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:242
@@ -4373,19 +4373,19 @@ msgstr "マントルDA提出ハッシュ"
 #: lib/block_scout_web/templates/eigenda_batch/index.html.eex:12
 #, elixir-autogen, elixir-format
 msgid "Mantle DA Txn"
-msgstr "マントル DA Txn"
+msgstr "マントル DA 取引"
 
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:202
 #: lib/block_scout_web/templates/transaction/overview.html.eex:225
 #, elixir-autogen, elixir-format
 msgid "Mantle DA Txn Batch Index"
-msgstr "マントルDA Txnバッチインデックス"
+msgstr "マントルDA 取引バッチインデックス"
 
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:201
 #: lib/block_scout_web/templates/transaction/overview.html.eex:224
 #, elixir-autogen, elixir-format
 msgid "Mantle DA Txn Batch Index."
-msgstr "マントルDA Txnバッチインデックス。"
+msgstr "マントルDA 取引バッチインデックス。"
 
 #: lib/block_scout_web/templates/layout/_footer.html.eex:26
 #, elixir-autogen
@@ -4410,7 +4410,7 @@ msgstr "すべてのMantle DAバッチを表示する"
 #: lib/block_scout_web/templates/chain/show.html.eex:207
 #, elixir-autogen
 msgid "Latest Mantle DA Txn Batches"
-msgstr "最新マントルDA Txnバッチ"
+msgstr "最新マントルDA 取引バッチ"
 
 #: lib/block_scout_web/templates/chain/show.html.eex:258
 #, elixir-autogen
@@ -4420,12 +4420,12 @@ msgstr "すべての取引を表示する"
 #: lib/block_scout_web/templates/chain/show.html.eex:268
 #, elixir-autogen
 msgid "Latest L1->L2 Transactions"
-msgstr "最新のL1->L2トランザクション。"
+msgstr "最新のL1->L2トランザクション"
 
 #: lib/block_scout_web/templates/chain/show.html.eex:284
 #, elixir-autogen
 msgid "View all L1->L2 Transactions"
-msgstr "すべてのL1->L2取引を表示する。"
+msgstr "すべてのL1->L2取引を表示する"
 
 #: lib/block_scout_web/templates/l1_to_l2_txn/index.html.eex:42
 #, elixir-autogen
@@ -4446,7 +4446,7 @@ msgstr "L2トランザクションハッシュ"
 #: lib/block_scout_web/templates/l1_to_l2_txn/index.html.eex:59
 #, elixir-autogen
 msgid "Txn Type"
-msgstr "Txnタイプ"
+msgstr "取引タイプ"
 
 #: lib/block_scout_web/templates/l1_to_l2_txn/index.html.eex:66
 #, elixir-autogen
@@ -4560,7 +4560,7 @@ msgstr "プレトータルエレメンツ"
 #: lib/block_scout_web/templates/txn_batch/index.html.eex:37
 #, elixir-autogen
 msgid "Txn Batch"
-msgstr "Txnバッチ"
+msgstr "取引バッチ"
 
 #: lib/block_scout_web/templates/tokens/index.html.eex:47
 #, elixir-autogen
