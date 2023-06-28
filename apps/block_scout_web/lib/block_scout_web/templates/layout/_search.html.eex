@@ -13,6 +13,8 @@
 				data-display-token-icons="<%= System.get_env("DISPLAY_TOKEN_ICONS") %>"
 				type="text"
 				tabindex="1"
+				autocomplete="off"
+				spellcheck="false"
 			>
 		</div>
 		<div class="input-group-append left search-icon">

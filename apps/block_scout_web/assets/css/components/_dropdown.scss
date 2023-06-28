@@ -73,6 +73,9 @@ $dropdown-menu-background: #cbe9e7;
     &.active {
       font-weight: bold;
     }
+    &:hover:not(.active) {
+      background-color: rgba(101, 179, 174, 0.15);
+    }
   }
 
   // &:first-child {

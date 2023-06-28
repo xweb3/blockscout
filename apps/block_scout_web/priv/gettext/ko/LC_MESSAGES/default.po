@@ -530,7 +530,7 @@ msgstr "CRC 가치"
 #: lib/block_scout_web/templates/common_components/_csv_export_button.html.eex:2
 #, elixir-autogen, elixir-format
 msgid "CSV"
-msgstr "CSV (Comma Separated Values)"
+msgstr "CSV"
 
 #: lib/block_scout_web/templates/da_batch_transaction/_decoded_input_body.html.eex:10
 #: lib/block_scout_web/templates/eigenda_batch/_decoded_input_body.html.eex:10
@@ -1019,7 +1019,7 @@ msgstr "트랜잭션 해시를 복사하세요."
 #: lib/block_scout_web/templates/transaction/overview.html.eex:634
 #, elixir-autogen, elixir-format
 msgid "Copy Txn Hex Input"
-msgstr "복사 Txn Hex 입력"
+msgstr "복사 거래 Hex 입력"
 
 #: lib/block_scout_web/templates/l1_to_l2_txn/overview.html.eex:404
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:404
@@ -2046,7 +2046,7 @@ msgstr "코드에 지정된 이름과 일치해야합니다. 예를 들어, <spa
 #: lib/block_scout_web/templates/verified_contracts/_contract.html.eex:58
 #, elixir-autogen, elixir-format
 msgid "N/A"
-msgstr "N/A (N/A)"
+msgstr "N/A"
 
 #: lib/block_scout_web/templates/block/overview.html.eex:113
 #, elixir-autogen, elixir-format
@@ -2236,7 +2236,7 @@ msgstr "다른 탐험가들"
 #: lib/block_scout_web/templates/account/watchlist_address/form.html.eex:61
 #, elixir-autogen, elixir-format
 msgid "Outgoing"
-msgstr "텍스트를 번역할 수 없습니다. \"Outgoing\"은 너무 일반적인 단어로, 번역 문맥이 명확하지 않습니다. 더 구체적인 문장을 제공해주시면 번역을 도와드릴 수 있습니다."
+msgstr "나가는"
 
 #: lib/block_scout_web/templates/tokens/inventory/_token.html.eex:24
 #, elixir-autogen, elixir-format
@@ -2453,7 +2453,7 @@ msgstr "원시 입력"
 #: lib/block_scout_web/views/txn_batch_view.ex:527
 #, elixir-autogen, elixir-format
 msgid "Raw Trace"
-msgstr "원시 추적"
+msgstr "Raw Trace"
 
 #: lib/block_scout_web/templates/address/_tabs.html.eex:93
 #: lib/block_scout_web/templates/tokens/overview/_tabs.html.eex:27
@@ -2594,7 +2594,7 @@ msgstr "율 계약을 확인하려면 예를 선택하세요."
 #: lib/block_scout_web/templates/address_contract_verification_common_fields/_include_nightly_builds_field.html.eex:19
 #, elixir-autogen, elixir-format
 msgid "Select yes if you want to show nightly builds."
-msgstr "밤간 빌드를 표시하려면 예를 선택하세요."
+msgstr "nightly builds 을(를) 표시하려면 '예'를 선택하세요."
 
 #: lib/block_scout_web/views/internal_transaction_view.ex:27
 #, elixir-autogen, elixir-format
@@ -3511,7 +3511,7 @@ msgstr "일일 Tx"
 #: lib/block_scout_web/templates/verified_contracts/index.html.eex:60
 #, elixir-autogen, elixir-format
 msgid "Txns"
-msgstr "Txns (거래)"
+msgstr "거래"
 
 #: lib/block_scout_web/templates/da_batch_transaction/_decoded_input_body.html.eex:22
 #: lib/block_scout_web/templates/eigenda_batch/_decoded_input_body.html.eex:22
@@ -3615,7 +3615,7 @@ msgstr "L1 상태 배치들"
 #: lib/block_scout_web/templates/layout/_topnav.html.eex:52
 #, elixir-format, elixir-autogen
 msgid "Mantle DA Txn Batches"
-msgstr "맨틀 DA Txn 배치들"
+msgstr "맨틀 DA 거래 배치들"
 
 #: lib/block_scout_web/templates/layout/_topnav.html.eex:49
 #, elixir-format
@@ -3625,7 +3625,7 @@ msgstr "L1 거래 일괄 처리"
 #: lib/block_scout_web/templates/layout/_topnav.html.eex:42
 #, elixir-format, elixir-autogen
 msgid "L1 to L2 Txns"
-msgstr "L1에서 L2로의 거래 (L1 to L2 금전 송금)"
+msgstr "L1에서 L2로의 거래"
 
 #: lib/block_scout_web/templates/l1_to_l2_txn/index.html.eex:24
 #, elixir-format, elixir-autogen
@@ -4216,7 +4216,7 @@ msgstr "이 거래를 방금 제출한 경우 페이지를 새로 고침하기 �
 #: lib/block_scout_web/templates/l1_to_l2_txn/index.html.eex:89
 #, elixir-autogen, elixir-format
 msgid "Indicates by which contract was this Txn synced to Mantle Bridge"
-msgstr "이 Txn이 Mantle Bridge에 동기화된 계약에 의해 표시되었는지 나타냅니다."
+msgstr "이 거래는 어떤 계약과 Mantle Bridge 가 동기화되었는지를 나타냅니다."
 
 #: lib/block_scout_web/templates/l1_to_l2_txn/index.html.eex:47
 #, elixir-autogen, elixir-format
@@ -4279,7 +4279,7 @@ msgstr "L1 가스 사용됨"
 #: lib/block_scout_web/templates/transaction/overview.html.eex:747
 #, elixir-autogen, elixir-format
 msgid "L1 Origin Txn Hash"
-msgstr "L1 원본 Txn 해시"
+msgstr "L1 원본 거래 해시"
 
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:241
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:242
@@ -4287,7 +4287,7 @@ msgstr "L1 원본 Txn 해시"
 #: lib/block_scout_web/templates/transaction/overview.html.eex:266
 #, elixir-autogen, elixir-format
 msgid "L1 State Root Submission Txn Hash"
-msgstr "L1 상태 루트 제출 Txn 해시"
+msgstr "L1 상태 루트 제출 거래 해시"
 
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:444
 #, elixir-autogen, elixir-format
@@ -4379,7 +4379,7 @@ msgstr "맨틀 DA 거래"
 #: lib/block_scout_web/templates/transaction/overview.html.eex:225
 #, elixir-autogen, elixir-format
 msgid "Mantle DA Txn Batch Index"
-msgstr "맨틀 DA Txn 일괄 처리 인덱스"
+msgstr "맨틀 DA 거래 일괄 처리 인덱스"
 
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:201
 #: lib/block_scout_web/templates/transaction/overview.html.eex:224
@@ -4410,7 +4410,7 @@ msgstr "\"모든 Mantle DA 배치 보기\""
 #: lib/block_scout_web/templates/chain/show.html.eex:207
 #, elixir-autogen
 msgid "Latest Mantle DA Txn Batches"
-msgstr "최신 맨틀 DA Txn 배치들"
+msgstr "최신 맨틀 DA 거래 배치들"
 
 #: lib/block_scout_web/templates/chain/show.html.eex:258
 #, elixir-autogen
@@ -4461,7 +4461,7 @@ msgstr "TSS 보상"
 #: lib/block_scout_web/templates/l1_to_l2_txn/index.html.eex:72
 #, elixir-autogen
 msgid "L2 Txn Rollback"
-msgstr "L2 Txn Rollback: L2 트랜잭션 롤백"
+msgstr "L2 트랜잭션 롤백"
 
 #: lib/block_scout_web/templates/l1_to_l2_txn/index.html.eex:81
 #: lib/block_scout_web/templates/l2_to_l1_txn/index.html.eex:37
@@ -4477,7 +4477,7 @@ msgstr "나이"
 #: lib/block_scout_web/templates/txn_batch/index.html.eex:46
 #, elixir-autogen
 msgid "L1 Txn Hash"
-msgstr "L1 Txn 해시"
+msgstr "L1 거래 해시"
 
 #: lib/block_scout_web/templates/l2_to_l1_txn/index.html.eex:28
 #, elixir-autogen
@@ -4560,7 +4560,7 @@ msgstr "사전 준비 요소들"
 #: lib/block_scout_web/templates/txn_batch/index.html.eex:37
 #, elixir-autogen
 msgid "Txn Batch"
-msgstr "Txn 일괄 처리"
+msgstr "거래 일괄 처리"
 
 #: lib/block_scout_web/templates/tokens/index.html.eex:47
 #, elixir-autogen
@@ -4570,7 +4570,7 @@ msgstr "보유자 수"
 #: lib/block_scout_web/templates/l1_to_l2_txn/index.html.eex:87
 #, elixir-autogen, elixir-format
 msgid "L1 Txn Origin"
-msgstr "L1 Txn 원천"
+msgstr "L1 거래 원천"
 
 #: lib/block_scout_web/templates/tokens/index.html.eex:42
 #, elixir-autogen, elixir-format
