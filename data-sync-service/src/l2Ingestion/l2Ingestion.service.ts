@@ -21,6 +21,9 @@ export class L2IngestionService {
   entityManager: EntityManager;
   web3: Web3;
   crossDomainMessengerContract: any;
+  WithdrawalMethod: string = 'finalizeMantleWithdrawal'
+  WithdrawalMethodHexPrefix: string = '0xf82b418e'
+
   constructor(
     private configService: ConfigService,
     @InjectRepository(L2RelayedMessageEvents)
@@ -40,6 +43,10 @@ export class L2IngestionService {
       configService.get('L2_CROSS_DOMAIN_MESSENGER_ADDRESS'),
     );
     this.web3 = web3;
+    if(configService.get('ENV') !== 'mainnet'){
+      this.WithdrawalMethod = 'finalizeBitWithdrawal'
+      this.WithdrawalMethodHexPrefix = '0x839f0ec6'
+    }
   }
   async getSentMessageByBlockNumber(fromBlock: number, toBlock: number) {
     return this.crossDomainMessengerContract.getPastEvents('SentMessage', {
@@ -90,7 +97,7 @@ export class L2IngestionService {
     const list = await this.getSentMessageByBlockNumber(startBlock, endBlock);
     const iface = new utils.Interface([
       'function finalizeETHWithdrawal(address _from, address _to, uint256 _amount, bytes calldata _data)',
-      'function finalizeMantleWithdrawal(address _from, address _to, uint256 _amount, bytes calldata _data)',
+      `function ${this.WithdrawalMethod}(address _from, address _to, uint256 _amount, bytes calldata _data)`,
       'function finalizeERC20Withdrawal(address _l1Token, address _l2Token, address _from, address _to, uint256 _amount, bytes calldata _data)',
     ]);
     const l2SentMessageEventsInsertData: any[] = [];
@@ -145,9 +152,9 @@ export class L2IngestionService {
         );
       }
       // finalizeMantleWithdrawal
-      if (funName === '0xf82b418e') {
+      if (funName === this.WithdrawalMethodHexPrefix) {
         const decodeMsg = iface.decodeFunctionData(
-          'finalizeMantleWithdrawal',
+          this.WithdrawalMethod,
           message,
         );
         name = 'MNT';
@@ -158,7 +165,7 @@ export class L2IngestionService {
         l1_token = '0x1a4b46696b2bb4794eb3d4c26f1c55f9170fa4c5'
         l2_token = '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'
         this.logger.log(
-          `finalizeMantleWithdrawal: from: [${from}], to: [${to}], value: [${value}]`,
+          `${this.WithdrawalMethod}: from: [${from}], to: [${to}], value: [${value}]`,
         );
       }
       const { timestamp } = await this.web3.eth.getBlock(blockNumber);
@@ -344,7 +351,7 @@ export class L2IngestionService {
         l2_token = '0xdeaddeaddeaddeaddeaddeaddeaddeaddead1111'
       }
       // finalizeMantleWithdrawal
-      if (funName === '0xf82b418e') {
+      if (funName === this.WithdrawalMethodHexPrefix) {
         // mainnet BitDAO
         l1_token = '0x1a4b46696b2bb4794eb3d4c26f1c55f9170fa4c5'
         l2_token = '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'
