@@ -533,7 +533,7 @@ export class L1IngestionService {
       where: { l2_hash: null, block: LessThan(confirmBlock) },
       order: { block: 'DESC' },
       select: ["block"],
-      take: 10,
+      take: 100,
     });
   }
 

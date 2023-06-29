@@ -106,7 +106,7 @@ export class TasksService {
     // TODO (Jayce) hide temp
     this.sync_token_price_history();
     this.sync_token_price_real_time();
-    this.updateReorgBlockMessage();
+    //this.updateReorgBlockMessage();
     console.log('================end init cache================');
     // TODO (Jayce) state batch missed data sync script
     //this.miss_data_script_start(9006135)
