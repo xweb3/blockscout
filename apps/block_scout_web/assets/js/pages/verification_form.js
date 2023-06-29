@@ -19,6 +19,7 @@ export function reducer (state = initialState, action) {
       return Object.assign({}, state, omit(action, 'type'))
     }
     case 'CHANNEL_DISCONNECTED': {
+      console.error('----------------channel disconnected while verifying a contract')
       return Object.assign({}, state, {
         channelDisconnected: true
       })
@@ -27,6 +28,7 @@ export function reducer (state = initialState, action) {
       if (action.msg.verificationResult === 'ok') {
         return window.location.replace(window.location.href.split('/contract_verifications')[0].split('/verify')[0] + '/contracts')
       } else {
+        console.log('received verification result',  action.msg.verificationResult)
         return Object.assign({}, state, {
           newForm: action.msg.verificationResult
         })
