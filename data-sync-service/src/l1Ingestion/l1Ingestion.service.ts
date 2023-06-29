@@ -599,7 +599,9 @@ export class L1IngestionService {
             console.error('update reorg block l1 to l2 failed', e.message)
             throw Error(e.message)
           });
-          //console.log(`update l1 sent message events and l1 to l2 successful, message nonce`, messageNonce)
+          console.log(`update l1 sent message events and l1 to l2 successful, block`, block)
+          console.log(`nonce`, messageNonce)
+          console.log(`msg_hash`, msgHash)
         await queryRunner.commitTransaction();
       } catch (error) {
         console.error(error)
