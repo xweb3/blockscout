@@ -15,6 +15,10 @@ a {
 	text-decoration: none !important;
 }
 
+body{
+  overscroll-behavior: none;
+}
+
 .dashboard-banner-info-container {
   width: 100%;
   display: flex;

@@ -169,6 +169,12 @@ defmodule BlockScoutWeb.WebRouter do
 
     resources("/tokens", TokensController, only: [:index])
 
+    resources("/tokens-erc20", TokensERC20Controller, only: [:index])
+
+    resources("/tokens-erc721", TokensERC721Controller, only: [:index])
+
+    resources("/tokens-erc1155", TokensERC1155Controller, only: [:index])
+
     resources "/address", AddressController, only: [:show] do
       resources("/transactions", AddressTransactionController, only: [:index], as: :transaction)
 

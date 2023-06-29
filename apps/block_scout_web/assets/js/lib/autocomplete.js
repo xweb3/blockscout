@@ -169,7 +169,7 @@ const resultItemElement = async (item, data) => {
 
   item.innerHTML = `
   <div data-type='${getType(data.value)}' class='item' id='token-icon-${data.value.address_hash}' style='margin-top: -1px;'></div>
-  <div class="result-match" style="padding-left: 10px; padding-right: 10px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
+  <div class="result-match" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
     ${data.match}
   </div>
   <div class="autocomplete-category">
