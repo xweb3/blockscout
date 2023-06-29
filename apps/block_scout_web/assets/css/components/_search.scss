@@ -68,6 +68,7 @@
       background: url(../static/images/dark_verified.svg) no-repeat !important;
     }
   }
+  position: initial;
 }
 
 .main-search-autocomplete {
@@ -99,12 +100,12 @@
 }
 
 .autoComplete_highlight {
-  background-color: #feff54 !important;
+  background-color: rgba(6, 221, 118, 0.5) !important;
   color: #212121 !important;
+  border-radius: 2px;
 }
 
 ul[id^="autoComplete_list_"] {
-  margin-left: -39px !important;
   border-radius: 12px !important;
   padding: 10px !important;
   top: calc(100% + 8px);
@@ -192,6 +193,10 @@ li[id^="autoComplete_result_"] {
 
 .autoComplete_wrapper > ul > li[id^="autoComplete_result_"]{
   background-color: transparent;
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: 0;
+  margin-right: 0;
   &:hover{
     background: rgba(203, 233, 231, 0.5);
   }

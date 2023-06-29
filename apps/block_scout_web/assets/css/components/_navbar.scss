@@ -184,7 +184,9 @@ $navbar-network-label-background-color: #bae1d7;
     position: relative;
     width: 100%;
     z-index: 1;
-    min-width: 343px;
+    @include media-breakpoint-up(sm) {
+      min-width: 343px;
+    }
     &[placeholder] {
       text-overflow: ellipsis !important;
     }

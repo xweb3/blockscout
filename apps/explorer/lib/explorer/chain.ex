@@ -2659,19 +2659,27 @@ defmodule Explorer.Chain do
 
   """
   @spec list_top_tokens(String.t()) :: [{Token.t(), non_neg_integer()}]
-  def list_top_tokens(filter, options \\ []) do
+  def list_top_tokens(filter, options \\ [], token_type \\ "") do
     paging_options = Keyword.get(options, :paging_options, @default_paging_options)
 
-    fetch_top_tokens(filter, paging_options)
+    fetch_top_tokens(filter, paging_options, token_type)
   end
 
-  defp fetch_top_tokens(filter, paging_options) do
+
+  defp fetch_top_tokens(filter, paging_options, token_type) do
+    # token_type: ERC-20 / ERC-721 / ERC-1155
     base_query =
       from(t in Token,
         where: t.total_supply > ^0,
         order_by: [desc_nulls_last: t.holder_count, asc: t.name],
         preload: [:contract_address]
       )
+
+    base_query = if token_type != "" do
+      from q in base_query, where: q.type == ^token_type
+    else
+      base_query
+    end
 
     base_query_with_paging =
       base_query
