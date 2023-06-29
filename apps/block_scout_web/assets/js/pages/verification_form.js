@@ -40,6 +40,9 @@ export function reducer (state = initialState, action) {
 const elements = {
   '[data-selector="channel-disconnected-message"]': {
     render ($el, state) {
+      console.log('verified')
+      console.log(state.channelDisconnected)
+      console.log(window.loading)
       if (state.channelDisconnected && !window.loading) $el.show()
     }
   },

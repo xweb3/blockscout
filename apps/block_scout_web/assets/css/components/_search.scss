@@ -34,6 +34,40 @@
 
 .autoComplete_wrapper {
   width: 100% !important;
+  .item-wrapper{
+    position:relative;
+    .hide-contract-address{
+      display: none;
+    }
+    .common-contract-address{
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      position: absolute;
+      right: 0px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .is_contract_address {
+      display: inline-block;
+      background: url(../static/images/not_verified.svg) no-repeat !important;
+      background-size: 100% 100% !important;
+    }
+    .contract_verified {
+      background: url(../static/images/verified.svg) no-repeat !important;
+    }
+  }
+  
+}
+.dark-theme-applied{
+  .autoComplete_wrapper {
+    .is_contract_address {
+      background: url(../static/images/dark_not_verified.svg) no-repeat !important;
+    }
+    .contract_verified {
+      background: url(../static/images/dark_verified.svg) no-repeat !important;
+    }
+  }
 }
 
 .main-search-autocomplete {

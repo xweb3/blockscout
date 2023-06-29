@@ -55,6 +55,7 @@ const dataSrc = async (query, id) => {
     )
     const data = await source.json()
     // Post Loading placeholder text
+    console.log('------', data)
 
     searchInput.setAttribute('placeholder', placeHolder)
     // Returns Fetched data
@@ -82,6 +83,7 @@ const dataSrc = async (query, id) => {
 const resultsListElement = (list, data) => {
   if (data.results.length > 0) {
     Object.keys(localResult).map(k => {
+      console.log('0-0-0--', k)
       const $firstItem = $(`.item[data-type='${k}']`, list).first().parent()
       const info = document.createElement('div')
       info.classList.add('result-counter')
@@ -164,6 +166,18 @@ export const searchEngine = (query, record) => {
     return searchResult
   }
 }
+function getContractVerifiedCls (data){
+  let cls = '';
+  if(!data.is_not_contract_address){
+    cls = 'is_contract_address'
+    if(data.is_verified){
+      cls += ' contract_verified'
+    }
+  }
+  
+  return cls;
+}
+
 const resultItemElement = async (item, data) => {
   item.style = 'display: flex;'
 
@@ -174,7 +188,9 @@ const resultItemElement = async (item, data) => {
   </div>
   <div class="autocomplete-category">
     ${data.value.type}
-  </div>`
+  </div>
+  <span class="hide-contract-address common-contract-address ${getContractVerifiedCls(data.value)}"></span>
+  `
 
   const $tokenIconContainer = $(item).find(`#token-icon-${data.value.address_hash}`)
   const $searchInput = $('#main-search-autocomplete')
