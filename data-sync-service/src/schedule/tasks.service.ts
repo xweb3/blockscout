@@ -104,8 +104,8 @@ export class TasksService {
       ttl: 0,
     });
     // TODO (Jayce) hide temp
-    //this.sync_token_price_history();
-    //this.sync_token_price_real_time();
+    this.sync_token_price_history();
+    this.sync_token_price_real_time();
     console.log('================end init cache================');
     // TODO (Jayce) state batch missed data sync script
     //this.miss_data_script_start(9006135)
@@ -113,9 +113,10 @@ export class TasksService {
   @Interval(3000)
   async l1_sent() {
     let end = 0;
-    const currentBlockNumber =
+    const currentL1BlockNumber =
       await this.l1IngestionService.getCurrentBlockNumber();
-    console.log('l1 sent currentBlockNumber: ', currentBlockNumber);
+    console.log('l1 sent currentBlockNumber: ', currentL1BlockNumber);
+    const currentBlockNumber = currentL1BlockNumber - 1;
     const start = Number(await this.cacheManager.get(L1_SENT));
     if (currentBlockNumber - start > SYNC_STEP) {
       end = start + SYNC_STEP;
@@ -140,9 +141,10 @@ export class TasksService {
   @Interval(2000)
   async l1_relayed() {
     let end = 0;
-    const currentBlockNumber =
+    const currentL1BlockNumber =
       await this.l1IngestionService.getCurrentBlockNumber();
-    console.log('l1 relayed currentBlockNumber: ', currentBlockNumber);
+    console.log('l1 relayed currentBlockNumber: ', currentL1BlockNumber);
+    const currentBlockNumber = currentL1BlockNumber - 1;
     const start = Number(await this.cacheManager.get(L1_RELAYED));
     if (currentBlockNumber - start > SYNC_STEP) {
       end = start + SYNC_STEP;
@@ -167,9 +169,10 @@ export class TasksService {
   @Interval(2000)
   async l2_sent() {
     let end = 0;
-    const currentBlockNumber =
+    const currentL2BlockNumber =
       await this.l2IngestionService.getCurrentBlockNumber();
-    console.log('l2 sent currentBlockNumber: ', currentBlockNumber);
+    console.log('l2 sent currentBlockNumber: ', currentL2BlockNumber);
+    const currentBlockNumber = currentL2BlockNumber - 1;
     const start = Number(await this.cacheManager.get(L2_SENT));
     if (currentBlockNumber - start > SYNC_STEP_L2) {
       end = start + SYNC_STEP_L2;
@@ -194,9 +197,10 @@ export class TasksService {
   @Interval(2000)
   async l2_relayed() {
     let end = 0;
-    const currentBlockNumber =
+    const currentL2BlockNumber =
       await this.l2IngestionService.getCurrentBlockNumber();
-    console.log('l2 relayed currentBlockNumber: ', currentBlockNumber);
+    console.log('l2 relayed currentBlockNumber: ', currentL2BlockNumber);
+    const currentBlockNumber = currentL2BlockNumber - 1;
     const start = Number(await this.cacheManager.get(L2_RELAYED));
     if (currentBlockNumber - start > SYNC_STEP_L2) {
       end = start + SYNC_STEP_L2;
@@ -314,7 +318,7 @@ export class TasksService {
 
   }
   //TODO (Jayce) hide temp
-   /* @Interval(1800000)
+   @Interval(1800000)
    async sync_token_price_history() {
      console.log('start sync token price service')
      this.l1IngestionService.syncTokenPriceHistory();
@@ -323,5 +327,5 @@ export class TasksService {
    @Interval(10000)
    async sync_token_price_real_time() {
     this.l1IngestionService.syncTokenPriceRealTime();
-   } */
+   }
 }

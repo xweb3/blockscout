@@ -426,7 +426,7 @@ export class L2IngestionService {
       },
       take: 10,
       order: {
-        block: 'ASC'
+        block: 'DESC'
       }
     });
     const updateL2ToL1Data = []
