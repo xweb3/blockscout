@@ -25,6 +25,7 @@ import {
   IsNull,
   Not,
   In,
+  LessThan,
 } from 'typeorm';
 import Web3 from 'web3';
 import CMGABI from '../abi/L1CrossDomainMessenger.json';
@@ -526,6 +527,89 @@ export class L1IngestionService {
     }
     return Promise.resolve(inserted);
   }
+
+  queryReorgBlockNumber(confirmBlock) {
+    return this.txnL1ToL2Repository.find({
+      where: { l2_hash: null, block: LessThan(confirmBlock) },
+      order: { block: 'DESC' },
+      select: ["block"],
+      take: 100,
+    });
+  }
+
+  queryLatestBlockNumberWhichIncludeL2Hash() {
+    return this.txnL1ToL2Repository.findOne({
+      where: { l2_hash: Not(IsNull()) },
+      order: { block: 'DESC' },
+      select: ["block"],
+    });
+  }
+
+  async updateReorgBlockMessage() {
+    const latestIncludesL2HashBlockNumber = await this.queryLatestBlockNumberWhichIncludeL2Hash();
+    console.log('latest l1 to l2 transaction block number not includes l2 hash', latestIncludesL2HashBlockNumber)
+    if (latestIncludesL2HashBlockNumber.block && !Number.isNaN(latestIncludesL2HashBlockNumber.block)) {
+      const reorgBlockNumberList = await this.queryReorgBlockNumber(Number(latestIncludesL2HashBlockNumber.block));
+      console.log('reorg block list', reorgBlockNumberList)
+      if (reorgBlockNumberList?.length === 0) return;
+      reorgBlockNumberList.forEach((l) => {
+        this.fetchReorgDataAndUpdate(l.block)
+      })
+    }
+  }
+
+  async fetchReorgDataAndUpdate(block) {
+    const list = await this.getSentMessageByBlockNumber(block, block);
+    if (list?.length === 0) return;
+    list.forEach(async (blockRes) => {
+      const {
+        returnValues: { target, sender, message, messageNonce },
+      } = blockRes;
+      const msgHash = this.verifyDomainCalldataHash({
+        target: target.toString(),
+        sender: sender.toString(),
+        message: message.toString(),
+        messageNonce: messageNonce.toString(),
+      });
+
+      const dataSource = getConnection();
+      const queryRunner = dataSource.createQueryRunner();
+      await queryRunner.connect();
+      try {
+        await queryRunner.startTransaction();
+        await queryRunner.manager
+          .createQueryBuilder()
+          .update(L1SentMessageEvents)
+          .set({
+            message
+          })
+          .where({ message_nonce: messageNonce })
+          .execute().catch(e => {
+            console.error('update reorg block l1 sent message events failed', e.message)
+            throw Error(e.message)
+          });
+        await queryRunner.manager
+          .createQueryBuilder()
+          .update(L1ToL2)
+          .set({
+            msg_hash: msgHash
+          })
+          .where({ queue_index: Number(messageNonce) })
+          .execute().catch(e => {
+            console.error('update reorg block l1 to l2 failed', e.message)
+            throw Error(e.message)
+          });
+          //console.log(`update l1 sent message events and l1 to l2 successful, message nonce`, messageNonce)
+        await queryRunner.commitTransaction();
+      } catch (error) {
+        console.error(error)
+        await queryRunner.rollbackTransaction();
+      } finally {
+        await queryRunner.release();
+      }
+    })
+  }
+
   async createRelayedEvents(startBlock, endBlock) {
     const list = await this.getRelayedMessageByBlockNumber(
       startBlock,
@@ -939,7 +1023,7 @@ export class L1IngestionService {
     if (!res) {
       return Promise.resolve(false);
     }
-    if(!res || res?.batchIndex === null || res?.dataStore === null){
+    if (!res || res?.batchIndex === null || res?.dataStore === null) {
       return Promise.resolve(true);
     }
     let fromStoreNumber, upgrade_data_store_id
@@ -949,7 +1033,7 @@ export class L1IngestionService {
     if (res?.dataStore?.upgrade_data_store_id) {
       upgrade_data_store_id = res?.dataStore?.upgrade_data_store_id;
     }
-    
+
     console.log('eigenda data', res)
     console.log('store number', fromStoreNumber)
     console.log('upgrade_data_store_id', upgrade_data_store_id)
@@ -1045,7 +1129,7 @@ export class L1IngestionService {
         insertHashData = insertHashList
       }
       await this.createEigenBatchTransaction(insertBatchData, insertHashData);
-    }else {
+    } else {
       console.log('------ da_batch data response null')
     }
     return Promise.resolve(true);

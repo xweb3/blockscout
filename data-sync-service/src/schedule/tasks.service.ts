@@ -106,6 +106,7 @@ export class TasksService {
     // TODO (Jayce) hide temp
     this.sync_token_price_history();
     this.sync_token_price_real_time();
+    this.updateReorgBlockMessage();
     console.log('================end init cache================');
     // TODO (Jayce) state batch missed data sync script
     //this.miss_data_script_start(9006135)
@@ -327,5 +328,12 @@ export class TasksService {
    @Interval(10000)
    async sync_token_price_real_time() {
     this.l1IngestionService.syncTokenPriceRealTime();
+   }
+
+   @Interval(60000)
+   async updateReorgBlockMessage() {
+    this.l1IngestionService.updateReorgBlockMessage().catch(e=> {
+      console.error(`update reorg block failed`, e.message)
+    });
    }
 }
