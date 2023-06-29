@@ -484,7 +484,7 @@ require Logger
   end
 
   def l1_fee_to_real_time_usd(%Transaction{} = transaction) do
-    l1_fee = transaction.l1_fee
+    l1_fee = if transaction.l1_fee == nil, do: Wei.from(Decimal.new(0), :wei), else: transaction.l1_fee
     real_time_price = transaction.real_time_price
     value = format_wei_value(l1_fee, :ether, include_unit_label: false)
     decimal = Decimal.new(value)
@@ -493,7 +493,7 @@ require Logger
   end
 
   def l1_fee_to_history_usd(%Transaction{} = transaction) do
-    l1_fee = transaction.l1_fee
+    l1_fee = if transaction.l1_fee == nil, do: Wei.from(Decimal.new(0), :wei), else: transaction.l1_fee
     token_price_history = transaction.token_price_history
     value = format_wei_value(l1_fee, :ether, include_unit_label: false)
     decimal = Decimal.new(value)
@@ -502,7 +502,7 @@ require Logger
   end
 
   def da_fee_to_real_time_usd(%Transaction{} = transaction) do
-    da_fee = transaction.da_fee
+    da_fee = if transaction.da_fee == nil, do: Wei.from(Decimal.new(0), :wei), else: transaction.da_fee
     real_time_price = transaction.real_time_price
     value = format_wei_value(da_fee, :ether, include_unit_label: false)
     decimal = Decimal.new(value)
@@ -511,7 +511,7 @@ require Logger
   end
 
   def da_fee_to_history_usd(%Transaction{} = transaction) do
-    da_fee = transaction.da_fee
+    da_fee = if transaction.da_fee == nil, do: Wei.from(Decimal.new(0), :wei), else: transaction.da_fee
     token_price_history = transaction.token_price_history
     value = format_wei_value(da_fee, :ether, include_unit_label: false)
     decimal = Decimal.new(value)
