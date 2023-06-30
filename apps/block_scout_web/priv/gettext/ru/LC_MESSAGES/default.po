@@ -54,7 +54,7 @@ msgid "(Awaiting internal transactions for status)"
 msgstr "Ожидаются внутренние транзакции для статуса."
 
 msgid "(query)"
-msgstr "(запрос)"
+msgstr ""
 
 msgid ") may be added for each contract. Click the Add Library button to add an additional one."
 msgstr "Для каждого контракта может быть добавлено несколько библиотек. Нажмите кнопку Добавить библиотеку, чтобы добавить дополнительную."
@@ -99,7 +99,7 @@ msgid "APIs"
 msgstr "APIs"
 
 msgid "Action"
-msgstr "Действие"
+msgstr ""
 
 msgid "Actions"
 msgstr "Действия"
@@ -693,7 +693,7 @@ msgid "From"
 msgstr "From"
 
 msgid "GET"
-msgstr "ПОЛУЧИТЬ"
+msgstr "GET"
 
 msgid "Gas Limit"
 msgstr "Предел газа"
@@ -882,7 +882,7 @@ msgid "Model"
 msgstr "Модель"
 
 msgid "Module"
-msgstr "Модуль"
+msgstr ""
 
 msgid "More internal transactions have come in"
 msgstr "Больше внутренних операций поступило."
@@ -1794,7 +1794,7 @@ msgid "required"
 msgstr "требуется"
 
 msgid "string"
-msgstr "строка"
+msgstr ""
 
 msgid "true"
 msgstr "истина"

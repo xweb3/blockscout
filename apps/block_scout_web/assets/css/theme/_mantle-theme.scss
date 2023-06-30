@@ -279,10 +279,6 @@ body{
     border-color: $dark-bg;
     color: #fff;
 
-    &::placeholder {
-      color: $labels-dark;
-    }
-
     background: $dropdown-menu-background-dark !important;
     border-radius: 20px;
   }
@@ -1444,6 +1440,7 @@ body{
   .main-search-autocomplete {
     background-color: transparent !important;
     color: #fff !important;
+    @include textfield-placeholder(rgba(255,255,255,.5));
   }
 
   input::-webkit-input-placeholder {
@@ -1620,5 +1617,5 @@ body{
 
 .navbar.navbar-primary .form-control {
   background-color: rgba(255, 255, 255, 0.7) !important;
-  border-radius: 20px !important;
+  border-radius: 12px !important;
 }

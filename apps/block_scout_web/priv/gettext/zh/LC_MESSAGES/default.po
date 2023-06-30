@@ -50,7 +50,7 @@ msgid "(Awaiting internal transactions for status)"
 msgstr "（等待内部交易进行状态更新）"
 
 msgid "(query)"
-msgstr "（查询）"
+msgstr ""
 
 msgid ") may be added for each contract. Click the Add Library button to add an additional one."
 msgstr "）可以被添加到每个合约。点击“添加库”按钮添加一个额外的库。"
@@ -95,7 +95,7 @@ msgid "APIs"
 msgstr "APIs"
 
 msgid "Action"
-msgstr "操作"
+msgstr ""
 
 msgid "Actions"
 msgstr "操作"
@@ -689,7 +689,7 @@ msgid "From"
 msgstr "来源"
 
 msgid "GET"
-msgstr "获取"
+msgstr "GET"
 
 msgid "Gas Limit"
 msgstr "Gas 限制"
@@ -878,7 +878,7 @@ msgid "Model"
 msgstr "模型"
 
 msgid "Module"
-msgstr "模块"
+msgstr ""
 
 msgid "More internal transactions have come in"
 msgstr "更多的内部交易已经产生"
@@ -1790,7 +1790,7 @@ msgid "required"
 msgstr "必需的"
 
 msgid "string"
-msgstr "线"
+msgstr ""
 
 msgid "true"
 msgstr "真实"
