@@ -2059,3 +2059,9 @@ msgstr "Происхождение L1 Транзакции"
 
 msgid "Total Supply"
 msgstr "кол-во"
+
+msgid "You're already connected to"
+msgstr ""
+
+msgid "add custom chain failed,"
+msgstr ""

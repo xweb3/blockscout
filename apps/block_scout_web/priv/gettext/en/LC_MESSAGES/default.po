@@ -4565,3 +4565,9 @@ msgstr ""
 #, elixir-autogen, elixir-format, fuzzy
 msgid "Total Supply"
 msgstr ""
+
+msgid "You're already connected to"
+msgstr ""
+
+msgid "add custom chain failed,"
+msgstr ""

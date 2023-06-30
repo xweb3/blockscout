@@ -2055,3 +2055,9 @@ msgstr "L1トランザクション起点"
 
 msgid "Total Supply"
 msgstr "総供給量"
+
+msgid "You're already connected to"
+msgstr ""
+
+msgid "add custom chain failed,"
+msgstr ""

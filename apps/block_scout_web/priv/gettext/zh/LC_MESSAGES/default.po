@@ -2055,3 +2055,9 @@ msgstr "L1交易来源"
 
 msgid "Total Supply"
 msgstr "总供应量"
+
+msgid "You're already connected to"
+msgstr "你已经连接到了"
+
+msgid "add custom chain failed,"
+msgstr "添加自定义链失败,"

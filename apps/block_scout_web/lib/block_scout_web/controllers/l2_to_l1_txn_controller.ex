@@ -101,11 +101,11 @@ defmodule BlockScoutWeb.L2ToL1TxnController do
         items:
           Enum.map(l2_to_l1, fn l ->
             display_status = case l.status do
-              "Waiting" ->
+              "0" ->
                 "Waiting for relay"
-              "Ready for Relay" ->
+              "1" ->
                 "Ready for Claim"
-              "Relayed" ->
+              "2" ->
                 "Claimed"
               _ ->
                 l.status
@@ -114,11 +114,11 @@ defmodule BlockScoutWeb.L2ToL1TxnController do
             updated_l2_to_l1 = Map.put(l, :display_status, display_status)
 
             display_status_tooltip = case l.status do
-              "Waiting" ->
+              "0" ->
                 "Withdrawn on L2 but not ready for claim on L1"
-              "Ready for Relay" ->
+              "1" ->
                 "Ready for claim on L1"
-              "Relayed" ->
+              "2" ->
                 "Withdrawal has been claimed on L1"
               _ ->
                 l.status

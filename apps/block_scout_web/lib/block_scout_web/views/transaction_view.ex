@@ -609,9 +609,7 @@ require Logger
       :pending -> "tile-status--pending"
       :awaiting_internal_transactions -> "tile-status--awaiting-internal-transactions"
       :success -> "tile-status--success"
-      # TODO(Jayce) internal transaction feature has not been completed, use success temporary.
-      #{:error, :awaiting_internal_transactions} -> "tile-status--error--awaiting-internal-transactions"
-      {:error, :awaiting_internal_transactions} -> "tile-status--success"
+      {:error, :awaiting_internal_transactions} -> "tile-status--error--awaiting-internal-transactions"
       {:error, reason} when is_binary(reason) -> "tile-status--error--reason"
     end
   end
