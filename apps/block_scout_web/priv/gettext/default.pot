@@ -684,12 +684,12 @@ msgstr ""
 #: lib/block_scout_web/templates/address_coin_balance/index.html.eex:12
 #: lib/block_scout_web/templates/block/index.html.eex:5
 #, elixir-autogen, elixir-format
-msgid "More blocks come in, click for an update"
+msgid "Connection Lost, click to load newer blocks"
 msgstr ""
 
 #: lib/block_scout_web/templates/address_internal_transaction/index.html.eex:15
 #, elixir-autogen, elixir-format
-msgid "More internal transactions come in, click for an update"
+msgid "Connection Lost, click to load newer internal transactions"
 msgstr ""
 
 #: lib/block_scout_web/templates/address_transaction/index.html.eex:11
@@ -703,12 +703,12 @@ msgstr ""
 #: lib/block_scout_web/templates/transaction/index.html.eex:18
 #: lib/block_scout_web/templates/txn_batch/index.html.eex:22
 #, elixir-autogen, elixir-format
-msgid "More transactions come in, click for an update"
+msgid "Connection Lost, click to load newer transactions"
 msgstr ""
 
 #: lib/block_scout_web/templates/address_validation/index.html.eex:10
 #, elixir-autogen, elixir-format
-msgid "More validations come in, click for an update"
+msgid "Connection Lost, click to load newer validations"
 msgstr ""
 
 #: lib/block_scout_web/templates/address_contract/index.html.eex:91
@@ -2555,8 +2555,8 @@ msgid "Save"
 msgstr ""
 
 #: lib/block_scout_web/templates/address_logs/index.html.eex:16
-#: lib/block_scout_web/templates/layout/_search.html.eex:49
-#: lib/block_scout_web/templates/layout/_search.html.eex:52
+#: lib/block_scout_web/templates/layout/_search.html.eex:51
+#: lib/block_scout_web/templates/layout/_search.html.eex:54
 #, elixir-autogen, elixir-format
 msgid "Search"
 msgstr ""
@@ -4562,7 +4562,6 @@ msgstr ""
 msgid "L1 Txn Origin"
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:1227
 #: lib/block_scout_web/templates/tokens/index.html.eex:42
 #, elixir-autogen, elixir-format
 msgid "Total Supply"
@@ -4622,4 +4621,26 @@ msgstr ""
 #: lib/block_scout_web/templates/layout/_topnav.html.eex:70
 #, elixir-autogen, elixir-format
 msgid "ERC721"
+msgstr ""
+
+#: lib/block_scout_web/templates/layout/_search.html.eex:20
+#, elixir-autogen
+msgid "Display %{number} result"
+msgstr ""
+
+#: lib/block_scout_web/templates/layout/_search.html.eex:21
+#, elixir-autogen
+msgid "Found %{number} matching results for "
+msgstr ""
+
+msgid "More blocks come in, click for an update"
+msgstr ""
+
+msgid "More internal transactions come in, click for an update"
+msgstr ""
+
+msgid "More transactions come in, click for an update"
+msgstr ""
+
+msgid "More validations come in, click for an update"
 msgstr ""

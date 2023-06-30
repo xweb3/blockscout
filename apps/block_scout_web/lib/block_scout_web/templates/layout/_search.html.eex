@@ -17,6 +17,8 @@
 				spellcheck="false"
 				data-placholder-default="<%= gettext "Address/Txn Hash/Block/Token/DA Hash" %>"
 				data-placholder-loading="<%= gettext "Loading..." %>"
+				data-label-result="<%= gettext "Display %{number} result" %>"
+				data-label-noresult="<%= gettext "Found %{number} matching results for " %>"
 			>
 		</div>
 		<div class="input-group-append left search-icon">
