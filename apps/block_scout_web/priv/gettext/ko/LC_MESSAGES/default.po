@@ -337,16 +337,16 @@ msgstr "확인됨"
 msgid "Connection Lost"
 msgstr "연결이 끊겼습니다."
 
-msgid "Connection Lost, click to load newer blocks"
+msgid "More blocks come in, click for an update"
 msgstr "연결이 끊어졌습니다. 새로운 블록을 로드하려면 클릭하세요."
 
-msgid "Connection Lost, click to load newer internal transactions"
+msgid "More internal transactions come in, click for an update"
 msgstr "연결이 끊어졌습니다. 더 최신의 내부 거래를 로드하려면 클릭하세요."
 
-msgid "Connection Lost, click to load newer transactions"
+msgid "More transactions come in, click for an update"
 msgstr "연결이 끊어졌습니다. 새로운 거래를 로드하려면 클릭하세요."
 
-msgid "Connection Lost, click to load newer validations"
+msgid "More validations come in, click for an update"
 msgstr "연결이 끊어졌습니다. 새로운 유효성 검사를 로드하기 위해 클릭하세요."
 
 msgid "Constructor Arguments"

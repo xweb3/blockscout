@@ -132,7 +132,8 @@
               <span class="nav-link-icon">
                 <%= render BlockScoutWeb.IconsView, "_active_icon.html" %>
               </span>
-              <%= gettext("Mantle Testnet") %>
+              <%= #gettext("Mantle Testnet") %>
+              <%= System.get_env("SUBNETWORK") %>
             </span>
           </li>
            <!--  language-changer -->

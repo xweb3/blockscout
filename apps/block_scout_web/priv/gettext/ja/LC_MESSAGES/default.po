@@ -337,16 +337,16 @@ msgstr "確認済み"
 msgid "Connection Lost"
 msgstr "接続が切断されました。"
 
-msgid "Connection Lost, click to load newer blocks"
+msgid "More blocks come in, click for an update"
 msgstr "接続が切断されました。新しいブロックを読み込むにはクリックしてください。"
 
-msgid "Connection Lost, click to load newer internal transactions"
+msgid "More internal transactions come in, click for an update"
 msgstr "接続が失われました。最新の内部取引を読み込むにはクリックしてください。"
 
-msgid "Connection Lost, click to load newer transactions"
+msgid "More transactions come in, click for an update"
 msgstr "接続が失われました。より新しい取引を読み込むにはクリックしてください。"
 
-msgid "Connection Lost, click to load newer validations"
+msgid "More validations come in, click for an update"
 msgstr "接続が切れました。新しい検証を読み込むにはクリックしてください。"
 
 msgid "Constructor Arguments"

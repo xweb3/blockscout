@@ -684,12 +684,12 @@ msgstr ""
 #: lib/block_scout_web/templates/address_coin_balance/index.html.eex:12
 #: lib/block_scout_web/templates/block/index.html.eex:5
 #, elixir-autogen, elixir-format
-msgid "Connection Lost, click to load newer blocks"
+msgid "More blocks come in, click for an update"
 msgstr ""
 
 #: lib/block_scout_web/templates/address_internal_transaction/index.html.eex:15
 #, elixir-autogen, elixir-format
-msgid "Connection Lost, click to load newer internal transactions"
+msgid "More internal transactions come in, click for an update"
 msgstr ""
 
 #: lib/block_scout_web/templates/address_transaction/index.html.eex:11
@@ -703,12 +703,12 @@ msgstr ""
 #: lib/block_scout_web/templates/transaction/index.html.eex:18
 #: lib/block_scout_web/templates/txn_batch/index.html.eex:22
 #, elixir-autogen, elixir-format
-msgid "Connection Lost, click to load newer transactions"
+msgid "More transactions come in, click for an update"
 msgstr ""
 
 #: lib/block_scout_web/templates/address_validation/index.html.eex:10
 #, elixir-autogen, elixir-format
-msgid "Connection Lost, click to load newer validations"
+msgid "More validations come in, click for an update"
 msgstr ""
 
 #: lib/block_scout_web/templates/address_contract/index.html.eex:91

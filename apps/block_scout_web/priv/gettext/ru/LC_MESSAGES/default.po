@@ -341,16 +341,16 @@ msgstr "Подтверждено в пределах."
 msgid "Connection Lost"
 msgstr "Соединение потеряно."
 
-msgid "Connection Lost, click to load newer blocks"
+msgid "More blocks come in, click for an update"
 msgstr "Соединение потеряно, нажмите для загрузки новых блоков."
 
-msgid "Connection Lost, click to load newer internal transactions"
+msgid "More internal transactions come in, click for an update"
 msgstr "Потеряно соединение, нажмите, чтобы загрузить более новые внутренние транзакции."
 
-msgid "Connection Lost, click to load newer transactions"
+msgid "More transactions come in, click for an update"
 msgstr "Потеряно соединение, нажмите, чтобы загрузить более новые транзакции."
 
-msgid "Connection Lost, click to load newer validations"
+msgid "More validations come in, click for an update"
 msgstr "Соединение потеряно, нажмите для загрузки более новых проверок."
 
 msgid "Constructor Arguments"

@@ -335,6 +335,11 @@ $card-tab-icon-color-active: #fff !default;
   @media (max-width: 1254px) {
     flex-direction: column;
   }
+  a{
+    &:hover{
+      color:#007bff;
+    }
+  }
   .recent-preview-item {
     flex: 1;
     margin-top: 0 !important;
@@ -406,7 +411,7 @@ $card-tab-icon-color-active: #fff !default;
           }
         }
         .recent-preview-item-content-latest-txs-from {
-          width: 100px;
+          width: 112px;
           overflow: hidden;
           white-space: nowrap;
           text-overflow: ellipsis;

@@ -337,16 +337,16 @@ msgstr "确认速度"
 msgid "Connection Lost"
 msgstr "连接已断开"
 
-msgid "Connection Lost, click to load newer blocks"
+msgid "More blocks come in, click for an update"
 msgstr "连接已断开，请单击以加载更新的区块"
 
-msgid "Connection Lost, click to load newer internal transactions"
+msgid "More internal transactions come in, click for an update"
 msgstr "连接已断开，请单击以加载更新的内部交易"
 
-msgid "Connection Lost, click to load newer transactions"
+msgid "More transactions come in, click for an update"
 msgstr "连接丢失，点击加载更新的交易"
 
-msgid "Connection Lost, click to load newer validations"
+msgid "More validations come in, click for an update"
 msgstr "连接丢失，点击加载更新的验证"
 
 msgid "Constructor Arguments"
