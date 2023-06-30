@@ -2555,8 +2555,8 @@ msgid "Save"
 msgstr ""
 
 #: lib/block_scout_web/templates/address_logs/index.html.eex:16
-#: lib/block_scout_web/templates/layout/_search.html.eex:49
-#: lib/block_scout_web/templates/layout/_search.html.eex:52
+#: lib/block_scout_web/templates/layout/_search.html.eex:51
+#: lib/block_scout_web/templates/layout/_search.html.eex:54
 #, elixir-autogen, elixir-format
 msgid "Search"
 msgstr ""
@@ -4562,7 +4562,6 @@ msgstr ""
 msgid "L1 Txn Origin"
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:1227
 #: lib/block_scout_web/templates/tokens/index.html.eex:42
 #, elixir-autogen, elixir-format
 msgid "Total Supply"
@@ -4622,4 +4621,14 @@ msgstr ""
 #: lib/block_scout_web/templates/layout/_topnav.html.eex:70
 #, elixir-autogen, elixir-format
 msgid "ERC721"
+msgstr ""
+
+#: lib/block_scout_web/templates/layout/_search.html.eex:20
+#, elixir-autogen
+msgid "Display %{number} result"
+msgstr ""
+
+#: lib/block_scout_web/templates/layout/_search.html.eex:21
+#, elixir-autogen
+msgid "Found %{number} matching results for "
 msgstr ""

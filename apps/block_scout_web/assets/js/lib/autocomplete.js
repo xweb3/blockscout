@@ -58,7 +58,7 @@ const dataSrc = async (query, id) => {
     )
     const data = await source.json()
     // Post Loading placeholder text
-    console.log('------', data)
+    // console.log('------', data)
 
     searchInput.setAttribute('placeholder', placeholderDefault)
     // Returns Fetched data
@@ -84,9 +84,13 @@ const dataSrc = async (query, id) => {
   }
 }
 const resultsListElement = (list, data) => {
+  const $searchInput = $('#main-search-autocomplete')
+  const labelResult = $searchInput.data('label-result')
+  const labelNoResult = $searchInput.data('label-noresult')
+  
   if (data.results.length > 0) {
     Object.keys(localResult).map(k => {
-      console.log('0-0-0--', k)
+      // console.log('0-0-0--', k)
       const $firstItem = $(`.item[data-type='${k}']`, list).first().parent()
       const info = document.createElement('div')
       info.classList.add('result-counter')
@@ -96,7 +100,7 @@ const resultsListElement = (list, data) => {
       </div>`
       info.innerHTML = adv
       const label = getLabel(k)
-      info.innerHTML += `<div class="counter-content" data-type="${k}"><p class="label">${label}</p> <p class="count">Displaying <strong>${localResult[k].length}</strong> results</p></div>`
+      info.innerHTML += `<div class="counter-content" data-type="${k}"><p class="label">${label}</p> <p class="count">${labelResult.replace('%{number}', `<strong>${localResult[k].length}</strong>`)}</p></div>`
 
       $(info).insertBefore($firstItem)
     })
@@ -123,7 +127,7 @@ const resultsListElement = (list, data) => {
     </div>`
     info.innerHTML = adv
     if (data.query !== '###') {
-      info.innerHTML += `Found <strong>${data.matches.length}</strong> matching results for <strong>"${data.query}"</strong>`
+      info.innerHTML += `${labelNoResult.replace('%{number}', `<strong>${data.matches.length}</strong> `)} <strong style="word-wrap:break-word;">"${data.query}"</strong>`
     }
     list.prepend(info)
   }

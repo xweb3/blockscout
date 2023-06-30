@@ -181,6 +181,7 @@ $dashboard-banner-chart-axis-font-color-alt: #333;
   display: flex;
   flex-direction: column;
   margin-left: 15px;
+  min-width: 150px;
   @include media-breakpoint-down(sm) {
     grid-template-columns: 1fr 1fr;
   }
@@ -225,6 +226,7 @@ $dashboard-banner-chart-axis-font-color-alt: #333;
       flex-direction: column;
     } */
     .dashboard-banner-chart-legend-item-line {
+      display: none;
       height: 20px;
       width: 20px;
       background: #305a57;

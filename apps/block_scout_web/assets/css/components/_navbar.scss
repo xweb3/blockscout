@@ -378,7 +378,8 @@ $navbar-network-label-background-color: #bae1d7;
     width: 100%;
     height: 1px;
     box-sizing: border-box;
-    border: 0.5px solid #091312;
+    // border: 0.5px solid #091312;
+    border-color: #091312;
     margin: 0;
     display: none;
     @media (min-width: 1200px) {
@@ -388,7 +389,7 @@ $navbar-network-label-background-color: #bae1d7;
 }
 .dark-theme-applied {
   .navbar-container-bottom-line {
-    border-color: #4f8f8b;
+    background-color: #4f8f8b;
   }
 }
 
