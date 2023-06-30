@@ -479,7 +479,7 @@ export class L1IngestionService {
         queue_index: Number(messageNonce),
         target: sender,
         gas_limit: gasLimit,
-        status: 'Ready for Relay',
+        status: '1',
         l1_token: l1_token,
         l2_token: l2_token,
         from: from,
@@ -665,7 +665,7 @@ export class L1IngestionService {
           }
           l1ToL2UpdateList.push({
             l2_hash: unMergeTxList[i].tx_hash,
-            status: 'Relayed',
+            status: '2',
             hash: l1ToL2Transaction.hash
           })
           l1SentMessageEventsTxHashList.push(l1ToL2Transaction.hash)
@@ -763,7 +763,7 @@ export class L1IngestionService {
       if (l2ToL1Transaction) {
         l2ToL1UpdateList.push({
           hash: unMergeTxList[i].tx_hash,
-          status: 'Relayed',
+          status: '2',
           l2_hash: l2ToL1Transaction.l2_hash
         })
         l2SentMessageEventsTxHashList.push(l2ToL1Transaction.l2_hash)

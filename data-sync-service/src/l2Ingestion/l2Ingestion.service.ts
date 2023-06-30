@@ -205,7 +205,7 @@ export class L2IngestionService {
         txn_batch_index: Number(messageNonce),
         state_batch_index: Number(messageNonce),
         timestamp: new Date(Number(timestamp) * 1000).toISOString(),
-        status: 'Waiting',
+        status: '0', // '0': "Waiting for relay"  '1': "Ready for Claim"   '2':"Relayed"
         gas_limit: gasLimit,
         l1_token: l1_token,
         l2_token: l2_token,
@@ -422,7 +422,7 @@ export class L2IngestionService {
     const list = await this.l2ToL1Repository.find({
       select: ['l2_hash'],
       where: {
-        status: 'Waiting'
+        status: '0'
       },
       take: 10,
       order: {
@@ -437,7 +437,7 @@ export class L2IngestionService {
       if (result && (result.status === '0x3' || result.status === '0x03')) {
         updateL2ToL1Data.push({
           l2_hash: l2_hash,
-          status: 'Ready for Relay'
+          status: '1'
         })
       } else {
         console.log('this l2 hash can not find its status detail', l2_hash)
