@@ -386,6 +386,99 @@ require Logger
   def get_tx_status_cls2(%{tx_status: nil}), do: ""
   def get_tx_status_cls3(%{tx_status: nil}), do: ""
 
+
+  def get_tx_status_icon_cls1(tx_status, is_dark) do
+    case tx_status do
+      "0x0" ->
+        if is_dark do
+          "right_icon_0_dark.svg"
+        else
+          "right_icon_0.svg"
+        end
+      "0x1" ->
+        if is_dark do
+          "right_icon_1_dark.svg"
+        else
+          "right_icon_1.svg"
+        end
+      "0x2" ->
+        if is_dark do
+          "right_icon_1_dark.svg"
+        else
+          "right_icon_1.svg"
+        end
+      "0x3" ->
+        if is_dark do
+          "right_icon_1_dark.svg"
+        else
+          "right_icon_1.svg"
+        end
+    end
+  end
+
+  def get_tx_status_icon_cls2(tx_status, is_dark) do
+    case tx_status do
+      "0x0" ->
+        if is_dark do
+          "right_icon_0_dark.svg"
+        else
+          "right_icon_0.svg"
+        end
+      "0x1" ->
+        if is_dark do
+          "right_icon_0_dark.svg"
+        else
+          "right_icon_0.svg"
+        end
+      "0x2" ->
+        if is_dark do
+          "right_icon_1_dark.svg"
+        else
+          "right_icon_1.svg"
+        end
+      "0x3" ->
+        if is_dark do
+          "right_icon_1_dark.svg"
+        else
+          "right_icon_1.svg"
+        end
+    end
+  end
+
+  def get_tx_status_icon_cls3(tx_status, is_dark) do
+    case tx_status do
+      "0x0" ->
+        if is_dark do
+          "right_icon_0_dark.svg"
+        else
+          "right_icon_0.svg"
+        end
+      "0x1" ->
+        if is_dark do
+          "right_icon_0_dark.svg"
+        else
+          "right_icon_0.svg"
+        end
+      "0x2" ->
+        if is_dark do
+          "right_icon_0_dark.svg"
+        else
+          "right_icon_0.svg"
+        end
+      "0x3" ->
+        if is_dark do
+          "right_icon_1_dark.svg"
+        else
+          "right_icon_1.svg"
+        end
+    end
+  end
+
+  def get_tx_status_icon_cls1(%{tx_status: nil}, is_dark), do: ""
+  def get_tx_status_icon_cls2(%{tx_status: nil}, is_dark), do: ""
+  def get_tx_status_icon_cls3(%{tx_status: nil}, is_dark), do: ""
+
+
   def formatted_result(status) do
     case status do
       :pending -> gettext("Pending")
