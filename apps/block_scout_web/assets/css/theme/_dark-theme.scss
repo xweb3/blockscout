@@ -1,7 +1,7 @@
 $body-dark: #1c1d31; // body background
-$dark-bg: #22223a; // hero shade
+$dark-bg: rgba(255, 255, 255, 0.05); // hero shade
 $dark-light-bg: #282945; // pills bg shade
-$dark-light: #313355; // tile light top share
+$dark-light: rgba(255, 255, 255, 0.05); // tile light top share
 $labels-dark: #8a8dba; // header nav, labels
 $dark-text-content-color: #7FD8D2;
 $dark-stakes-banned-background: #3e314c;
@@ -183,16 +183,16 @@ $dark-stakes-banned-background: #3e314c;
 	}
 
 	.tile, .tile-code {
-		border-top-color: $dark-light;
-		border-bottom-color: $dark-light;
-		border-right-color: $dark-light;
-		background-color: $dark-light;
+		border-top-color: rgba(255, 255, 255, 0.15);
+		border-bottom-color: rgba(255, 255, 255, 0.15);
+		border-right-color: rgba(255, 255, 255, 0.15);
+		background-color: rgba(255, 255, 255, 0.15);
 		color: $labels-dark;
 		&:not([class^="tile tile-type"]) {
-			border-left-color: $dark-light;
+			border-left-color: rgba(255, 255, 255, 0.15);
 		}
 		&.tile-type-coin-balance {
-			border-left-color: $dark-light;
+			border-left-color: rgba(255, 255, 255, 0.15);
 		}
 		.tile-title {
 			color: #fff;
@@ -318,7 +318,7 @@ $dark-stakes-banned-background: #3e314c;
 	.btn-dropdown-line {
 		background-color: $dark-light;
 		border-color: $dark-light;
-		color: $labels-dark;
+		color: #ffffff;
 	}
 
 	// table
@@ -387,7 +387,7 @@ $dark-stakes-banned-background: #3e314c;
 
 	// api's
 	.api-anchors-list {
-		background-color: $dark-light;
+		background-color: rgba(255, 255, 255, 0.15);
 	}
 	.api-doc-list-item {
 		border-bottom-color: darken($labels-dark, 30);

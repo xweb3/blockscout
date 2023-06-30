@@ -98,12 +98,12 @@
         const search = document.getElementById("main-search-autocomplete")
         const searchMobile = document.getElementById("main-search-autocomplete-mobile")
             if (search && search.style) {
-          search.style.backgroundColor = "#22223a";
-              search.style.borderColor = "#22223a";
+          search.style.backgroundColor = "rgba(255, 255, 255, 0.05)";
+              search.style.borderColor = "rgba(255, 255, 255, 0.05)";
         }
         if (searchMobile && searchMobile.style) {
-          searchMobile.style.backgroundColor = "#22223a";
-          searchMobile.style.borderColor = "#22223a";
+          searchMobile.style.backgroundColor = "rgba(255, 255, 255, 0.05)";
+          searchMobile.style.borderColor = "rgba(255, 255, 255, 0.05)";
         }
       }
     </script>
