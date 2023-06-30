@@ -130,9 +130,8 @@ $navbar-network-label-background-color: #bae1d7;
   }
   .navbar-nav-custom {
     .dropdown-toggle::after {
-      // display: none;
-      content: "\e900";
       font-family: 'icomoon';
+      content: "\e900";
       border: none;
     }
   }

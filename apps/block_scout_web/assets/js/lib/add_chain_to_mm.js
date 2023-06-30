@@ -1,4 +1,5 @@
 import 'bootstrap'
+import $ from 'jquery'
 
 export async function addChainToMM({ btn }) {
   //const chainIDFromWallet = await window.ethereum.request({ method: 'eth_chainId' })
@@ -15,6 +16,9 @@ export async function addChainToMM({ btn }) {
     const jsonRPC = document.getElementById('js-json-rpc').value
     const path = process.env.NETWORK_PATH || '/'
     const blockscoutURL = location.protocol + '//' + location.host + path
+
+    const successTitle = $(btn).data('success')
+    const failTitle = $(btn).data('fail')
 
   const res = await window.ethereum.request(p).catch(async e => {
     console.error('switch chain failed:', e)
@@ -38,7 +42,7 @@ export async function addChainToMM({ btn }) {
         console.error('add chain failed:', e)
         btn.tooltip('dispose')
         btn.tooltip({
-          title: `add custom chain failed, ${e.message}`,
+          title: `${failTitle} ${e.message}`,
           trigger: 'click',
           placement: 'bottom'
         }).tooltip('show')
@@ -52,7 +56,7 @@ export async function addChainToMM({ btn }) {
   if (res === null) {
     btn.tooltip('dispose')
     btn.tooltip({
-      title: `You're already connected to ${subNetwork}`,
+      title: `${successTitle} ${subNetwork}`,
       trigger: 'click',
       placement: 'bottom'
     }).tooltip('show')

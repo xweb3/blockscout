@@ -50,7 +50,7 @@ msgid "(Awaiting internal transactions for status)"
 msgstr "（状態の内部取引を待っています）"
 
 msgid "(query)"
-msgstr "（クエリ）"
+msgstr ""
 
 msgid ") may be added for each contract. Click the Add Library button to add an additional one."
 msgstr "契約ごとに1つのライブラリが追加される場合があります。追加するには「ライブラリを追加」ボタンをクリックしてください。"
@@ -95,10 +95,10 @@ msgid "APIs"
 msgstr "APIs"
 
 msgid "Action"
-msgstr "アクション"
+msgstr ""
 
 msgid "Actions"
-msgstr "行動 (Koudou)"
+msgstr "行動"
 
 msgid "Actual gas amount used by the transaction."
 msgstr "取引で使用された実際のガス量。"
@@ -689,7 +689,7 @@ msgid "From"
 msgstr "から"
 
 msgid "GET"
-msgstr "取得する"
+msgstr "GET"
 
 msgid "Gas Limit"
 msgstr "ガスリミット"
@@ -878,7 +878,7 @@ msgid "Model"
 msgstr "モデル"
 
 msgid "Module"
-msgstr "モジュール"
+msgstr ""
 
 msgid "More internal transactions have come in"
 msgstr "もっと社内取引が入ってきました。"
@@ -1790,7 +1790,7 @@ msgid "required"
 msgstr "要求される"
 
 msgid "string"
-msgstr "文字列"
+msgstr ""
 
 msgid "true"
 msgstr "本当"
@@ -2055,3 +2055,9 @@ msgstr "L1トランザクション起点"
 
 msgid "Total Supply"
 msgstr "総供給量"
+
+msgid "You're already connected to"
+msgstr ""
+
+msgid "add custom chain failed,"
+msgstr ""

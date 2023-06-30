@@ -34,6 +34,10 @@
 
 .autoComplete_wrapper {
   width: 100% !important;
+  position: initial;
+  & > input{
+    @include textfield-placeholder(#6E767D);
+  }
   .item-wrapper{
     position:relative;
     .hide-contract-address{
@@ -82,10 +86,11 @@
     } */
 }
 
+
 .main-search-autocomplete,
 .main-search-autocomplete-mobile {
   font-size: 14px !important;
-  color: #828ba0 !important;
+  color: #15181C !important;
 }
 
 .autocomplete-category {
@@ -122,6 +127,7 @@ ul[id^="autoComplete_list_"] {
     position: sticky;
     top: -10px;
     background-color: #F1FCFB;
+    z-index: 1;
     .result-header-content{
       display: flex;
       gap: 10px;
