@@ -4643,3 +4643,15 @@ msgstr "显示 %{number} 个结果"
 #, elixir-autogen
 msgid "Found %{number} matching results for "
 msgstr "找到 %{number} 个匹配结果"
+
+msgid "More blocks come in, click for an update"
+msgstr ""
+
+msgid "More internal transactions come in, click for an update"
+msgstr ""
+
+msgid "More transactions come in, click for an update"
+msgstr ""
+
+msgid "More validations come in, click for an update"
+msgstr ""

@@ -4647,3 +4647,15 @@ msgstr "Отображение %{number} результата"
 #, elixir-autogen
 msgid "Found %{number} matching results for "
 msgstr "Найдено %{number} совпадающих результатов для"
+
+msgid "More blocks come in, click for an update"
+msgstr ""
+
+msgid "More internal transactions come in, click for an update"
+msgstr ""
+
+msgid "More transactions come in, click for an update"
+msgstr ""
+
+msgid "More validations come in, click for an update"
+msgstr ""
