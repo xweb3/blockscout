@@ -11,7 +11,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <div style="display:flex;justify-content:flex-end;align-items:center;flex:1;">
+      <div style="display:flex;justify-content:flex-end;align-items:center;flex:1;gap:20px">
         <%= render BlockScoutWeb.LayoutView, "_search.html", conn: @conn, id: "main-search-autocomplete", additional_classes: ["desktop-sm-search-hide"] %>
         <ul class="navbar-nav navbar-nav-custom">
           <%= if Application.get_env(:block_scout_web, BlockScoutWeb.WebRouter)[:enabled] do %>

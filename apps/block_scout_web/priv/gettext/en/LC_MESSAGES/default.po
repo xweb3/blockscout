@@ -4569,5 +4569,26 @@ msgstr ""
 msgid "You're already connected to"
 msgstr ""
 
+msgid "Address/Txn Hash/Block/Token/DA Hash"
+msgstr ""
+
 msgid "add custom chain failed,"
+msgstr ""
+
+msgid "Token name or symbol"
+msgstr ""
+
+msgid "More Details"
+msgstr ""
+
+msgid "Hide Details"
+msgstr ""
+
+msgid "Mimics Ethereum JSON RPC's eth_getBalance. Returns the balance as of the provided block (defaults to latest)"
+msgstr ""
+
+msgid "Either the block number as a string, or one of latest, earliest or pending latest will be the latest balance in a *consensus* block. earliest will be the first recorded balance for the address. pending will be the latest balance in consensus *or* nonconcensus blocks."
+msgstr ""
+
+msgid "Get balance for address. Also available through a GraphQL 'addresses' query. If the balance hasn't been updated in a long time, we will double check with the node to fetch the absolute latest balance. This will not be reflected in the current request, but once it is updated, subsequent requests will show the updated balance. If you want to know whether or not we are checking for another balance, use the `balancemulti` action. That contains a property called `stale` that will let you know to recheck that balance in the near future."
 msgstr ""
