@@ -2057,7 +2057,28 @@ msgid "Total Supply"
 msgstr "総供給量"
 
 msgid "You're already connected to"
+msgstr "すでに接続されています"
+
+msgid "Address/Txn Hash/Block/Token/DA Hash"
 msgstr ""
 
 msgid "add custom chain failed,"
-msgstr ""
+msgstr "カスタムチェーンの追加に失敗しました,"
+
+msgid "Token name or symbol"
+msgstr "トークン名またはシンボル"
+
+msgid "More Details"
+msgstr "詳細情報"
+
+msgid "Hide Details"
+msgstr "詳細を非表示にする"
+
+msgid "Mimics Ethereum JSON RPC's eth_getBalance. Returns the balance as of the provided block (defaults to latest)"
+msgstr "イーサリアムのJSON RPCのeth_getBalanceを模倣しています。指定されたブロック時点の残高を返します（デフォルトは最新）"
+
+msgid "Either the block number as a string, or one of latest, earliest or pending latest will be the latest balance in a *consensus* block. earliest will be the first recorded balance for the address. pending will be the latest balance in consensus *or* nonconcensus blocks."
+msgstr "ブロック番号を文字列として指定するか、latest、earliest、またはpending latestのいずれかを指定します。最新の残高は合意形成ブロックに存在します。earliestはそのアドレスの最初に記録された残高となります。pendingは合意形成または非合意形成ブロック内の最新の残高となります。"
+
+msgid "Get balance for address. Also available through a GraphQL 'addresses' query. If the balance hasn't been updated in a long time, we will double check with the node to fetch the absolute latest balance. This will not be reflected in the current request, but once it is updated, subsequent requests will show the updated balance. If you want to know whether or not we are checking for another balance, use the `balancemulti` action. That contains a property called `stale` that will let you know to recheck that balance in the near future."
+msgstr "アドレスの残高を取得します。また、GraphQLの「addresses」クエリを介しても利用できます。残高が長い間更新されていない場合、最新の絶対残高を取得するためにノードで二重チェックを行います。これは現在のリクエストに反映されませんが、一度更新されると、その後のリクエストで更新された残高が表示されます。別の残高をチェックしているかどうかを知りたい場合は、balancemultiアクションを使用してください。それにはstaleというプロパティが含まれており、近い将来その残高を再確認する必要があることを示します。"

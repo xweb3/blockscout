@@ -6,7 +6,7 @@ import { appendTokenIcon } from './token_icon'
 import { escapeHtml } from './utils'
 import xss from 'xss'
 
-const placeHolder = 'Address/Txn Hash/Block/Token/DA Hash'
+// const placeHolder = 'Address/Txn Hash/Block/Token/DA Hash'
 
 const pushData = (type, data, storage) => {
   if (storage[type]) {
@@ -47,7 +47,10 @@ const dataSrc = async (query, id) => {
     const searchInput = document
       .getElementById(id)
 
-    searchInput.setAttribute('placeholder', 'Loading...')
+    const placeholderLoading = $(searchInput).data('placholder-loading')
+    const placeholderDefault = $(searchInput).data('placholder-default')
+
+    searchInput.setAttribute('placeholder', placeholderLoading)
 
     // Fetch External Data Source
     const source = await fetch(
@@ -57,7 +60,7 @@ const dataSrc = async (query, id) => {
     // Post Loading placeholder text
     console.log('------', data)
 
-    searchInput.setAttribute('placeholder', placeHolder)
+    searchInput.setAttribute('placeholder', placeholderDefault)
     // Returns Fetched data
     localResult = {}
     for (let i = 0; i < data.length; i++) {
@@ -205,7 +208,7 @@ const config = (id) => {
       src: (query) => dataSrc(query, id),
       cache: false
     },
-    placeHolder,
+    placeHolder: $(`#${id}`).data('placholder-default'),
     searchEngine: (query, record) => searchEngine(query, record),
     threshold: 2,
     resultsList: {

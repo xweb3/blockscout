@@ -50,7 +50,7 @@ msgid "(Awaiting internal transactions for status)"
 msgstr "（等待内部交易进行状态更新）"
 
 msgid "(query)"
-msgstr ""
+msgstr "(query)"
 
 msgid ") may be added for each contract. Click the Add Library button to add an additional one."
 msgstr "）可以被添加到每个合约。点击“添加库”按钮添加一个额外的库。"
@@ -95,7 +95,7 @@ msgid "APIs"
 msgstr "APIs"
 
 msgid "Action"
-msgstr ""
+msgstr "Action"
 
 msgid "Actions"
 msgstr "操作"
@@ -374,7 +374,7 @@ msgid "Contract Creation"
 msgstr "合约创建"
 
 msgid "Contract Creation Code"
-msgstr "合约创造代码"
+msgstr "合约创建代码"
 
 msgid "Contract Libraries"
 msgstr "合约库"
@@ -686,7 +686,7 @@ msgid "For contract"
 msgstr "目标合约"
 
 msgid "From"
-msgstr "来源"
+msgstr "发起地址"
 
 msgid "GET"
 msgstr "GET"
@@ -770,7 +770,7 @@ msgid "Input"
 msgstr "输入"
 
 msgid "Interacted With (To)"
-msgstr "互动"
+msgstr "交互对象"
 
 msgid "Internal Transaction"
 msgstr "内部交易"
@@ -878,7 +878,7 @@ msgid "Model"
 msgstr "模型"
 
 msgid "Module"
-msgstr ""
+msgstr "Module"
 
 msgid "More internal transactions have come in"
 msgstr "更多的内部交易已经产生"
@@ -1019,7 +1019,7 @@ msgid "Please select what types of notifications you will receive:"
 msgstr "请选择您将收到的通知类型："
 
 msgid "Position"
-msgstr "职位"
+msgstr "位置"
 
 msgid "Position %{index}"
 msgstr "位置 %{index}"
@@ -1790,7 +1790,7 @@ msgid "required"
 msgstr "必需的"
 
 msgid "string"
-msgstr ""
+msgstr "string"
 
 msgid "true"
 msgstr "真实"
@@ -1973,7 +1973,7 @@ msgid "Block No"
 msgstr "区块号"
 
 msgid "Queue Index"
-msgstr "交易编号"
+msgstr "交易序号"
 
 msgid "L2 Txn Hash"
 msgstr "L2 交易哈希"
@@ -1997,7 +1997,7 @@ msgid "L1 Txn Hash"
 msgstr "L1 交易哈希"
 
 msgid "Msg Nonce"
-msgstr "消息序号"
+msgstr "交易序号"
 
 msgid "Time Left"
 msgstr "剩余时间"
@@ -2059,5 +2059,26 @@ msgstr "总供应量"
 msgid "You're already connected to"
 msgstr "你已经连接到了"
 
+msgid "Address/Txn Hash/Block/Token/DA Hash"
+msgstr "地址/交易哈希/区块/代币/DA哈希"
+
 msgid "add custom chain failed,"
 msgstr "添加自定义链失败,"
+
+msgid "Token name or symbol"
+msgstr "代币名称或符号"
+
+msgid "More Details"
+msgstr "更多详情"
+
+msgid "Hide Details"
+msgstr "隐藏详情"
+
+msgid "Mimics Ethereum JSON RPC's eth_getBalance. Returns the balance as of the provided block (defaults to latest)"
+msgstr "模仿以太坊 JSON RPC 的 eth_getBalance。返回提供的区块的余额（默认为最新）"
+
+msgid "Either the block number as a string, or one of latest, earliest or pending latest will be the latest balance in a *consensus* block. earliest will be the first recorded balance for the address. pending will be the latest balance in consensus *or* nonconcensus blocks."
+msgstr "可以是块号的字符串，也可以是latest、earliest或pending latest之一，最新的余额将位于共识块中。earliest将是该地址的首次记录余额。pending将是共识或非共识块中的最新余额。"
+
+msgid "Get balance for address. Also available through a GraphQL 'addresses' query. If the balance hasn't been updated in a long time, we will double check with the node to fetch the absolute latest balance. This will not be reflected in the current request, but once it is updated, subsequent requests will show the updated balance. If you want to know whether or not we are checking for another balance, use the `balancemulti` action. That contains a property called `stale` that will let you know to recheck that balance in the near future."
+msgstr "获取地址的余额。还可以通过GraphQL的“addresses”查询获得。如果余额长时间未更新，我们将与节点进行双重检查以获取最新的绝对余额。这不会在当前请求中反映出来，但一旦更新，后续的请求将显示更新后的余额。如果您想知道我们是否在检查另一个余额，请使用balancemulti操作。其中包含一个名为stale的属性，它将通知您在不久的将来重新检查该余额。"

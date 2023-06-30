@@ -2061,7 +2061,29 @@ msgid "Total Supply"
 msgstr "кол-во"
 
 msgid "You're already connected to"
+msgstr "Вы уже подключены к"
+
+msgid "Address/Txn Hash/Block/Token/DA Hash"
 msgstr ""
 
 msgid "add custom chain failed,"
-msgstr ""
+msgstr "Ошибка при добавлении пользовательской цепи,"
+
+msgid "Token name or symbol"
+msgstr "Имя токена или символа"
+
+msgid "More Details"
+msgstr "Больше деталей"
+
+msgid "Hide Details"
+msgstr "Скрыть детали"
+
+msgid "Mimics Ethereum JSON RPC's eth_getBalance. Returns the balance as of the provided block (defaults to latest)"
+msgstr "Моделирует eth_getBalance в JSON RPC Ethereum. Возвращает баланс на указанном блоке (по умолчанию - последний)"
+
+msgid "Either the block number as a string, or one of latest, earliest or pending latest will be the latest balance in a *consensus* block. earliest will be the first recorded balance for the address. pending will be the latest balance in consensus *or* nonconcensus blocks."
+msgstr "Можно указать номер блока в виде строки или одно из значений latest, earliest или pending latest. Самый последний баланс будет находиться в блоке консенсуса. earliest будет первым записанным балансом для данного адреса. pending будет самым последним балансом в блоках консенсуса или неконсенсуса."
+
+msgid "Get balance for address. Also available through a GraphQL 'addresses' query. If the balance hasn't been updated in a long time, we will double check with the node to fetch the absolute latest balance. This will not be reflected in the current request, but once it is updated, subsequent requests will show the updated balance. If you want to know whether or not we are checking for another balance, use the `balancemulti` action. That contains a property called `stale` that will let you know to recheck that balance in the near future."
+msgstr "Получить баланс для адреса. Также доступно через запрос GraphQL 'addresses'. Если баланс долгое время не обновлялся, мы будем дважды проверять с узлом, чтобы получить самый актуальный баланс. Это не будет отражено в текущем запросе, но после его обновления последующие запросы будут показывать обновленный баланс. Если вы хотите узнать, проверяем ли мы другой баланс, используйте действие 'balancemulti'. Оно содержит свойство 'stale', которое позволит вам знать о необходимости повторной проверки этого баланса в ближайшем будущем."
+
