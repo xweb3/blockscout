@@ -106,10 +106,8 @@ export class TasksService {
     // TODO (Jayce) hide temp
     this.sync_token_price_history();
     this.sync_token_price_real_time();
-    //this.updateReorgBlockMessage();
     console.log('================end init cache================');
-    // TODO (Jayce) state batch missed data sync script
-    //this.miss_data_script_start(9006135)
+
   }
   @Interval(3000)
   async l1_sent() {
@@ -132,7 +130,7 @@ export class TasksService {
         start + 1,
         end,
       );
-      if(inserted){
+      if (inserted) {
         this.cacheManager.set(L1_SENT, end, { ttl: 0 });
       } else {
         this.logger.error('-------- insert l1 sent message events failed -----------');
@@ -160,7 +158,7 @@ export class TasksService {
         start + 1,
         end,
       );
-      if(inserted){
+      if (inserted) {
         this.cacheManager.set(L1_RELAYED, end, { ttl: 0 });
       } else {
         this.logger.error('-------- insert l1 relayed message events failed -----------');
@@ -188,7 +186,7 @@ export class TasksService {
         start + 1,
         end,
       );
-      if(inserted){
+      if (inserted) {
         this.cacheManager.set(L2_SENT, end, { ttl: 0 });
       } else {
         this.logger.error('-------- insert l2 sent message events failed -----------');
@@ -216,7 +214,7 @@ export class TasksService {
         start + 1,
         end,
       );
-      if(inserted){
+      if (inserted) {
         this.cacheManager.set(L2_RELAYED, end, { ttl: 0 });
       } else {
         this.logger.error('-------- insert l2 relayed message events failed -----------');
@@ -265,20 +263,6 @@ export class TasksService {
     }
   }
 
-
-  async miss_data_script_start(block) {
-    console.log('-------------- start script , start block', block)
-    const result = await this.l1IngestionService.saveStateBatchMissedScript(block).catch(e => {
-      console.error(`insert state batch failed,`)
-    });
-    console.log('list sync completed, the next block:', result)
-    if (result && result < 9146135) {
-      this.miss_data_script_start(result)
-    } else {
-      console.error('result insert state batch data failed, or sync completed!', result)
-    }
-  }
-
   @Interval(10000)
   async l1l2_merge() {
     try {
@@ -315,25 +299,24 @@ export class TasksService {
       console.log('[syncEigenDaBatch] add DA_BATCH_INDEX');
       await this.cacheManager.set(DA_BATCH_INDEX, fromStoreNumber + 1, { ttl: 0 });
     }
-
-
   }
-  //TODO (Jayce) hide temp
-   @Interval(1800000)
-   async sync_token_price_history() {
-     console.log('start sync token price service')
-     this.l1IngestionService.syncTokenPriceHistory();
-   }
- 
-   @Interval(10000)
-   async sync_token_price_real_time() {
-    this.l1IngestionService.syncTokenPriceRealTime();
-   }
 
-   @Interval(60000)
-   async updateReorgBlockMessage() {
-    this.l1IngestionService.updateReorgBlockMessage().catch(e=> {
+  //TODO (Jayce) hide temp
+  @Interval(1800000)
+  async sync_token_price_history() {
+    console.log('start sync token price service')
+    this.l1IngestionService.syncTokenPriceHistory();
+  }
+
+  @Interval(10000)
+  async sync_token_price_real_time() {
+    this.l1IngestionService.syncTokenPriceRealTime();
+  }
+
+  @Interval(60000)
+  async updateReorgBlockMessage() {
+    this.l1IngestionService.updateReorgBlockMessage().catch(e => {
       console.error(`update reorg block failed`, e.message)
     });
-   }
+  }
 }
