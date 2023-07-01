@@ -126,7 +126,7 @@
               </div>
             </li>
           <% end %>
-          <%= render BlockScoutWeb.LayoutView, "_account_menu_item.html", conn: @conn, current_user: @current_user %>
+          <%=# render BlockScoutWeb.LayoutView, "_account_menu_item.html", conn: @conn, current_user: @current_user %>
           <li class="nav-item dropdown">
             <span class="nav-link topnav-nav-link active-icon network-label">
               <span class="nav-link-icon">
