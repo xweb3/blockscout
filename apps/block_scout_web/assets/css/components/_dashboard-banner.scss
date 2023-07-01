@@ -190,6 +190,8 @@ $dashboard-banner-chart-axis-font-color-alt: #333;
     flex-direction: row;
     margin-left: 0;
     margin-bottom: 10px;
+    width: 100%;
+    padding: 0 15px;
   }
 
   .dashboard-banner-chart-legend-item {
@@ -204,11 +206,7 @@ $dashboard-banner-chart-axis-font-color-alt: #333;
       }
     }
     @media (max-width: 767px) {
-      width: 200px;
-    }
-
-    @media (max-width: 500px) {
-      width: 165px;
+      width: 100%;
     }
 
     @include media-breakpoint-down(md) {
