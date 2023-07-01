@@ -4622,12 +4622,12 @@ msgstr "获取地址的余额。还可以通过GraphQL的“addresses”查询�
 #: lib/block_scout_web/templates/layout/_topnav.html.eex:73
 #, elixir-autogen, elixir-format, fuzzy
 msgid "ERC1155"
-msgstr "ERC-1155 "
+msgstr "ERC-1155"
 
 #: lib/block_scout_web/templates/layout/_topnav.html.eex:67
 #, elixir-autogen, elixir-format, fuzzy
 msgid "ERC20"
-msgstr "ERC-20 "
+msgstr "ERC-20"
 
 #: lib/block_scout_web/templates/layout/_topnav.html.eex:70
 #, elixir-autogen, elixir-format, fuzzy
@@ -4645,13 +4645,13 @@ msgid "Found %{number} matching results for "
 msgstr "找到 %{number} 个匹配结果"
 
 msgid "More blocks come in, click for an update"
-msgstr ""
+msgstr "更多的区块出现了，请点击获取更新"
 
 msgid "More internal transactions come in, click for an update"
-msgstr ""
+msgstr "更多内部交易进入，请点击获取更新"
 
 msgid "More transactions come in, click for an update"
-msgstr ""
+msgstr "有更多交易进来，请点击获取更新"
 
 msgid "More validations come in, click for an update"
-msgstr ""
+msgstr "有更多的验证进来，请点击获取更新"

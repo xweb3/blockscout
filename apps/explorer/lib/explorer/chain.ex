@@ -2670,7 +2670,6 @@ defmodule Explorer.Chain do
     # token_type: ERC-20 / ERC-721 / ERC-1155
     base_query =
       from(t in Token,
-        where: t.total_supply > ^0,
         order_by: [desc_nulls_last: t.holder_count, asc: t.name],
         preload: [:contract_address]
       )

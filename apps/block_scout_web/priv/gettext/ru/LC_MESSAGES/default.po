@@ -4649,13 +4649,13 @@ msgid "Found %{number} matching results for "
 msgstr "Найдено %{number} совпадающих результатов для"
 
 msgid "More blocks come in, click for an update"
-msgstr ""
+msgstr "Появляются новые блоки, нажмите для обновления"
 
 msgid "More internal transactions come in, click for an update"
-msgstr ""
+msgstr "Появляются новые внутренние транзакции, нажмите для обновления"
 
 msgid "More transactions come in, click for an update"
-msgstr ""
+msgstr "Поступают новые транзакции, нажмите для обновлени"
 
 msgid "More validations come in, click for an update"
-msgstr ""
+msgstr "Поступают новые проверки, нажмите для обновления"
