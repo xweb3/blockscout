@@ -102,11 +102,11 @@ defmodule BlockScoutWeb.L2ToL1TxnController do
           Enum.map(l2_to_l1, fn l ->
             display_status = case l.status do
               "0" ->
-                "Waiting for relay"
+                gettext("Waiting for relay")
               "1" ->
-                "Ready for Claim"
+                gettext("Ready for Claim")
               "2" ->
-                "Claimed"
+                gettext("Claimed")
               _ ->
                 l.status
             end
@@ -115,11 +115,11 @@ defmodule BlockScoutWeb.L2ToL1TxnController do
 
             display_status_tooltip = case l.status do
               "0" ->
-                "Withdrawn on L2 but not ready for claim on L1"
+                gettext("Withdrawn on L2 but not ready for claim on L1")
               "1" ->
-                "Ready for claim on L1"
+                gettext("Ready for claim on L1")
               "2" ->
-                "Withdrawal has been claimed on L1"
+                gettext("Withdrawal has been claimed on L1")
               _ ->
                 l.status
             end

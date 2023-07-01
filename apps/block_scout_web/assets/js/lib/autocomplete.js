@@ -100,7 +100,7 @@ const resultsListElement = (list, data) => {
       </div>`
       info.innerHTML = adv
       const label = getLabel(k)
-      info.innerHTML += `<div class="counter-content" data-type="${k}"><p class="label">${label}</p> <p class="count">${labelResult.replace('%{number}', `<strong>${localResult[k].length}</strong>`)}</p></div>`
+      info.innerHTML += `<div class="counter-content" data-type="${k}"><p class="label">${label}</p> <p class="count">${labelResult.replace('{number}', `<strong>${localResult[k].length}</strong>`)}</p></div>`
 
       $(info).insertBefore($firstItem)
     })
@@ -127,7 +127,7 @@ const resultsListElement = (list, data) => {
     </div>`
     info.innerHTML = adv
     if (data.query !== '###') {
-      info.innerHTML += `${labelNoResult.replace('%{number}', `<strong>${data.matches.length}</strong> `)} <strong style="word-wrap:break-word;">"${data.query}"</strong>`
+      info.innerHTML += `${labelNoResult.replace('{number}', `<strong>${data.matches.length}</strong> `)} <strong style="word-wrap:break-word;">"${data.query}"</strong>`
     }
     list.prepend(info)
   }

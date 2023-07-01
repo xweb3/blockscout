@@ -4655,3 +4655,9 @@ msgstr "有更多交易进来，请点击获取更新"
 
 msgid "More validations come in, click for an update"
 msgstr "有更多的验证进来，请点击获取更新"
+
+msgid "Display {number} result"
+msgstr "显示 {number} 个结果"
+
+msgid "Found {number} matching results for "
+msgstr "找到 {number} 个匹配结果"

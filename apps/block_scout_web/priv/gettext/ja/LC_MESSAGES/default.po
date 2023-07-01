@@ -4655,3 +4655,9 @@ msgstr "さらに取引が入ってきました、アップデートのために
 
 msgid "More validations come in, click for an update"
 msgstr "さらに検証が入ってきました、アップデートのためにクリックしてください"
+
+msgid "Display {number} result"
+msgstr "{number} つの結果を表示する"
+
+msgid "Found {number} matching results for "
+msgstr "{number} 件の一致する結果が見つかりました"

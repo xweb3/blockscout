@@ -4659,3 +4659,9 @@ msgstr "Поступают новые транзакции, нажмите дл�
 
 msgid "More validations come in, click for an update"
 msgstr "Поступают новые проверки, нажмите для обновления"
+
+msgid "Display {number} result"
+msgstr "Отображение {number} результата"
+
+msgid "Found {number} matching results for "
+msgstr "Найдено {number} совпадающих результатов для"

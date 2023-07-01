@@ -4627,3 +4627,11 @@ msgstr ""
 #, elixir-autogen
 msgid "More validations come in, click for an update"
 msgstr ""
+
+msgid "Display {number} result"
+msgstr ""
+
+msgid "Found {number} matching results for "
+msgstr ""
+
+
