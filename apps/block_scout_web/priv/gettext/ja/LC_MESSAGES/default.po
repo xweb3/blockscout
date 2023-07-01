@@ -4627,7 +4627,7 @@ msgstr "ERC-1155"
 #: lib/block_scout_web/templates/layout/_topnav.html.eex:67
 #, elixir-autogen, elixir-format, fuzzy
 msgid "ERC20"
-msgstr "ERC-20の日本語訳はありません。ERC-20は、イーサリアムブロックチェーン上で動作するトークン規格の1つで、イーサリアムスマートコントラクトの基盤として使用されます。"
+msgstr "ERC-20"
 
 #: lib/block_scout_web/templates/layout/_topnav.html.eex:70
 #, elixir-autogen, elixir-format, fuzzy

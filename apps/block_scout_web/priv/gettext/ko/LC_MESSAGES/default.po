@@ -4627,12 +4627,12 @@ msgstr "ERC-1155"
 #: lib/block_scout_web/templates/layout/_topnav.html.eex:67
 #, elixir-autogen, elixir-format, fuzzy
 msgid "ERC20"
-msgstr "ERC-20 -> ERC-20"
+msgstr "ERC-20"
 
 #: lib/block_scout_web/templates/layout/_topnav.html.eex:70
 #, elixir-autogen, elixir-format, fuzzy
 msgid "ERC721"
-msgstr "ERC-721를 번역하면 됩니다."
+msgstr "ERC-721"
 
 #: lib/block_scout_web/templates/layout/_search.html.eex:20
 #, elixir-autogen

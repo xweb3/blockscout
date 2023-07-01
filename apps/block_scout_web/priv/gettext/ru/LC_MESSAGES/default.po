@@ -4636,7 +4636,7 @@ msgstr "ERC-20"
 #: lib/block_scout_web/templates/layout/_topnav.html.eex:70
 #, elixir-autogen, elixir-format, fuzzy
 msgid "ERC721"
-msgstr "ERC-721 - Это протокол на базе Ethereum, который определяет стандарт для невзаимозаменяемых токенов."
+msgstr "ERC-721"
 
 #: lib/block_scout_web/templates/layout/_search.html.eex:20
 #, elixir-autogen
