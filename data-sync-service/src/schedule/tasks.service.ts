@@ -103,13 +103,12 @@ export class TasksService {
     await this.cacheManager.set(DA_BATCH_INDEX, Number(da_batch_index), {
       ttl: 0,
     });
-    // TODO (Jayce) hide temp
     this.sync_token_price_history();
     this.sync_token_price_real_time();
     console.log('================end init cache================');
 
   }
-  @Interval(3000)
+  @Interval(12000)
   async l1_sent() {
     let end = 0;
     const currentL1BlockNumber =
@@ -137,7 +136,7 @@ export class TasksService {
       }
     }
   }
-  @Interval(2000)
+  @Interval(12000)
   async l1_relayed() {
     let end = 0;
     const currentL1BlockNumber =
@@ -301,7 +300,6 @@ export class TasksService {
     }
   }
 
-  //TODO (Jayce) hide temp
   @Interval(1800000)
   async sync_token_price_history() {
     console.log('start sync token price service')
