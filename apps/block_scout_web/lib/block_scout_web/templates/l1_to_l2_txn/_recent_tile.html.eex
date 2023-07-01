@@ -43,7 +43,7 @@
                     <%= @l1_to_l2.l2_hash %>
                 </a>
             <% else %>
-                Pendding
+                <%= gettext "Pending" %>
             <% end %>
 
         </div>
