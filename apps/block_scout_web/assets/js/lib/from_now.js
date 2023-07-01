@@ -3,7 +3,10 @@ import moment from 'moment'
 import 'moment/min/locales'
 import Cookies from 'js-cookie'
 
-const lang = Cookies.get('locale')
+let lang = Cookies.get('locale')
+if (!lang) {
+  lang = 'en'
+}
 const availableLang = ['ja', 'zh', 'ko', 'ru']
 
 if (availableLang.includes(lang.toLowerCase())) {
