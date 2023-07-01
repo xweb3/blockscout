@@ -35,9 +35,9 @@
   </td>
   <td class="stakes-td">
     <%= if decimals?(@token) do %>
-      <span data-test="token_supply" style="white-space:normal;max-width:240px;display:inline-block;"><%= format_according_to_decimals(@token.total_supply, @token.decimals) %> <%= @token.symbol %></span>
+      <span data-test="token_supply" style="white-space:normal;max-width:240px;display:inline-block;"><%= format_according_to_decimals(@token.total_supply, @token.decimals) %> <%= symbol_helper(@token.total_supply,@token.symbol) %></span>
     <% else %>
-      <span data-test="token_supply" style="white-space:normal;max-width:240px;display:inline-block;"><%= format_integer_to_currency(@token.total_supply) %> <%= @token.symbol %></span>
+      <span data-test="token_supply" style="white-space:normal;max-width:240px;display:inline-block;"><%= format_integer_to_currency(@token.total_supply) %> <%= symbol_helper(@token.total_supply,@token.symbol) %></span>
     <% end %>
   </td>
   <td class="stakes-td">

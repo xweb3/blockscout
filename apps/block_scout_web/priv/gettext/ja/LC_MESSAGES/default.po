@@ -4645,13 +4645,13 @@ msgid "Found %{number} matching results for "
 msgstr "%{number} 件の一致する結果が見つかりました"
 
 msgid "More blocks come in, click for an update"
-msgstr ""
+msgstr "さらにブロックが入ってきました、アップデートのためにクリックしてください"
 
 msgid "More internal transactions come in, click for an update"
-msgstr ""
+msgstr "さらに内部取引が入ってきました、アップデートのためにクリックしてください"
 
 msgid "More transactions come in, click for an update"
-msgstr ""
+msgstr "さらに取引が入ってきました、アップデートのためにクリックしてください"
 
 msgid "More validations come in, click for an update"
-msgstr ""
+msgstr "さらに検証が入ってきました、アップデートのためにクリックしてください"

@@ -681,36 +681,6 @@ msgstr ""
 msgid "Connection Lost"
 msgstr ""
 
-#: lib/block_scout_web/templates/address_coin_balance/index.html.eex:12
-#: lib/block_scout_web/templates/block/index.html.eex:5
-#, elixir-autogen, elixir-format
-msgid "Connection Lost, click to load newer blocks"
-msgstr ""
-
-#: lib/block_scout_web/templates/address_internal_transaction/index.html.eex:15
-#, elixir-autogen, elixir-format
-msgid "Connection Lost, click to load newer internal transactions"
-msgstr ""
-
-#: lib/block_scout_web/templates/address_transaction/index.html.eex:11
-#: lib/block_scout_web/templates/da_batch_transaction/index.html.eex:22
-#: lib/block_scout_web/templates/eigenda_batch/index.html.eex:22
-#: lib/block_scout_web/templates/l1_to_l2_txn/index.html.eex:35
-#: lib/block_scout_web/templates/l2_to_l1_txn/index.html.eex:21
-#: lib/block_scout_web/templates/pending_transaction/index.html.eex:16
-#: lib/block_scout_web/templates/state_batch/index.html.eex:22
-#: lib/block_scout_web/templates/state_batch_transaction/index.html.eex:25
-#: lib/block_scout_web/templates/transaction/index.html.eex:18
-#: lib/block_scout_web/templates/txn_batch/index.html.eex:22
-#, elixir-autogen, elixir-format
-msgid "Connection Lost, click to load newer transactions"
-msgstr ""
-
-#: lib/block_scout_web/templates/address_validation/index.html.eex:10
-#, elixir-autogen, elixir-format
-msgid "Connection Lost, click to load newer validations"
-msgstr ""
-
 #: lib/block_scout_web/templates/address_contract/index.html.eex:91
 #, elixir-autogen, elixir-format
 msgid "Constructor Arguments"
@@ -4382,11 +4352,6 @@ msgstr ""
 msgid "Contact Us"
 msgstr ""
 
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:135
-#, elixir-autogen
-msgid "Mantle Testnet"
-msgstr ""
-
 #: lib/block_scout_web/templates/chain/show.html.eex:235
 #, elixir-autogen
 msgid "Latest Transactions"
@@ -4633,14 +4598,32 @@ msgstr ""
 msgid "Found %{number} matching results for "
 msgstr ""
 
+#: lib/block_scout_web/templates/address_coin_balance/index.html.eex:12
+#: lib/block_scout_web/templates/block/index.html.eex:5
+#, elixir-autogen
 msgid "More blocks come in, click for an update"
 msgstr ""
 
+#: lib/block_scout_web/templates/address_internal_transaction/index.html.eex:15
+#, elixir-autogen
 msgid "More internal transactions come in, click for an update"
 msgstr ""
 
+#: lib/block_scout_web/templates/address_transaction/index.html.eex:11
+#: lib/block_scout_web/templates/da_batch_transaction/index.html.eex:22
+#: lib/block_scout_web/templates/eigenda_batch/index.html.eex:22
+#: lib/block_scout_web/templates/l1_to_l2_txn/index.html.eex:35
+#: lib/block_scout_web/templates/l2_to_l1_txn/index.html.eex:21
+#: lib/block_scout_web/templates/pending_transaction/index.html.eex:16
+#: lib/block_scout_web/templates/state_batch/index.html.eex:22
+#: lib/block_scout_web/templates/state_batch_transaction/index.html.eex:25
+#: lib/block_scout_web/templates/transaction/index.html.eex:18
+#: lib/block_scout_web/templates/txn_batch/index.html.eex:22
+#, elixir-autogen
 msgid "More transactions come in, click for an update"
 msgstr ""
 
+#: lib/block_scout_web/templates/address_validation/index.html.eex:10
+#, elixir-autogen
 msgid "More validations come in, click for an update"
 msgstr ""
