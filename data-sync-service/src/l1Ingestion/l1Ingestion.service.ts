@@ -341,7 +341,7 @@ export class L1IngestionService {
     let from = '0x0000000000000000000000000000000000000000';
     let to = '0x0000000000000000000000000000000000000000';
     let value = '0';
-    let type = 0;
+    let type = -1;
     const l1SentMessageEventsInsertData: any[] = [];
     const l1ToL2InsertData: any[] = [];
     for (const item of list) {
@@ -371,6 +371,7 @@ export class L1IngestionService {
         const decodeMsg = iface.decodeFunctionData('rollBackL2Chain', message);
         type = 2; // rollBackL2Chain
       }
+      if(type === -1) continue;
       const { timestamp } = await this.web3.eth.getBlock(blockNumber);
       const msgHash = this.verifyDomainCalldataHash({
         target: target.toString(),

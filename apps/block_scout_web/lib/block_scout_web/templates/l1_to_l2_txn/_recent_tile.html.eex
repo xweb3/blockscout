@@ -16,7 +16,7 @@
         <div class="recent-preview-item-content-l1-2-l2" style="display:flex;align-items:center">
             <span>L1 Tx#</span>
             <a href="<%= @l1_explorer %>/tx/<%= @l1_to_l2.hash %>"
-              class="i-tooltip-2 recent-preview-item-content-l1-2-l2-link"
+              class="i-tooltip-2 recent-preview-item-content-txn-l1-2-l2-link"
               data-boundary="window"
               data-container="body"
               data-html="true"
@@ -31,7 +31,7 @@
             <span style="margin-left:5px;">L2 Tx#</span>
             <%= if @l1_to_l2.l2_hash do %>
                 <a href="/tx/<%= @l1_to_l2.l2_hash %>"
-                    class="i-tooltip-2 recent-preview-item-content-l1-2-l2-link"
+                    class="i-tooltip-2 recent-preview-item-content-txn-l1-2-l2-link"
                     data-boundary="window"
                     data-container="body"
                     data-html="true"

@@ -416,6 +416,16 @@ $card-tab-icon-color-active: #fff !default;
           width: 110px;
         }
       }
+      .recent-preview-item-content-txn-l1-2-l2-link{
+        width: 90px;
+        color: #007bff;
+        @media (max-width: 368px) {
+          width: 60px;
+        }
+        @media (max-width: 500px) {
+          width: 85px;
+        }
+      }
       .recent-preview-item-content-latest-txs {
         flex: 1;
         .recent-preview-item-content-latest-txs-hash {
