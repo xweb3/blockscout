@@ -131,15 +131,19 @@ export class MonitorService {
     return block_number;
   }
   async missBlockNumber() {
-    const blockNumber = await this.getLatestBlockNumber();
-    this.metricBlockNumber.set(blockNumber);
-    if (blockNumber < 2000) return;
-    const endBlock = blockNumber - 1000;
-    const startBlock = endBlock - 1000;
-    const [ result ] = await this.entityManager.query(`
-      SELECT COUNT(*) FROM transactions WHERE block_number >= $1 AND block_number < $2;
-    `, [startBlock, endBlock])
-    this.metricMissBlockNumber.set(Number(result.count));
-    return result.count;
+    try {
+      const blockNumber = await this.getLatestBlockNumber();
+      this.metricBlockNumber.set(blockNumber);
+      if (blockNumber < 2000) return;
+      const endBlock = blockNumber - 1000;
+      const startBlock = endBlock - 1000;
+      const [ result ] = await this.entityManager.query(`
+        SELECT COUNT(*) FROM transactions WHERE block_number >= $1 AND block_number < $2;
+      `, [startBlock, endBlock])
+      this.metricMissBlockNumber.set(Number(result.count));
+      return result.count;
+    } catch (error) {
+      this.logger.error(`miss BlockNumber error: ${error}`);
+    }
   }
 }
