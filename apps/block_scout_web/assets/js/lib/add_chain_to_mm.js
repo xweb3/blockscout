@@ -2,28 +2,20 @@ import 'bootstrap'
 import $ from 'jquery'
 
 export async function addChainToMM({ btn }) {
-  //const chainIDFromWallet = await window.ethereum.request({ method: 'eth_chainId' })
-  const chainIDFromInstance = getChainIdHex()
+  try {
+    const chainIDFromWallet = await window.ethereum.request({ method: 'eth_chainId' })
+    const chainIDFromInstance = getChainIdHex()
 
-  const p = {
-    method: 'wallet_switchEthereumChain',
-    params: [{
-      chainId: chainIDFromInstance
-    }]
-  };
     const coinName = document.getElementById('js-coin-name').value
     const subNetwork = document.getElementById('js-subnetwork').value
     const jsonRPC = document.getElementById('js-json-rpc').value
     const path = process.env.NETWORK_PATH || '/'
+
     const blockscoutURL = location.protocol + '//' + location.host + path
-
     const successTitle = $(btn).data('success')
-    const failTitle = $(btn).data('fail')
-
-  const res = await window.ethereum.request(p).catch(async e => {
-    console.error('switch chain failed:', e)
-    if (e && e.code === 4902) {
-      const params = {
+    
+    if (chainIDFromWallet !== chainIDFromInstance) {
+      await window.ethereum.request({
         method: 'wallet_addEthereumChain',
         params: [{
           chainId: chainIDFromInstance,
@@ -36,27 +28,25 @@ export async function addChainToMM({ btn }) {
           rpcUrls: [jsonRPC],
           blockExplorerUrls: [blockscoutURL]
         }]
-      };
-      console.log(params);
-      await window.ethereum.request(params).catch(e => {
-        console.error('add chain failed:', e)
-        btn.tooltip('dispose')
-        btn.tooltip({
-          title: `${failTitle} ${e.message}`,
-          trigger: 'click',
-          placement: 'bottom'
-        }).tooltip('show')
-
-        setTimeout(() => {
-          btn.tooltip('dispose')
-        }, 3000)
       })
+    } else {
+      btn.tooltip('dispose')
+      btn.tooltip({
+        title: `${successTitle} ${subNetwork}`,
+        trigger: 'click',
+        placement: 'bottom'
+      }).tooltip('show')
+
+      setTimeout(() => {
+        btn.tooltip('dispose')
+      }, 3000)
     }
-  })
-  if (res === null) {
+  } catch (e) {
+    console.error('add chain failed:', e)
+    const failTitle = $(btn).data('fail')
     btn.tooltip('dispose')
     btn.tooltip({
-      title: `${successTitle} ${subNetwork}`,
+      title: `${failTitle} ${e.message}`,
       trigger: 'click',
       placement: 'bottom'
     }).tooltip('show')
@@ -68,9 +58,7 @@ export async function addChainToMM({ btn }) {
 }
 
 function getChainIdHex() {
-  const chainIDObj = document.getElementById('js-chain-id')
-  // @ts-ignore
-  const chainIDFromDOM = chainIDObj && chainIDObj.value
+  const chainIDFromDOM = document.getElementById('js-chain-id').value
   const chainIDFromInstance = parseInt(chainIDFromDOM)
   return chainIDFromInstance && `0x${chainIDFromInstance.toString(16)}`
 }
