@@ -360,7 +360,7 @@ export class L1IngestionService {
         inserted_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       })
-      this.metricStateBatchIndex.set(_batchIndex);
+      this.metricStateBatchIndex.set(Number(_batchIndex.toString()));
     }
     const result: any[] = [];
     const dataSource = getConnection();
@@ -948,7 +948,7 @@ export class L1IngestionService {
       if (batchIndexParam > Number(batchIndex)) {
         return false;
       }
-      this.metricEigenlayerBatchIndex.set(batchIndex)
+      this.metricEigenlayerBatchIndex.set(Number(batchIndex.toString()))
       
       const res = await this.eigenlayerService.getRollupStoreByRollupBatchIndex(batchIndexParam);
       if(!res) return Promise.reject();
