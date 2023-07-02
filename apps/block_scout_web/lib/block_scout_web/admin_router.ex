@@ -14,6 +14,7 @@ defmodule BlockScoutWeb.AdminRouter do
     plug(:fetch_flash)
     plug(:protect_from_forgery)
     plug(BlockScoutWeb.CSPHeader)
+    plug(BlockScoutWeb.Plug.SetLocale)
   end
 
   pipeline :check_configured do

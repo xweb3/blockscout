@@ -4,9 +4,11 @@
 <input id="js-subnetwork" class="d-none" value="<%= sub_network %>" />
 <input id="js-json-rpc" class="d-none" value="<%= Application.get_env(:block_scout_web, :json_rpc) %>" />
 <li>
-    <a 
+    <a
         class="footer-link js-btn-add-chain-to-mm btn-add-chain-to-mm in-footer"
         style="cursor: pointer;"
+        data-success="<%= gettext("You're already connected to") %>"
+        data-fail="<%= gettext("add custom chain failed,") %>"
     >
         <%= gettext("Add") <> " #{sub_network}" %>
     </a>

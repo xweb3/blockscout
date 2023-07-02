@@ -19,7 +19,7 @@ $tile-body-a-color: #007bff;
 
 @mixin generate-tile-block($prefix, $color, $label-color: false) {
   &#{ $prefix } {
-    border-left: 4px solid $color;
+    border-left: 1px solid $color;
 
     .tile-transaction-type-block {
       a {
@@ -57,7 +57,13 @@ $tile-body-a-color: #007bff;
 }
 
 /*********************************************************************/
-
+.container {
+  .home-block-container{
+    .tile.tile-type-block{
+      border-left-width: 4px;
+    }
+  }
+}
 .tile-label {
   font-size: 12px;
   font-weight: 700;
@@ -598,7 +604,7 @@ $cube-quantity: 5;
 }
 
 .dark-theme-applied .dark-block-loader {
-  background-color: #313355;
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
 .title-with-label {

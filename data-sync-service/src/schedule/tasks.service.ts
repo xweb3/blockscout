@@ -103,19 +103,18 @@ export class TasksService {
     await this.cacheManager.set(DA_BATCH_INDEX, Number(da_batch_index), {
       ttl: 0,
     });
-    // TODO (Jayce) hide temp
     this.sync_token_price_history();
     this.sync_token_price_real_time();
     console.log('================end init cache================');
-    // TODO (Jayce) state batch missed data sync script
-    //this.miss_data_script_start(9006135)
+
   }
-  @Interval(3000)
+  @Interval(12000)
   async l1_sent() {
     let end = 0;
-    const currentBlockNumber =
+    const currentL1BlockNumber =
       await this.l1IngestionService.getCurrentBlockNumber();
-    console.log('l1 sent currentBlockNumber: ', currentBlockNumber);
+    console.log('l1 sent currentBlockNumber: ', currentL1BlockNumber);
+    const currentBlockNumber = currentL1BlockNumber - 1;
     const start = Number(await this.cacheManager.get(L1_SENT));
     if (currentBlockNumber - start > SYNC_STEP) {
       end = start + SYNC_STEP;
@@ -130,19 +129,20 @@ export class TasksService {
         start + 1,
         end,
       );
-      if(inserted){
+      if (inserted) {
         this.cacheManager.set(L1_SENT, end, { ttl: 0 });
       } else {
         this.logger.error('-------- insert l1 sent message events failed -----------');
       }
     }
   }
-  @Interval(2000)
+  @Interval(12000)
   async l1_relayed() {
     let end = 0;
-    const currentBlockNumber =
+    const currentL1BlockNumber =
       await this.l1IngestionService.getCurrentBlockNumber();
-    console.log('l1 relayed currentBlockNumber: ', currentBlockNumber);
+    console.log('l1 relayed currentBlockNumber: ', currentL1BlockNumber);
+    const currentBlockNumber = currentL1BlockNumber - 1;
     const start = Number(await this.cacheManager.get(L1_RELAYED));
     if (currentBlockNumber - start > SYNC_STEP) {
       end = start + SYNC_STEP;
@@ -157,7 +157,7 @@ export class TasksService {
         start + 1,
         end,
       );
-      if(inserted){
+      if (inserted) {
         this.cacheManager.set(L1_RELAYED, end, { ttl: 0 });
       } else {
         this.logger.error('-------- insert l1 relayed message events failed -----------');
@@ -167,9 +167,10 @@ export class TasksService {
   @Interval(2000)
   async l2_sent() {
     let end = 0;
-    const currentBlockNumber =
+    const currentL2BlockNumber =
       await this.l2IngestionService.getCurrentBlockNumber();
-    console.log('l2 sent currentBlockNumber: ', currentBlockNumber);
+    console.log('l2 sent currentBlockNumber: ', currentL2BlockNumber);
+    const currentBlockNumber = currentL2BlockNumber - 1;
     const start = Number(await this.cacheManager.get(L2_SENT));
     if (currentBlockNumber - start > SYNC_STEP_L2) {
       end = start + SYNC_STEP_L2;
@@ -184,7 +185,7 @@ export class TasksService {
         start + 1,
         end,
       );
-      if(inserted){
+      if (inserted) {
         this.cacheManager.set(L2_SENT, end, { ttl: 0 });
       } else {
         this.logger.error('-------- insert l2 sent message events failed -----------');
@@ -194,9 +195,10 @@ export class TasksService {
   @Interval(2000)
   async l2_relayed() {
     let end = 0;
-    const currentBlockNumber =
+    const currentL2BlockNumber =
       await this.l2IngestionService.getCurrentBlockNumber();
-    console.log('l2 relayed currentBlockNumber: ', currentBlockNumber);
+    console.log('l2 relayed currentBlockNumber: ', currentL2BlockNumber);
+    const currentBlockNumber = currentL2BlockNumber - 1;
     const start = Number(await this.cacheManager.get(L2_RELAYED));
     if (currentBlockNumber - start > SYNC_STEP_L2) {
       end = start + SYNC_STEP_L2;
@@ -211,7 +213,7 @@ export class TasksService {
         start + 1,
         end,
       );
-      if(inserted){
+      if (inserted) {
         this.cacheManager.set(L2_RELAYED, end, { ttl: 0 });
       } else {
         this.logger.error('-------- insert l2 relayed message events failed -----------');
@@ -260,20 +262,6 @@ export class TasksService {
     }
   }
 
-
-  async miss_data_script_start(block) {
-    console.log('-------------- start script , start block', block)
-    const result = await this.l1IngestionService.saveStateBatchMissedScript(block).catch(e => {
-      console.error(`insert state batch failed,`)
-    });
-    console.log('list sync completed, the next block:', result)
-    if (result && result < 9146135) {
-      this.miss_data_script_start(result)
-    } else {
-      console.error('result insert state batch data failed, or sync completed!', result)
-    }
-  }
-
   @Interval(10000)
   async l1l2_merge() {
     try {
@@ -310,18 +298,23 @@ export class TasksService {
       console.log('[syncEigenDaBatch] add DA_BATCH_INDEX');
       await this.cacheManager.set(DA_BATCH_INDEX, fromStoreNumber + 1, { ttl: 0 });
     }
-
-
   }
-  //TODO (Jayce) hide temp
-   @Interval(1800000)
-   async sync_token_price_history() {
-     console.log('start sync token price service')
-     this.l1IngestionService.syncTokenPriceHistory();
-   }
- 
-   @Interval(10000)
-   async sync_token_price_real_time() {
+
+  @Interval(1800000)
+  async sync_token_price_history() {
+    console.log('start sync token price service')
+    this.l1IngestionService.syncTokenPriceHistory();
+  }
+
+  @Interval(10000)
+  async sync_token_price_real_time() {
     this.l1IngestionService.syncTokenPriceRealTime();
-   }
+  }
+
+  @Interval(60000)
+  async updateReorgBlockMessage() {
+    this.l1IngestionService.updateReorgBlockMessage().catch(e => {
+      console.error(`update reorg block failed`, e.message)
+    });
+  }
 }

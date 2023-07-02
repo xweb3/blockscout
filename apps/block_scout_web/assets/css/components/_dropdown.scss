@@ -52,6 +52,19 @@ $dropdown-menu-background: #cbe9e7;
   transition: $transition-cont;
   white-space: initial;
   border-radius: 6px;
+  position: relative;
+  &[target='_blank']{
+    padding-right: 20px;
+    &:after{
+      font-family: 'icomoon';
+      content: "\e901";
+      font-size: 20px;
+      position: absolute;
+      right: 5px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
 
   &:not(:last-child) {
     margin-bottom: 2px;

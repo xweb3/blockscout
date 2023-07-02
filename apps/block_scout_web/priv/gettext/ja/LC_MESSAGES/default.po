@@ -87,7 +87,7 @@ msgstr "（状態の内部取引を待っています）"
 #: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:104
 #, elixir-autogen, elixir-format
 msgid "(query)"
-msgstr "（クエリ）"
+msgstr ""
 
 #: lib/block_scout_web/templates/address_contract_verification_common_fields/_library_first.html.eex:4
 #, elixir-autogen, elixir-format
@@ -160,7 +160,7 @@ msgstr "APIキー"
 msgid "API keys"
 msgstr "APIキー"
 
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:86
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:82
 #, elixir-autogen, elixir-format
 msgid "APIs"
 msgstr "APIs"
@@ -170,12 +170,12 @@ msgstr "APIs"
 #: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:69
 #, elixir-autogen, elixir-format
 msgid "Action"
-msgstr "アクション"
+msgstr ""
 
 #: lib/block_scout_web/templates/account/watchlist/show.html.eex:25
 #, elixir-autogen, elixir-format
 msgid "Actions"
-msgstr "行動 (Koudou)"
+msgstr "行動"
 
 #: lib/block_scout_web/templates/l1_to_l2_txn/overview.html.eex:351
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:351
@@ -187,7 +187,7 @@ msgstr "取引で使用された実際のガス量。"
 
 #: lib/block_scout_web/templates/account/api_key/form.html.eex:7
 #: lib/block_scout_web/templates/account/custom_abi/form.html.eex:8
-#: lib/block_scout_web/templates/layout/_add_chain_to_mm.html.eex:11
+#: lib/block_scout_web/templates/layout/_add_chain_to_mm.html.eex:13
 #, elixir-autogen, elixir-format
 msgid "Add"
 msgstr "追加する"
@@ -343,7 +343,7 @@ msgstr "分配報酬の量。マイナーは、固定ブロック報酬+Tx手数
 msgid "Anything not in this list is not supported. Click on the method to be taken to the documentation for that method, and check the notes section for any potential differences."
 msgstr "このリストにないものはサポートされていません。メソッドをクリックしてそのメソッドのドキュメントに移動し、ポテンシャルの違いについては注意事項を確認してください。"
 
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:114
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:111
 #, elixir-autogen, elixir-format
 msgid "Apps"
 msgstr "アプリ"
@@ -447,7 +447,7 @@ msgstr "ブロックの詳細"
 msgid "Block Height"
 msgstr "ブロック高さ"
 
-#: lib/block_scout_web/templates/layout/app.html.eex:44
+#: lib/block_scout_web/templates/layout/app.html.eex:45
 #, elixir-autogen, elixir-format
 msgid "Block Mined, awaiting import..."
 msgstr "ブロックが採掘されました。インポート待ちです。"
@@ -488,17 +488,17 @@ msgid "Block number in which the address was updated."
 msgstr "アドレスが更新されたブロック番号。"
 
 #: lib/block_scout_web/templates/chain/show.html.eex:146
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:23
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:20
 #, elixir-autogen, elixir-format
 msgid "Blocks"
-msgstr "ブロック（ブロックス）"
+msgstr "ブロック"
 
-#: lib/block_scout_web/templates/layout/app.html.eex:43
+#: lib/block_scout_web/templates/layout/app.html.eex:44
 #, elixir-autogen, elixir-format
 msgid "Blocks Indexed"
 msgstr "ブロックがインデックス化されました。"
 
-#: lib/block_scout_web/templates/address/_tabs.html.eex:60
+#: lib/block_scout_web/templates/address/_tabs.html.eex:63
 #: lib/block_scout_web/templates/address/overview.html.eex:274
 #: lib/block_scout_web/templates/address_validation/index.html.eex:11
 #: lib/block_scout_web/views/address_view.ex:380
@@ -506,7 +506,7 @@ msgstr "ブロックがインデックス化されました。"
 msgid "Blocks Validated"
 msgstr "ブロックが検証されました。"
 
-#: lib/block_scout_web/templates/layout/app.html.eex:45
+#: lib/block_scout_web/templates/layout/app.html.eex:46
 #, elixir-autogen, elixir-format
 msgid "Blocks With Internal Transactions Indexed"
 msgstr "内部トランザクションがインデックス化されたブロック。"
@@ -588,7 +588,7 @@ msgstr "クリア"
 msgid "Close"
 msgstr "閉める"
 
-#: lib/block_scout_web/templates/address/_tabs.html.eex:70
+#: lib/block_scout_web/templates/address/_tabs.html.eex:73
 #: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:165
 #: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:187
 #: lib/block_scout_web/templates/api_docs/_eth_rpc_item.html.eex:126
@@ -598,18 +598,18 @@ msgstr "閉める"
 msgid "Code"
 msgstr "コード"
 
-#: lib/block_scout_web/templates/address/_tabs.html.eex:46
+#: lib/block_scout_web/templates/address/_tabs.html.eex:49
 #: lib/block_scout_web/views/address_view.ex:379
 #, elixir-autogen, elixir-format
 msgid "Coin Balance History"
 msgstr "コイン残高履歴"
 
-#: lib/block_scout_web/templates/address/_tabs.html.eex:40
+#: lib/block_scout_web/templates/address/_tabs.html.eex:42
 #, elixir-format, elixir-autogen
 msgid "Withdraw"
 msgstr "引き出す"
 
-#: lib/block_scout_web/templates/address/_tabs.html.eex:34
+#: lib/block_scout_web/templates/address/_tabs.html.eex:36
 #, elixir-format, elixir-autogen
 msgid "Deposit"
 msgstr "入金"
@@ -772,9 +772,9 @@ msgstr "契約アドレス保留中"
 #: lib/block_scout_web/views/eigenda_batch_view.ex:470
 #: lib/block_scout_web/views/l1_to_l2_txn_view.ex:474
 #: lib/block_scout_web/views/l2_to_l1_txn_view.ex:474
-#: lib/block_scout_web/views/state_batch_transaction_view.ex:511
+#: lib/block_scout_web/views/state_batch_transaction_view.ex:509
 #: lib/block_scout_web/views/state_batch_view.ex:465
-#: lib/block_scout_web/views/transaction_view.ex:641
+#: lib/block_scout_web/views/transaction_view.ex:639
 #: lib/block_scout_web/views/txn_batch_view.ex:470
 #, elixir-autogen, elixir-format
 msgid "Contract Call"
@@ -784,9 +784,9 @@ msgstr "契約コール"
 #: lib/block_scout_web/views/eigenda_batch_view.ex:467
 #: lib/block_scout_web/views/l1_to_l2_txn_view.ex:471
 #: lib/block_scout_web/views/l2_to_l1_txn_view.ex:471
-#: lib/block_scout_web/views/state_batch_transaction_view.ex:508
+#: lib/block_scout_web/views/state_batch_transaction_view.ex:506
 #: lib/block_scout_web/views/state_batch_view.ex:462
-#: lib/block_scout_web/views/transaction_view.ex:638
+#: lib/block_scout_web/views/transaction_view.ex:636
 #: lib/block_scout_web/views/txn_batch_view.ex:467
 #, elixir-autogen, elixir-format
 msgid "Contract Creation"
@@ -948,7 +948,7 @@ msgstr "コピー元ハッシュ"
 #: lib/block_scout_web/templates/transaction_raw_trace/index.html.eex:15
 #, elixir-autogen, elixir-format
 msgid "Copy Raw Trace"
-msgstr "コピーする生のトレース"
+msgstr "Raw Trace"
 
 #: lib/block_scout_web/templates/address_contract/index.html.eex:115
 #: lib/block_scout_web/templates/address_contract/index.html.eex:127
@@ -1166,7 +1166,7 @@ msgstr "デコードされました"
 msgid "Decompiled Code"
 msgstr "逆コンパイルされたコード"
 
-#: lib/block_scout_web/templates/address/_tabs.html.eex:87
+#: lib/block_scout_web/templates/address/_tabs.html.eex:90
 #, elixir-autogen, elixir-format
 msgid "Decompiled code"
 msgstr "デコンパイルされたコード"
@@ -1435,7 +1435,7 @@ msgstr "エラー: %{reason}"
 msgid "Error: (Awaiting internal transactions for reason)"
 msgstr "エラー：（理由のために内部トランザクションが待機中）"
 
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:100
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:97
 #, elixir-autogen, elixir-format
 msgid "Eth RPC"
 msgstr "Eth RPC"
@@ -1553,7 +1553,7 @@ msgstr "から"
 #: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:18
 #, elixir-autogen, elixir-format
 msgid "GET"
-msgstr "取得する"
+msgstr "GET"
 
 #: lib/block_scout_web/templates/block/_tile.html.eex:67
 #: lib/block_scout_web/templates/block/overview.html.eex:184
@@ -1590,12 +1590,12 @@ msgstr "取引に使用されるガス"
 #: lib/block_scout_web/templates/chain/gas_price_oracle_legend_item.html.eex:5
 #, elixir-autogen, elixir-format
 msgid "Gas Tracker"
-msgstr "ガストラッカー"
+msgstr "モニター Gas"
 
 #: lib/block_scout_web/templates/address/overview.html.eex:238
 #, elixir-autogen, elixir-format
 msgid "Gas used by the address."
-msgstr "住所で使用されているガス。"
+msgstr "このアドレスで消費されるガス"
 
 #: lib/block_scout_web/templates/block/overview.html.eex:60
 #, elixir-autogen, elixir-format
@@ -1612,7 +1612,7 @@ msgstr "Github"
 msgid "Go to"
 msgstr "行ってください。"
 
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:90
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:86
 #, elixir-autogen, elixir-format
 msgid "GraphQL"
 msgstr "GraphQL"
@@ -1758,9 +1758,9 @@ msgstr "内部取引"
 #: lib/block_scout_web/views/eigenda_batch_view.ex:525
 #: lib/block_scout_web/views/l1_to_l2_txn_view.ex:529
 #: lib/block_scout_web/views/l2_to_l1_txn_view.ex:529
-#: lib/block_scout_web/views/state_batch_transaction_view.ex:567
+#: lib/block_scout_web/views/state_batch_transaction_view.ex:565
 #: lib/block_scout_web/views/state_batch_view.ex:520
-#: lib/block_scout_web/views/transaction_view.ex:706
+#: lib/block_scout_web/views/transaction_view.ex:704
 #: lib/block_scout_web/views/txn_batch_view.ex:525
 #, elixir-autogen, elixir-format
 msgid "Internal Transactions"
@@ -1795,7 +1795,7 @@ msgstr "最新の残高更新"
 msgid "Learn more"
 msgstr "もっと学ぶ"
 
-#: lib/block_scout_web/templates/layout/app.html.eex:46
+#: lib/block_scout_web/templates/layout/app.html.eex:47
 #, elixir-autogen, elixir-format
 msgid "Less than"
 msgstr "以下（いか）"
@@ -1865,6 +1865,7 @@ msgstr "チャートを読み込んでいます... "
 #: lib/block_scout_web/templates/address_write_contract/index.html.eex:39
 #: lib/block_scout_web/templates/address_write_contract/index.html.eex:47
 #: lib/block_scout_web/templates/address_write_proxy/index.html.eex:12
+#: lib/block_scout_web/templates/layout/_search.html.eex:19
 #: lib/block_scout_web/templates/tokens/contract/index.html.eex:17
 #, elixir-autogen, elixir-format
 msgid "Loading..."
@@ -1880,7 +1881,7 @@ msgstr "ログデータ"
 msgid "Log Index"
 msgstr "ログインデックス"
 
-#: lib/block_scout_web/templates/address/_tabs.html.eex:53
+#: lib/block_scout_web/templates/address/_tabs.html.eex:56
 #: lib/block_scout_web/templates/address_logs/index.html.eex:10
 #: lib/block_scout_web/templates/da_batch_transaction/_tabs.html.eex:17
 #: lib/block_scout_web/templates/eigenda_batch/_tabs.html.eex:17
@@ -1896,9 +1897,9 @@ msgstr "ログインデックス"
 #: lib/block_scout_web/views/eigenda_batch_view.ex:526
 #: lib/block_scout_web/views/l1_to_l2_txn_view.ex:530
 #: lib/block_scout_web/views/l2_to_l1_txn_view.ex:530
-#: lib/block_scout_web/views/state_batch_transaction_view.ex:568
+#: lib/block_scout_web/views/state_batch_transaction_view.ex:566
 #: lib/block_scout_web/views/state_batch_view.ex:521
-#: lib/block_scout_web/views/transaction_view.ex:707
+#: lib/block_scout_web/views/transaction_view.ex:705
 #: lib/block_scout_web/views/txn_batch_view.ex:526
 #, elixir-autogen, elixir-format
 msgid "Logs"
@@ -1909,7 +1910,7 @@ msgstr "ログ (Rogu)"
 msgid "Main Networks"
 msgstr "メインネットワークス"
 
-#: lib/block_scout_web/templates/layout/app.html.eex:47
+#: lib/block_scout_web/templates/layout/app.html.eex:48
 #: lib/block_scout_web/templates/tokens/overview/_details.html.eex:84
 #: lib/block_scout_web/views/address_view.ex:144
 #, elixir-autogen, elixir-format
@@ -2010,7 +2011,7 @@ msgstr "モデル"
 #: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:58
 #, elixir-autogen, elixir-format
 msgid "Module"
-msgstr "モジュール"
+msgstr ""
 
 #: lib/block_scout_web/templates/address_internal_transaction/index.html.eex:12
 #, elixir-autogen, elixir-format
@@ -2252,7 +2253,7 @@ msgstr "POAのSolidityフラットナーまたはthe"
 #: lib/block_scout_web/templates/api_docs/_eth_rpc_item.html.eex:26
 #, elixir-autogen, elixir-format
 msgid "POST"
-msgstr "POST (ポスト)"
+msgstr "POST"
 
 #: lib/block_scout_web/templates/common_components/_pagination_container.html.eex:41
 #, elixir-autogen, elixir-format
@@ -2355,7 +2356,7 @@ msgstr "位置%{index}"
 msgid "Potential matches from our contract method database:"
 msgstr "「契約方法データベースからの潜在的なマッチング候補」"
 
-#: lib/block_scout_web/templates/layout/app.html.eex:48
+#: lib/block_scout_web/templates/layout/app.html.eex:49
 #: lib/block_scout_web/templates/tokens/overview/_details.html.eex:95
 #, elixir-autogen, elixir-format
 msgid "Price"
@@ -2421,7 +2422,7 @@ msgstr "QRコード"
 msgid "Query"
 msgstr "クエリ"
 
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:95
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:92
 #, elixir-autogen, elixir-format
 msgid "RPC"
 msgstr "RPC"
@@ -2447,15 +2448,15 @@ msgstr "生の入力"
 #: lib/block_scout_web/views/eigenda_batch_view.ex:527
 #: lib/block_scout_web/views/l1_to_l2_txn_view.ex:531
 #: lib/block_scout_web/views/l2_to_l1_txn_view.ex:531
-#: lib/block_scout_web/views/state_batch_transaction_view.ex:569
+#: lib/block_scout_web/views/state_batch_transaction_view.ex:567
 #: lib/block_scout_web/views/state_batch_view.ex:522
-#: lib/block_scout_web/views/transaction_view.ex:708
+#: lib/block_scout_web/views/transaction_view.ex:706
 #: lib/block_scout_web/views/txn_batch_view.ex:527
 #, elixir-autogen, elixir-format
 msgid "Raw Trace"
-msgstr "Raw Trace"
+msgstr "生のトレース"
 
-#: lib/block_scout_web/templates/address/_tabs.html.eex:93
+#: lib/block_scout_web/templates/address/_tabs.html.eex:96
 #: lib/block_scout_web/templates/tokens/overview/_tabs.html.eex:27
 #: lib/block_scout_web/views/address_view.ex:375
 #: lib/block_scout_web/views/tokens/overview_view.ex:41
@@ -2463,7 +2464,7 @@ msgstr "Raw Trace"
 msgid "Read Contract"
 msgstr "契約書を読んでください。"
 
-#: lib/block_scout_web/templates/address/_tabs.html.eex:100
+#: lib/block_scout_web/templates/address/_tabs.html.eex:103
 #: lib/block_scout_web/templates/tokens/overview/_tabs.html.eex:41
 #: lib/block_scout_web/views/address_view.ex:376
 #, elixir-autogen, elixir-format
@@ -2565,8 +2566,8 @@ msgid "Save"
 msgstr "セーブ"
 
 #: lib/block_scout_web/templates/address_logs/index.html.eex:16
-#: lib/block_scout_web/templates/layout/_search.html.eex:45
-#: lib/block_scout_web/templates/layout/_search.html.eex:48
+#: lib/block_scout_web/templates/layout/_search.html.eex:51
+#: lib/block_scout_web/templates/layout/_search.html.eex:54
 #, elixir-autogen, elixir-format
 msgid "Search"
 msgstr "検索"
@@ -2673,7 +2674,7 @@ msgstr "スマートコントラクト/ アドレス（0x...)"
 #: lib/block_scout_web/views/verified_contracts_view.ex:9
 #, elixir-autogen, elixir-format
 msgid "Solidity"
-msgstr "ソリディティ"
+msgstr "Solidity"
 
 #: lib/block_scout_web/templates/address_coin_balance/index.html.eex:30
 #: lib/block_scout_web/templates/address_deposit/index.html.eex:34
@@ -2731,7 +2732,7 @@ msgstr "ソース *.sol または *.yul ファイル"
 msgid "Sources and Metadata JSON"
 msgstr "ソースとメタデータJSON"
 
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:116
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:113
 #, elixir-autogen, elixir-format
 msgid "Stakes"
 msgstr "ステークス"
@@ -2744,8 +2745,8 @@ msgstr "標準入力JSON"
 #: lib/block_scout_web/templates/state_batch_transaction/_tabs.html.eex:29
 #: lib/block_scout_web/templates/transaction/_tabs.html.eex:29
 #: lib/block_scout_web/templates/transaction_state/index.html.eex:6
-#: lib/block_scout_web/views/state_batch_transaction_view.ex:570
-#: lib/block_scout_web/views/transaction_view.ex:709
+#: lib/block_scout_web/views/state_batch_transaction_view.ex:568
+#: lib/block_scout_web/views/transaction_view.ex:707
 #, elixir-autogen, elixir-format
 msgid "State changes"
 msgstr "状態変化"
@@ -2977,7 +2978,7 @@ msgstr "このブロックにおいて、取引はありません。"
 #: lib/block_scout_web/templates/eigenda_batch/index.html.eex:31
 #: lib/block_scout_web/templates/l1_to_l2_txn/index.html.eex:99
 #: lib/block_scout_web/templates/l2_to_l1_txn/index.html.eex:62
-#: lib/block_scout_web/templates/state_batch/index.html.eex:31
+#: lib/block_scout_web/templates/state_batch/index.html.eex:49
 #: lib/block_scout_web/templates/state_batch_transaction/index.html.eex:34
 #: lib/block_scout_web/templates/transaction/index.html.eex:27
 #: lib/block_scout_web/templates/txn_batch/index.html.eex:31
@@ -3121,9 +3122,9 @@ msgstr "トークン"
 #: lib/block_scout_web/views/eigenda_batch_view.ex:461
 #: lib/block_scout_web/views/l1_to_l2_txn_view.ex:465
 #: lib/block_scout_web/views/l2_to_l1_txn_view.ex:465
-#: lib/block_scout_web/views/state_batch_transaction_view.ex:502
+#: lib/block_scout_web/views/state_batch_transaction_view.ex:500
 #: lib/block_scout_web/views/state_batch_view.ex:456
-#: lib/block_scout_web/views/transaction_view.ex:632
+#: lib/block_scout_web/views/transaction_view.ex:630
 #: lib/block_scout_web/views/txn_batch_view.ex:461
 #, elixir-autogen, elixir-format
 msgid "Token Burning"
@@ -3134,9 +3135,9 @@ msgstr "トークンの焼却"
 #: lib/block_scout_web/views/eigenda_batch_view.ex:462
 #: lib/block_scout_web/views/l1_to_l2_txn_view.ex:466
 #: lib/block_scout_web/views/l2_to_l1_txn_view.ex:466
-#: lib/block_scout_web/views/state_batch_transaction_view.ex:503
+#: lib/block_scout_web/views/state_batch_transaction_view.ex:501
 #: lib/block_scout_web/views/state_batch_view.ex:457
-#: lib/block_scout_web/views/transaction_view.ex:633
+#: lib/block_scout_web/views/transaction_view.ex:631
 #: lib/block_scout_web/views/txn_batch_view.ex:462
 #, elixir-autogen, elixir-format
 msgid "Token Creation"
@@ -3169,9 +3170,9 @@ msgstr "トークンID"
 #: lib/block_scout_web/views/eigenda_batch_view.ex:460
 #: lib/block_scout_web/views/l1_to_l2_txn_view.ex:464
 #: lib/block_scout_web/views/l2_to_l1_txn_view.ex:464
-#: lib/block_scout_web/views/state_batch_transaction_view.ex:501
+#: lib/block_scout_web/views/state_batch_transaction_view.ex:499
 #: lib/block_scout_web/views/state_batch_view.ex:455
-#: lib/block_scout_web/views/transaction_view.ex:631
+#: lib/block_scout_web/views/transaction_view.ex:629
 #: lib/block_scout_web/views/txn_batch_view.ex:460
 #, elixir-autogen, elixir-format
 msgid "Token Minting"
@@ -3183,9 +3184,9 @@ msgstr "トークンの鋳造"
 #: lib/block_scout_web/views/eigenda_batch_view.ex:463
 #: lib/block_scout_web/views/l1_to_l2_txn_view.ex:467
 #: lib/block_scout_web/views/l2_to_l1_txn_view.ex:467
-#: lib/block_scout_web/views/state_batch_transaction_view.ex:504
+#: lib/block_scout_web/views/state_batch_transaction_view.ex:502
 #: lib/block_scout_web/views/state_batch_view.ex:458
-#: lib/block_scout_web/views/transaction_view.ex:634
+#: lib/block_scout_web/views/transaction_view.ex:632
 #: lib/block_scout_web/views/txn_batch_view.ex:463
 #, elixir-autogen, elixir-format
 msgid "Token Transfer"
@@ -3210,11 +3211,11 @@ msgstr "トークンの転送"
 #: lib/block_scout_web/views/eigenda_batch_view.ex:524
 #: lib/block_scout_web/views/l1_to_l2_txn_view.ex:528
 #: lib/block_scout_web/views/l2_to_l1_txn_view.ex:528
-#: lib/block_scout_web/views/state_batch_transaction_view.ex:566
+#: lib/block_scout_web/views/state_batch_transaction_view.ex:564
 #: lib/block_scout_web/views/state_batch_view.ex:519
 #: lib/block_scout_web/views/tokens/instance/overview_view.ex:197
 #: lib/block_scout_web/views/tokens/overview_view.ex:39
-#: lib/block_scout_web/views/transaction_view.ex:705
+#: lib/block_scout_web/views/transaction_view.ex:703
 #: lib/block_scout_web/views/txn_batch_view.ex:524
 #, elixir-autogen, elixir-format
 msgid "Token Transfers"
@@ -3241,7 +3242,7 @@ msgstr "トークンの種類"
 #: lib/block_scout_web/templates/address_token/overview.html.eex:58
 #: lib/block_scout_web/templates/address_token_transfer/index.html.eex:13
 #: lib/block_scout_web/templates/address_withdraw/index.html.eex:13
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:76
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:63
 #: lib/block_scout_web/templates/tokens/index.html.eex:10
 #: lib/block_scout_web/views/address_view.ex:369
 #, elixir-autogen, elixir-format
@@ -3350,9 +3351,9 @@ msgstr "総トランザクション数"
 #: lib/block_scout_web/views/eigenda_batch_view.ex:473
 #: lib/block_scout_web/views/l1_to_l2_txn_view.ex:477
 #: lib/block_scout_web/views/l2_to_l1_txn_view.ex:477
-#: lib/block_scout_web/views/state_batch_transaction_view.ex:514
+#: lib/block_scout_web/views/state_batch_transaction_view.ex:512
 #: lib/block_scout_web/views/state_batch_view.ex:468
-#: lib/block_scout_web/views/transaction_view.ex:644
+#: lib/block_scout_web/views/transaction_view.ex:642
 #: lib/block_scout_web/views/txn_batch_view.ex:473
 #, elixir-autogen, elixir-format
 msgid "Transaction"
@@ -3464,7 +3465,7 @@ msgstr "EIP-2718で導入された取引タイプ。"
 #: lib/block_scout_web/templates/address_transaction/index.html.eex:13
 #: lib/block_scout_web/templates/block/overview.html.eex:80
 #: lib/block_scout_web/templates/block_transaction/index.html.eex:10
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:31
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:25
 #: lib/block_scout_web/views/address_view.ex:371
 #, elixir-autogen, elixir-format
 msgid "Transactions"
@@ -3503,7 +3504,7 @@ msgstr "自動的にコンストラクタ引数を取得しようとしてくだ
 msgid "Twitter"
 msgstr "ツイッター"
 
-#: lib/block_scout_web/templates/layout/app.html.eex:50
+#: lib/block_scout_web/templates/layout/app.html.eex:51
 #, elixir-autogen, elixir-format
 msgid "Tx/day"
 msgstr "一日あたり Tx"
@@ -3602,17 +3603,17 @@ msgstr "トランザクションの優先度/含まれるためのユーザー�
 msgid "User-defined tips sent to validator for transaction priority/inclusion."
 msgstr "トランザクションの優先度/含まれ方に関するユーザー定義のヒントが検証者に送信されました。"
 
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:37
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:31
 #, elixir-autogen, elixir-format
 msgid "Validated"
-msgstr "検証済み"
+msgstr "確認されたトランザクション"
 
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:57
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:51
 #, elixir-format, elixir-autogen
 msgid "L1 State Batches"
 msgstr "L1 状態バッチ"
 
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:52
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:46
 #, elixir-format, elixir-autogen
 msgid "Mantle DA Txn Batches"
 msgstr "マントル DA 取引 バッチ"
@@ -3622,7 +3623,7 @@ msgstr "マントル DA 取引 バッチ"
 msgid "L1 Txn Batches"
 msgstr "L1 トランザクションバッチ"
 
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:42
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:36
 #, elixir-format, elixir-autogen
 msgid "L1 to L2 Txns"
 msgstr "L1からL2へのトランザクション"
@@ -3708,7 +3709,7 @@ msgstr "検証済みの契約"
 msgid "Verified at"
 msgstr "確認済み"
 
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:61
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:55
 #, elixir-autogen, elixir-format
 msgid "Verified contracts"
 msgstr "検証された契約"
@@ -3838,12 +3839,12 @@ msgstr "バイパー契約"
 #: lib/block_scout_web/templates/smart_contract/_pending_contract_write.html.eex:9
 #, elixir-autogen, elixir-format
 msgid "Waiting for transaction's confirmation..."
-msgstr "取引の確認を待っています... (Tōroku no kakunin o matte imasu...)"
+msgstr "取引の確認を待っています..."
 
 #: lib/block_scout_web/templates/chain/show.html.eex:121
 #, elixir-autogen, elixir-format
 msgid "Wallet addresses"
-msgstr "ウォレットのアドレス。"
+msgstr "ウォレットのアドレス"
 
 #: lib/block_scout_web/templates/common_components/_changed_bytecode_warning.html.eex:3
 #, elixir-autogen, elixir-format
@@ -3872,14 +3873,14 @@ msgstr "Wei"
 msgid "Write"
 msgstr "書く"
 
-#: lib/block_scout_web/templates/address/_tabs.html.eex:107
+#: lib/block_scout_web/templates/address/_tabs.html.eex:110
 #: lib/block_scout_web/templates/tokens/overview/_tabs.html.eex:34
 #: lib/block_scout_web/views/address_view.ex:377
 #, elixir-autogen, elixir-format
 msgid "Write Contract"
 msgstr "契約書を書く"
 
-#: lib/block_scout_web/templates/address/_tabs.html.eex:114
+#: lib/block_scout_web/templates/address/_tabs.html.eex:117
 #: lib/block_scout_web/templates/tokens/overview/_tabs.html.eex:48
 #: lib/block_scout_web/views/address_view.ex:378
 #, elixir-autogen, elixir-format
@@ -4045,7 +4046,7 @@ msgstr "要求される"
 #: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:70
 #, elixir-autogen, elixir-format
 msgid "string"
-msgstr "文字列"
+msgstr ""
 
 #: lib/block_scout_web/views/address_contract_view.ex:23
 #, elixir-autogen, elixir-format
@@ -4057,7 +4058,7 @@ msgstr "本当"
 msgid "truffle flattener"
 msgstr "トリュフフラットナー"
 
-#: lib/block_scout_web/templates/layout/_account_menu_item.html.eex:31
+#: lib/block_scout_web/templates/layout/_account_menu_item.html.eex:26
 #, elixir-autogen, elixir-format
 msgid "Sign in"
 msgstr "サインイン"
@@ -4216,7 +4217,7 @@ msgstr "この取引を送信したばかりの場合、ページを更新する
 #: lib/block_scout_web/templates/l1_to_l2_txn/index.html.eex:89
 #, elixir-autogen, elixir-format
 msgid "Indicates by which contract was this Txn synced to Mantle Bridge"
-msgstr "このトランザクションがMantle Bridgeと同期された契約を示します。"
+msgstr "このトランザクションは、どの契約と『Mantle Bridge』が同期されたかを示しています。"
 
 #: lib/block_scout_web/templates/l1_to_l2_txn/index.html.eex:47
 #, elixir-autogen, elixir-format
@@ -4294,7 +4295,7 @@ msgstr "L1状態ルート提出トランザクションのハッシュ値"
 msgid "L2 Fee"
 msgstr "L2料金"
 
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:47
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:41
 #, elixir-autogen, elixir-format
 msgid "L2 to L1 Txns"
 msgstr "L2からL1へのトランザクション"
@@ -4392,7 +4393,7 @@ msgstr "マントルDA 取引バッチインデックス。"
 msgid "Contact Us"
 msgstr "お問い合わせ"
 
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:138
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:135
 #, elixir-autogen
 msgid "Mantle Testnet"
 msgstr "Mantle Testnet"
@@ -4465,7 +4466,7 @@ msgstr "L2 トランザクション ロールバック"
 
 #: lib/block_scout_web/templates/l1_to_l2_txn/index.html.eex:81
 #: lib/block_scout_web/templates/l2_to_l1_txn/index.html.eex:37
-#: lib/block_scout_web/templates/state_batch/index.html.eex:40
+#: lib/block_scout_web/templates/state_batch/index.html.eex:34
 #: lib/block_scout_web/templates/txn_batch/index.html.eex:40
 #, elixir-autogen
 msgid "Age"
@@ -4473,7 +4474,7 @@ msgstr "年齢"
 
 #: lib/block_scout_web/templates/l1_to_l2_txn/index.html.eex:84
 #: lib/block_scout_web/templates/l2_to_l1_txn/index.html.eex:53
-#: lib/block_scout_web/templates/state_batch/index.html.eex:46
+#: lib/block_scout_web/templates/state_batch/index.html.eex:40
 #: lib/block_scout_web/templates/txn_batch/index.html.eex:46
 #, elixir-autogen
 msgid "L1 Txn Hash"
@@ -4539,19 +4540,19 @@ msgstr "DAハッシュ"
 msgid "Store Number"
 msgstr "ストア番号"
 
-#: lib/block_scout_web/templates/state_batch/index.html.eex:37
+#: lib/block_scout_web/templates/state_batch/index.html.eex:31
 #, elixir-autogen
 msgid "State Batch"
 msgstr "ステートバッチ"
 
 #: lib/block_scout_web/templates/eigenda_batch/index.html.eex:40
-#: lib/block_scout_web/templates/state_batch/index.html.eex:43
+#: lib/block_scout_web/templates/state_batch/index.html.eex:37
 #: lib/block_scout_web/templates/txn_batch/index.html.eex:43
 #, elixir-autogen
 msgid "Batch Size"
 msgstr "バッチサイズ"
 
-#: lib/block_scout_web/templates/state_batch/index.html.eex:49
+#: lib/block_scout_web/templates/state_batch/index.html.eex:43
 #: lib/block_scout_web/templates/txn_batch/index.html.eex:49
 #, elixir-autogen
 msgid "Pre Total Elements"
@@ -4576,3 +4577,87 @@ msgstr "L1トランザクション起点"
 #, elixir-autogen, elixir-format
 msgid "Total Supply"
 msgstr "総供給量"
+
+#: lib/block_scout_web/templates/layout/_add_chain_to_mm.html.eex:10
+#, elixir-autogen
+msgid "You're already connected to"
+msgstr "すでに接続されています"
+
+#: lib/block_scout_web/templates/layout/_search.html.eex:18
+#, elixir-autogen
+msgid "Address/Txn Hash/Block/Token/DA Hash"
+msgstr ""
+
+#: lib/block_scout_web/templates/layout/_add_chain_to_mm.html.eex:11
+#, elixir-autogen
+msgid "add custom chain failed,"
+msgstr "カスタムチェーンの追加に失敗しました,"
+
+#: lib/block_scout_web/templates/tokens/index.html.eex:14
+#, elixir-autogen
+msgid "Token name or symbol"
+msgstr "トークン名またはシンボル"
+
+#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:22
+#: lib/block_scout_web/templates/api_docs/_eth_rpc_item.html.eex:29
+#, elixir-autogen
+msgid "More Details"
+msgstr "詳細情報"
+
+#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:23
+#: lib/block_scout_web/templates/api_docs/_eth_rpc_item.html.eex:30
+#, elixir-autogen
+msgid "Hide Details"
+msgstr "詳細を非表示にする"
+
+msgid "Mimics Ethereum JSON RPC's eth_getBalance. Returns the balance as of the provided block (defaults to latest)"
+msgstr "イーサリアムのJSON RPCのeth_getBalanceを模倣しています。指定されたブロック時点の残高を返します（デフォルトは最新）"
+
+msgid "Either the block number as a string, or one of latest, earliest or pending latest will be the latest balance in a *consensus* block. earliest will be the first recorded balance for the address. pending will be the latest balance in consensus *or* nonconcensus blocks."
+msgstr "ブロック番号を文字列として指定するか、latest、earliest、またはpending latestのいずれかを指定します。最新の残高は合意形成ブロックに存在します。earliestはそのアドレスの最初に記録された残高となります。pendingは合意形成または非合意形成ブロック内の最新の残高となります。"
+
+msgid "Get balance for address. Also available through a GraphQL 'addresses' query. If the balance hasn't been updated in a long time, we will double check with the node to fetch the absolute latest balance. This will not be reflected in the current request, but once it is updated, subsequent requests will show the updated balance. If you want to know whether or not we are checking for another balance, use the `balancemulti` action. That contains a property called `stale` that will let you know to recheck that balance in the near future."
+msgstr "アドレスの残高を取得します。また、GraphQLの「addresses」クエリを介しても利用できます。残高が長い間更新されていない場合、最新の絶対残高を取得するためにノードで二重チェックを行います。これは現在のリクエストに反映されませんが、一度更新されると、その後のリクエストで更新された残高が表示されます。別の残高をチェックしているかどうかを知りたい場合は、balancemultiアクションを使用してください。それにはstaleというプロパティが含まれており、近い将来その残高を再確認する必要があることを示します。"
+
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:73
+#, elixir-autogen, elixir-format, fuzzy
+msgid "ERC1155"
+msgstr "ERC-1155"
+
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:67
+#, elixir-autogen, elixir-format, fuzzy
+msgid "ERC20"
+msgstr "ERC-20"
+
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:70
+#, elixir-autogen, elixir-format, fuzzy
+msgid "ERC721"
+msgstr "ERC-721"
+
+#: lib/block_scout_web/templates/layout/_search.html.eex:20
+#, elixir-autogen
+msgid "Display %{number} result"
+msgstr "%{number} つの結果を表示する"
+
+#: lib/block_scout_web/templates/layout/_search.html.eex:21
+#, elixir-autogen
+msgid "Found %{number} matching results for "
+msgstr "%{number} 件の一致する結果が見つかりました"
+
+msgid "More blocks come in, click for an update"
+msgstr "さらにブロックが入ってきました、アップデートのためにクリックしてください"
+
+msgid "More internal transactions come in, click for an update"
+msgstr "さらに内部取引が入ってきました、アップデートのためにクリックしてください"
+
+msgid "More transactions come in, click for an update"
+msgstr "さらに取引が入ってきました、アップデートのためにクリックしてください"
+
+msgid "More validations come in, click for an update"
+msgstr "さらに検証が入ってきました、アップデートのためにクリックしてください"
+
+msgid "Display {number} result"
+msgstr "{number} つの結果を表示する"
+
+msgid "Found {number} matching results for "
+msgstr "{number} 件の一致する結果が見つかりました"

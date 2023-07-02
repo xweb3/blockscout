@@ -1,7 +1,7 @@
 $body-dark: #080d0c; // body background
-$dark-bg: #22223a; // hero shade
+$dark-bg: rgba(255, 255, 255, 0.05); // hero shade
 $dark-light-bg: #091312; // pills bg shade
-$dark-light: #313355; // tile light top share
+$dark-light: rgba(255, 255, 255, 0.05); // tile light top share
 $labels-dark: #585f65; // header nav, labels
 $dark-text-content-color: #7fd8d2;
 $dark-stakes-banned-background: #3e314c;
@@ -13,6 +13,10 @@ $dropdown-menu-item-hover-background-dark: #305a57;
 $dropdown-menu-background-dark: #3f7470;
 a {
 	text-decoration: none !important;
+}
+
+body{
+  overscroll-behavior: none;
 }
 
 .dashboard-banner-info-container {
@@ -275,10 +279,6 @@ a {
     border-color: $dark-bg;
     color: #fff;
 
-    &::placeholder {
-      color: $labels-dark;
-    }
-
     background: $dropdown-menu-background-dark !important;
     border-radius: 20px;
   }
@@ -394,7 +394,8 @@ a {
 
   .card {
     background-color: $dark-light-bg;
-    box-shadow: 0 0 30px 0 rgba(23, 24, 41, 0.5);
+    box-shadow: none;
+    overflow: hidden;
   }
 
   .card-header {
@@ -434,18 +435,18 @@ a {
 
   .tile,
   .tile-code {
-    border-top-color: $dark-light;
-    border-bottom-color: $dark-light;
-    border-right-color: $dark-light;
+    border-top-color: rgba(255, 255, 255, 0.15);
+    border-bottom-color: rgba(255, 255, 255, 0.15);
+    border-right-color: rgba(255, 255, 255, 0.15);
     background-color: rgba(255, 255, 255, 0.05);
     color: $labels-dark;
 
     &:not([class^="tile tile-type"]) {
-      border-left-color: $dark-light;
+      border-left-color: rgba(255, 255, 255, 0.15);
     }
 
     &.tile-type-coin-balance {
-      border-left-color: $dark-light;
+      border-left-color: rgba(255, 255, 255, 0.15);
     }
 
     .tile-title {
@@ -606,9 +607,15 @@ a {
 	.btn-dropdown-line {
 		background-color: $dark-light;
 		border-color: $dark-light;
-		color: $labels-dark;
+		color: #ffffff;
 		border-radius: 8px;
 	}
+  .index-label {
+    background: rgba(255,255,255, .3);
+    &:after{
+      border-left-color: rgba(255,255,255, .3);
+    }
+  }
 
   // table
   .stakes-table-head,
@@ -678,7 +685,7 @@ a {
 
   // api's
   .api-anchors-list {
-    background-color: $dark-light;
+    background-color: rgba(255, 255, 255, 0.15);
   }
 
   .api-doc-list-item {
@@ -1439,6 +1446,7 @@ a {
   .main-search-autocomplete {
     background-color: transparent !important;
     color: #fff !important;
+    @include textfield-placeholder(rgba(255,255,255,.5));
   }
 
   input::-webkit-input-placeholder {
@@ -1615,5 +1623,5 @@ a {
 
 .navbar.navbar-primary .form-control {
   background-color: rgba(255, 255, 255, 0.7) !important;
-  border-radius: 20px !important;
+  border-radius: 12px !important;
 }

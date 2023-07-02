@@ -8,25 +8,53 @@
         Tx
     </span>
     <div class="recent-preview-item-content-latest-txs">
-      <div class="d-flex flex-row">
+      <div class="d-flex flex-row" style="justify-content:space-between;">
         <span style="margin-right:10px;">
           Tx#<%= @transaction.block_number %>
         </span>
-        <span class="recent-preview-item-content-latest-txs-hash">
-          <%= render "_link.html", transaction_hash: @transaction.hash, data_test: "address_hash_link" %>
-        </span>
-
+            <a href="/tx/<%= @transaction.hash %>"
+              class="i-tooltip-2 recent-preview-item-content-latest-txs-hash"
+              data-boundary="window"
+              data-container="body"
+              data-html="true"
+              data-placement="top"
+              data-toggle="tooltip"
+              title="<%= @transaction.hash %>"
+            >
+              <%= @transaction.hash %>
+            </a>
       </div>
-      <div class="d-flex flex-row">
-        <span>From</span>
-        <span class="recent-preview-item-content-latest-txs-from">
-          <%= @transaction |> BlockScoutWeb.AddressView.address_partial_selector(:from, assigns[:current_address]) |> BlockScoutWeb.RenderHelpers.render_partial() %>
+      <div class="d-flex flex-row" style="justify-content: space-between;">
+        <span style="display:flex;">
+          <span>From</span>
+          <a href="/address/<%= @transaction.from_address %>"
+              class="i-tooltip-2 recent-preview-item-content-latest-txs-from"
+              data-boundary="window"
+              data-container="body"
+              data-html="true"
+              data-placement="top"
+              data-toggle="tooltip"
+              title="<%= @transaction.from_address %>"
+              style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;"
+            >
+             <%= @transaction.from_address %>
+            </a>
         </span>
-        <span style="margin-left:10px;">To</span>
-        <span class="recent-preview-item-content-latest-txs-from">
-          <%= @transaction |> BlockScoutWeb.AddressView.address_partial_selector(:to, assigns[:current_address]) |> BlockScoutWeb.RenderHelpers.render_partial() %>
+        <span style="display:flex;">
+          <span style="margin-left:10px;">To</span>
+          <a href="/address/<%= @transaction.to_address %>"
+              class="i-tooltip-2 recent-preview-item-content-latest-txs-from"
+              data-boundary="window"
+              data-container="body"
+              data-html="true"
+              data-placement="top"
+              data-toggle="tooltip"
+              title="<%= @transaction.to_address %>"
+              style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;"
+            >
+             <%= @transaction.to_address %>
+            </a>
         </span>
-
       </div>
       <div class="d-flex flex-row">
         <span class="recent-preview-item-content-latest-txs-tag-wrap-time" in-tile data-from-now="<%= block_timestamp(@transaction) %>"></span>

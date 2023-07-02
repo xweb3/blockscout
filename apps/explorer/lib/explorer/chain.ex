@@ -1520,6 +1520,8 @@ defmodule Explorer.Chain do
         block_hash: fragment("CAST(NULL AS bytea)"),
         type: "token",
         token_type: token.type,
+        is_verified: false,
+        is_not_contract_address: true,
         name: token.name,
         symbol: token.symbol,
         holder_count: token.holder_count,
@@ -1540,6 +1542,8 @@ defmodule Explorer.Chain do
         block_hash: fragment("CAST(NULL AS bytea)"),
         type: "contract",
         token_type: ^nil,
+        is_verified: true,
+        is_not_contract_address: false,
         name: smart_contract.name,
         symbol: ^nil,
         holder_count: ^nil,
@@ -1562,6 +1566,8 @@ defmodule Explorer.Chain do
             block_hash: fragment("CAST(NULL AS bytea)"),
             type: "address",
             token_type: ^nil,
+            is_verified: address.verified,
+            is_not_contract_address: is_nil(address.contract_code),
             name: address_name.name,
             symbol: ^nil,
             holder_count: ^nil,
@@ -1586,6 +1592,8 @@ defmodule Explorer.Chain do
             block_hash: fragment("CAST(NULL AS bytea)"),
             type: "transaction",
             token_type: ^nil,
+            is_verified: false,
+            is_not_contract_address: true,
             name: ^nil,
             symbol: ^nil,
             holder_count: ^nil,
@@ -1611,6 +1619,8 @@ defmodule Explorer.Chain do
             block_hash: ^nil,
             type: "eigenda",
             token_type: ^nil,
+            is_verified: false,
+            is_not_contract_address: true,
             name: ^nil,
             symbol: ^nil,
             holder_count: ^nil,
@@ -1634,6 +1644,8 @@ defmodule Explorer.Chain do
             block_hash: block.hash,
             type: "block",
             token_type: ^nil,
+            is_verified: false,
+            is_not_contract_address: true,
             name: ^nil,
             symbol: ^nil,
             holder_count: ^nil,
@@ -1653,6 +1665,8 @@ defmodule Explorer.Chain do
                 block_hash: block.hash,
                 type: "block",
                 token_type: ^nil,
+                is_verified: false,
+                is_not_contract_address: true,
                 name: ^nil,
                 symbol: ^nil,
                 holder_count: ^nil,
@@ -1715,13 +1729,16 @@ defmodule Explorer.Chain do
           ordered_query
           |> page_search_results(paging_options)
         search_results = Repo.all(paginated_ordered_query)
+        Logger.info("111111-----------")
         search_results
         |> Enum.map(fn result ->
           result_checksummed_address_hash =
             if result.address_hash do
+              Logger.info("111111")
               result
               |> Map.put(:address_hash, Address.checksum(result.address_hash))
             else
+              Logger.info("22222")
               result
             end
 
@@ -2642,19 +2659,26 @@ defmodule Explorer.Chain do
 
   """
   @spec list_top_tokens(String.t()) :: [{Token.t(), non_neg_integer()}]
-  def list_top_tokens(filter, options \\ []) do
+  def list_top_tokens(filter, options \\ [], token_type \\ "") do
     paging_options = Keyword.get(options, :paging_options, @default_paging_options)
 
-    fetch_top_tokens(filter, paging_options)
+    fetch_top_tokens(filter, paging_options, token_type)
   end
 
-  defp fetch_top_tokens(filter, paging_options) do
+
+  defp fetch_top_tokens(filter, paging_options, token_type) do
+    # token_type: ERC-20 / ERC-721 / ERC-1155
     base_query =
       from(t in Token,
-        where: t.total_supply > ^0,
         order_by: [desc_nulls_last: t.holder_count, asc: t.name],
         preload: [:contract_address]
       )
+
+    base_query = if token_type != "" do
+      from q in base_query, where: q.type == ^token_type
+    else
+      base_query
+    end
 
     base_query_with_paging =
       base_query

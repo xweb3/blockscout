@@ -51,7 +51,7 @@ msgstr "%{block_type} 高度"
 #: lib/block_scout_web/templates/block/index.html.eex:7
 #, elixir-autogen, elixir-format
 msgid "%{block_type}s"
-msgstr ""
+msgstr "%{block_type}s"
 
 #: lib/block_scout_web/templates/block/overview.html.eex:84
 #, elixir-autogen, elixir-format
@@ -87,7 +87,7 @@ msgstr "（等待内部交易进行状态更新）"
 #: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:104
 #, elixir-autogen, elixir-format
 msgid "(query)"
-msgstr "（查询）"
+msgstr "(query)"
 
 #: lib/block_scout_web/templates/address_contract_verification_common_fields/_library_first.html.eex:4
 #, elixir-autogen, elixir-format
@@ -160,7 +160,7 @@ msgstr "API密钥"
 msgid "API keys"
 msgstr "API密钥"
 
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:86
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:82
 #, elixir-autogen, elixir-format
 msgid "APIs"
 msgstr "APIs"
@@ -170,7 +170,7 @@ msgstr "APIs"
 #: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:69
 #, elixir-autogen, elixir-format
 msgid "Action"
-msgstr "操作"
+msgstr "Action"
 
 #: lib/block_scout_web/templates/account/watchlist/show.html.eex:25
 #, elixir-autogen, elixir-format
@@ -183,11 +183,11 @@ msgstr "操作"
 #: lib/block_scout_web/templates/transaction/overview.html.eex:587
 #, elixir-autogen, elixir-format
 msgid "Actual gas amount used by the transaction."
-msgstr "交易实际使用的gas量。"
+msgstr "交易实际使用的 Gas 量。"
 
 #: lib/block_scout_web/templates/account/api_key/form.html.eex:7
 #: lib/block_scout_web/templates/account/custom_abi/form.html.eex:8
-#: lib/block_scout_web/templates/layout/_add_chain_to_mm.html.eex:11
+#: lib/block_scout_web/templates/layout/_add_chain_to_mm.html.eex:13
 #, elixir-autogen, elixir-format
 msgid "Add"
 msgstr "添加"
@@ -343,7 +343,7 @@ msgstr "分布式奖励的数量。矿工获得一个固定的块奖励+交易�
 msgid "Anything not in this list is not supported. Click on the method to be taken to the documentation for that method, and check the notes section for any potential differences."
 msgstr "不在此列表中的任何内容都不受支持。单击要使用的方法以转到该方法的文档，并检查注释部分是否有潜在差异。"
 
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:114
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:111
 #, elixir-autogen, elixir-format
 msgid "Apps"
 msgstr "应用程序"
@@ -384,12 +384,12 @@ msgstr "余额"
 #: lib/block_scout_web/templates/transaction_state/index.html.eex:35
 #, elixir-autogen, elixir-format
 msgid "Balance after"
-msgstr "余额后"
+msgstr "之后余额"
 
 #: lib/block_scout_web/templates/transaction_state/index.html.eex:32
 #, elixir-autogen, elixir-format
 msgid "Balance before"
-msgstr "余额前"
+msgstr "之前余额"
 
 #: lib/block_scout_web/templates/address_coin_balance/index.html.eex:14
 #, elixir-autogen, elixir-format
@@ -399,7 +399,7 @@ msgstr "余额"
 #: lib/block_scout_web/templates/block/overview.html.eex:204
 #, elixir-autogen, elixir-format
 msgid "Base Fee per Gas"
-msgstr "每个Gas的基础费用"
+msgstr "每个 Gas 的基础费用"
 
 #: lib/block_scout_web/templates/api_docs/eth_rpc.html.eex:5
 #: lib/block_scout_web/templates/api_docs/index.html.eex:5
@@ -447,10 +447,10 @@ msgstr "区块详情"
 msgid "Block Height"
 msgstr "区块高度"
 
-#: lib/block_scout_web/templates/layout/app.html.eex:44
+#: lib/block_scout_web/templates/layout/app.html.eex:45
 #, elixir-autogen, elixir-format
 msgid "Block Mined, awaiting import..."
-msgstr "区块已被挖掘，等待导入..."
+msgstr "区块已产生，正在导入..."
 
 #: lib/block_scout_web/views/da_batch_transaction_view.ex:33
 #: lib/block_scout_web/views/eigenda_batch_view.ex:33
@@ -488,17 +488,17 @@ msgid "Block number in which the address was updated."
 msgstr "地址更新的块号。"
 
 #: lib/block_scout_web/templates/chain/show.html.eex:146
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:23
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:20
 #, elixir-autogen, elixir-format
 msgid "Blocks"
 msgstr "区块"
 
-#: lib/block_scout_web/templates/layout/app.html.eex:43
+#: lib/block_scout_web/templates/layout/app.html.eex:44
 #, elixir-autogen, elixir-format
 msgid "Blocks Indexed"
 msgstr "区块编号"
 
-#: lib/block_scout_web/templates/address/_tabs.html.eex:60
+#: lib/block_scout_web/templates/address/_tabs.html.eex:63
 #: lib/block_scout_web/templates/address/overview.html.eex:274
 #: lib/block_scout_web/templates/address_validation/index.html.eex:11
 #: lib/block_scout_web/views/address_view.ex:380
@@ -506,7 +506,7 @@ msgstr "区块编号"
 msgid "Blocks Validated"
 msgstr "区块验证"
 
-#: lib/block_scout_web/templates/layout/app.html.eex:45
+#: lib/block_scout_web/templates/layout/app.html.eex:46
 #, elixir-autogen, elixir-format
 msgid "Blocks With Internal Transactions Indexed"
 msgstr "具有内部交易的区块编号"
@@ -588,7 +588,7 @@ msgstr "清除"
 msgid "Close"
 msgstr "关闭"
 
-#: lib/block_scout_web/templates/address/_tabs.html.eex:70
+#: lib/block_scout_web/templates/address/_tabs.html.eex:73
 #: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:165
 #: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:187
 #: lib/block_scout_web/templates/api_docs/_eth_rpc_item.html.eex:126
@@ -598,18 +598,18 @@ msgstr "关闭"
 msgid "Code"
 msgstr "代码"
 
-#: lib/block_scout_web/templates/address/_tabs.html.eex:46
+#: lib/block_scout_web/templates/address/_tabs.html.eex:49
 #: lib/block_scout_web/views/address_view.ex:379
 #, elixir-autogen, elixir-format
 msgid "Coin Balance History"
 msgstr "代币余额历史记录"
 
-#: lib/block_scout_web/templates/address/_tabs.html.eex:40
+#: lib/block_scout_web/templates/address/_tabs.html.eex:42
 #, elixir-format, elixir-autogen
 msgid "Withdraw"
 msgstr "提现"
 
-#: lib/block_scout_web/templates/address/_tabs.html.eex:34
+#: lib/block_scout_web/templates/address/_tabs.html.eex:36
 #, elixir-format, elixir-autogen
 msgid "Deposit"
 msgstr "充值"
@@ -772,9 +772,9 @@ msgstr "待定合约地址"
 #: lib/block_scout_web/views/eigenda_batch_view.ex:470
 #: lib/block_scout_web/views/l1_to_l2_txn_view.ex:474
 #: lib/block_scout_web/views/l2_to_l1_txn_view.ex:474
-#: lib/block_scout_web/views/state_batch_transaction_view.ex:511
+#: lib/block_scout_web/views/state_batch_transaction_view.ex:509
 #: lib/block_scout_web/views/state_batch_view.ex:465
-#: lib/block_scout_web/views/transaction_view.ex:641
+#: lib/block_scout_web/views/transaction_view.ex:639
 #: lib/block_scout_web/views/txn_batch_view.ex:470
 #, elixir-autogen, elixir-format
 msgid "Contract Call"
@@ -784,9 +784,9 @@ msgstr "合约调用"
 #: lib/block_scout_web/views/eigenda_batch_view.ex:467
 #: lib/block_scout_web/views/l1_to_l2_txn_view.ex:471
 #: lib/block_scout_web/views/l2_to_l1_txn_view.ex:471
-#: lib/block_scout_web/views/state_batch_transaction_view.ex:508
+#: lib/block_scout_web/views/state_batch_transaction_view.ex:506
 #: lib/block_scout_web/views/state_batch_view.ex:462
-#: lib/block_scout_web/views/transaction_view.ex:638
+#: lib/block_scout_web/views/transaction_view.ex:636
 #: lib/block_scout_web/views/txn_batch_view.ex:467
 #, elixir-autogen, elixir-format
 msgid "Contract Creation"
@@ -796,7 +796,7 @@ msgstr "合约创建"
 #: lib/block_scout_web/templates/address_contract/index.html.eex:184
 #, elixir-autogen, elixir-format
 msgid "Contract Creation Code"
-msgstr "合约创造代码"
+msgstr "合约创建代码"
 
 #: lib/block_scout_web/templates/address_contract_verification_via_flattened_code/new.html.eex:90
 #: lib/block_scout_web/templates/address_contract_verification_via_multi_part_files/new.html.eex:80
@@ -948,7 +948,7 @@ msgstr "复制父哈希值"
 #: lib/block_scout_web/templates/transaction_raw_trace/index.html.eex:15
 #, elixir-autogen, elixir-format
 msgid "Copy Raw Trace"
-msgstr "复制原始跟踪"
+msgstr "Raw Trace"
 
 #: lib/block_scout_web/templates/address_contract/index.html.eex:115
 #: lib/block_scout_web/templates/address_contract/index.html.eex:127
@@ -1166,7 +1166,7 @@ msgstr "已解码"
 msgid "Decompiled Code"
 msgstr "反编译代码"
 
-#: lib/block_scout_web/templates/address/_tabs.html.eex:87
+#: lib/block_scout_web/templates/address/_tabs.html.eex:90
 #, elixir-autogen, elixir-format
 msgid "Decompiled code"
 msgstr "反编译代码"
@@ -1435,7 +1435,7 @@ msgstr "错误: %{reason}"
 msgid "Error: (Awaiting internal transactions for reason)"
 msgstr "错误: (等待内部交易的原因)"
 
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:100
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:97
 #, elixir-autogen, elixir-format
 msgid "Eth RPC"
 msgstr "Eth RPC"
@@ -1495,7 +1495,7 @@ msgstr "解码日志数据失败。"
 #: lib/block_scout_web/templates/address/overview.html.eex:246
 #, elixir-autogen, elixir-format
 msgid "Fetching gas used..."
-msgstr "获取已用气体..."
+msgstr "获取已消耗 Gas"
 
 #: lib/block_scout_web/templates/tokens/overview/_details.html.eex:112
 #, elixir-autogen, elixir-format
@@ -1548,12 +1548,12 @@ msgstr "目标合约"
 #: lib/block_scout_web/views/address_transaction_view.ex:10
 #, elixir-autogen, elixir-format
 msgid "From"
-msgstr "来源"
+msgstr "发起地址"
 
 #: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:18
 #, elixir-autogen, elixir-format
 msgid "GET"
-msgstr "获取"
+msgstr "GET"
 
 #: lib/block_scout_web/templates/block/_tile.html.eex:67
 #: lib/block_scout_web/templates/block/overview.html.eex:184
@@ -1564,20 +1564,20 @@ msgstr "获取"
 #: lib/block_scout_web/templates/transaction/overview.html.eex:534
 #, elixir-autogen, elixir-format
 msgid "Gas Limit"
-msgstr "燃气限制"
+msgstr "Gas 限制"
 
 #: lib/block_scout_web/templates/l1_to_l2_txn/overview.html.eex:333
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:333
 #, elixir-autogen, elixir-format
 msgid "Gas Price"
-msgstr "燃气价格"
+msgstr "Gas 价格"
 
 #: lib/block_scout_web/templates/address/overview.html.eex:239
 #: lib/block_scout_web/templates/block/_tile.html.eex:73
 #: lib/block_scout_web/templates/block/overview.html.eex:175
 #, elixir-autogen, elixir-format
 msgid "Gas Used"
-msgstr "已用燃气"
+msgstr "已消耗 Gas"
 
 #: lib/block_scout_web/templates/l1_to_l2_txn/overview.html.eex:352
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:352
@@ -1585,17 +1585,17 @@ msgstr "已用燃气"
 #: lib/block_scout_web/templates/transaction/overview.html.eex:588
 #, elixir-autogen, elixir-format
 msgid "Gas Used by Transaction"
-msgstr "交易所用燃气"
+msgstr "交易消耗 Gas"
 
 #: lib/block_scout_web/templates/chain/gas_price_oracle_legend_item.html.eex:5
 #, elixir-autogen, elixir-format
 msgid "Gas Tracker"
-msgstr "气体跟踪器"
+msgstr "Gas 监控"
 
 #: lib/block_scout_web/templates/address/overview.html.eex:238
 #, elixir-autogen, elixir-format
 msgid "Gas used by the address."
-msgstr "地址使用的气体。"
+msgstr "该地址消耗的 Gas"
 
 #: lib/block_scout_web/templates/block/overview.html.eex:60
 #, elixir-autogen, elixir-format
@@ -1612,7 +1612,7 @@ msgstr "GitHub"
 msgid "Go to"
 msgstr "转到"
 
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:90
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:86
 #, elixir-autogen, elixir-format
 msgid "GraphQL"
 msgstr "GraphQL"
@@ -1735,7 +1735,7 @@ msgstr "输入"
 #: lib/block_scout_web/templates/transaction/overview.html.eex:300
 #, elixir-autogen, elixir-format
 msgid "Interacted With (To)"
-msgstr "互动"
+msgstr "交互对象"
 
 #: lib/block_scout_web/templates/internal_transaction/_tile.html.eex:7
 #, elixir-autogen, elixir-format
@@ -1758,9 +1758,9 @@ msgstr "内部交易"
 #: lib/block_scout_web/views/eigenda_batch_view.ex:525
 #: lib/block_scout_web/views/l1_to_l2_txn_view.ex:529
 #: lib/block_scout_web/views/l2_to_l1_txn_view.ex:529
-#: lib/block_scout_web/views/state_batch_transaction_view.ex:567
+#: lib/block_scout_web/views/state_batch_transaction_view.ex:565
 #: lib/block_scout_web/views/state_batch_view.ex:520
-#: lib/block_scout_web/views/transaction_view.ex:706
+#: lib/block_scout_web/views/transaction_view.ex:704
 #: lib/block_scout_web/views/txn_batch_view.ex:525
 #, elixir-autogen, elixir-format
 msgid "Internal Transactions"
@@ -1795,7 +1795,7 @@ msgstr "最近余额更新"
 msgid "Learn more"
 msgstr "了解更多"
 
-#: lib/block_scout_web/templates/layout/app.html.eex:46
+#: lib/block_scout_web/templates/layout/app.html.eex:47
 #, elixir-autogen, elixir-format
 msgid "Less than"
 msgstr "小于"
@@ -1865,6 +1865,7 @@ msgstr "加载图表中..."
 #: lib/block_scout_web/templates/address_write_contract/index.html.eex:39
 #: lib/block_scout_web/templates/address_write_contract/index.html.eex:47
 #: lib/block_scout_web/templates/address_write_proxy/index.html.eex:12
+#: lib/block_scout_web/templates/layout/_search.html.eex:19
 #: lib/block_scout_web/templates/tokens/contract/index.html.eex:17
 #, elixir-autogen, elixir-format
 msgid "Loading..."
@@ -1880,7 +1881,7 @@ msgstr "日志数据"
 msgid "Log Index"
 msgstr "日志索引"
 
-#: lib/block_scout_web/templates/address/_tabs.html.eex:53
+#: lib/block_scout_web/templates/address/_tabs.html.eex:56
 #: lib/block_scout_web/templates/address_logs/index.html.eex:10
 #: lib/block_scout_web/templates/da_batch_transaction/_tabs.html.eex:17
 #: lib/block_scout_web/templates/eigenda_batch/_tabs.html.eex:17
@@ -1896,9 +1897,9 @@ msgstr "日志索引"
 #: lib/block_scout_web/views/eigenda_batch_view.ex:526
 #: lib/block_scout_web/views/l1_to_l2_txn_view.ex:530
 #: lib/block_scout_web/views/l2_to_l1_txn_view.ex:530
-#: lib/block_scout_web/views/state_batch_transaction_view.ex:568
+#: lib/block_scout_web/views/state_batch_transaction_view.ex:566
 #: lib/block_scout_web/views/state_batch_view.ex:521
-#: lib/block_scout_web/views/transaction_view.ex:707
+#: lib/block_scout_web/views/transaction_view.ex:705
 #: lib/block_scout_web/views/txn_batch_view.ex:526
 #, elixir-autogen, elixir-format
 msgid "Logs"
@@ -1909,7 +1910,7 @@ msgstr "日志"
 msgid "Main Networks"
 msgstr "主要网络"
 
-#: lib/block_scout_web/templates/layout/app.html.eex:47
+#: lib/block_scout_web/templates/layout/app.html.eex:48
 #: lib/block_scout_web/templates/tokens/overview/_details.html.eex:84
 #: lib/block_scout_web/views/address_view.ex:144
 #, elixir-autogen, elixir-format
@@ -1931,7 +1932,7 @@ msgstr "每个Gas的最大费用。"
 #: lib/block_scout_web/templates/transaction/overview.html.eex:554
 #, elixir-autogen, elixir-format
 msgid "Max Priority Fee per Gas"
-msgstr "每个Gas的最大优先费用"
+msgstr "每个 Gas 的最大优先费用"
 
 #: lib/block_scout_web/views/da_batch_transaction_view.ex:332
 #: lib/block_scout_web/views/eigenda_batch_view.ex:332
@@ -1951,13 +1952,13 @@ msgstr "最大值"
 #: lib/block_scout_web/templates/transaction/overview.html.eex:533
 #, elixir-autogen, elixir-format
 msgid "Maximum gas amount approved for the transaction."
-msgstr "交易批准的最大燃气金额。"
+msgstr "交易批准的最大 Gas 数量"
 
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:452
 #: lib/block_scout_web/templates/transaction/overview.html.eex:543
 #, elixir-autogen, elixir-format
 msgid "Maximum total amount per unit of gas a user is willing to pay for a transaction, including base fee and priority fee."
-msgstr "每单位气体用户愿意支付的交易最高总额，包括基础费用和优先费用。"
+msgstr "用户愿意为某笔交易支付的每单位 Gas 的最高价，包括基础费用和小费。"
 
 #: lib/block_scout_web/templates/tokens/instance/metadata/index.html.eex:18
 #: lib/block_scout_web/templates/tokens/instance/overview/_tabs.html.eex:10
@@ -2000,7 +2001,7 @@ msgstr "最小代理合约"
 #: lib/block_scout_web/templates/block/overview.html.eex:203
 #, elixir-autogen, elixir-format
 msgid "Minimum fee required per unit of gas. Fee adjusts based on network congestion."
-msgstr "每单位天然气需要最低费用。费用会根据网络拥堵情况进行调整。"
+msgstr "每单位Gas需要的最低费用。费用会根据网络拥堵情况进行调整。"
 
 #: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:223
 #, elixir-autogen, elixir-format
@@ -2010,12 +2011,12 @@ msgstr "模型"
 #: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:58
 #, elixir-autogen, elixir-format
 msgid "Module"
-msgstr "模块"
+msgstr "Module"
 
 #: lib/block_scout_web/templates/address_internal_transaction/index.html.eex:12
 #, elixir-autogen, elixir-format
 msgid "More internal transactions have come in"
-msgstr "更多的内部交易已经到账。"
+msgstr "更多的内部交易已经产生"
 
 #: lib/block_scout_web/templates/address_transaction/index.html.eex:46
 #: lib/block_scout_web/templates/chain/show.html.eex:241
@@ -2029,7 +2030,7 @@ msgstr "更多的内部交易已经到账。"
 #: lib/block_scout_web/templates/txn_batch/index.html.eex:19
 #, elixir-autogen, elixir-format
 msgid "More transactions have come in"
-msgstr "更多的交易已经到达。"
+msgstr "更多的交易已经产生"
 
 #: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:63
 #: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:74
@@ -2205,7 +2206,7 @@ msgstr "退出"
 #: lib/block_scout_web/templates/common_components/_rap_pagination_container.html.eex:13
 #, elixir-autogen, elixir-format
 msgid "Only the first"
-msgstr "只有第一。"
+msgstr "只显示前"
 
 #: lib/block_scout_web/templates/address_contract_verification_via_flattened_code/new.html.eex:40
 #: lib/block_scout_web/templates/address_contract_verification_via_multi_part_files/new.html.eex:32
@@ -2252,7 +2253,7 @@ msgstr "POA solidity 拼合器或者"
 #: lib/block_scout_web/templates/api_docs/_eth_rpc_item.html.eex:26
 #, elixir-autogen, elixir-format
 msgid "POST"
-msgstr "岗位"
+msgstr "POST"
 
 #: lib/block_scout_web/templates/common_components/_pagination_container.html.eex:41
 #, elixir-autogen, elixir-format
@@ -2328,7 +2329,7 @@ msgstr "请选择您将收到的通知类型："
 #: lib/block_scout_web/templates/transaction/overview.html.eex:600
 #, elixir-autogen, elixir-format
 msgid "Position"
-msgstr "职位"
+msgstr "位置"
 
 #: lib/block_scout_web/templates/block/overview.html.eex:251
 #, elixir-autogen, elixir-format
@@ -2355,7 +2356,7 @@ msgstr "位置 %{index}"
 msgid "Potential matches from our contract method database:"
 msgstr "我们合约方法数据库中的潜在匹配项："
 
-#: lib/block_scout_web/templates/layout/app.html.eex:48
+#: lib/block_scout_web/templates/layout/app.html.eex:49
 #: lib/block_scout_web/templates/tokens/overview/_details.html.eex:95
 #, elixir-autogen, elixir-format
 msgid "Price"
@@ -2372,7 +2373,7 @@ msgstr "交易所上每个代币的价格"
 #: lib/block_scout_web/templates/transaction/overview.html.eex:512
 #, elixir-autogen, elixir-format
 msgid "Price per unit of gas specified by the sender. Higher gas prices can prioritize transaction inclusion during times of high usage."
-msgstr "由发起人指定的每单位气体价格。在高使用期间，较高的气体价格可以优先考虑事务包容。"
+msgstr "由发起人指定的每单位 Gas 价格。在高使用期间，较高的 Gas 价格可以优先考虑事务包容。"
 
 #: lib/block_scout_web/templates/block/overview.html.eex:222
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:473
@@ -2421,7 +2422,7 @@ msgstr "QR码"
 msgid "Query"
 msgstr "查询"
 
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:95
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:92
 #, elixir-autogen, elixir-format
 msgid "RPC"
 msgstr "RPC"
@@ -2447,15 +2448,15 @@ msgstr "原始输入"
 #: lib/block_scout_web/views/eigenda_batch_view.ex:527
 #: lib/block_scout_web/views/l1_to_l2_txn_view.ex:531
 #: lib/block_scout_web/views/l2_to_l1_txn_view.ex:531
-#: lib/block_scout_web/views/state_batch_transaction_view.ex:569
+#: lib/block_scout_web/views/state_batch_transaction_view.ex:567
 #: lib/block_scout_web/views/state_batch_view.ex:522
-#: lib/block_scout_web/views/transaction_view.ex:708
+#: lib/block_scout_web/views/transaction_view.ex:706
 #: lib/block_scout_web/views/txn_batch_view.ex:527
 #, elixir-autogen, elixir-format
 msgid "Raw Trace"
-msgstr "Raw Trace"
+msgstr "生的痕迹"
 
-#: lib/block_scout_web/templates/address/_tabs.html.eex:93
+#: lib/block_scout_web/templates/address/_tabs.html.eex:96
 #: lib/block_scout_web/templates/tokens/overview/_tabs.html.eex:27
 #: lib/block_scout_web/views/address_view.ex:375
 #: lib/block_scout_web/views/tokens/overview_view.ex:41
@@ -2463,7 +2464,7 @@ msgstr "Raw Trace"
 msgid "Read Contract"
 msgstr "阅读合约"
 
-#: lib/block_scout_web/templates/address/_tabs.html.eex:100
+#: lib/block_scout_web/templates/address/_tabs.html.eex:103
 #: lib/block_scout_web/templates/tokens/overview/_tabs.html.eex:41
 #: lib/block_scout_web/views/address_view.ex:376
 #, elixir-autogen, elixir-format
@@ -2565,8 +2566,8 @@ msgid "Save"
 msgstr "保存"
 
 #: lib/block_scout_web/templates/address_logs/index.html.eex:16
-#: lib/block_scout_web/templates/layout/_search.html.eex:45
-#: lib/block_scout_web/templates/layout/_search.html.eex:48
+#: lib/block_scout_web/templates/layout/_search.html.eex:51
+#: lib/block_scout_web/templates/layout/_search.html.eex:54
 #, elixir-autogen, elixir-format
 msgid "Search"
 msgstr "搜索"
@@ -2673,7 +2674,7 @@ msgstr "智能合约 / 地址（0x...)"
 #: lib/block_scout_web/views/verified_contracts_view.ex:9
 #, elixir-autogen, elixir-format
 msgid "Solidity"
-msgstr "坚固性"
+msgstr "Solidity"
 
 #: lib/block_scout_web/templates/address_coin_balance/index.html.eex:30
 #: lib/block_scout_web/templates/address_deposit/index.html.eex:34
@@ -2731,7 +2732,7 @@ msgstr "来源*.sol或*.yul文件"
 msgid "Sources and Metadata JSON"
 msgstr "来源和元数据 JSON"
 
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:116
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:113
 #, elixir-autogen, elixir-format
 msgid "Stakes"
 msgstr "质押"
@@ -2744,8 +2745,8 @@ msgstr "标准输入 JSON"
 #: lib/block_scout_web/templates/state_batch_transaction/_tabs.html.eex:29
 #: lib/block_scout_web/templates/transaction/_tabs.html.eex:29
 #: lib/block_scout_web/templates/transaction_state/index.html.eex:6
-#: lib/block_scout_web/views/state_batch_transaction_view.ex:570
-#: lib/block_scout_web/views/transaction_view.ex:709
+#: lib/block_scout_web/views/state_batch_transaction_view.ex:568
+#: lib/block_scout_web/views/transaction_view.ex:707
 #, elixir-autogen, elixir-format
 msgid "State changes"
 msgstr "状态变化"
@@ -2901,7 +2902,7 @@ msgstr "发行的代币总量"
 #: lib/block_scout_web/templates/block/overview.html.eex:174
 #, elixir-autogen, elixir-format
 msgid "The total gas amount used in the block and its percentage of gas filled in the block."
-msgstr "区块中使用的总气体量及其占区块总容积的百分比。"
+msgstr "区块中使用的 Gas 总量及其在区块总容积的占比"
 
 #: lib/block_scout_web/templates/address_validation/index.html.eex:16
 #, elixir-autogen, elixir-format
@@ -2977,7 +2978,7 @@ msgstr "这个区块没有交易。"
 #: lib/block_scout_web/templates/eigenda_batch/index.html.eex:31
 #: lib/block_scout_web/templates/l1_to_l2_txn/index.html.eex:99
 #: lib/block_scout_web/templates/l2_to_l1_txn/index.html.eex:62
-#: lib/block_scout_web/templates/state_batch/index.html.eex:31
+#: lib/block_scout_web/templates/state_batch/index.html.eex:49
 #: lib/block_scout_web/templates/state_batch_transaction/index.html.eex:34
 #: lib/block_scout_web/templates/transaction/index.html.eex:27
 #: lib/block_scout_web/templates/txn_batch/index.html.eex:31
@@ -3000,7 +3001,7 @@ msgstr "没有经过验证的合约。"
 #: lib/block_scout_web/templates/address_coin_balance/index.html.eex:35
 #, elixir-autogen, elixir-format
 msgid "There is no coin history for this address."
-msgstr "该地址没有代币历史记录。"
+msgstr "该地址没有硬币历史记录。"
 
 #: lib/block_scout_web/templates/address_decompiled_contract/index.html.eex:29
 #, elixir-autogen, elixir-format
@@ -3121,9 +3122,9 @@ msgstr "代币"
 #: lib/block_scout_web/views/eigenda_batch_view.ex:461
 #: lib/block_scout_web/views/l1_to_l2_txn_view.ex:465
 #: lib/block_scout_web/views/l2_to_l1_txn_view.ex:465
-#: lib/block_scout_web/views/state_batch_transaction_view.ex:502
+#: lib/block_scout_web/views/state_batch_transaction_view.ex:500
 #: lib/block_scout_web/views/state_batch_view.ex:456
-#: lib/block_scout_web/views/transaction_view.ex:632
+#: lib/block_scout_web/views/transaction_view.ex:630
 #: lib/block_scout_web/views/txn_batch_view.ex:461
 #, elixir-autogen, elixir-format
 msgid "Token Burning"
@@ -3134,9 +3135,9 @@ msgstr "代币销毁"
 #: lib/block_scout_web/views/eigenda_batch_view.ex:462
 #: lib/block_scout_web/views/l1_to_l2_txn_view.ex:466
 #: lib/block_scout_web/views/l2_to_l1_txn_view.ex:466
-#: lib/block_scout_web/views/state_batch_transaction_view.ex:503
+#: lib/block_scout_web/views/state_batch_transaction_view.ex:501
 #: lib/block_scout_web/views/state_batch_view.ex:457
-#: lib/block_scout_web/views/transaction_view.ex:633
+#: lib/block_scout_web/views/transaction_view.ex:631
 #: lib/block_scout_web/views/txn_batch_view.ex:462
 #, elixir-autogen, elixir-format
 msgid "Token Creation"
@@ -3169,9 +3170,9 @@ msgstr "代币ID"
 #: lib/block_scout_web/views/eigenda_batch_view.ex:460
 #: lib/block_scout_web/views/l1_to_l2_txn_view.ex:464
 #: lib/block_scout_web/views/l2_to_l1_txn_view.ex:464
-#: lib/block_scout_web/views/state_batch_transaction_view.ex:501
+#: lib/block_scout_web/views/state_batch_transaction_view.ex:499
 #: lib/block_scout_web/views/state_batch_view.ex:455
-#: lib/block_scout_web/views/transaction_view.ex:631
+#: lib/block_scout_web/views/transaction_view.ex:629
 #: lib/block_scout_web/views/txn_batch_view.ex:460
 #, elixir-autogen, elixir-format
 msgid "Token Minting"
@@ -3183,9 +3184,9 @@ msgstr "代币铸造"
 #: lib/block_scout_web/views/eigenda_batch_view.ex:463
 #: lib/block_scout_web/views/l1_to_l2_txn_view.ex:467
 #: lib/block_scout_web/views/l2_to_l1_txn_view.ex:467
-#: lib/block_scout_web/views/state_batch_transaction_view.ex:504
+#: lib/block_scout_web/views/state_batch_transaction_view.ex:502
 #: lib/block_scout_web/views/state_batch_view.ex:458
-#: lib/block_scout_web/views/transaction_view.ex:634
+#: lib/block_scout_web/views/transaction_view.ex:632
 #: lib/block_scout_web/views/txn_batch_view.ex:463
 #, elixir-autogen, elixir-format
 msgid "Token Transfer"
@@ -3210,11 +3211,11 @@ msgstr "代币转账"
 #: lib/block_scout_web/views/eigenda_batch_view.ex:524
 #: lib/block_scout_web/views/l1_to_l2_txn_view.ex:528
 #: lib/block_scout_web/views/l2_to_l1_txn_view.ex:528
-#: lib/block_scout_web/views/state_batch_transaction_view.ex:566
+#: lib/block_scout_web/views/state_batch_transaction_view.ex:564
 #: lib/block_scout_web/views/state_batch_view.ex:519
 #: lib/block_scout_web/views/tokens/instance/overview_view.ex:197
 #: lib/block_scout_web/views/tokens/overview_view.ex:39
-#: lib/block_scout_web/views/transaction_view.ex:705
+#: lib/block_scout_web/views/transaction_view.ex:703
 #: lib/block_scout_web/views/txn_batch_view.ex:524
 #, elixir-autogen, elixir-format
 msgid "Token Transfers"
@@ -3241,7 +3242,7 @@ msgstr "代币类型"
 #: lib/block_scout_web/templates/address_token/overview.html.eex:58
 #: lib/block_scout_web/templates/address_token_transfer/index.html.eex:13
 #: lib/block_scout_web/templates/address_withdraw/index.html.eex:13
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:76
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:63
 #: lib/block_scout_web/templates/tokens/index.html.eex:10
 #: lib/block_scout_web/views/address_view.ex:369
 #, elixir-autogen, elixir-format
@@ -3325,7 +3326,7 @@ msgstr "直到该区块的链总难度。"
 #: lib/block_scout_web/templates/block/overview.html.eex:183
 #, elixir-autogen, elixir-format
 msgid "Total gas limit provided by all transactions in the block."
-msgstr "块中所有交易提供的总燃料限制。"
+msgstr "区块中所有交易的 Gas 总量限制"
 
 #: lib/block_scout_web/templates/tokens/overview/_details.html.eex:69
 #, elixir-autogen, elixir-format
@@ -3350,9 +3351,9 @@ msgstr "总交易量"
 #: lib/block_scout_web/views/eigenda_batch_view.ex:473
 #: lib/block_scout_web/views/l1_to_l2_txn_view.ex:477
 #: lib/block_scout_web/views/l2_to_l1_txn_view.ex:477
-#: lib/block_scout_web/views/state_batch_transaction_view.ex:514
+#: lib/block_scout_web/views/state_batch_transaction_view.ex:512
 #: lib/block_scout_web/views/state_batch_view.ex:468
-#: lib/block_scout_web/views/transaction_view.ex:644
+#: lib/block_scout_web/views/transaction_view.ex:642
 #: lib/block_scout_web/views/txn_batch_view.ex:473
 #, elixir-autogen, elixir-format
 msgid "Transaction"
@@ -3464,7 +3465,7 @@ msgstr "交易类型，引入自 EIP-2718。"
 #: lib/block_scout_web/templates/address_transaction/index.html.eex:13
 #: lib/block_scout_web/templates/block/overview.html.eex:80
 #: lib/block_scout_web/templates/block_transaction/index.html.eex:10
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:31
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:25
 #: lib/block_scout_web/views/address_view.ex:371
 #, elixir-autogen, elixir-format
 msgid "Transactions"
@@ -3503,7 +3504,7 @@ msgstr "尝试自动获取构造函数参数"
 msgid "Twitter"
 msgstr "推特"
 
-#: lib/block_scout_web/templates/layout/app.html.eex:50
+#: lib/block_scout_web/templates/layout/app.html.eex:51
 #, elixir-autogen, elixir-format
 msgid "Tx/day"
 msgstr "每日交易量"
@@ -3589,7 +3590,7 @@ msgstr "更新"
 #: lib/block_scout_web/templates/transaction/overview.html.eex:553
 #, elixir-autogen, elixir-format
 msgid "User defined maximum fee (tip) per unit of gas paid to validator for transaction prioritization."
-msgstr "用户定义的最大费用（小费），每单位气体支付给验证器以优先处理交易。"
+msgstr "用户设置的为优先处理交易而支付给验证人的每单位 Gas 的最大费用（小费） 。"
 
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:472
 #: lib/block_scout_web/templates/transaction/overview.html.eex:563
@@ -3602,17 +3603,17 @@ msgstr "用戶自定義費用發送給驗證器以進行交易優先/包含。"
 msgid "User-defined tips sent to validator for transaction priority/inclusion."
 msgstr "用户定义的提示发送给验证器，以确定交易的优先级/包含性。"
 
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:37
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:31
 #, elixir-autogen, elixir-format
 msgid "Validated"
-msgstr "验证的"
+msgstr "已验证交易"
 
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:57
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:51
 #, elixir-format, elixir-autogen
 msgid "L1 State Batches"
 msgstr "L1 状态批次"
 
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:52
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:46
 #, elixir-format, elixir-autogen
 msgid "Mantle DA Txn Batches"
 msgstr "Mantle DA 交易批次"
@@ -3622,7 +3623,7 @@ msgstr "Mantle DA 交易批次"
 msgid "L1 Txn Batches"
 msgstr "L1交易批次"
 
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:42
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:36
 #, elixir-format, elixir-autogen
 msgid "L1 to L2 Txns"
 msgstr "L1 到 L2 交易"
@@ -3708,7 +3709,7 @@ msgstr "已验证合约"
 msgid "Verified at"
 msgstr "确认于"
 
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:61
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:55
 #, elixir-autogen, elixir-format
 msgid "Verified contracts"
 msgstr "已验证合约"
@@ -3872,14 +3873,14 @@ msgstr "Wei"
 msgid "Write"
 msgstr "写"
 
-#: lib/block_scout_web/templates/address/_tabs.html.eex:107
+#: lib/block_scout_web/templates/address/_tabs.html.eex:110
 #: lib/block_scout_web/templates/tokens/overview/_tabs.html.eex:34
 #: lib/block_scout_web/views/address_view.ex:377
 #, elixir-autogen, elixir-format
 msgid "Write Contract"
 msgstr "调用合约"
 
-#: lib/block_scout_web/templates/address/_tabs.html.eex:114
+#: lib/block_scout_web/templates/address/_tabs.html.eex:117
 #: lib/block_scout_web/templates/tokens/overview/_tabs.html.eex:48
 #: lib/block_scout_web/views/address_view.ex:378
 #, elixir-autogen, elixir-format
@@ -3954,7 +3955,7 @@ msgstr "为此交易烧毁。等于每个 Gas 的区块基础费 * 所使用的 
 #: lib/block_scout_web/templates/block/overview.html.eex:212
 #, elixir-autogen, elixir-format
 msgid "burned from transactions included in the block (Base fee (per unit of gas) * Gas Used)."
-msgstr "从包含在区块中的交易中消耗的燃料（基础费用（每单位燃气）* 使用的燃气）。"
+msgstr "包含在区块中的交易中消耗的 Gas（基础费用（每单位 Gas）* Gas 消耗量）。"
 
 #: lib/block_scout_web/templates/address_contract/index.html.eex:28
 #, elixir-autogen, elixir-format
@@ -3982,7 +3983,7 @@ msgstr "不包括ERC20、ERC721、ERC1155代币。"
 #: lib/block_scout_web/templates/common_components/_rap_pagination_container.html.eex:13
 #, elixir-autogen, elixir-format
 msgid "elements are displayed"
-msgstr "元素被显示"
+msgstr "条数据"
 
 #: lib/block_scout_web/templates/smart_contract/_functions.html.eex:38
 #, elixir-autogen, elixir-format
@@ -4045,7 +4046,7 @@ msgstr "必需的"
 #: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:70
 #, elixir-autogen, elixir-format
 msgid "string"
-msgstr "线"
+msgstr "string"
 
 #: lib/block_scout_web/views/address_contract_view.ex:23
 #, elixir-autogen, elixir-format
@@ -4057,7 +4058,7 @@ msgstr "真实"
 msgid "truffle flattener"
 msgstr "松露压平机"
 
-#: lib/block_scout_web/templates/layout/_account_menu_item.html.eex:31
+#: lib/block_scout_web/templates/layout/_account_menu_item.html.eex:26
 #, elixir-autogen, elixir-format
 msgid "Sign in"
 msgstr "登录"
@@ -4191,7 +4192,7 @@ msgstr "在网络繁忙的时候（比如ICO期间），您的交易需要一定
 #: lib/block_scout_web/templates/transaction/overview.html.eex:513
 #, elixir-autogen, elixir-format
 msgid "Gas Price on L2"
-msgstr "L2的Gas价格"
+msgstr "L2的 Gas 价格"
 
 #: lib/block_scout_web/templates/da_batch_transaction/not_found.html.eex:26
 #: lib/block_scout_web/templates/eigenda_batch/not_found.html.eex:26
@@ -4216,7 +4217,7 @@ msgstr "如果您刚刚提交了此交易，请在刷新此页面之前等待至
 #: lib/block_scout_web/templates/l1_to_l2_txn/index.html.eex:89
 #, elixir-autogen, elixir-format
 msgid "Indicates by which contract was this Txn synced to Mantle Bridge"
-msgstr "此交易通过哪个合约与Mantle Bridge同步。"
+msgstr "このトランザクションがMantle Bridgeと同期された契約を示します。"
 
 #: lib/block_scout_web/templates/l1_to_l2_txn/index.html.eex:47
 #, elixir-autogen, elixir-format
@@ -4294,7 +4295,7 @@ msgstr "向L1提交状态根的交易哈希"
 msgid "L2 Fee"
 msgstr "L2费用"
 
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:47
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:41
 #, elixir-autogen, elixir-format
 msgid "L2 to L1 Txns"
 msgstr "L2 到 L1 的交易"
@@ -4392,7 +4393,7 @@ msgstr "Mantle DA 交易批次索引。"
 msgid "Contact Us"
 msgstr "联系我们"
 
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:138
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:135
 #, elixir-autogen
 msgid "Mantle Testnet"
 msgstr "Mantle测试网"
@@ -4435,7 +4436,7 @@ msgstr "区块号"
 #: lib/block_scout_web/templates/l1_to_l2_txn/index.html.eex:45
 #, elixir-autogen
 msgid "Queue Index"
-msgstr "排队指数"
+msgstr "交易序号"
 
 #: lib/block_scout_web/templates/l1_to_l2_txn/index.html.eex:51
 #: lib/block_scout_web/templates/l2_to_l1_txn/index.html.eex:34
@@ -4465,7 +4466,7 @@ msgstr "L2 交易回滚"
 
 #: lib/block_scout_web/templates/l1_to_l2_txn/index.html.eex:81
 #: lib/block_scout_web/templates/l2_to_l1_txn/index.html.eex:37
-#: lib/block_scout_web/templates/state_batch/index.html.eex:40
+#: lib/block_scout_web/templates/state_batch/index.html.eex:34
 #: lib/block_scout_web/templates/txn_batch/index.html.eex:40
 #, elixir-autogen
 msgid "Age"
@@ -4473,7 +4474,7 @@ msgstr "生成时间"
 
 #: lib/block_scout_web/templates/l1_to_l2_txn/index.html.eex:84
 #: lib/block_scout_web/templates/l2_to_l1_txn/index.html.eex:53
-#: lib/block_scout_web/templates/state_batch/index.html.eex:46
+#: lib/block_scout_web/templates/state_batch/index.html.eex:40
 #: lib/block_scout_web/templates/txn_batch/index.html.eex:46
 #, elixir-autogen
 msgid "L1 Txn Hash"
@@ -4482,7 +4483,7 @@ msgstr "L1 交易哈希"
 #: lib/block_scout_web/templates/l2_to_l1_txn/index.html.eex:28
 #, elixir-autogen
 msgid "Msg Nonce"
-msgstr "消息序号"
+msgstr "交易序号"
 
 #: lib/block_scout_web/templates/l2_to_l1_txn/index.html.eex:56
 #, elixir-autogen
@@ -4539,19 +4540,19 @@ msgstr "DA 哈希"
 msgid "Store Number"
 msgstr "储存编号"
 
-#: lib/block_scout_web/templates/state_batch/index.html.eex:37
+#: lib/block_scout_web/templates/state_batch/index.html.eex:31
 #, elixir-autogen
 msgid "State Batch"
 msgstr "状态批次"
 
 #: lib/block_scout_web/templates/eigenda_batch/index.html.eex:40
-#: lib/block_scout_web/templates/state_batch/index.html.eex:43
+#: lib/block_scout_web/templates/state_batch/index.html.eex:37
 #: lib/block_scout_web/templates/txn_batch/index.html.eex:43
 #, elixir-autogen
 msgid "Batch Size"
 msgstr "批次大小"
 
-#: lib/block_scout_web/templates/state_batch/index.html.eex:49
+#: lib/block_scout_web/templates/state_batch/index.html.eex:43
 #: lib/block_scout_web/templates/txn_batch/index.html.eex:49
 #, elixir-autogen
 msgid "Pre Total Elements"
@@ -4576,3 +4577,87 @@ msgstr "L1交易来源"
 #, elixir-autogen, elixir-format
 msgid "Total Supply"
 msgstr "总供应量"
+
+#: lib/block_scout_web/templates/layout/_add_chain_to_mm.html.eex:10
+#, elixir-autogen
+msgid "You're already connected to"
+msgstr "你已经连接到了"
+
+#: lib/block_scout_web/templates/layout/_search.html.eex:18
+#, elixir-autogen
+msgid "Address/Txn Hash/Block/Token/DA Hash"
+msgstr "地址/交易哈希/区块/代币/DA哈希"
+
+#: lib/block_scout_web/templates/layout/_add_chain_to_mm.html.eex:11
+#, elixir-autogen
+msgid "add custom chain failed,"
+msgstr "添加自定义链失败,"
+
+#: lib/block_scout_web/templates/tokens/index.html.eex:14
+#, elixir-autogen
+msgid "Token name or symbol"
+msgstr "代币名称或符号"
+
+#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:22
+#: lib/block_scout_web/templates/api_docs/_eth_rpc_item.html.eex:29
+#, elixir-autogen
+msgid "More Details"
+msgstr "更多详情"
+
+#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:23
+#: lib/block_scout_web/templates/api_docs/_eth_rpc_item.html.eex:30
+#, elixir-autogen
+msgid "Hide Details"
+msgstr "隐藏详情"
+
+msgid "Mimics Ethereum JSON RPC's eth_getBalance. Returns the balance as of the provided block (defaults to latest)"
+msgstr "模仿以太坊 JSON RPC 的 eth_getBalance。返回提供的区块的余额（默认为最新）"
+
+msgid "Either the block number as a string, or one of latest, earliest or pending latest will be the latest balance in a *consensus* block. earliest will be the first recorded balance for the address. pending will be the latest balance in consensus *or* nonconcensus blocks."
+msgstr "可以是块号的字符串，也可以是latest、earliest或pending latest之一，最新的余额将位于共识块中。earliest将是该地址的首次记录余额。pending将是共识或非共识块中的最新余额。"
+
+msgid "Get balance for address. Also available through a GraphQL 'addresses' query. If the balance hasn't been updated in a long time, we will double check with the node to fetch the absolute latest balance. This will not be reflected in the current request, but once it is updated, subsequent requests will show the updated balance. If you want to know whether or not we are checking for another balance, use the `balancemulti` action. That contains a property called `stale` that will let you know to recheck that balance in the near future."
+msgstr "获取地址的余额。还可以通过GraphQL的“addresses”查询获得。如果余额长时间未更新，我们将与节点进行双重检查以获取最新的绝对余额。这不会在当前请求中反映出来，但一旦更新，后续的请求将显示更新后的余额。如果您想知道我们是否在检查另一个余额，请使用balancemulti操作。其中包含一个名为stale的属性，它将通知您在不久的将来重新检查该余额。"
+
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:73
+#, elixir-autogen, elixir-format, fuzzy
+msgid "ERC1155"
+msgstr "ERC-1155"
+
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:67
+#, elixir-autogen, elixir-format, fuzzy
+msgid "ERC20"
+msgstr "ERC-20"
+
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:70
+#, elixir-autogen, elixir-format, fuzzy
+msgid "ERC721"
+msgstr "ERC-721"
+
+#: lib/block_scout_web/templates/layout/_search.html.eex:20
+#, elixir-autogen
+msgid "Display %{number} result"
+msgstr "显示 %{number} 个结果"
+
+#: lib/block_scout_web/templates/layout/_search.html.eex:21
+#, elixir-autogen
+msgid "Found %{number} matching results for "
+msgstr "找到 %{number} 个匹配结果"
+
+msgid "More blocks come in, click for an update"
+msgstr "更多的区块出现了，请点击获取更新"
+
+msgid "More internal transactions come in, click for an update"
+msgstr "更多内部交易进入，请点击获取更新"
+
+msgid "More transactions come in, click for an update"
+msgstr "有更多交易进来，请点击获取更新"
+
+msgid "More validations come in, click for an update"
+msgstr "有更多的验证进来，请点击获取更新"
+
+msgid "Display {number} result"
+msgstr "显示 {number} 个结果"
+
+msgid "Found {number} matching results for "
+msgstr "找到 {number} 个匹配结果"

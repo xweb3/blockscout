@@ -22,6 +22,7 @@
     <link rel="preload" href="<%= static_path(@conn, "/images/icons/fontawesome/info-circle.svg") %>" as="image" crossorigin>
     <link rel="preload" href="<%= static_path(@conn, "/images/icons/fontawesome/tag.svg") %>" as="image" crossorigin>
     <link rel="preload" href="<%= static_path(@conn, "/images/icons/fontawesome/discord.svg") %>" as="image" crossorigin>
+    <link rel="preload" href="<%= static_path(@conn, "/fonts/icomoon.ttf") %>" as="font" crossorigin>
     <link rel="preload" href="<%= static_path(@conn, "/css/non-critical.css") %>" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/non-critical.css") %>">
     <%= render_existing(@view_module, "styles.html", assigns) %>
@@ -97,12 +98,12 @@
         const search = document.getElementById("main-search-autocomplete")
         const searchMobile = document.getElementById("main-search-autocomplete-mobile")
             if (search && search.style) {
-          search.style.backgroundColor = "#22223a";
-              search.style.borderColor = "#22223a";
+          search.style.backgroundColor = "rgba(255, 255, 255, 0.05)";
+              search.style.borderColor = "rgba(255, 255, 255, 0.05)";
         }
         if (searchMobile && searchMobile.style) {
-          searchMobile.style.backgroundColor = "#22223a";
-          searchMobile.style.borderColor = "#22223a";
+          searchMobile.style.backgroundColor = "rgba(255, 255, 255, 0.05)";
+          searchMobile.style.borderColor = "rgba(255, 255, 255, 0.05)";
         }
       }
     </script>

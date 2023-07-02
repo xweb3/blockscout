@@ -6,7 +6,7 @@ import { appendTokenIcon } from './token_icon'
 import { escapeHtml } from './utils'
 import xss from 'xss'
 
-const placeHolder = 'Address/Txn Hash/Block/Token/DA Hash'
+// const placeHolder = 'Address/Txn Hash/Block/Token/DA Hash'
 
 const pushData = (type, data, storage) => {
   if (storage[type]) {
@@ -47,7 +47,10 @@ const dataSrc = async (query, id) => {
     const searchInput = document
       .getElementById(id)
 
-    searchInput.setAttribute('placeholder', 'Loading...')
+    const placeholderLoading = $(searchInput).data('placholder-loading')
+    const placeholderDefault = $(searchInput).data('placholder-default')
+
+    searchInput.setAttribute('placeholder', placeholderLoading)
 
     // Fetch External Data Source
     const source = await fetch(
@@ -55,8 +58,9 @@ const dataSrc = async (query, id) => {
     )
     const data = await source.json()
     // Post Loading placeholder text
+    // console.log('------', data)
 
-    searchInput.setAttribute('placeholder', placeHolder)
+    searchInput.setAttribute('placeholder', placeholderDefault)
     // Returns Fetched data
     localResult = {}
     for (let i = 0; i < data.length; i++) {
@@ -80,8 +84,13 @@ const dataSrc = async (query, id) => {
   }
 }
 const resultsListElement = (list, data) => {
+  const $searchInput = $('#main-search-autocomplete')
+  const labelResult = $searchInput.data('label-result')
+  const labelNoResult = $searchInput.data('label-noresult')
+  
   if (data.results.length > 0) {
     Object.keys(localResult).map(k => {
+      // console.log('0-0-0--', k)
       const $firstItem = $(`.item[data-type='${k}']`, list).first().parent()
       const info = document.createElement('div')
       info.classList.add('result-counter')
@@ -91,7 +100,7 @@ const resultsListElement = (list, data) => {
       </div>`
       info.innerHTML = adv
       const label = getLabel(k)
-      info.innerHTML += `<div class="counter-content" data-type="${k}"><p class="label">${label}</p> <p class="count">Displaying <strong>${localResult[k].length}</strong> results</p></div>`
+      info.innerHTML += `<div class="counter-content" data-type="${k}"><p class="label">${label}</p> <p class="count">${labelResult.replace('{number}', `<strong>${localResult[k].length}</strong>`)}</p></div>`
 
       $(info).insertBefore($firstItem)
     })
@@ -118,7 +127,7 @@ const resultsListElement = (list, data) => {
     </div>`
     info.innerHTML = adv
     if (data.query !== '###') {
-      info.innerHTML += `Found <strong>${data.matches.length}</strong> matching results for <strong>"${data.query}"</strong>`
+      info.innerHTML += `${labelNoResult.replace('{number}', `<strong>${data.matches.length}</strong> `)} <strong style="word-wrap:break-word;">"${data.query}"</strong>`
     }
     list.prepend(info)
   }
@@ -164,17 +173,31 @@ export const searchEngine = (query, record) => {
     return searchResult
   }
 }
+function getContractVerifiedCls (data){
+  let cls = '';
+  if(!data.is_not_contract_address){
+    cls = 'is_contract_address'
+    if(data.is_verified){
+      cls += ' contract_verified'
+    }
+  }
+  
+  return cls;
+}
+
 const resultItemElement = async (item, data) => {
   item.style = 'display: flex;'
 
   item.innerHTML = `
   <div data-type='${getType(data.value)}' class='item' id='token-icon-${data.value.address_hash}' style='margin-top: -1px;'></div>
-  <div class="result-match" style="padding-left: 10px; padding-right: 10px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
+  <div class="result-match" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
     ${data.match}
   </div>
   <div class="autocomplete-category">
     ${data.value.type}
-  </div>`
+  </div>
+  <span class="hide-contract-address common-contract-address ${getContractVerifiedCls(data.value)}"></span>
+  `
 
   const $tokenIconContainer = $(item).find(`#token-icon-${data.value.address_hash}`)
   const $searchInput = $('#main-search-autocomplete')
@@ -189,7 +212,7 @@ const config = (id) => {
       src: (query) => dataSrc(query, id),
       cache: false
     },
-    placeHolder,
+    placeHolder: $(`#${id}`).data('placholder-default'),
     searchEngine: (query, record) => searchEngine(query, record),
     threshold: 2,
     resultsList: {

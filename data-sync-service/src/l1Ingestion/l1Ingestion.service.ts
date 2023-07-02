@@ -25,6 +25,7 @@ import {
   IsNull,
   Not,
   In,
+  LessThan,
 } from 'typeorm';
 import Web3 from 'web3';
 import CMGABI from '../abi/L1CrossDomainMessenger.json';
@@ -266,73 +267,6 @@ export class L1IngestionService {
     return result;
   }
 
-  // save missed data, need be deleted
-  async saveStateBatchMissedScript(startBlock) {
-    console.log('state batch start block', startBlock)
-    const list = await this.getSccStateBatchAppendedByBlockNumber(
-      startBlock,
-      startBlock + 1999,
-    );
-    const stateBatchesInsertData: any[] = [];
-    console.log('data list length', list.length)
-    for (const item of list) {
-      const {
-        blockNumber,
-        transactionHash,
-        returnValues: {
-          _batchIndex,
-          _batchRoot,
-          _batchSize,
-          _prevTotalElements,
-          _extraData,
-        },
-      } = item;
-      console.log(`the state batch index will be insert into db: ${_batchIndex}`)
-      const { timestamp } = await this.web3.eth.getBlock(blockNumber);
-      stateBatchesInsertData.push({
-        batch_index: _batchIndex,
-        block_number: blockNumber.toString(),
-        hash: transactionHash,
-        size: _batchSize,
-        l1_block_number: blockNumber,
-        batch_root: _batchRoot,
-        extra_data: _extraData,
-        pre_total_elements: _prevTotalElements,
-        timestamp: new Date(Number(timestamp) * 1000).toISOString(),
-        inserted_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      })
-    }
-    const result: any[] = [];
-    const dataSource = getConnection();
-    const queryRunner = dataSource.createQueryRunner();
-    await queryRunner.connect();
-    console.log('start insert into db')
-    try {
-      await queryRunner.startTransaction();
-      const savedResult = await queryRunner.manager
-        .createQueryBuilder()
-        .insert()
-        .into(StateBatches)
-        .values(stateBatchesInsertData)
-        .onConflict(`("batch_index") DO NOTHING`)
-        .execute()
-      result.push(savedResult);
-      await queryRunner.commitTransaction();
-    } catch (error) {
-      this.logger.error(
-        `l1 createStateBatchesEvents ${error}, insert state batch failed, start and end block number ${startBlock}`,
-      );
-      await queryRunner.rollbackTransaction();
-      return Promise.reject(`insert state batch failed`)
-    } finally {
-      await queryRunner.release();
-    }
-    return startBlock + 2000;
-  }
-
-
-
   async createStateBatchesEvents(startBlock, endBlock) {
     console.log('state batch start block', startBlock, endBlock)
     const list = await this.getSccStateBatchAppendedByBlockNumber(
@@ -407,7 +341,7 @@ export class L1IngestionService {
     let from = '0x0000000000000000000000000000000000000000';
     let to = '0x0000000000000000000000000000000000000000';
     let value = '0';
-    let type = 0;
+    let type = -1;
     const l1SentMessageEventsInsertData: any[] = [];
     const l1ToL2InsertData: any[] = [];
     for (const item of list) {
@@ -437,6 +371,7 @@ export class L1IngestionService {
         const decodeMsg = iface.decodeFunctionData('rollBackL2Chain', message);
         type = 2; // rollBackL2Chain
       }
+      if(type === -1) continue;
       const { timestamp } = await this.web3.eth.getBlock(blockNumber);
       const msgHash = this.verifyDomainCalldataHash({
         target: target.toString(),
@@ -478,7 +413,7 @@ export class L1IngestionService {
         queue_index: Number(messageNonce),
         target: sender,
         gas_limit: gasLimit,
-        status: 'Ready for Relay',
+        status: '1',
         l1_token: l1_token,
         l2_token: l2_token,
         from: from,
@@ -526,6 +461,91 @@ export class L1IngestionService {
     }
     return Promise.resolve(inserted);
   }
+
+  queryReorgBlockNumber(confirmBlock) {
+    return this.txnL1ToL2Repository.find({
+      where: { l2_hash: null, block: LessThan(confirmBlock) },
+      order: { block: 'DESC' },
+      select: ["block"],
+      take: 100,
+    });
+  }
+
+  queryLatestBlockNumberWhichIncludeL2Hash() {
+    return this.txnL1ToL2Repository.findOne({
+      where: { l2_hash: Not(IsNull()) },
+      order: { block: 'DESC' },
+      select: ["block"],
+    });
+  }
+
+  async updateReorgBlockMessage() {
+    const latestIncludesL2HashBlockNumber = await this.queryLatestBlockNumberWhichIncludeL2Hash();
+    console.log('latest l1 to l2 transaction block number not includes l2 hash', latestIncludesL2HashBlockNumber)
+    if (latestIncludesL2HashBlockNumber.block && !Number.isNaN(latestIncludesL2HashBlockNumber.block)) {
+      const reorgBlockNumberList = await this.queryReorgBlockNumber(Number(latestIncludesL2HashBlockNumber.block));
+      console.log('reorg block list', reorgBlockNumberList)
+      if (reorgBlockNumberList?.length === 0) return;
+      reorgBlockNumberList.forEach((l) => {
+        this.fetchReorgDataAndUpdate(l.block)
+      })
+    }
+  }
+
+  async fetchReorgDataAndUpdate(block) {
+    const list = await this.getSentMessageByBlockNumber(block, block);
+    if (list?.length === 0) return;
+    list.forEach(async (blockRes) => {
+      const {
+        returnValues: { target, sender, message, messageNonce },
+      } = blockRes;
+      const msgHash = this.verifyDomainCalldataHash({
+        target: target.toString(),
+        sender: sender.toString(),
+        message: message.toString(),
+        messageNonce: messageNonce.toString(),
+      });
+
+      const dataSource = getConnection();
+      const queryRunner = dataSource.createQueryRunner();
+      await queryRunner.connect();
+      try {
+        await queryRunner.startTransaction();
+        await queryRunner.manager
+          .createQueryBuilder()
+          .update(L1SentMessageEvents)
+          .set({
+            message
+          })
+          .where({ message_nonce: messageNonce })
+          .execute().catch(e => {
+            console.error('update reorg block l1 sent message events failed', e.message)
+            throw Error(e.message)
+          });
+        await queryRunner.manager
+          .createQueryBuilder()
+          .update(L1ToL2)
+          .set({
+            msg_hash: msgHash
+          })
+          .where({ queue_index: Number(messageNonce) })
+          .execute().catch(e => {
+            console.error('update reorg block l1 to l2 failed', e.message)
+            throw Error(e.message)
+          });
+          console.log(`update l1 sent message events and l1 to l2 successful, block`, block)
+          console.log(`nonce`, messageNonce)
+          console.log(`msg_hash`, msgHash)
+        await queryRunner.commitTransaction();
+      } catch (error) {
+        console.error(error)
+        await queryRunner.rollbackTransaction();
+      } finally {
+        await queryRunner.release();
+      }
+    })
+  }
+
   async createRelayedEvents(startBlock, endBlock) {
     const list = await this.getRelayedMessageByBlockNumber(
       startBlock,
@@ -579,7 +599,7 @@ export class L1IngestionService {
           }
           l1ToL2UpdateList.push({
             l2_hash: unMergeTxList[i].tx_hash,
-            status: 'Relayed',
+            status: '2',
             hash: l1ToL2Transaction.hash
           })
           l1SentMessageEventsTxHashList.push(l1ToL2Transaction.hash)
@@ -677,7 +697,7 @@ export class L1IngestionService {
       if (l2ToL1Transaction) {
         l2ToL1UpdateList.push({
           hash: unMergeTxList[i].tx_hash,
-          status: 'Relayed',
+          status: '2',
           l2_hash: l2ToL1Transaction.l2_hash
         })
         l2SentMessageEventsTxHashList.push(l2ToL1Transaction.l2_hash)
@@ -939,7 +959,7 @@ export class L1IngestionService {
     if (!res) {
       return Promise.resolve(false);
     }
-    if(!res || res?.batchIndex === null || res?.dataStore === null){
+    if (!res || res?.batchIndex === null || res?.dataStore === null) {
       return Promise.resolve(true);
     }
     let fromStoreNumber, upgrade_data_store_id
@@ -949,7 +969,7 @@ export class L1IngestionService {
     if (res?.dataStore?.upgrade_data_store_id) {
       upgrade_data_store_id = res?.dataStore?.upgrade_data_store_id;
     }
-    
+
     console.log('eigenda data', res)
     console.log('store number', fromStoreNumber)
     console.log('upgrade_data_store_id', upgrade_data_store_id)
@@ -1045,7 +1065,7 @@ export class L1IngestionService {
         insertHashData = insertHashList
       }
       await this.createEigenBatchTransaction(insertBatchData, insertHashData);
-    }else {
+    } else {
       console.log('------ da_batch data response null')
     }
     return Promise.resolve(true);
@@ -1199,8 +1219,6 @@ export class L1IngestionService {
           }
         )
       )
-      console.log('-=-=-=-')
-      console.log(data)
       if (data?.retCode === 0 && data?.result?.list?.length > 0) {
         const keyLineData = data.result.list[0];
         if (keyLineData[4]) {
