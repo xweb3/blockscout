@@ -309,7 +309,7 @@ export class L1IngestionService {
         inserted_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       })
-      this.metricStateBatchIndex.set(Number(_batchIndex.toString()));
+      this.metricStateBatchIndex.set(Number(_batchIndex));
     }
     const result: any[] = [];
     const dataSource = getConnection();
