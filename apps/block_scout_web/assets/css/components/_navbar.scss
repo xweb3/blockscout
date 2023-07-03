@@ -129,9 +129,32 @@ $navbar-network-label-background-color: #bae1d7;
     }
   }
   .navbar-nav-custom {
+    .dropdown-toggle{
+      .dropdown-toggle-icon{
+        width: 13px;
+        height: 12px;
+        margin-left: 4px;
+        transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+        path{
+          transition: all 0.4s ease-in-out;
+          stroke:#21413f;
+        }
+      }
+      &[aria-expanded="true"]{
+        .dropdown-toggle-icon{
+          transform: rotate(180deg);
+        }
+      }
+      &:hover{
+        .dropdown-toggle-icon{
+          path{
+            stroke:white;
+          }
+        }
+      }
+    }
     .dropdown-toggle::after {
-      font-family: 'icomoon';
-      content: "\e900";
+      display: none;
       border: none;
     }
   }

@@ -375,7 +375,7 @@ export class L1IngestionService {
       } else if (funName === '0x0fae75d9') {
         const decodeMsg = iface.decodeFunctionData('claimReward', message);
         type = 0; // reward
-        this.logger.log(`reward tssMembers is [${decodeMsg._tssMembers}]`);
+        // this.logger.log(`reward tssMembers is [${decodeMsg._tssMembers}]`);
       } else if (funName === '0xf523f40d') {
         const decodeMsg = iface.decodeFunctionData('rollBackL2Chain', message);
         type = 2; // rollBackL2Chain
@@ -388,12 +388,12 @@ export class L1IngestionService {
         message: message.toString(),
         messageNonce: messageNonce.toString(),
       });
-      console.log("-------------- l1 sent message block", blockNumber)
-      console.log("target", target)
-      console.log("sender", sender)
-      console.log("message", message)
-      console.log("messageNonce", messageNonce)
-      console.log("msgHash", msgHash)
+      // console.log("-------------- l1 sent message block", blockNumber)
+      // console.log("target", target)
+      // console.log("sender", sender)
+      // console.log("message", message)
+      // console.log("messageNonce", messageNonce)
+      // console.log("msgHash", msgHash)
       l1SentMessageEventsInsertData.push({
         tx_hash: transactionHash,
         block_number: blockNumber.toString(),
