@@ -1225,7 +1225,7 @@ export class L1IngestionService {
     try {
       const { data } = await firstValueFrom(
         this.httpService.get(
-          `https://api.bybit.com/v5/market/kline?symbol=BITUSDT&category=spot&interval=60&start=${startTime}&end=${endTime}`,
+          `https://api.bybit.com/v5/market/kline?symbol=MNTUSDT&category=spot&interval=60&start=${startTime}&end=${endTime}`,
           {
             timeout: 5000,
           }
@@ -1285,7 +1285,7 @@ export class L1IngestionService {
       console.log('start sync token price real time')
       const { data } = await firstValueFrom(
         this.httpService.get(
-          `https://api.bybit.com/v5/market/tickers?category=inverse&symbol=BITUSD`,
+          `https://api.bybit.com/v5/market/tickers?category=inverse&symbol=MNTUSDT`,
           {
             timeout: 5000,
           }
