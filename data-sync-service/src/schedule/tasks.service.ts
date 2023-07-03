@@ -108,7 +108,7 @@ export class TasksService {
     console.log('================end init cache================');
 
   }
-  @Interval(12000)
+  @Interval(2000)
   async l1_sent() {
     let end = 0;
     const currentL1BlockNumber =
@@ -136,7 +136,7 @@ export class TasksService {
       }
     }
   }
-  @Interval(12000)
+  @Interval(2200)
   async l1_relayed() {
     let end = 0;
     const currentL1BlockNumber =
@@ -220,7 +220,7 @@ export class TasksService {
       }
     }
   }
-  @Interval(3000)
+  @Interval(2300)
   async state_batch() {
     let end = 0;
     const currentL1BlockNumber =
