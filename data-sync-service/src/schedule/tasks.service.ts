@@ -138,7 +138,8 @@ export class TasksService {
       }
     }
   }
-  @Interval(11900)
+
+  @Interval(12200)
   async l1_relayed() {
     let end = 0;
     const currentL1BlockNumber =
@@ -222,7 +223,8 @@ export class TasksService {
       }
     }
   }
-  @Interval(12100)
+
+  @Interval(12300)
   async state_batch() {
     let end = 0;
     const currentL1BlockNumber =
