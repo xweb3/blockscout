@@ -9,7 +9,9 @@
     href="#<%= action_tile_id(@module_name, @action.name) %>"
   >
     <div data-selector="stop-propagation" class="api-doc-list-item-description">
-      <h3 class="api-doc-list-item-title"><%= raw @action.description %></h3>
+      <h3 class="api-doc-list-item-title">
+        <%= generateDescription(@action) %>
+      </h3>
       <p class="api-doc-list-item-query api-text-monospace api-text-monospace-background"><%= raw query_params(@module_name, @action) %></p>
       <p class="api-doc-list-item-text"><%= @action.name %></p>
     </div>

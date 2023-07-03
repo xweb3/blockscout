@@ -1222,8 +1222,8 @@ defmodule BlockScoutWeb.Etherscan do
 
   @account_eth_get_balance_action %{
     name: "eth_get_balance",
-    description:
-      gettext("Mimics Ethereum JSON RPC's eth_getBalance. Returns the balance as of the provided block (defaults to latest)"),
+    description: "Mimics Ethereum JSON RPC's eth_getBalance. Returns the balance as of the provided block (defaults to latest)",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "address",
@@ -1265,16 +1265,8 @@ defmodule BlockScoutWeb.Etherscan do
 
   @account_balance_action %{
     name: "balance",
-    description: """
-        Get balance for address. Also available through a GraphQL 'addresses' query.
-
-        If the balance hasn't been updated in a long time, we will double check
-        with the node to fetch the absolute latest balance. This will not be
-        reflected in the current request, but once it is updated, subsequent requests
-        will show the updated balance. If you want to know whether or not we are checking
-        for another balance, use the `balancemulti` action. That contains a property
-        called `stale` that will let you know to recheck that balance in the near future.
-    """,
+    description: "Get balance for address. Also available through a GraphQL 'addresses' query. If the balance hasn't been updated in a long time, we will double check with the node to fetch the absolute latest balance. This will not be reflected in the current request, but once it is updated, subsequent requests will show the updated balance. If you want to know whether or not we are checking for another balance, use the `balancemulti` action. That contains a property called `stale` that will let you know to recheck that balance in the near future.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "address",
@@ -1308,15 +1300,8 @@ defmodule BlockScoutWeb.Etherscan do
 
   @account_balancemulti_action %{
     name: "balancemulti",
-    description: """
-        Get balance for multiple addresses. Also available through a GraphQL 'addresses' query.
-
-        If the balance hasn't been updated in a long time, we will double check
-        with the node to fetch the absolute latest balance. This will not be
-        reflected in the current request, but once it is updated, subsequent requests
-        will show the updated balance. You can know that this is taking place via
-        the `stale` attribute, which is set to `true` if a new balance is being fetched.
-    """,
+    description: "Get balance for multiple addresses. Also available through a GraphQL 'addresses' query. If the balance hasn't been updated in a long time, we will double check with the node to fetch the absolute latest balance. This will not be reflected in the current request, but once it is updated, subsequent requests will show the updated balance. You can know that this is taking place via the `stale` attribute, which is set to `true` if a new balance is being fetched.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "address",
@@ -1355,6 +1340,7 @@ defmodule BlockScoutWeb.Etherscan do
   @account_pendingtxlist_action %{
     name: "pendingtxlist",
     description: "Get pending transactions by address.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "address",
@@ -1406,6 +1392,7 @@ defmodule BlockScoutWeb.Etherscan do
     name: "txlist",
     description:
       "Get transactions by address. Up to a maximum of 10,000 transactions. Also available through a GraphQL 'address' query.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "address",
@@ -1492,6 +1479,7 @@ defmodule BlockScoutWeb.Etherscan do
     name: "txlistinternal",
     description:
       "Get internal transactions by transaction or address hash. Up to a maximum of 10,000 internal transactions. Also available through a GraphQL 'transaction' query.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "txhash",
@@ -1568,6 +1556,7 @@ defmodule BlockScoutWeb.Etherscan do
     name: "tokentx",
     description:
       "Get token transfer events by address. Up to a maximum of 10,000 token transfer events. Also available through a GraphQL 'token_transfers' query.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "address",
@@ -1640,6 +1629,7 @@ defmodule BlockScoutWeb.Etherscan do
   @account_tokenbalance_action %{
     name: "tokenbalance",
     description: "Get token account balance for token contract address.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "contractaddress",
@@ -1684,6 +1674,7 @@ defmodule BlockScoutWeb.Etherscan do
   @account_tokenlist_action %{
     name: "tokenlist",
     description: "Get list of tokens owned by address.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "address",
@@ -1721,6 +1712,7 @@ defmodule BlockScoutWeb.Etherscan do
   @account_getminedblocks_action %{
     name: "getminedblocks",
     description: "Get list of blocks mined by address.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "address",
@@ -1772,6 +1764,7 @@ defmodule BlockScoutWeb.Etherscan do
     name: "listaccounts",
     description:
       "Get a list of accounts and their balances, sorted ascending by the time they were first seen by the explorer.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [],
     optional_params: [
       %{
@@ -1810,6 +1803,7 @@ defmodule BlockScoutWeb.Etherscan do
   @logs_getlogs_action %{
     name: "getLogs",
     description: "Get event logs for an address and/or topics. Up to a maximum of 1,000 event logs.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "fromBlock",
@@ -1927,6 +1921,7 @@ defmodule BlockScoutWeb.Etherscan do
     description:
       "Get <a href='https://github.com/ethereum/EIPs/issues/20'>ERC-20</a> " <>
         "or <a href='https://github.com/ethereum/EIPs/issues/721'>ERC-721</a> token by contract address.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "contractaddress",
@@ -1964,6 +1959,7 @@ defmodule BlockScoutWeb.Etherscan do
   @token_gettokenholders_action %{
     name: "getTokenHolders",
     description: "Get token holders by contract address.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "contractaddress",
@@ -2017,6 +2013,7 @@ defmodule BlockScoutWeb.Etherscan do
       "Get <a href='https://github.com/ethereum/EIPs/issues/20'>ERC-20</a> or " <>
         "<a href='https://github.com/ethereum/EIPs/issues/721'>ERC-721</a> " <>
         " token total supply by contract address.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "contractaddress",
@@ -2055,6 +2052,7 @@ defmodule BlockScoutWeb.Etherscan do
   @stats_ethsupplyexchange_action %{
     name: "ethsupplyexchange",
     description: "Get total supply in Wei from exchange.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [],
     optional_params: [],
     responses: [
@@ -2081,6 +2079,7 @@ defmodule BlockScoutWeb.Etherscan do
   @stats_ethsupply_action %{
     name: "ethsupply",
     description: "Get total supply in Wei from DB.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [],
     optional_params: [],
     responses: [
@@ -2107,6 +2106,7 @@ defmodule BlockScoutWeb.Etherscan do
   @stats_coinsupply_action %{
     name: "coinsupply",
     description: "Get total coin supply from DB minus burnt number.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [],
     optional_params: [],
     responses: [
@@ -2131,6 +2131,7 @@ defmodule BlockScoutWeb.Etherscan do
   @stats_coinprice_action %{
     name: "coinprice",
     description: "Get latest price of native coin in USD and BTC.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [],
     optional_params: [],
     responses: [
@@ -2156,6 +2157,7 @@ defmodule BlockScoutWeb.Etherscan do
   @stats_totalfees_action %{
     name: "totalfees",
     description: "Gets total transaction fees in Wei are paid by users to validators per day.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "date",
@@ -2193,6 +2195,7 @@ defmodule BlockScoutWeb.Etherscan do
   @block_eth_block_number_action %{
     name: "eth_block_number",
     description: "Mimics Ethereum JSON RPC's eth_blockNumber. Returns the lastest block number",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [],
     optional_params: [
       %{
@@ -2222,6 +2225,7 @@ defmodule BlockScoutWeb.Etherscan do
   @block_getblockreward_action %{
     name: "getblockreward",
     description: "Get block reward by block number.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "blockno",
@@ -2259,6 +2263,7 @@ defmodule BlockScoutWeb.Etherscan do
   @block_getblocknobytime_action %{
     name: "getblocknobytime",
     description: "Get Block Number by Timestamp.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "timestamp",
@@ -2301,12 +2306,8 @@ defmodule BlockScoutWeb.Etherscan do
 
   @contract_listcontracts_action %{
     name: "listcontracts",
-    description: """
-    Get a list of contracts, sorted ascending by the time they were first seen by the explorer.
-
-    If you provide the filters `not_decompiled`(`4`) or `not_verified(4)` the results will not
-    be sorted for performance reasons.
-    """,
+    description: "Get a list of contracts, sorted ascending by the time they were first seen by the explorer. If you provide the filters `not_decompiled`(`4`) or `not_verified(4)` the results will not be sorted for performance reasons.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [],
     optional_params: [
       %{
@@ -2739,6 +2740,7 @@ defmodule BlockScoutWeb.Etherscan do
   @contract_getabi_action %{
     name: "getabi",
     description: "Get ABI for verified contract. Also available through a GraphQL 'addresses' query.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "address",
@@ -2776,6 +2778,7 @@ defmodule BlockScoutWeb.Etherscan do
   @contract_getsourcecode_action %{
     name: "getsourcecode",
     description: "Get contract source code for verified contract. Also available through a GraphQL 'addresses' query.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "address",
@@ -2813,6 +2816,7 @@ defmodule BlockScoutWeb.Etherscan do
   @transaction_gettxinfo_action %{
     name: "gettxinfo",
     description: "Get transaction info.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "txhash",
@@ -2856,6 +2860,7 @@ defmodule BlockScoutWeb.Etherscan do
   @transaction_gettxreceiptstatus_action %{
     name: "gettxreceiptstatus",
     description: "Get transaction receipt status. Also available through a GraphQL 'transaction' query.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "txhash",
@@ -2893,6 +2898,7 @@ defmodule BlockScoutWeb.Etherscan do
   @transaction_getstatus_action %{
     name: "getstatus",
     description: "Get error status and error message. Also available through a GraphQL 'transaction' query.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "txhash",
@@ -3024,4 +3030,69 @@ defmodule BlockScoutWeb.Etherscan do
   def coin_usd_type_definition(coin) do
     "#{coin} price in US dollars."
   end
+
+  def generateDescription(namespace) do
+    case namespace do
+      "eth_get_balance" ->
+        gettext("Mimics Ethereum JSON RPC's eth_getBalance. Returns the balance as of the provided block (defaults to latest)")
+      "balance" ->
+        gettext("Get balance for address. Also available through a GraphQL 'addresses' query. If the balance hasn't been updated in a long time, we will double check with the node to fetch the absolute latest balance. This will not be reflected in the current request, but once it is updated, subsequent requests will show the updated balance. If you want to know whether or not we are checking for another balance, use the `balancemulti` action. That contains a property called `stale` that will let you know to recheck that balance in the near future.")
+      "balancemulti" ->
+        gettext("Get balance for multiple addresses. Also available through a GraphQL 'addresses' query. If the balance hasn't been updated in a long time, we will double check with the node to fetch the absolute latest balance. This will not be reflected in the current request, but once it is updated, subsequent requests will show the updated balance. You can know that this is taking place via the `stale` attribute, which is set to `true` if a new balance is being fetched.")
+      "pendingtxlist" ->
+        gettext("Get pending transactions by address.")
+      "txlist" ->
+        gettext("Get transactions by address. Up to a maximum of 10,000 transactions. Also available through a GraphQL 'address' query.")
+      "txlistinternal" ->
+        gettext("Get internal transactions by transaction or address hash. Up to a maximum of 10,000 internal transactions. Also available through a GraphQL 'transaction' query.")
+      "tokentx" ->
+        gettext("Get token transfer events by address. Up to a maximum of 10,000 token transfer events. Also available through a GraphQL 'token_transfers' query.")
+      "tokenbalance" ->
+        gettext("Get token account balance for token contract address.")
+      "tokenlist" ->
+        gettext("Get list of tokens owned by address.")
+      "getminedblocks" ->
+        gettext("Get list of blocks mined by address.")
+      "listaccounts" ->
+        gettext("Get a list of accounts and their balances, sorted ascending by the time they were first seen by the explorer.")
+      "getLogs" ->
+        gettext("Get event logs for an address and/or topics. Up to a maximum of 1,000 event logs.")
+      "getToken" ->
+        gettext("Get <a href='https://github.com/ethereum/EIPs/issues/20'>ERC-20</a> or <a href='https://github.com/ethereum/EIPs/issues/721'>ERC-721</a> token by contract address.")
+      "getTokenHolders" ->
+        gettext("Get token holders by contract address.")
+      "tokensupply" ->
+        gettext("Get <a href='https://github.com/ethereum/EIPs/issues/20'>ERC-20</a> or <a href='https://github.com/ethereum/EIPs/issues/721'>ERC-721</a> token total supply by contract address.")
+      "ethsupplyexchange" ->
+        gettext("Get total supply in Wei from exchange.")
+      "ethsupply" ->
+        gettext("Get total supply in Wei from DB.")
+      "coinsupply" ->
+        gettext("Get total coin supply from DB minus burnt number.")
+      "coinprice" ->
+        gettext("Get latest price of native coin in USD and BTC.")
+      "totalfees" ->
+        gettext("Gets total transaction fees in Wei are paid by users to validators per day.")
+      "eth_block_number" ->
+        gettext("Mimics Ethereum JSON RPC's eth_blockNumber. Returns the lastest block number")
+      "getblockreward" ->
+        gettext("Get block reward by block number.")
+      "getblocknobytime" ->
+        gettext("Get Block Number by Timestamp.")
+      "listcontracts" ->
+        gettext("Get a list of contracts, sorted ascending by the time they were first seen by the explorer. If you provide the filters `not_decompiled`(`4`) or `not_verified(4)` the results will not be sorted for performance reasons.")
+      "getabi" ->
+        gettext("Get ABI for verified contract. Also available through a GraphQL 'addresses' query.")
+      "getsourcecode" ->
+        gettext("Get contract source code for verified contract. Also available through a GraphQL 'addresses' query.")
+      "gettxinfo" ->
+        gettext("Get transaction info.")
+      "gettxreceiptstatus" ->
+        gettext("Get transaction receipt status. Also available through a GraphQL 'transaction' query.")
+      "getstatus" ->
+        gettext("Get error status and error message. Also available through a GraphQL 'transaction' query.")
+    end
+  end
+
+
 end
