@@ -440,7 +440,7 @@ export class L2IngestionService {
       }
     });
     if (list.length > 0) {
-      this.metricL2ToL1Status.set(list[0].msg_nonce)
+      this.metricL2ToL1Status.set(Number(list[0].msg_nonce))
     }
     const updateL2ToL1Data = []
     for (let item of list) {
