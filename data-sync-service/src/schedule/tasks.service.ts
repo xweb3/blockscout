@@ -133,13 +133,13 @@ export class TasksService {
     await this.cacheManager.set(DA_BATCH_INDEX, Number(da_batch_index), {
       ttl: 0,
     });
-    // this.sync_token_price_history();
-    // this.sync_token_price_real_time();
+    this.sync_token_price_history();
+    this.sync_token_price_real_time();
     console.log('================end init cache================');
 
   }
 
-  @Interval(5000)
+  @Interval(12000)
   async l1_sent_latest() {
     // sync from latest block
     let end = 0;
@@ -175,8 +175,7 @@ export class TasksService {
     } 
   }
 
-  // @Interval(2000)
-  @Interval('l1_sent_history', 5000)
+  @Interval('l1_sent_history', 12000)
   async l1_sent_history() {
     // sync history block, stop when sync reach latest starting block.
     let end = 0;
@@ -215,191 +214,191 @@ export class TasksService {
       }
     }
   }
-  // @Interval(12000)
-  // async l1_relayed() {
-  //   let end = 0;
-  //   const currentL1BlockNumber =
-  //     await this.l1IngestionService.getCurrentBlockNumber();
-  //   console.log('l1 relayed currentBlockNumber: ', currentL1BlockNumber);
-  //   const currentBlockNumber = currentL1BlockNumber - 1;
-  //   const start = Number(await this.cacheManager.get(L1_RELAYED));
-  //   if (currentBlockNumber - start > SYNC_STEP) {
-  //     end = start + SYNC_STEP;
-  //   } else {
-  //     end =
-  //       start - SYNC_STEP > currentBlockNumber
-  //         ? start - SYNC_STEP
-  //         : currentBlockNumber;
-  //   }
-  //   if (currentBlockNumber > start + 1) {
-  //     const inserted = await this.l1IngestionService.createRelayedEvents(
-  //       start + 1,
-  //       end,
-  //     );
-  //     if (inserted) {
-  //       this.cacheManager.set(L1_RELAYED, end, { ttl: 0 });
-  //     } else {
-  //       this.logger.error('-------- insert l1 relayed message events failed -----------');
-  //     }
-  //   }
-  // }
-  // @Interval(2000)
-  // async l2_sent() {
-  //   let end = 0;
-  //   const currentL2BlockNumber =
-  //     await this.l2IngestionService.getCurrentBlockNumber();
-  //   console.log('l2 sent currentBlockNumber: ', currentL2BlockNumber);
-  //   const currentBlockNumber = currentL2BlockNumber - 1;
-  //   const start = Number(await this.cacheManager.get(L2_SENT));
-  //   if (currentBlockNumber - start > SYNC_STEP_L2) {
-  //     end = start + SYNC_STEP_L2;
-  //   } else {
-  //     end =
-  //       start - SYNC_STEP_L2 > currentBlockNumber
-  //         ? start - SYNC_STEP_L2
-  //         : currentBlockNumber;
-  //   }
-  //   if (currentBlockNumber > start + 1) {
-  //     const inserted = await this.l2IngestionService.createSentEvents(
-  //       start + 1,
-  //       end,
-  //     );
-  //     if (inserted) {
-  //       this.cacheManager.set(L2_SENT, end, { ttl: 0 });
-  //     } else {
-  //       this.logger.error('-------- insert l2 sent message events failed -----------');
-  //     }
-  //   }
-  // }
-  // @Interval(2000)
-  // async l2_relayed() {
-  //   let end = 0;
-  //   const currentL2BlockNumber =
-  //     await this.l2IngestionService.getCurrentBlockNumber();
-  //   console.log('l2 relayed currentBlockNumber: ', currentL2BlockNumber);
-  //   const currentBlockNumber = currentL2BlockNumber - 1;
-  //   const start = Number(await this.cacheManager.get(L2_RELAYED));
-  //   if (currentBlockNumber - start > SYNC_STEP_L2) {
-  //     end = start + SYNC_STEP_L2;
-  //   } else {
-  //     end =
-  //       start - SYNC_STEP_L2 > currentBlockNumber
-  //         ? start - SYNC_STEP_L2
-  //         : currentBlockNumber;
-  //   }
-  //   if (currentBlockNumber > start + 1) {
-  //     const inserted = await this.l2IngestionService.createRelayedEvents(
-  //       start + 1,
-  //       end,
-  //     );
-  //     if (inserted) {
-  //       this.cacheManager.set(L2_RELAYED, end, { ttl: 0 });
-  //     } else {
-  //       this.logger.error('-------- insert l2 relayed message events failed -----------');
-  //     }
-  //   }
-  // }
-  // @Interval(3000)
-  // async state_batch() {
-  //   let end = 0;
-  //   const currentL1BlockNumber =
-  //     await this.l1IngestionService.getCurrentBlockNumber();
-  //   console.log('state batch currentBlockNumber: ', currentL1BlockNumber);
-  //   // the latest block might get empty passed events
-  //   const currentBlockNumber = currentL1BlockNumber - 1;
-  //   const start = Number(await this.cacheManager.get(STATE_BATCH));
-  //   // current = 100   start = 94  SYNC_STEP = 10
-  //   if (currentBlockNumber - start > SYNC_STEP) {
-  //     end = start + SYNC_STEP;
-  //   } else {
-  //     end =
-  //       start - SYNC_STEP > currentBlockNumber
-  //         ? start - SYNC_STEP
-  //         : currentBlockNumber;
-  //   }
-  //   if (currentBlockNumber >= start + 1) {
-  //     const result = await this.l1IngestionService.createStateBatchesEvents(
-  //       start + 1,
-  //       end,
-  //     ).catch(e => {
-  //       console.error(`insert state batch failed, number: ${start} ${end}`)
-  //     });
-  //     if (result) {
-  //       const insertData = !result || result.length <= 0 ? [] : result[0].identifiers || []
-  //       this.logger.log(
-  //         `sync [${insertData.length}] state_batch from block [${start}] to [${end}]`,
-  //       );
-  //       await this.cacheManager.set(STATE_BATCH, end, { ttl: 0 });
-  //     } else {
-  //       console.error('result insert state batch data failed')
-  //     }
+  @Interval(12000)
+  async l1_relayed() {
+    let end = 0;
+    const currentL1BlockNumber =
+      await this.l1IngestionService.getCurrentBlockNumber();
+    console.log('l1 relayed currentBlockNumber: ', currentL1BlockNumber);
+    const currentBlockNumber = currentL1BlockNumber - 1;
+    const start = Number(await this.cacheManager.get(L1_RELAYED));
+    if (currentBlockNumber - start > SYNC_STEP) {
+      end = start + SYNC_STEP;
+    } else {
+      end =
+        start - SYNC_STEP > currentBlockNumber
+          ? start - SYNC_STEP
+          : currentBlockNumber;
+    }
+    if (currentBlockNumber > start + 1) {
+      const inserted = await this.l1IngestionService.createRelayedEvents(
+        start + 1,
+        end,
+      );
+      if (inserted) {
+        this.cacheManager.set(L1_RELAYED, end, { ttl: 0 });
+      } else {
+        this.logger.error('-------- insert l1 relayed message events failed -----------');
+      }
+    }
+  }
+  @Interval(2000)
+  async l2_sent() {
+    let end = 0;
+    const currentL2BlockNumber =
+      await this.l2IngestionService.getCurrentBlockNumber();
+    console.log('l2 sent currentBlockNumber: ', currentL2BlockNumber);
+    const currentBlockNumber = currentL2BlockNumber - 1;
+    const start = Number(await this.cacheManager.get(L2_SENT));
+    if (currentBlockNumber - start > SYNC_STEP_L2) {
+      end = start + SYNC_STEP_L2;
+    } else {
+      end =
+        start - SYNC_STEP_L2 > currentBlockNumber
+          ? start - SYNC_STEP_L2
+          : currentBlockNumber;
+    }
+    if (currentBlockNumber > start + 1) {
+      const inserted = await this.l2IngestionService.createSentEvents(
+        start + 1,
+        end,
+      );
+      if (inserted) {
+        this.cacheManager.set(L2_SENT, end, { ttl: 0 });
+      } else {
+        this.logger.error('-------- insert l2 sent message events failed -----------');
+      }
+    }
+  }
+  @Interval(2000)
+  async l2_relayed() {
+    let end = 0;
+    const currentL2BlockNumber =
+      await this.l2IngestionService.getCurrentBlockNumber();
+    console.log('l2 relayed currentBlockNumber: ', currentL2BlockNumber);
+    const currentBlockNumber = currentL2BlockNumber - 1;
+    const start = Number(await this.cacheManager.get(L2_RELAYED));
+    if (currentBlockNumber - start > SYNC_STEP_L2) {
+      end = start + SYNC_STEP_L2;
+    } else {
+      end =
+        start - SYNC_STEP_L2 > currentBlockNumber
+          ? start - SYNC_STEP_L2
+          : currentBlockNumber;
+    }
+    if (currentBlockNumber > start + 1) {
+      const inserted = await this.l2IngestionService.createRelayedEvents(
+        start + 1,
+        end,
+      );
+      if (inserted) {
+        this.cacheManager.set(L2_RELAYED, end, { ttl: 0 });
+      } else {
+        this.logger.error('-------- insert l2 relayed message events failed -----------');
+      }
+    }
+  }
+  @Interval(3000)
+  async state_batch() {
+    let end = 0;
+    const currentL1BlockNumber =
+      await this.l1IngestionService.getCurrentBlockNumber();
+    console.log('state batch currentBlockNumber: ', currentL1BlockNumber);
+    // the latest block might get empty passed events
+    const currentBlockNumber = currentL1BlockNumber - 1;
+    const start = Number(await this.cacheManager.get(STATE_BATCH));
+    // current = 100   start = 94  SYNC_STEP = 10
+    if (currentBlockNumber - start > SYNC_STEP) {
+      end = start + SYNC_STEP;
+    } else {
+      end =
+        start - SYNC_STEP > currentBlockNumber
+          ? start - SYNC_STEP
+          : currentBlockNumber;
+    }
+    if (currentBlockNumber >= start + 1) {
+      const result = await this.l1IngestionService.createStateBatchesEvents(
+        start + 1,
+        end,
+      ).catch(e => {
+        console.error(`insert state batch failed, number: ${start} ${end}`)
+      });
+      if (result) {
+        const insertData = !result || result.length <= 0 ? [] : result[0].identifiers || []
+        this.logger.log(
+          `sync [${insertData.length}] state_batch from block [${start}] to [${end}]`,
+        );
+        await this.cacheManager.set(STATE_BATCH, end, { ttl: 0 });
+      } else {
+        console.error('result insert state batch data failed')
+      }
 
-  //   } else {
-  //     this.logger.log(
-  //       `sync state_batch finished and latest block number is: ${currentBlockNumber}`,
-  //     );
-  //   }
-  // }
+    } else {
+      this.logger.log(
+        `sync state_batch finished and latest block number is: ${currentBlockNumber}`,
+      );
+    }
+  }
 
-  // @Interval(10000)
-  // async l1l2_merge() {
-  //   try {
-  //     await this.l1IngestionService.createL1L2Relation();
-  //   } catch (error) {
-  //     this.logger.error(`error l1->l2 [handle_L1_l2_merge]: ${error}`);
-  //   }
-  // }
-  // @Interval(10000)
-  // async l2l1_merge() {
-  //   try {
-  //     await this.l1IngestionService.createL2L1Relation();
-  //   } catch (error) {
-  //     this.logger.error(`error l1->l2 [handle_l1_l2__merge]: ${error}`);
-  //   }
-  // }
-  // @Interval(10000)
-  // async l2l1_merge_waiting() {
-  //   try {
-  //     await this.l2IngestionService.handleWaitTransaction();
-  //   } catch (error) {
-  //     this.logger.error(`error l1l2 [handle_l2l1_merge_waiting]: ${error}`);
-  //   }
-  // }
-  // @Interval(5000)
-  // async eigen_da_batch_txns() {
+  @Interval(10000)
+  async l1l2_merge() {
+    try {
+      await this.l1IngestionService.createL1L2Relation();
+    } catch (error) {
+      this.logger.error(`error l1->l2 [handle_L1_l2_merge]: ${error}`);
+    }
+  }
+  @Interval(10000)
+  async l2l1_merge() {
+    try {
+      await this.l1IngestionService.createL2L1Relation();
+    } catch (error) {
+      this.logger.error(`error l1->l2 [handle_l1_l2__merge]: ${error}`);
+    }
+  }
+  @Interval(10000)
+  async l2l1_merge_waiting() {
+    try {
+      await this.l2IngestionService.handleWaitTransaction();
+    } catch (error) {
+      this.logger.error(`error l1l2 [handle_l2l1_merge_waiting]: ${error}`);
+    }
+  }
+  @Interval(5000)
+  async eigen_da_batch_txns() {
 
-  //   const fromStoreNumber = Number(await this.cacheManager.get(DA_BATCH_INDEX));
-  //   console.log('[syncEigenDaBatch] start eigenda service fromStoreNumber: ', fromStoreNumber);
-  //   const result = await this.l1IngestionService.syncEigenDaBatch(fromStoreNumber).catch(e => {
-  //     this.logger.error(`[syncEigenDaBatch] error eigen da batches err: ${e}`);
-  //   });
-  //   if (result) {
-  //     console.log('[syncEigenDaBatch] add DA_BATCH_INDEX');
-  //     await this.cacheManager.set(DA_BATCH_INDEX, fromStoreNumber + 1, { ttl: 0 });
-  //   }
-  // }
+    const fromStoreNumber = Number(await this.cacheManager.get(DA_BATCH_INDEX));
+    console.log('[syncEigenDaBatch] start eigenda service fromStoreNumber: ', fromStoreNumber);
+    const result = await this.l1IngestionService.syncEigenDaBatch(fromStoreNumber).catch(e => {
+      this.logger.error(`[syncEigenDaBatch] error eigen da batches err: ${e}`);
+    });
+    if (result) {
+      console.log('[syncEigenDaBatch] add DA_BATCH_INDEX');
+      await this.cacheManager.set(DA_BATCH_INDEX, fromStoreNumber + 1, { ttl: 0 });
+    }
+  }
 
-  // @Interval(1800000)
-  // async sync_token_price_history() {
-  //   console.log('start sync token price service')
-  //   this.l1IngestionService.syncTokenPriceHistory();
-  // }
+  @Interval(1800000)
+  async sync_token_price_history() {
+    console.log('start sync token price service')
+    this.l1IngestionService.syncTokenPriceHistory();
+  }
 
-  // @Interval(10000)
-  // async sync_token_price_real_time() {
-  //   this.l1IngestionService.syncTokenPriceRealTime();
-  // }
+  @Interval(10000)
+  async sync_token_price_real_time() {
+    this.l1IngestionService.syncTokenPriceRealTime();
+  }
 
-  // @Interval(60000)
-  // async updateReorgBlockMessage() {
-  //   this.l1IngestionService.updateReorgBlockMessage().catch(e => {
-  //     console.error(`update reorg block failed`, e.message)
-  //   });
-  // }
+  @Interval(60000)
+  async updateReorgBlockMessage() {
+    this.l1IngestionService.updateReorgBlockMessage().catch(e => {
+      console.error(`update reorg block failed`, e.message)
+    });
+  }
   
-  // @Interval(1000)
-  // async monitor_service() {
-  //   this.monitorService.missBlockNumber();
-  //   this.monitorService.syncBridgeData();
-  // }
+  @Interval(1000)
+  async monitor_service() {
+    this.monitorService.missBlockNumber();
+    this.monitorService.syncBridgeData();
+  }
 }
