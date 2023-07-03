@@ -14,6 +14,8 @@ import ABI from '../abi/L2CrossDomainMessenger.json';
 import { utils } from 'ethers';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
+import { Gauge } from "prom-client";
+import { InjectMetric } from "@willsoto/nestjs-prometheus";
 
 @Injectable()
 export class L2IngestionService {
@@ -21,6 +23,9 @@ export class L2IngestionService {
   entityManager: EntityManager;
   web3: Web3;
   crossDomainMessengerContract: any;
+  WithdrawalMethod: string = 'finalizeMantleWithdrawal'
+  WithdrawalMethodHexPrefix: string = '0xf82b418e'
+
   constructor(
     private configService: ConfigService,
     @InjectRepository(L2RelayedMessageEvents)
@@ -30,6 +35,12 @@ export class L2IngestionService {
     @InjectRepository(L2ToL1)
     private readonly l2ToL1Repository: Repository<L2ToL1>,
     private readonly httpService: HttpService,
+    @InjectMetric('msg_nonce')
+    public metricMsgNonce: Gauge<string>,
+    @InjectMetric('l1_to_l2_l2_hash')
+    public metricL1ToL2L2Hash: Gauge<string>,
+    @InjectMetric('l2_to_l1_status')
+    public metricL2ToL1Status: Gauge<string>,
   ) {
     this.entityManager = getManager();
     const web3 = new Web3(
@@ -40,6 +51,10 @@ export class L2IngestionService {
       configService.get('L2_CROSS_DOMAIN_MESSENGER_ADDRESS'),
     );
     this.web3 = web3;
+    if(configService.get('ENV') !== 'mainnet'){
+      this.WithdrawalMethod = 'finalizeBitWithdrawal'
+      this.WithdrawalMethodHexPrefix = '0x839f0ec6'
+    }
   }
   async getSentMessageByBlockNumber(fromBlock: number, toBlock: number) {
     return this.crossDomainMessengerContract.getPastEvents('SentMessage', {
@@ -88,10 +103,9 @@ export class L2IngestionService {
   }
   async createSentEvents(startBlock, endBlock) {
     const list = await this.getSentMessageByBlockNumber(startBlock, endBlock);
-    const result: any[] = [];
     const iface = new utils.Interface([
       'function finalizeETHWithdrawal(address _from, address _to, uint256 _amount, bytes calldata _data)',
-      'function finalizeBitWithdrawal(address _from, address _to, uint256 _amount, bytes calldata _data)',
+      `function ${this.WithdrawalMethod}(address _from, address _to, uint256 _amount, bytes calldata _data)`,
       'function finalizeERC20Withdrawal(address _l1Token, address _l2Token, address _from, address _to, uint256 _amount, bytes calldata _data)',
     ]);
     const l2SentMessageEventsInsertData: any[] = [];
@@ -145,10 +159,10 @@ export class L2IngestionService {
           `finalizeERC20Withdrawal: l1_token: [${l1_token}], l2_token: [${l2_token}], from: [${from}], to: [${to}], value: [${value}]`,
         );
       }
-      // finalizeBitWithdrawal
-      if (funName === '0x839f0ec6') {
+      // finalizeMantleWithdrawal
+      if (funName === this.WithdrawalMethodHexPrefix) {
         const decodeMsg = iface.decodeFunctionData(
-          'finalizeBitWithdrawal',
+          this.WithdrawalMethod,
           message,
         );
         name = 'MNT';
@@ -159,7 +173,7 @@ export class L2IngestionService {
         l1_token = '0x1a4b46696b2bb4794eb3d4c26f1c55f9170fa4c5'
         l2_token = '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'
         this.logger.log(
-          `finalizeBitWithdrawal: from: [${from}], to: [${to}], value: [${value}]`,
+          `${this.WithdrawalMethod}: from: [${from}], to: [${to}], value: [${value}]`,
         );
       }
       const { timestamp } = await this.web3.eth.getBlock(blockNumber);
@@ -199,7 +213,7 @@ export class L2IngestionService {
         txn_batch_index: Number(messageNonce),
         state_batch_index: Number(messageNonce),
         timestamp: new Date(Number(timestamp) * 1000).toISOString(),
-        status: 'Waiting',
+        status: '0', // '0': "Waiting for relay"  '1': "Ready for Claim"   '2':"Relayed"
         gas_limit: gasLimit,
         l1_token: l1_token,
         l2_token: l2_token,
@@ -209,38 +223,51 @@ export class L2IngestionService {
         inserted_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       })
+      this.metricMsgNonce.set(Number(messageNonce))
     }
     const dataSource = getConnection();
     const queryRunner = dataSource.createQueryRunner();
     await queryRunner.connect();
+    let inserted = true;
     try {
       await queryRunner.startTransaction();
-      const savedResult = await queryRunner.manager.insert(
-        L2SentMessageEvents,
-        l2SentMessageEventsInsertData,
-      );
-      await queryRunner.manager.insert(L2ToL1, l2ToL1InsertData);
-      result.push(savedResult);
-      this.logger.log(
-        `l2 createSentEvents success:${JSON.stringify(savedResult)}`,
-      );
+      await queryRunner.manager
+        .createQueryBuilder()
+        .insert()
+        .into(L2SentMessageEvents)
+        .values(l2SentMessageEventsInsertData)
+        .onConflict(`("message_nonce") DO NOTHING`)
+        .execute().catch(e => {
+          console.error('insert l2 sent message events failed:', e.message)
+          throw Error(e.message)
+        });
+
+      await queryRunner.manager
+        .createQueryBuilder()
+        .insert()
+        .into(L2ToL1)
+        .values(l2ToL1InsertData)
+        .onConflict(`("l2_hash") DO NOTHING`)
+        .execute().catch(e => {
+          console.error('insert l2 to l1 failed:', e.message)
+          throw Error(e.message)
+        });
       await queryRunner.commitTransaction();
     } catch (error) {
-      this.logger.error(
-        `l2 createSentEvents ${error}`,
-      );
+      inserted = false;
+      console.error(error)
       await queryRunner.rollbackTransaction();
     } finally {
       await queryRunner.release();
     }
-    return result;
+    return Promise.resolve(inserted);
   }
   async createRelayedEvents(startBlock, endBlock) {
     const list = await this.getRelayedMessageByBlockNumber(
       startBlock,
       endBlock,
     );
-    const result: any = [];
+    console.log('---------------------------------- l2 relayed message events start and end:', startBlock, endBlock)
     const l2RelayedMessageEventsInsertData: any = [];
     for (const item of list) {
       const {
@@ -259,59 +286,22 @@ export class L2IngestionService {
         inserted_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       })
+      this.metricL1ToL2L2Hash.set(blockNumber)
     }
-    const dataSource = getConnection();
-    const queryRunner = dataSource.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
-    try {
-      const savedResult = await queryRunner.manager.insert(
-        L2RelayedMessageEvents,
-        l2RelayedMessageEventsInsertData,
-      );
-      result.push(savedResult);
-      this.logger.log(
-        `l2 createRelayedEvents success:${JSON.stringify(savedResult)}`,
-      );
-      await queryRunner.commitTransaction();
-    } catch (error) {
-      this.logger.error(
-        `l2 createRelayedEvents ${error}`,
-      );
-      await queryRunner.rollbackTransaction();
-    } finally {
-      await queryRunner.release();
-    }
-    return result;
+
+    return getConnection()
+      .createQueryBuilder()
+      .insert()
+      .into(L2RelayedMessageEvents)
+      .values(l2RelayedMessageEventsInsertData)
+      .onConflict(`("msg_hash") DO NOTHING`)
+      .execute().catch(e => {
+        console.error(`insert l2 relayed message events failed,`, e.message)
+        throw Error(e.message)
+      });
+
   }
-  async syncSentEvents() {
-    const startBlockNumber = await this.getSentEventsBlockNumber();
-    const currentBlockNumber = await this.getCurrentBlockNumber();
-    for (let i = startBlockNumber; i < currentBlockNumber; i += 1) {
-      const start = i === 0 ? 0 : i + 1;
-      const end = Math.min(i + 1, currentBlockNumber);
-      const result = await this.createSentEvents(start, end);
-      this.logger.log(
-        `sync [${result.length}] l2_sent_message_events from block [${start}] to [${end}]`,
-      );
-    }
-  }
-  async syncRelayedEvents() {
-    const startBlockNumber = await this.getRelayedEventsBlockNumber();
-    const currentBlockNumber = await this.getCurrentBlockNumber();
-    for (let i = startBlockNumber; i < currentBlockNumber; i += 1) {
-      const start = i === 0 ? 0 : i + 1;
-      const end = Math.min(i + 1, currentBlockNumber);
-      const result = await this.createRelayedEvents(start, end);
-      this.logger.log(
-        `sync [${result.length}] l2_relayed_message_events from block [${start}] to [${end}]`,
-      );
-    }
-  }
-  async sync() {
-    this.syncSentEvents();
-    this.syncRelayedEvents();
-  }
+
   async getAllSentEvents() {
     return this.sentEventsRepository.find();
   }
@@ -326,7 +316,7 @@ export class L2IngestionService {
       where: { msg_hash: msgHash },
     });
   }
-  async getRelayedEventByIsMerge(is_merge: boolean, take: number = 100) {
+  async getRelayedEventByIsMerge(is_merge: boolean, take: number = 300) {
     return this.relayedEventsRepository.find({
       where: { is_merge: is_merge },
       order: { block_number: "DESC" },
@@ -369,8 +359,8 @@ export class L2IngestionService {
         l1_token = '0x0000000000000000000000000000000000000000'
         l2_token = '0xdeaddeaddeaddeaddeaddeaddeaddeaddead1111'
       }
-      // finalizeBitWithdrawal
-      if (funName === '0x839f0ec6') {
+      // finalizeMantleWithdrawal
+      if (funName === this.WithdrawalMethodHexPrefix) {
         // mainnet BitDAO
         l1_token = '0x1a4b46696b2bb4794eb3d4c26f1c55f9170fa4c5'
         l2_token = '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'
@@ -402,15 +392,15 @@ export class L2IngestionService {
         })
         .execute();
       await queryRunner.manager
-      .createQueryBuilder()
-      .setLock('pessimistic_write')
-      .insert()
-      .into(L2SentMessageEvents)
-      .values(updateSentEventsData)
-      .orUpdate(['l1_token', 'l2_token'], ['message_nonce'], {
-        skipUpdateIfNoValuesChanged: true
-      })
-      .execute();
+        .createQueryBuilder()
+        .setLock('pessimistic_write')
+        .insert()
+        .into(L2SentMessageEvents)
+        .values(updateSentEventsData)
+        .orUpdate(['l1_token', 'l2_token'], ['message_nonce'], {
+          skipUpdateIfNoValuesChanged: true
+        })
+        .execute();
       await queryRunner.commitTransaction();
       this.logger.log(`commit l1->l2 data successes`);
     } catch (error) {
@@ -440,25 +430,31 @@ export class L2IngestionService {
   }
   async handleWaitTransaction() {
     const list = await this.l2ToL1Repository.find({
-      select: ['l2_hash'],
+      select: ['l2_hash', 'msg_nonce'],
       where: {
-        status: 'Waiting'
+        status: '0'
       },
-      take: 10,
+      take: 50,
       order: {
         block: 'ASC'
       }
     });
+    if (list.length > 0) {
+      this.metricL2ToL1Status.set(Number(list[0].msg_nonce))
+    }
     const updateL2ToL1Data = []
-    for(let item of list) {
+    for (let item of list) {
       const l2_hash = item.l2_hash.toString();
       const { result } = await this.getTxStatusDetailByHash(l2_hash);
-      console.log(result);
-      if (result.status === '0x3' || result.status === '0x03') {
+      const timestamp = new Date().getTime();
+      console.log(`tx detail: ${timestamp} `, result);
+      if (result && (result.status === '0x3' || result.status === '0x03')) {
         updateL2ToL1Data.push({
           l2_hash: l2_hash,
-          status: 'Ready for Relay'
+          status: '1'
         })
+      } else {
+        console.log('this l2 hash can not find its status detail', l2_hash)
       }
     }
     const dataSource = getConnection();

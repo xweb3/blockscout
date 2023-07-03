@@ -13,6 +13,12 @@
 				data-display-token-icons="<%= System.get_env("DISPLAY_TOKEN_ICONS") %>"
 				type="text"
 				tabindex="1"
+				autocomplete="off"
+				spellcheck="false"
+				data-placholder-default="<%= gettext "Address/Txn Hash/Block/Token/DA Hash" %>"
+				data-placholder-loading="<%= gettext "Loading..." %>"
+				data-label-result="<%= gettext "Display {number} result" %>"
+				data-label-noresult="<%= gettext "Found {number} matching results for " %>"
 			>
 		</div>
 		<div class="input-group-append left search-icon">
@@ -42,7 +48,7 @@
     				z-index: 1;
 					gap: 10px;"
 		>
-			Search
+			<%= gettext "Search" %>
 		</div>
 	</div>
 	<button class="btn btn-outline-success my-2 my-sm-0 sr-only hidden" type="submit"><%= gettext "Search" %></button>

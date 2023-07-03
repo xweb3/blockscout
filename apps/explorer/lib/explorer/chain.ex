@@ -67,6 +67,8 @@ defmodule Explorer.Chain do
     DaBatchTransaction,
     L1ToL2,
     L2ToL1,
+    TokenPriceHistory,
+    TokenPriceRealTime,
   }
 
   alias Explorer.Chain.Block.{EmissionReward, Reward}
@@ -1517,6 +1519,9 @@ defmodule Explorer.Chain do
         tx_hash: fragment("CAST(NULL AS bytea)"),
         block_hash: fragment("CAST(NULL AS bytea)"),
         type: "token",
+        token_type: token.type,
+        is_verified: false,
+        is_not_contract_address: true,
         name: token.name,
         symbol: token.symbol,
         holder_count: token.holder_count,
@@ -1536,6 +1541,9 @@ defmodule Explorer.Chain do
         tx_hash: fragment("CAST(NULL AS bytea)"),
         block_hash: fragment("CAST(NULL AS bytea)"),
         type: "contract",
+        token_type: ^nil,
+        is_verified: true,
+        is_not_contract_address: false,
         name: smart_contract.name,
         symbol: ^nil,
         holder_count: ^nil,
@@ -1557,6 +1565,9 @@ defmodule Explorer.Chain do
             tx_hash: fragment("CAST(NULL AS bytea)"),
             block_hash: fragment("CAST(NULL AS bytea)"),
             type: "address",
+            token_type: ^nil,
+            is_verified: address.verified,
+            is_not_contract_address: is_nil(address.contract_code),
             name: address_name.name,
             symbol: ^nil,
             holder_count: ^nil,
@@ -1580,6 +1591,9 @@ defmodule Explorer.Chain do
             tx_hash: transaction.hash,
             block_hash: fragment("CAST(NULL AS bytea)"),
             type: "transaction",
+            token_type: ^nil,
+            is_verified: false,
+            is_not_contract_address: true,
             name: ^nil,
             symbol: ^nil,
             holder_count: ^nil,
@@ -1604,6 +1618,9 @@ defmodule Explorer.Chain do
             tx_hash: da_batch.da_hash,
             block_hash: ^nil,
             type: "eigenda",
+            token_type: ^nil,
+            is_verified: false,
+            is_not_contract_address: true,
             name: ^nil,
             symbol: ^nil,
             holder_count: ^nil,
@@ -1626,6 +1643,9 @@ defmodule Explorer.Chain do
             tx_hash: fragment("CAST(NULL AS bytea)"),
             block_hash: block.hash,
             type: "block",
+            token_type: ^nil,
+            is_verified: false,
+            is_not_contract_address: true,
             name: ^nil,
             symbol: ^nil,
             holder_count: ^nil,
@@ -1644,6 +1664,9 @@ defmodule Explorer.Chain do
                 tx_hash: fragment("CAST(NULL AS bytea)"),
                 block_hash: block.hash,
                 type: "block",
+                token_type: ^nil,
+                is_verified: false,
+                is_not_contract_address: true,
                 name: ^nil,
                 symbol: ^nil,
                 holder_count: ^nil,
@@ -1679,24 +1702,20 @@ defmodule Explorer.Chain do
         query =
           cond do
             address_query ->
-              Logger.info("111")
               basic_query
               |> union(^address_query)
 
             tx_query ->
-              Logger.info("222")
               basic_query
               |> union(^tx_query)
               |> union(^block_query)
               |> union(^eigenda_query)
 
             block_query ->
-              Logger.info("333")
               basic_query
               |> union(^block_query)
 
             true ->
-              Logger.info("444")
               basic_query
           end
 
@@ -1710,13 +1729,16 @@ defmodule Explorer.Chain do
           ordered_query
           |> page_search_results(paging_options)
         search_results = Repo.all(paginated_ordered_query)
+        Logger.info("111111-----------")
         search_results
         |> Enum.map(fn result ->
           result_checksummed_address_hash =
             if result.address_hash do
+              Logger.info("111111")
               result
               |> Map.put(:address_hash, Address.checksum(result.address_hash))
             else
+              Logger.info("22222")
               result
             end
 
@@ -2199,6 +2221,45 @@ defmodule Explorer.Chain do
     end
   end
 
+  @spec get_real_time_token_price() ::
+          {:ok, TokenPriceRealTime.t()} | {:error, :not_found}
+  def get_real_time_token_price() do
+
+    TokenPriceRealTime
+    |> where(token_id: "mnt")
+    |> Repo.one()
+    |> case do
+      nil ->
+        {:error, :not_found}
+
+      realTime ->
+        {:ok, realTime}
+    end
+  end
+
+  @spec get_token_price_history(Block.t()) ::
+          {:ok, TokenPriceHistory.t()} | {:error, :not_found}
+  def get_token_price_history(%Block{timestamp: timestamp}) do
+    unix = DateTime.to_unix(timestamp) * 1000
+    query =
+      from(
+        t in TokenPriceHistory,
+        where: t.start_time <= ^unix and t.end_time > ^unix,
+        order_by: [desc: t.start_time],
+        limit: 1,
+        select: t
+      )
+
+    Repo.one(query)
+    |> case do
+      nil ->
+        {:error, :not_found}
+      token_price_history ->
+        {:ok, token_price_history}
+    end
+
+  end
+
   @spec hash_to_batch(String.t(), [necessity_by_association_option]) ::
           {:ok, map()} | {:error, :not_found}
   def hash_to_batch(
@@ -2598,19 +2659,26 @@ defmodule Explorer.Chain do
 
   """
   @spec list_top_tokens(String.t()) :: [{Token.t(), non_neg_integer()}]
-  def list_top_tokens(filter, options \\ []) do
+  def list_top_tokens(filter, options \\ [], token_type \\ "") do
     paging_options = Keyword.get(options, :paging_options, @default_paging_options)
 
-    fetch_top_tokens(filter, paging_options)
+    fetch_top_tokens(filter, paging_options, token_type)
   end
 
-  defp fetch_top_tokens(filter, paging_options) do
+
+  defp fetch_top_tokens(filter, paging_options, token_type) do
+    # token_type: ERC-20 / ERC-721 / ERC-1155
     base_query =
       from(t in Token,
-        where: t.total_supply > ^0,
         order_by: [desc_nulls_last: t.holder_count, asc: t.name],
         preload: [:contract_address]
       )
+
+    base_query = if token_type != "" do
+      from q in base_query, where: q.type == ^token_type
+    else
+      base_query
+    end
 
     base_query_with_paging =
       base_query

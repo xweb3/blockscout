@@ -23,9 +23,6 @@
     <% else %>
         <li>
         <a class="sign-in-button nav-link topnav-nav-link" href="<%= BlockScoutWeb.LayoutView.sign_in_link %>" id="navbarBlocksDropdown" role="button" aria-haspopup="true">
-            <span class="nav-link-icon">
-            <%= render BlockScoutWeb.IconsView, "_accounts_icon.html" %>
-            </span>
             <%= gettext "Sign in" %>
         </a>
         </li>

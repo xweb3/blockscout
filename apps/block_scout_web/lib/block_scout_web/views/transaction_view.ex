@@ -386,6 +386,99 @@ require Logger
   def get_tx_status_cls2(%{tx_status: nil}), do: ""
   def get_tx_status_cls3(%{tx_status: nil}), do: ""
 
+
+  def get_tx_status_icon_cls1(tx_status, is_dark) do
+    case tx_status do
+      "0x0" ->
+        if is_dark do
+          "right_icon_0_dark.svg"
+        else
+          "right_icon_0.svg"
+        end
+      "0x1" ->
+        if is_dark do
+          "right_icon_1_dark.svg"
+        else
+          "right_icon_1.svg"
+        end
+      "0x2" ->
+        if is_dark do
+          "right_icon_1_dark.svg"
+        else
+          "right_icon_1.svg"
+        end
+      "0x3" ->
+        if is_dark do
+          "right_icon_1_dark.svg"
+        else
+          "right_icon_1.svg"
+        end
+    end
+  end
+
+  def get_tx_status_icon_cls2(tx_status, is_dark) do
+    case tx_status do
+      "0x0" ->
+        if is_dark do
+          "right_icon_0_dark.svg"
+        else
+          "right_icon_0.svg"
+        end
+      "0x1" ->
+        if is_dark do
+          "right_icon_0_dark.svg"
+        else
+          "right_icon_0.svg"
+        end
+      "0x2" ->
+        if is_dark do
+          "right_icon_1_dark.svg"
+        else
+          "right_icon_1.svg"
+        end
+      "0x3" ->
+        if is_dark do
+          "right_icon_1_dark.svg"
+        else
+          "right_icon_1.svg"
+        end
+    end
+  end
+
+  def get_tx_status_icon_cls3(tx_status, is_dark) do
+    case tx_status do
+      "0x0" ->
+        if is_dark do
+          "right_icon_0_dark.svg"
+        else
+          "right_icon_0.svg"
+        end
+      "0x1" ->
+        if is_dark do
+          "right_icon_0_dark.svg"
+        else
+          "right_icon_0.svg"
+        end
+      "0x2" ->
+        if is_dark do
+          "right_icon_0_dark.svg"
+        else
+          "right_icon_0.svg"
+        end
+      "0x3" ->
+        if is_dark do
+          "right_icon_1_dark.svg"
+        else
+          "right_icon_1.svg"
+        end
+    end
+  end
+
+  def get_tx_status_icon_cls1(%{tx_status: nil}, is_dark), do: ""
+  def get_tx_status_icon_cls2(%{tx_status: nil}, is_dark), do: ""
+  def get_tx_status_icon_cls3(%{tx_status: nil}, is_dark), do: ""
+
+
   def formatted_result(status) do
     case status do
       :pending -> gettext("Pending")
@@ -426,6 +519,10 @@ require Logger
     format_wei_value(gas_price, unit)
   end
 
+  def gas_price_native(%Transaction{gas_price: gas_price}, unit) when unit in ~w(wei gwei ether)a do
+    format_wei_value(gas_price, unit)
+  end
+
   def da_gas_price(%Transaction{da_gas_price: da_gas_price}, unit) when unit in ~w(wei gwei ether)a do
     if da_gas_price == nil, do: format_wei_value(%Wei{value: Decimal.new(0)}, unit), else: format_wei_value(da_gas_price, unit)
   end
@@ -435,6 +532,84 @@ require Logger
     gas_price
     |> Wei.multi(actual_gas)
     |> Decimal.to_string(:normal)
+  end
+
+  def formatted_fee_to_real_time_usd(%Transaction{} = transaction, opts) do
+    l1_fee = if transaction.l1_fee == nil, do: Wei.from(Decimal.new(0), :wei), else: transaction.l1_fee
+    da_fee = if transaction.da_fee == nil, do: Wei.from(Decimal.new(0), :wei), else: transaction.da_fee
+    real_time_price = transaction.real_time_price
+    transaction
+    |> Chain.fee(:wei)
+    |> fee_to_denomination_with_no_unit(l1_fee, da_fee, opts, real_time_price)
+  end
+
+  def formatted_fee_to_history_usd(%Transaction{} = transaction, opts) do
+    l1_fee = if transaction.l1_fee == nil, do: Wei.from(Decimal.new(0), :wei), else: transaction.l1_fee
+    da_fee = if transaction.da_fee == nil, do: Wei.from(Decimal.new(0), :wei), else: transaction.da_fee
+    token_price_history = transaction.token_price_history
+    transaction
+    |> Chain.fee(:wei)
+    |> fee_to_denomination_with_no_unit(l1_fee, da_fee, opts, token_price_history)
+  end
+
+  def formatted_l2_fee_to_real_time_usd(%Transaction{} = transaction) do
+    gas_price = transaction.gas_price
+    gas = transaction.gas
+    gas_used = transaction.gas_used
+    actual_gas = if gas_used == nil, do: gas, else: gas_used
+    real_time_price = transaction.real_time_price
+    gas_price
+    |> Wei.multi(actual_gas)
+    |> Decimal.mult(real_time_price)
+    |> Decimal.round(8)
+  end
+
+  def formatted_l2_fee_to_history_usd(%Transaction{} = transaction) do
+    gas_price = transaction.gas_price
+    gas = transaction.gas
+    gas_used = transaction.gas_used
+    actual_gas = if gas_used == nil, do: gas, else: gas_used
+    token_price_history = transaction.token_price_history
+    gas_price
+    |> Wei.multi(actual_gas)
+    |> Decimal.mult(token_price_history)
+    |> Decimal.round(8)
+  end
+
+  def l1_fee_to_real_time_usd(%Transaction{} = transaction) do
+    l1_fee = if transaction.l1_fee == nil, do: Wei.from(Decimal.new(0), :wei), else: transaction.l1_fee
+    real_time_price = transaction.real_time_price
+    value = format_wei_value(l1_fee, :ether, include_unit_label: false)
+    decimal = Decimal.new(value)
+    token_value = Decimal.mult(decimal, real_time_price)
+    Decimal.round(token_value, 8)
+  end
+
+  def l1_fee_to_history_usd(%Transaction{} = transaction) do
+    l1_fee = if transaction.l1_fee == nil, do: Wei.from(Decimal.new(0), :wei), else: transaction.l1_fee
+    token_price_history = transaction.token_price_history
+    value = format_wei_value(l1_fee, :ether, include_unit_label: false)
+    decimal = Decimal.new(value)
+    token_value = Decimal.mult(decimal, token_price_history)
+    Decimal.round(token_value, 8)
+  end
+
+  def da_fee_to_real_time_usd(%Transaction{} = transaction) do
+    da_fee = if transaction.da_fee == nil, do: Wei.from(Decimal.new(0), :wei), else: transaction.da_fee
+    real_time_price = transaction.real_time_price
+    value = format_wei_value(da_fee, :ether, include_unit_label: false)
+    decimal = Decimal.new(value)
+    token_value = Decimal.mult(decimal, real_time_price)
+    Decimal.round(token_value, 8)
+  end
+
+  def da_fee_to_history_usd(%Transaction{} = transaction) do
+    da_fee = if transaction.da_fee == nil, do: Wei.from(Decimal.new(0), :wei), else: transaction.da_fee
+    token_price_history = transaction.token_price_history
+    value = format_wei_value(da_fee, :ether, include_unit_label: false)
+    decimal = Decimal.new(value)
+    token_value = Decimal.mult(decimal, token_price_history)
+    Decimal.round(token_value, 8)
   end
 
   def gas_used(%Transaction{gas_used: nil}), do: gettext("Pending")
@@ -464,6 +639,11 @@ require Logger
   #end
 
   def l1_gas_price(%Transaction{} = transaction, unit) when unit in ~w(wei gwei ether)a do
+    l1_gas_price = if transaction.l1_gas_price == nil, do: 0, else: transaction.l1_gas_price
+    format_wei_value(l1_gas_price, unit)
+  end
+
+  def l1_gas_price_native(%Transaction{} = transaction, unit) when unit in ~w(wei gwei ether)a do
     l1_gas_price = if transaction.l1_gas_price == nil, do: 0, else: transaction.l1_gas_price
     format_wei_value(l1_gas_price, unit)
   end
@@ -522,9 +702,7 @@ require Logger
       :pending -> "tile-status--pending"
       :awaiting_internal_transactions -> "tile-status--awaiting-internal-transactions"
       :success -> "tile-status--success"
-      # TODO(Jayce) internal transaction feature has not been completed, use success temporary.
-      #{:error, :awaiting_internal_transactions} -> "tile-status--error--awaiting-internal-transactions"
-      {:error, :awaiting_internal_transactions} -> "tile-status--success"
+      {:error, :awaiting_internal_transactions} -> "tile-status--error--awaiting-internal-transactions"
       {:error, reason} when is_binary(reason) -> "tile-status--error--reason"
     end
   end
@@ -588,6 +766,15 @@ require Logger
     include_label? = Keyword.get(opts, :include_label, true)
     l1_and_da_fee = Wei.sum(l1_fee, da_fee)
     {fee_type, format_wei_value(Wei.sum(Wei.from(fee, :wei), l1_and_da_fee), denomination, include_unit_label: include_label?)}
+  end
+
+  defp fee_to_denomination_with_no_unit({fee_type, fee}, l1_fee, da_fee, opts, token_price) do
+    denomination = Keyword.get(opts, :denomination)
+    l1_and_da_fee = Wei.sum(l1_fee, da_fee)
+    value = format_wei_value(Wei.sum(Wei.from(fee, :wei), l1_and_da_fee), denomination, include_unit_label: false)
+    decimal = Decimal.new(value)
+    token_value = Decimal.mult(decimal, token_price)
+    Decimal.round(token_value, 8)
   end
 
   @doc """

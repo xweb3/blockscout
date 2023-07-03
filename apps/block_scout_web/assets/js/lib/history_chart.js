@@ -19,7 +19,7 @@ const grid = {
 
 function getTxChartColor () {
   if (Cookies.get('chakra-ui-color-mode') === 'dark') {
-    return sassVariables.dashboardLineColorTransactionsDarkTheme
+    return '#BFF6F2'
   } else {
     return '#305A57'
   }
@@ -41,6 +41,22 @@ function getMarketCapChartColor () {
   }
 }
 
+function getAxisColor(){
+  if (Cookies.get('chakra-ui-color-mode') === 'dark') {
+    return "#FFFFFF"
+  } else {
+    return "#41474D"
+  }
+}
+
+function getAxisBorderColor(){
+  if (Cookies.get('chakra-ui-color-mode') === 'dark') {
+    return "rgba(255, 255, 255, 0.15)"
+  } else {
+    return "#7FD8D2"
+  }
+}
+
 function xAxe () {
   let color
   if (localStorage.getItem('current-color-mode') === 'dark') {
@@ -57,7 +73,9 @@ function xAxe () {
       stepSize: 14
     },
     ticks: {
-      color
+      color: getAxisColor(),
+      align: 'start',
+      stepSize: 14
     }
   }
 }
@@ -66,7 +84,7 @@ const padding = {
   left: 20,
   right: 20,
   top:1,
-  bottom:20
+  bottom:1
 }
 
 const legend = {
@@ -120,12 +138,15 @@ const config = {
       },
       numTransactions: {
         position: 'right',
-        grid,
+        grid: {
+          color: getAxisBorderColor(),
+          drawBorder: false
+        },
         ticks: {
           beginAtZero: true,
           callback: (value, _index, _values) => formatValue(value),
-          maxTicksLimit: 4,
-          color
+          maxTicksLimit: 3,
+          color: getAxisColor()
         }
       }
     },

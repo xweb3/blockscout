@@ -17,11 +17,17 @@
     </div>
 
     <div style="margin-bottom:5px;display:flex;flex-direction:column;flex:1;">
-        <a
-                href="/eigenda-batch/<%= @eigenda_batch.da_hash %>"
-                class="recent-preview-item-content-l1-2-l2-link"
+            <a href="/eigenda-batch/<%= @eigenda_batch.da_hash %>"
+              class="i-tooltip-2 recent-preview-item-content-l1-2-l2-link"
+              data-boundary="window"
+              data-container="body"
+              data-html="true"
+              data-placement="top"
+              data-toggle="tooltip"
+              title="<%= @eigenda_batch.da_hash %>"
+              style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;"
             >
-                <%= sub_hash_string(@eigenda_batch.da_hash, 15) %>...
+             <%= @eigenda_batch.da_hash %>
             </a>
         <span>
             <%= @eigenda_batch .batch_size %> txns

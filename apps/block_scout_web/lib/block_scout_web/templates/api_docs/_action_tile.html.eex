@@ -19,8 +19,8 @@
         <span class="badge badge-neutral api-badge"><%= gettext "POST" %></span>
       </div>
       <span class="api-doc-list-item-controls-view-more">
-        <span class="api-doc-list-item-controls-view-more-open">More Details <span class="fa fa-chevron-down"></span></span>
-        <span class="api-doc-list-item-controls-view-more-close">Hide Details <span class="fa fa-chevron-up"></span></span>
+        <span class="api-doc-list-item-controls-view-more-open"><%= gettext "More Details" %> <span class="fa fa-chevron-down"></span></span>
+        <span class="api-doc-list-item-controls-view-more-close"><%= gettext "Hide Details" %> <span class="fa fa-chevron-up"></span></span>
       </span>
     </div>
   </div>

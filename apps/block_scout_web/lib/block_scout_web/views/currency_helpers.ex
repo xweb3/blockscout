@@ -5,6 +5,14 @@ defmodule BlockScoutWeb.CurrencyHelpers do
 
   alias BlockScoutWeb.CldrHelper.Number
 
+
+  def symbol_helper(nil, symbol) do
+    ""
+  end
+
+  def symbol_helper(total_supply, symbol) do
+    symbol
+  end
   @doc """
   Formats the given integer value to a currency format.
 
@@ -14,6 +22,12 @@ defmodule BlockScoutWeb.CurrencyHelpers do
       "1,000,000"
   """
   @spec format_integer_to_currency(non_neg_integer()) :: String.t()
+  def format_integer_to_currency(value)
+
+  def format_integer_to_currency(nil) do
+    "N/A"
+  end
+
   def format_integer_to_currency(value) do
     {:ok, formatted} = Number.to_string(value, format: "#,##0")
 

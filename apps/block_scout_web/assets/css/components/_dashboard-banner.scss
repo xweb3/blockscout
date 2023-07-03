@@ -3,9 +3,18 @@ $dashboard-banner-gradient-end: lighten(
   $dashboard-banner-gradient-start,
   5%
 ) !default;
-$dashboard-banner-network-plain-container-background-color: lighten($dashboard-banner-gradient-end, 5%) !default;
-$dashboard-line-color-price: lighten($dashboard-banner-gradient-end, 5%) !default;
-$dashboard-line-color-price-dark-theme: lighten($dashboard-banner-gradient-end, 5%) !default;
+$dashboard-banner-network-plain-container-background-color: lighten(
+  $dashboard-banner-gradient-end,
+  5%
+) !default;
+$dashboard-line-color-price: lighten(
+  $dashboard-banner-gradient-end,
+  5%
+) !default;
+$dashboard-line-color-price-dark-theme: lighten(
+  $dashboard-banner-gradient-end,
+  5%
+) !default;
 $dashboard-line-color-market: $secondary !default;
 $dashboard-line-color-market-dark-theme: $secondary !default;
 $dashboard-line-color-transactions: $warning !default;
@@ -21,32 +30,34 @@ $dashboard-banner-chart-axis-font-color-alt: #333;
 
 .dashboard-banner-container {
   @include gradient-container();
-  margin-bottom: 3rem;
+  margin-bottom: 60px;
   overflow: hidden;
   padding: 0;
   position: relative;
   overflow: visible;
-  @media (max-width:1200px) {
+  @media (max-width: 1199px) {
     height: 450px;
   }
   @include media-breakpoint-down(sm) {
-      height: auto;
+    height: auto;
   }
   @include media-breakpoint-down(md) {
-      height: auto;
+    height: auto;
   }
-  .dashboard-banner-img{
-    position:absolute;
+  .dashboard-banner-img {
+    position: absolute;
     right: 0px;
     top: 80px;
     height: 280px;
     @media (max-width: 1250px) {
-      display:none;
+      display: none;
     }
   }
 }
 
 .dashboard-banner {
+  z-index: 1;
+  position: relative;
   display: flex;
   //padding-top: 43px;
   align-items: center;
@@ -56,81 +67,87 @@ $dashboard-banner-chart-axis-font-color-alt: #333;
     height: 249px;
   } */
 
-  @media (max-width:1200px) {
+  @media (max-width: 1199px) {
     flex-direction: column;
     height: 450px;
     padding-top: 29px;
     justify-content: space-between;
   }
-  
+  @media (max-width: 575px) {
+    height: auto;
+    padding-bottom: 15px;
+  }
 }
 .dashboard-banner-network-plain-container {
   .dashboard-banner-daily-tx-title-empty {
-    @media (max-width: 1200px) {
+    @media (max-width: 1199px) {
       display: none;
     }
   }
 }
 .dashboard-banner-network-graph {
-  //flex-grow: 1;
-  display:flex;
+  // flex-grow: 1;
+  display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
 
-  @media (max-width:767px) {
+  width: 100%;
+
+  @media (max-width: 767px) {
     width: 100%;
   }
 
-  .dashboard-banner-daily-tx-title{
-    font-family: 'GTBold';
+  .dashboard-banner-daily-tx-title {
     font-weight: 700;
     font-size: 26px;
     line-height: 26px;
     text-transform: capitalize;
-    color: #12201F;
+    color: #12201f;
     margin-bottom: 16px;
   }
-  
-  .dashbord-banner-chart-container{
-    display:flex;
+
+  .dashbord-banner-chart-container {
+    display: flex;
+    // flex: 1;
+    width: 100%;
     align-items: center;
     border-radius: 20px;
     height: 180px;
-    padding-right: 10px;
+    padding: 0 10px 10px 10px;
     box-sizing: border-box;
-    background: linear-gradient(270deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 95.24%);
+    // background: linear-gradient(
+    //   270deg,
+    //   rgba(255, 255, 255, 0.5) 0%,
+    //   rgba(255, 255, 255, 0) 95.24%
+    // );
 
-    @media (max-width: 1200px) {
-      padding-right: 0;
-    }
-
-    
     @media (max-width: 767px) {
       flex-direction: column;
-      background: linear-gradient(0deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 95.24%);;
+      // background: linear-gradient(
+      //   0deg,
+      //   rgba(255, 255, 255, 0.5) 0%,
+      //   rgba(255, 255, 255, 0) 95.24%
+      // );
       height: auto;
-      width:100%;
+      width: 100%;
     }
 
-
-    .dashboard-banner-chart{
+    .dashboard-banner-chart {
       @include media-breakpoint-up(md) {
         min-width: 500px;
-        display:flex;
+        display: flex;
         flex-direction: row;
       }
-    
+
       @include media-breakpoint-down(md) {
         display: flex;
         flex-direction: column;
-        width: 100%;
+        // width: 100%;
+        flex: 1;
       }
-      
     }
   }
-  
- 
 }
 
 .dashboard-banner-chart {
@@ -138,7 +155,7 @@ $dashboard-banner-chart-axis-font-color-alt: #333;
   min-height: 100px;
   height: 100%;
   //min-width: 500px;
-  background: rgba(255, 255, 255, 0.5);
+  // background: rgba(255, 255, 255, 0.5);
   border-radius: 20px;
   @include media-breakpoint-down(md) {
     flex-grow: 0;
@@ -151,6 +168,7 @@ $dashboard-banner-chart-axis-font-color-alt: #333;
     max-width: 100%;
     width: 100%;
     height: 100% !important;
+    min-height: 150px !important;
   }
 
   @include media-breakpoint-down(sm) {
@@ -163,6 +181,7 @@ $dashboard-banner-chart-axis-font-color-alt: #333;
   display: flex;
   flex-direction: column;
   margin-left: 15px;
+  min-width: 150px;
   @include media-breakpoint-down(sm) {
     grid-template-columns: 1fr 1fr;
   }
@@ -171,27 +190,25 @@ $dashboard-banner-chart-axis-font-color-alt: #333;
     flex-direction: row;
     margin-left: 0;
     margin-bottom: 10px;
+    width: 100%;
+    padding: 0 15px;
   }
 
   .dashboard-banner-chart-legend-item {
     height: 36px;
-    display:flex;
+    display: flex;
     flex-direction: row;
     align-items: center;
-    &:first-child{
+    &:first-child {
       margin-bottom: 30px;
       @media (max-width: 767px) {
         margin-bottom: 0;
       }
     }
     @media (max-width: 767px) {
-      width: 200px;
+      width: 100%;
     }
 
-    @media (max-width: 500px) {
-      width: 165px;
-    }
-   
     @include media-breakpoint-down(md) {
       display: flex;
       flex-direction: row;
@@ -201,21 +218,29 @@ $dashboard-banner-chart-axis-font-color-alt: #333;
       margin-top: 10px;
     } */
 
-   /*  @media (max-width: 599px) {
+    /*  @media (max-width: 599px) {
       padding-top: 0;
       padding-bottom: 0;
       flex-direction: column;
     } */
-    .dashboard-banner-chart-legend-item-line{
-      height: 32px;
-      width: 5px;
-      background: #305A57;
-      border-radius: 13px;
+    .dashboard-banner-chart-legend-item-line {
+      display: none;
+      height: 20px;
+      width: 20px;
+      background: #305a57;
       margin-right: 12px;
+      @include media-breakpoint-down(md) {
+        height: 15px;
+        width: 15px;
+      }
+      @include media-breakpoint-down(sm) {
+        height: 10px;
+        width: 10px;
+      }
     }
-    .dashboard-banner-chart-legend-item-item{
-      display:flex;
-      flex-direction:column;
+    .dashboard-banner-chart-legend-item-item {
+      display: flex;
+      flex-direction: column;
       align-items: flex-start;
     }
 
@@ -233,7 +258,7 @@ $dashboard-banner-chart-axis-font-color-alt: #333;
 
     &.market-cap-per-day {
       &::before {
-        background-color:$dashboard-line-color-market;
+        background-color: $dashboard-line-color-market;
       }
     }
 
@@ -245,8 +270,7 @@ $dashboard-banner-chart-axis-font-color-alt: #333;
   }
 
   .dashboard-banner-chart-legend-label {
-    color: #15181C;
-    font-family: 'GTBold';
+    color: #15181c;
     font-style: normal;
     font-weight: 700;
     font-size: 14px;
@@ -263,12 +287,12 @@ $dashboard-banner-chart-axis-font-color-alt: #333;
   }
 
   .dashboard-banner-chart-legend-value {
-    font-family: 'Nunito';
+    font-family: "Nunito";
     font-style: normal;
     font-weight: 500;
     font-size: 14px;
     line-height: 14px;
-    color: #41474D;
+    color: #41474d;
 
     &.inline {
       display: inline-block;
@@ -291,54 +315,100 @@ $dashboard-banner-chart-axis-font-color-alt: #333;
 .dashboard-banner-network-plain-container {
   display: flex;
   flex-direction: column;
-  margin-left:20px;
+  // margin-left: 20px;
+  padding: 0 20px;
+  border-left: 1px solid #4f8f8b;
+  @media (min-width: 1200px) {
+    min-width: 370px;
+  }
+  @media (max-width: 1199px) {
+    //margin-right: 0;
+    border-left: 0;
+    border-top: 1px solid #4f8f8b;
+    padding: 20px;
+    width: calc(100% - 30px);
+  }
+  @media (max-width: 767px) {
+    padding: 15px 10px;
+  }
+
   @media (max-width: 1250px) {
     //margin-right: 0;
-    
   }
   @media (min-width: 1690px) {
     margin-right: 0;
   }
-  
-  .dashboard-banner-network-plain-wrap{
+
+  .dashboard-banner-network-plain-wrap {
     display: flex;
     flex-direction: column;
-    height: 160px;
+    @media (min-width: 1200px) {
+      height: 140px;
+    }
     justify-content: center;
-    .dashboard-banner-network-plain-cointainer-item{
-      display:flex;
-      align-items: center;
-      justify-content: center;
-      &:first-child{
-        margin-bottom: 28px;
+    .dashboard-banner-network-plain-cointainer-item {
+      // display: flex;
+      // align-items: flex-start;
+      // justify-content: center;
+      // flex-direction: column;
+      height: 100%;
+      display: grid;
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+      grid-auto-rows:1fr;
+
+      @media (max-width: 1199px) {
+        gap: 15px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
       }
-      .dashboard-banner-network-stats-item{
+      @media (max-width: 575px) {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      // &:first-child{
+      //   margin-bottom: 28px;
+      // }
+      .dashboard-banner-network-stats-item {
         display: flex;
-        align-items: flex-start;
-        width: 150px;
-        flex-direction: column;
-        @media (max-width: 500px) {
-          width: 165px;
+        align-items: center;
+        @media (max-width: 991px) {
+          flex-direction: column;
+          align-items: flex-start;
         }
-        .dashboard-banner-network-stats-label{
-          font-family: 'GTBold';
+        // width: 150px;
+        // flex-direction: column;
+        // @media (max-width: 500px) {
+        //   width: 165px;
+        // }
+        .dashboard-banner-network-stats-label {
+          font-family: "GT";
           font-style: normal;
-          font-weight: 700;
+          font-weight: 500;
           font-size: 16px;
           line-height: 16px;
           text-transform: capitalize;
-          color: #15181C;
+          color: #15181c;
+          margin-right: 10px;
+          @media (min-width: 1200px) {
+            min-width: 150px;
+          }
+          @media (max-width: 991px) {
+            margin-right: 0;
+            margin-bottom: 10px;
+          }
+          @media (max-width: 575px) {
+            margin-bottom: 0;
+          }
         }
-        .dashboard-banner-network-stats-value{
-          font-family: 'Nunito';
+        .dashboard-banner-network-stats-value {
+          font-family: "GT";
           font-style: normal;
-          font-weight: 700;
+          font-weight: 500;
           font-size: 20px;
           line-height: 36px;
           color: #152928;
         }
       }
-    
+
       /* @include media-breakpoint-down(lg) {
         margin-top: 15px;
         width: 550px;
@@ -360,9 +430,6 @@ $dashboard-banner-chart-axis-font-color-alt: #333;
       } */
     }
   }
-  
-  
-
 }
 
 .dashboard-banner-network-plain-cointainer-item {

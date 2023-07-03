@@ -14,6 +14,7 @@ defmodule BlockScoutWeb.WebRouter do
     plug(:protect_from_forgery)
     plug(BlockScoutWeb.CSPHeader)
     plug(BlockScoutWeb.ChecksumAddress)
+    plug(BlockScoutWeb.Plug.SetLocale)
   end
 
   pipeline :account do
@@ -167,6 +168,12 @@ defmodule BlockScoutWeb.WebRouter do
     resources("/accounts", AddressController, only: [:index])
 
     resources("/tokens", TokensController, only: [:index])
+
+    resources("/tokens-erc20", TokensERC20Controller, only: [:index])
+
+    resources("/tokens-erc721", TokensERC721Controller, only: [:index])
+
+    resources("/tokens-erc1155", TokensERC1155Controller, only: [:index])
 
     resources "/address", AddressController, only: [:show] do
       resources("/transactions", AddressTransactionController, only: [:index], as: :transaction)

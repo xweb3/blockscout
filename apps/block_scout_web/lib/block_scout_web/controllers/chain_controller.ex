@@ -94,7 +94,6 @@ defmodule BlockScoutWeb.ChainController do
     results =
       paging_options
       |> Chain.joint_search(offset, term)
-
     encoded_results =
       results
       |> Enum.map(fn item ->

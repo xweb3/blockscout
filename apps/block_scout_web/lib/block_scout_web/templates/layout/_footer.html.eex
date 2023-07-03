@@ -22,7 +22,9 @@
         </ul>
       </div>
       <div class="col-xs-12 col-md-4 col-lg-2 footer-list">
-        <h3>Contact Us</h3>
+        <h3>
+           <%= gettext("Contact Us") %>
+        </h3>
         <div class="footer-social-icons">
           <a href="https://github.com/mantlenetworkio/mantle" rel="noreferrer" target="_blank" class="footer-social-icon" title='<%= gettext("Github") %>'>
             <div class="footer-social-icon-container fontawesome-icon github"></div>
