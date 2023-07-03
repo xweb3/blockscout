@@ -430,7 +430,7 @@ export class L2IngestionService {
   }
   async handleWaitTransaction() {
     const list = await this.l2ToL1Repository.find({
-      select: ['l2_hash'],
+      select: ['l2_hash', 'msg_nonce'],
       where: {
         status: '0'
       },

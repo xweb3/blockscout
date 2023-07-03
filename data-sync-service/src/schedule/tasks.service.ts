@@ -105,8 +105,8 @@ export class TasksService {
     await this.cacheManager.set(DA_BATCH_INDEX, Number(da_batch_index), {
       ttl: 0,
     });
-    this.sync_token_price_history();
-    this.sync_token_price_real_time();
+    //this.sync_token_price_history();
+    //this.sync_token_price_real_time();
     console.log('================end init cache================');
 
   }
@@ -302,7 +302,7 @@ export class TasksService {
     }
   }
 
-  @Interval(1800000)
+  /* @Interval(1800000)
   async sync_token_price_history() {
     console.log('start sync token price service')
     this.l1IngestionService.syncTokenPriceHistory();
@@ -311,7 +311,7 @@ export class TasksService {
   @Interval(10000)
   async sync_token_price_real_time() {
     this.l1IngestionService.syncTokenPriceRealTime();
-  }
+  } */
 
   @Interval(60000)
   async updateReorgBlockMessage() {
