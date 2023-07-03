@@ -75,7 +75,7 @@ msgstr "서브네트워크 탐색기 - BlockScout"
 #: lib/block_scout_web/views/l2_to_l1_txn_view.ex:366
 #: lib/block_scout_web/views/state_batch_transaction_view.ex:349
 #: lib/block_scout_web/views/state_batch_view.ex:357
-#: lib/block_scout_web/views/transaction_view.ex:392
+#: lib/block_scout_web/views/transaction_view.ex:485
 #: lib/block_scout_web/views/txn_batch_view.ex:362
 #, elixir-autogen, elixir-format
 msgid "(Awaiting internal transactions for status)"
@@ -160,7 +160,7 @@ msgstr "API 키"
 msgid "API keys"
 msgstr "API 키 (키: key)"
 
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:82
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:84
 #, elixir-autogen, elixir-format
 msgid "APIs"
 msgstr "APIs"
@@ -180,7 +180,7 @@ msgstr "동작들"
 #: lib/block_scout_web/templates/l1_to_l2_txn/overview.html.eex:351
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:351
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:496
-#: lib/block_scout_web/templates/transaction/overview.html.eex:587
+#: lib/block_scout_web/templates/transaction/overview.html.eex:594
 #, elixir-autogen, elixir-format
 msgid "Actual gas amount used by the transaction."
 msgstr "거래에서 실제로 사용된 가스 양."
@@ -254,7 +254,7 @@ msgstr "주소"
 #: lib/block_scout_web/templates/l1_to_l2_txn/overview.html.eex:196
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:196
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:274
-#: lib/block_scout_web/templates/transaction/overview.html.eex:298
+#: lib/block_scout_web/templates/transaction/overview.html.eex:305
 #, elixir-autogen, elixir-format
 msgid "Address (external or contract) receiving the transaction."
 msgstr "거래를 받는 주소 (외부 또는 계약)"
@@ -262,7 +262,7 @@ msgstr "거래를 받는 주소 (외부 또는 계약)"
 #: lib/block_scout_web/templates/l1_to_l2_txn/overview.html.eex:176
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:176
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:256
-#: lib/block_scout_web/templates/transaction/overview.html.eex:280
+#: lib/block_scout_web/templates/transaction/overview.html.eex:287
 #, elixir-autogen, elixir-format
 msgid "Address (external or contract) sending the transaction."
 msgstr "거래를 보내는 주소 (외부 또는 계약)"
@@ -328,7 +328,7 @@ msgid "All tokens in the account and total value."
 msgstr "계정 내 모든 토큰 및 총 가치."
 
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:482
-#: lib/block_scout_web/templates/transaction/overview.html.eex:573
+#: lib/block_scout_web/templates/transaction/overview.html.eex:580
 #, elixir-autogen, elixir-format
 msgid "Amount of"
 msgstr "액수"
@@ -343,7 +343,7 @@ msgstr "배분된 보상의 양. 마이너는 정적인 블록 보상 + Tx 수�
 msgid "Anything not in this list is not supported. Click on the method to be taken to the documentation for that method, and check the notes section for any potential differences."
 msgstr "이 목록에 포함되지 않은 항목은 지원되지 않습니다. 해당 방법을 클릭하여 방법에 대한 문서를 확인하고, 참고 사항 섹션에서 가능한 차이점을 확인하십시오."
 
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:111
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:127
 #, elixir-autogen, elixir-format
 msgid "Apps"
 msgstr "앱들"
@@ -410,7 +410,7 @@ msgstr "기본 URL:"
 #: lib/block_scout_web/templates/l1_to_l2_txn/overview.html.eex:372
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:372
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:517
-#: lib/block_scout_web/templates/transaction/overview.html.eex:608
+#: lib/block_scout_web/templates/transaction/overview.html.eex:615
 #, elixir-autogen, elixir-format
 msgid "Binary data included with the transaction. See input / logs below for additional info."
 msgstr "거래에 포함된 이진 데이터. 추가 정보는 아래 입력/로그를 참조하십시오."
@@ -420,7 +420,7 @@ msgstr "거래에 포함된 이진 데이터. 추가 정보는 아래 입력/로
 #: lib/block_scout_web/templates/l1_to_l2_txn/overview.html.eex:135
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:135
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:158
-#: lib/block_scout_web/templates/transaction/overview.html.eex:181
+#: lib/block_scout_web/templates/transaction/overview.html.eex:188
 #, elixir-autogen, elixir-format
 msgid "Block"
 msgstr "블록"
@@ -477,7 +477,7 @@ msgstr "블럭을 찾을 수 없습니다. 나중에 다시 시도해주세요."
 #: lib/block_scout_web/templates/l1_to_l2_txn/overview.html.eex:134
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:134
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:157
-#: lib/block_scout_web/templates/transaction/overview.html.eex:180
+#: lib/block_scout_web/templates/transaction/overview.html.eex:187
 #, elixir-autogen, elixir-format
 msgid "Block number containing the transaction."
 msgstr "거래 내역이 포함된 블록 번호."
@@ -668,7 +668,7 @@ msgstr "확인된"
 #: lib/block_scout_web/templates/l1_to_l2_txn/overview.html.eex:101
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:101
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:124
-#: lib/block_scout_web/templates/transaction/overview.html.eex:142
+#: lib/block_scout_web/templates/transaction/overview.html.eex:149
 #, elixir-autogen, elixir-format
 msgid "Confirmed by "
 msgstr "확인되었습니다."
@@ -676,7 +676,7 @@ msgstr "확인되었습니다."
 #: lib/block_scout_web/templates/l1_to_l2_txn/overview.html.eex:167
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:167
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:190
-#: lib/block_scout_web/templates/transaction/overview.html.eex:213
+#: lib/block_scout_web/templates/transaction/overview.html.eex:220
 #, elixir-autogen, elixir-format
 msgid "Confirmed within"
 msgstr "확인됨"
@@ -692,36 +692,6 @@ msgstr "확인됨"
 msgid "Connection Lost"
 msgstr "연결이 끊겼습니다."
 
-#: lib/block_scout_web/templates/address_coin_balance/index.html.eex:12
-#: lib/block_scout_web/templates/block/index.html.eex:5
-#, elixir-autogen, elixir-format
-msgid "Connection Lost, click to load newer blocks"
-msgstr "연결이 끊어졌습니다. 새로운 블록을 로드하려면 클릭하세요."
-
-#: lib/block_scout_web/templates/address_internal_transaction/index.html.eex:15
-#, elixir-autogen, elixir-format
-msgid "Connection Lost, click to load newer internal transactions"
-msgstr "연결이 끊어졌습니다. 더 최신의 내부 거래를 로드하려면 클릭하세요."
-
-#: lib/block_scout_web/templates/address_transaction/index.html.eex:11
-#: lib/block_scout_web/templates/da_batch_transaction/index.html.eex:22
-#: lib/block_scout_web/templates/eigenda_batch/index.html.eex:22
-#: lib/block_scout_web/templates/l1_to_l2_txn/index.html.eex:35
-#: lib/block_scout_web/templates/l2_to_l1_txn/index.html.eex:21
-#: lib/block_scout_web/templates/pending_transaction/index.html.eex:16
-#: lib/block_scout_web/templates/state_batch/index.html.eex:22
-#: lib/block_scout_web/templates/state_batch_transaction/index.html.eex:25
-#: lib/block_scout_web/templates/transaction/index.html.eex:18
-#: lib/block_scout_web/templates/txn_batch/index.html.eex:22
-#, elixir-autogen, elixir-format
-msgid "Connection Lost, click to load newer transactions"
-msgstr "연결이 끊어졌습니다. 새로운 거래를 로드하려면 클릭하세요."
-
-#: lib/block_scout_web/templates/address_validation/index.html.eex:10
-#, elixir-autogen, elixir-format
-msgid "Connection Lost, click to load newer validations"
-msgstr "연결이 끊어졌습니다. 새로운 유효성 검사를 로드하기 위해 클릭하세요."
-
 #: lib/block_scout_web/templates/address_contract/index.html.eex:91
 #, elixir-autogen, elixir-format
 msgid "Constructor Arguments"
@@ -736,7 +706,7 @@ msgstr "생성자 인수"
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:206
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:284
 #: lib/block_scout_web/templates/tokens/overview/_details.html.eex:52
-#: lib/block_scout_web/templates/transaction/overview.html.eex:308
+#: lib/block_scout_web/templates/transaction/overview.html.eex:315
 #, elixir-autogen, elixir-format
 msgid "Contract"
 msgstr "계약"
@@ -774,7 +744,7 @@ msgstr "계약 주소 대기 중입니다."
 #: lib/block_scout_web/views/l2_to_l1_txn_view.ex:474
 #: lib/block_scout_web/views/state_batch_transaction_view.ex:509
 #: lib/block_scout_web/views/state_batch_view.ex:465
-#: lib/block_scout_web/views/transaction_view.ex:639
+#: lib/block_scout_web/views/transaction_view.ex:732
 #: lib/block_scout_web/views/txn_batch_view.ex:470
 #, elixir-autogen, elixir-format
 msgid "Contract Call"
@@ -786,7 +756,7 @@ msgstr "계약 전화"
 #: lib/block_scout_web/views/l2_to_l1_txn_view.ex:471
 #: lib/block_scout_web/views/state_batch_transaction_view.ex:506
 #: lib/block_scout_web/views/state_batch_view.ex:462
-#: lib/block_scout_web/views/transaction_view.ex:636
+#: lib/block_scout_web/views/transaction_view.ex:729
 #: lib/block_scout_web/views/txn_batch_view.ex:467
 #, elixir-autogen, elixir-format
 msgid "Contract Creation"
@@ -920,8 +890,8 @@ msgstr "배포된 바이트코드 복사하기"
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:264
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:265
 #: lib/block_scout_web/templates/transaction/_total_transfers_from_to.html.eex:16
-#: lib/block_scout_web/templates/transaction/overview.html.eex:288
-#: lib/block_scout_web/templates/transaction/overview.html.eex:289
+#: lib/block_scout_web/templates/transaction/overview.html.eex:295
+#: lib/block_scout_web/templates/transaction/overview.html.eex:296
 #: lib/block_scout_web/templates/txn_batch/_total_transfers_from_to.html.eex:14
 #: lib/block_scout_web/templates/txn_batch/_total_transfers_from_to.html.eex:15
 #, elixir-autogen, elixir-format
@@ -981,10 +951,10 @@ msgstr "소스 코드 복사하기"
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:299
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:300
 #: lib/block_scout_web/templates/transaction/_total_transfers_from_to.html.eex:41
-#: lib/block_scout_web/templates/transaction/overview.html.eex:315
-#: lib/block_scout_web/templates/transaction/overview.html.eex:316
+#: lib/block_scout_web/templates/transaction/overview.html.eex:322
 #: lib/block_scout_web/templates/transaction/overview.html.eex:323
-#: lib/block_scout_web/templates/transaction/overview.html.eex:324
+#: lib/block_scout_web/templates/transaction/overview.html.eex:330
+#: lib/block_scout_web/templates/transaction/overview.html.eex:331
 #: lib/block_scout_web/templates/txn_batch/_total_transfers_from_to.html.eex:31
 #: lib/block_scout_web/templates/txn_batch/_total_transfers_from_to.html.eex:32
 #, elixir-autogen, elixir-format
@@ -1016,7 +986,7 @@ msgstr "트랜잭션 해시를 복사하세요."
 #: lib/block_scout_web/templates/l1_to_l2_txn/overview.html.eex:398
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:398
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:543
-#: lib/block_scout_web/templates/transaction/overview.html.eex:634
+#: lib/block_scout_web/templates/transaction/overview.html.eex:641
 #, elixir-autogen, elixir-format
 msgid "Copy Txn Hex Input"
 msgstr "복사 거래 Hex 입력"
@@ -1024,7 +994,7 @@ msgstr "복사 거래 Hex 입력"
 #: lib/block_scout_web/templates/l1_to_l2_txn/overview.html.eex:404
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:404
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:549
-#: lib/block_scout_web/templates/transaction/overview.html.eex:640
+#: lib/block_scout_web/templates/transaction/overview.html.eex:647
 #, elixir-autogen, elixir-format
 msgid "Copy Txn UTF-8 Input"
 msgstr "복사 트랜잭션 UTF-8 입력"
@@ -1043,8 +1013,8 @@ msgstr "복사 트랜잭션 UTF-8 입력"
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:542
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:548
 #: lib/block_scout_web/templates/transaction/_decoded_input_body.html.eex:41
-#: lib/block_scout_web/templates/transaction/overview.html.eex:633
-#: lib/block_scout_web/templates/transaction/overview.html.eex:639
+#: lib/block_scout_web/templates/transaction/overview.html.eex:640
+#: lib/block_scout_web/templates/transaction/overview.html.eex:646
 #: lib/block_scout_web/templates/transaction_raw_trace/index.html.eex:14
 #: lib/block_scout_web/templates/txn_batch/_decoded_input_body.html.eex:41
 #, elixir-autogen, elixir-format
@@ -1139,7 +1109,7 @@ msgstr "생산된 블록의 날짜 및 시간."
 #: lib/block_scout_web/templates/l1_to_l2_txn/overview.html.eex:153
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:153
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:176
-#: lib/block_scout_web/templates/transaction/overview.html.eex:199
+#: lib/block_scout_web/templates/transaction/overview.html.eex:206
 #, elixir-autogen, elixir-format
 msgid "Date & time of transaction inclusion, including length of time for confirmation."
 msgstr "거래 포함 날짜 및 시간 및 확인 시간의 길이."
@@ -1417,7 +1387,7 @@ msgstr "잔액을 가져오는 중 오류가 발생했습니다."
 #: lib/block_scout_web/views/l2_to_l1_txn_view.ex:370
 #: lib/block_scout_web/views/state_batch_transaction_view.ex:353
 #: lib/block_scout_web/views/state_batch_view.ex:361
-#: lib/block_scout_web/views/transaction_view.ex:396
+#: lib/block_scout_web/views/transaction_view.ex:489
 #: lib/block_scout_web/views/txn_batch_view.ex:366
 #, elixir-autogen, elixir-format
 msgid "Error: %{reason}"
@@ -1429,13 +1399,13 @@ msgstr "오류: %{reason}"
 #: lib/block_scout_web/views/l2_to_l1_txn_view.ex:368
 #: lib/block_scout_web/views/state_batch_transaction_view.ex:351
 #: lib/block_scout_web/views/state_batch_view.ex:359
-#: lib/block_scout_web/views/transaction_view.ex:394
+#: lib/block_scout_web/views/transaction_view.ex:487
 #: lib/block_scout_web/views/txn_batch_view.ex:364
 #, elixir-autogen, elixir-format
 msgid "Error: (Awaiting internal transactions for reason)"
 msgstr "오류: (이유로 인해 내부 거래를 기다리고 있습니다)"
 
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:97
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:100
 #, elixir-autogen, elixir-format
 msgid "Eth RPC"
 msgstr "Eth RPC"
@@ -1542,7 +1512,7 @@ msgstr "계약서를 위해"
 #: lib/block_scout_web/templates/l2_to_l1_txn/index.html.eex:31
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:177
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:257
-#: lib/block_scout_web/templates/transaction/overview.html.eex:281
+#: lib/block_scout_web/templates/transaction/overview.html.eex:288
 #: lib/block_scout_web/views/address_internal_transaction_view.ex:10
 #: lib/block_scout_web/views/address_token_transfer_view.ex:10
 #: lib/block_scout_web/views/address_transaction_view.ex:10
@@ -1561,7 +1531,7 @@ msgstr "GET"
 #: lib/block_scout_web/templates/l1_to_l2_txn/overview.html.eex:343
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:343
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:435
-#: lib/block_scout_web/templates/transaction/overview.html.eex:534
+#: lib/block_scout_web/templates/transaction/overview.html.eex:541
 #, elixir-autogen, elixir-format
 msgid "Gas Limit"
 msgstr "가스 제한"
@@ -1582,7 +1552,7 @@ msgstr "가스 사용"
 #: lib/block_scout_web/templates/l1_to_l2_txn/overview.html.eex:352
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:352
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:497
-#: lib/block_scout_web/templates/transaction/overview.html.eex:588
+#: lib/block_scout_web/templates/transaction/overview.html.eex:595
 #, elixir-autogen, elixir-format
 msgid "Gas Used by Transaction"
 msgstr "거래에 사용된 가스"
@@ -1612,7 +1582,7 @@ msgstr "Github"
 msgid "Go to"
 msgstr "가세요"
 
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:86
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:89
 #, elixir-autogen, elixir-format
 msgid "GraphQL"
 msgstr "GraphQL"
@@ -1636,8 +1606,8 @@ msgstr "해시"
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:384
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:525
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:529
-#: lib/block_scout_web/templates/transaction/overview.html.eex:616
-#: lib/block_scout_web/templates/transaction/overview.html.eex:620
+#: lib/block_scout_web/templates/transaction/overview.html.eex:623
+#: lib/block_scout_web/templates/transaction/overview.html.eex:627
 #, elixir-autogen, elixir-format
 msgid "Hex (Default)"
 msgstr "헥스 (기본값)"
@@ -1663,13 +1633,6 @@ msgstr "그러나, 일반적으로,"
 #, elixir-autogen, elixir-format
 msgid "IMPORTANT: This information is a best guess based on similar functions from other verified contracts."
 msgstr "중요: 이 정보는 다른 확인된 계약의 유사한 기능을 기반으로 한 최선의 추측입니다."
-
-#: lib/block_scout_web/templates/internal_transaction/_tile.html.eex:42
-#: lib/block_scout_web/templates/state_batch_transaction/_tile.html.eex:80
-#: lib/block_scout_web/templates/transaction/_tile.html.eex:80
-#, elixir-autogen, elixir-format
-msgid "IN"
-msgstr " 내부에"
 
 #: lib/block_scout_web/templates/address_contract_verification_via_flattened_code/new.html.eex:56
 #: lib/block_scout_web/templates/address_contract_verification_via_multi_part_files/new.html.eex:48
@@ -1702,7 +1665,7 @@ msgstr "들어오는"
 #: lib/block_scout_web/templates/l1_to_l2_txn/overview.html.eex:364
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:364
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:509
-#: lib/block_scout_web/templates/transaction/overview.html.eex:600
+#: lib/block_scout_web/templates/transaction/overview.html.eex:607
 #, elixir-autogen, elixir-format
 msgid "Index position of Transaction in the block."
 msgstr "블록 내 거래의 인덱스 위치."
@@ -1732,7 +1695,7 @@ msgstr "입력"
 #: lib/block_scout_web/templates/l1_to_l2_txn/overview.html.eex:198
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:198
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:276
-#: lib/block_scout_web/templates/transaction/overview.html.eex:300
+#: lib/block_scout_web/templates/transaction/overview.html.eex:307
 #, elixir-autogen, elixir-format
 msgid "Interacted With (To)"
 msgstr "상호 작용 함 (하다)"
@@ -1760,7 +1723,7 @@ msgstr "내부 거래"
 #: lib/block_scout_web/views/l2_to_l1_txn_view.ex:529
 #: lib/block_scout_web/views/state_batch_transaction_view.ex:565
 #: lib/block_scout_web/views/state_batch_view.ex:520
-#: lib/block_scout_web/views/transaction_view.ex:704
+#: lib/block_scout_web/views/transaction_view.ex:797
 #: lib/block_scout_web/views/txn_batch_view.ex:525
 #, elixir-autogen, elixir-format
 msgid "Internal Transactions"
@@ -1819,7 +1782,7 @@ msgstr "라이선스 ID"
 #: lib/block_scout_web/templates/l1_to_l2_txn/overview.html.eex:288
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:288
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:370
-#: lib/block_scout_web/templates/transaction/overview.html.eex:387
+#: lib/block_scout_web/templates/transaction/overview.html.eex:394
 #, elixir-autogen, elixir-format
 msgid "List of ERC-1155 tokens created in the transaction."
 msgstr "트랜잭션에서 생성된 ERC-1155 토큰 목록."
@@ -1827,7 +1790,7 @@ msgstr "트랜잭션에서 생성된 ERC-1155 토큰 목록."
 #: lib/block_scout_web/templates/l1_to_l2_txn/overview.html.eex:272
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:272
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:354
-#: lib/block_scout_web/templates/transaction/overview.html.eex:371
+#: lib/block_scout_web/templates/transaction/overview.html.eex:378
 #, elixir-autogen, elixir-format
 msgid "List of token burnt in the transaction."
 msgstr "트랜잭션에서 소각된 토큰 목록."
@@ -1835,7 +1798,7 @@ msgstr "트랜잭션에서 소각된 토큰 목록."
 #: lib/block_scout_web/templates/l1_to_l2_txn/overview.html.eex:255
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:255
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:337
-#: lib/block_scout_web/templates/transaction/overview.html.eex:354
+#: lib/block_scout_web/templates/transaction/overview.html.eex:361
 #, elixir-autogen, elixir-format
 msgid "List of token minted in the transaction."
 msgstr "거래에서 발행된 토큰 목록."
@@ -1843,7 +1806,7 @@ msgstr "거래에서 발행된 토큰 목록."
 #: lib/block_scout_web/templates/l1_to_l2_txn/overview.html.eex:239
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:239
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:313
-#: lib/block_scout_web/templates/transaction/overview.html.eex:337
+#: lib/block_scout_web/templates/transaction/overview.html.eex:344
 #, elixir-autogen, elixir-format
 msgid "List of token transferred in the transaction."
 msgstr "거래에서 전송된 토큰 목록."
@@ -1899,7 +1862,7 @@ msgstr "로그 색인"
 #: lib/block_scout_web/views/l2_to_l1_txn_view.ex:530
 #: lib/block_scout_web/views/state_batch_transaction_view.ex:566
 #: lib/block_scout_web/views/state_batch_view.ex:521
-#: lib/block_scout_web/views/transaction_view.ex:705
+#: lib/block_scout_web/views/transaction_view.ex:798
 #: lib/block_scout_web/views/txn_batch_view.ex:526
 #, elixir-autogen, elixir-format
 msgid "Logs"
@@ -1923,13 +1886,13 @@ msgid "Market cap"
 msgstr "시가총액"
 
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:453
-#: lib/block_scout_web/templates/transaction/overview.html.eex:544
+#: lib/block_scout_web/templates/transaction/overview.html.eex:551
 #, elixir-autogen, elixir-format
 msgid "Max Fee per Gas"
 msgstr "가스당 최대 수수료"
 
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:463
-#: lib/block_scout_web/templates/transaction/overview.html.eex:554
+#: lib/block_scout_web/templates/transaction/overview.html.eex:561
 #, elixir-autogen, elixir-format
 msgid "Max Priority Fee per Gas"
 msgstr "가스당 최대 우선수수료"
@@ -1949,13 +1912,13 @@ msgstr "최대값의"
 #: lib/block_scout_web/templates/l1_to_l2_txn/overview.html.eex:342
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:342
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:434
-#: lib/block_scout_web/templates/transaction/overview.html.eex:533
+#: lib/block_scout_web/templates/transaction/overview.html.eex:540
 #, elixir-autogen, elixir-format
 msgid "Maximum gas amount approved for the transaction."
 msgstr "거래 승인 최대 가스량."
 
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:452
-#: lib/block_scout_web/templates/transaction/overview.html.eex:543
+#: lib/block_scout_web/templates/transaction/overview.html.eex:550
 #, elixir-autogen, elixir-format
 msgid "Maximum total amount per unit of gas a user is willing to pay for a transaction, including base fee and priority fee."
 msgstr "한 거래당 사용자가 지불할 수있는 가스 단위당 최대 총액, 기본 수수료 및 우선 수수료 포함."
@@ -2156,7 +2119,7 @@ msgstr "자취 항목을 찾을 수 없습니다."
 #: lib/block_scout_web/templates/l1_to_l2_txn/overview.html.eex:362
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:362
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:507
-#: lib/block_scout_web/templates/transaction/overview.html.eex:598
+#: lib/block_scout_web/templates/transaction/overview.html.eex:605
 #, elixir-autogen, elixir-format
 msgid "Nonce"
 msgstr "Nonce (번가 등록자)"
@@ -2195,13 +2158,6 @@ msgstr "토큰 이전 건수"
 #, elixir-autogen, elixir-format
 msgid "Number of transfers to/from this address."
 msgstr "이 주소로의 전송/받기 횟수."
-
-#: lib/block_scout_web/templates/internal_transaction/_tile.html.eex:40
-#: lib/block_scout_web/templates/state_batch_transaction/_tile.html.eex:76
-#: lib/block_scout_web/templates/transaction/_tile.html.eex:76
-#, elixir-autogen, elixir-format
-msgid "OUT"
-msgstr "밖으로 (bak-euro)"
 
 #: lib/block_scout_web/templates/common_components/_rap_pagination_container.html.eex:13
 #, elixir-autogen, elixir-format
@@ -2276,6 +2232,7 @@ msgstr "파라미터"
 msgid "Parent Hash"
 msgstr "부모 해시 (Bumo haesi)"
 
+#: lib/block_scout_web/templates/l1_to_l2_txn/_recent_tile.html.eex:46
 #: lib/block_scout_web/views/da_batch_transaction_view.ex:361
 #: lib/block_scout_web/views/da_batch_transaction_view.ex:399
 #: lib/block_scout_web/views/eigenda_batch_view.ex:361
@@ -2291,11 +2248,11 @@ msgstr "부모 해시 (Bumo haesi)"
 #: lib/block_scout_web/views/state_batch_transaction_view.ex:452
 #: lib/block_scout_web/views/state_batch_view.ex:356
 #: lib/block_scout_web/views/state_batch_view.ex:394
-#: lib/block_scout_web/views/transaction_view.ex:391
-#: lib/block_scout_web/views/transaction_view.ex:522
-#: lib/block_scout_web/views/transaction_view.ex:558
-#: lib/block_scout_web/views/transaction_view.ex:570
-#: lib/block_scout_web/views/transaction_view.ex:582
+#: lib/block_scout_web/views/transaction_view.ex:484
+#: lib/block_scout_web/views/transaction_view.ex:615
+#: lib/block_scout_web/views/transaction_view.ex:651
+#: lib/block_scout_web/views/transaction_view.ex:663
+#: lib/block_scout_web/views/transaction_view.ex:675
 #: lib/block_scout_web/views/txn_batch_view.ex:361
 #: lib/block_scout_web/views/txn_batch_view.ex:399
 #, elixir-autogen, elixir-format
@@ -2326,7 +2283,7 @@ msgstr "알림 종류를 선택해주세요."
 #: lib/block_scout_web/templates/l1_to_l2_txn/overview.html.eex:364
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:364
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:509
-#: lib/block_scout_web/templates/transaction/overview.html.eex:600
+#: lib/block_scout_web/templates/transaction/overview.html.eex:607
 #, elixir-autogen, elixir-format
 msgid "Position"
 msgstr "위치"
@@ -2370,14 +2327,14 @@ msgstr "거래소에서 토큰 당 가격"
 #: lib/block_scout_web/templates/l1_to_l2_txn/overview.html.eex:332
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:332
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:415
-#: lib/block_scout_web/templates/transaction/overview.html.eex:512
+#: lib/block_scout_web/templates/transaction/overview.html.eex:519
 #, elixir-autogen, elixir-format
 msgid "Price per unit of gas specified by the sender. Higher gas prices can prioritize transaction inclusion during times of high usage."
 msgstr "보내는 사람이 지정한 가스 단위당 가격입니다. 높은 가스 가격은 사용량이 높은 시기에 거래 포함 우선 순위를 높일 수 있습니다."
 
 #: lib/block_scout_web/templates/block/overview.html.eex:222
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:473
-#: lib/block_scout_web/templates/transaction/overview.html.eex:564
+#: lib/block_scout_web/templates/transaction/overview.html.eex:571
 #, elixir-autogen, elixir-format
 msgid "Priority Fee / Tip"
 msgstr "우선 수수료 / 팁"
@@ -2422,7 +2379,7 @@ msgstr "QR 코드"
 msgid "Query"
 msgstr "쿼리"
 
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:92
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:95
 #, elixir-autogen, elixir-format
 msgid "RPC"
 msgstr "RPC"
@@ -2430,7 +2387,7 @@ msgstr "RPC"
 #: lib/block_scout_web/templates/l1_to_l2_txn/overview.html.eex:373
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:373
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:518
-#: lib/block_scout_web/templates/transaction/overview.html.eex:609
+#: lib/block_scout_web/templates/transaction/overview.html.eex:616
 #, elixir-autogen, elixir-format
 msgid "Raw Input"
 msgstr "원시 입력"
@@ -2450,7 +2407,7 @@ msgstr "원시 입력"
 #: lib/block_scout_web/views/l2_to_l1_txn_view.ex:531
 #: lib/block_scout_web/views/state_batch_transaction_view.ex:567
 #: lib/block_scout_web/views/state_batch_view.ex:522
-#: lib/block_scout_web/views/transaction_view.ex:706
+#: lib/block_scout_web/views/transaction_view.ex:799
 #: lib/block_scout_web/views/txn_batch_view.ex:527
 #, elixir-autogen, elixir-format
 msgid "Raw Trace"
@@ -2539,7 +2496,7 @@ msgstr "결과"
 #: lib/block_scout_web/templates/l1_to_l2_txn/overview.html.eex:112
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:112
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:135
-#: lib/block_scout_web/templates/transaction/overview.html.eex:158
+#: lib/block_scout_web/templates/transaction/overview.html.eex:165
 #, elixir-autogen, elixir-format
 msgid "Revert reason"
 msgstr "되돌리기 이유"
@@ -2732,7 +2689,7 @@ msgstr "소스 *.sol 또는 *.yul 파일"
 msgid "Sources and Metadata JSON"
 msgstr "소스 및 메타데이터 JSON"
 
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:113
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:129
 #, elixir-autogen, elixir-format
 msgid "Stakes"
 msgstr "기둥"
@@ -2746,7 +2703,7 @@ msgstr "표준 입력 JSON"
 #: lib/block_scout_web/templates/transaction/_tabs.html.eex:29
 #: lib/block_scout_web/templates/transaction_state/index.html.eex:6
 #: lib/block_scout_web/views/state_batch_transaction_view.ex:568
-#: lib/block_scout_web/views/transaction_view.ex:707
+#: lib/block_scout_web/views/transaction_view.ex:800
 #, elixir-autogen, elixir-format
 msgid "State changes"
 msgstr "상태 변경"
@@ -2785,7 +2742,7 @@ msgstr "제출 날짜"
 #: lib/block_scout_web/views/l2_to_l1_txn_view.ex:367
 #: lib/block_scout_web/views/state_batch_transaction_view.ex:350
 #: lib/block_scout_web/views/state_batch_view.ex:358
-#: lib/block_scout_web/views/transaction_view.ex:393
+#: lib/block_scout_web/views/transaction_view.ex:486
 #: lib/block_scout_web/views/txn_batch_view.ex:363
 #, elixir-autogen, elixir-format
 msgid "Success"
@@ -2881,7 +2838,7 @@ msgstr "리시브 함수는 빈 calldata로 컨트랙트를 호출할 때 실행
 #: lib/block_scout_web/templates/l1_to_l2_txn/overview.html.eex:111
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:111
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:134
-#: lib/block_scout_web/templates/transaction/overview.html.eex:157
+#: lib/block_scout_web/templates/transaction/overview.html.eex:164
 #, elixir-autogen, elixir-format
 msgid "The revert reason of the transaction."
 msgstr "거래의 복구 이유."
@@ -3061,7 +3018,7 @@ msgstr "이 거래는 확인 대기 중입니다."
 #: lib/block_scout_web/templates/l1_to_l2_txn/overview.html.eex:154
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:154
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:177
-#: lib/block_scout_web/templates/transaction/overview.html.eex:200
+#: lib/block_scout_web/templates/transaction/overview.html.eex:207
 #, elixir-autogen, elixir-format
 msgid "Timestamp"
 msgstr "타임스탬프"
@@ -3072,7 +3029,7 @@ msgstr "타임스탬프"
 #: lib/block_scout_web/templates/l1_to_l2_txn/overview.html.eex:200
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:200
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:278
-#: lib/block_scout_web/templates/transaction/overview.html.eex:302
+#: lib/block_scout_web/templates/transaction/overview.html.eex:309
 #: lib/block_scout_web/views/address_internal_transaction_view.ex:9
 #: lib/block_scout_web/views/address_token_transfer_view.ex:9
 #: lib/block_scout_web/views/address_transaction_view.ex:9
@@ -3124,7 +3081,7 @@ msgstr "토큰"
 #: lib/block_scout_web/views/l2_to_l1_txn_view.ex:465
 #: lib/block_scout_web/views/state_batch_transaction_view.ex:500
 #: lib/block_scout_web/views/state_batch_view.ex:456
-#: lib/block_scout_web/views/transaction_view.ex:630
+#: lib/block_scout_web/views/transaction_view.ex:723
 #: lib/block_scout_web/views/txn_batch_view.ex:461
 #, elixir-autogen, elixir-format
 msgid "Token Burning"
@@ -3137,7 +3094,7 @@ msgstr "토큰 소각"
 #: lib/block_scout_web/views/l2_to_l1_txn_view.ex:466
 #: lib/block_scout_web/views/state_batch_transaction_view.ex:501
 #: lib/block_scout_web/views/state_batch_view.ex:457
-#: lib/block_scout_web/views/transaction_view.ex:631
+#: lib/block_scout_web/views/transaction_view.ex:724
 #: lib/block_scout_web/views/txn_batch_view.ex:462
 #, elixir-autogen, elixir-format
 msgid "Token Creation"
@@ -3172,7 +3129,7 @@ msgstr "토큰 ID"
 #: lib/block_scout_web/views/l2_to_l1_txn_view.ex:464
 #: lib/block_scout_web/views/state_batch_transaction_view.ex:499
 #: lib/block_scout_web/views/state_batch_view.ex:455
-#: lib/block_scout_web/views/transaction_view.ex:629
+#: lib/block_scout_web/views/transaction_view.ex:722
 #: lib/block_scout_web/views/txn_batch_view.ex:460
 #, elixir-autogen, elixir-format
 msgid "Token Minting"
@@ -3186,7 +3143,7 @@ msgstr "토큰 발행"
 #: lib/block_scout_web/views/l2_to_l1_txn_view.ex:467
 #: lib/block_scout_web/views/state_batch_transaction_view.ex:502
 #: lib/block_scout_web/views/state_batch_view.ex:458
-#: lib/block_scout_web/views/transaction_view.ex:632
+#: lib/block_scout_web/views/transaction_view.ex:725
 #: lib/block_scout_web/views/txn_batch_view.ex:463
 #, elixir-autogen, elixir-format
 msgid "Token Transfer"
@@ -3215,7 +3172,7 @@ msgstr "토큰 이전"
 #: lib/block_scout_web/views/state_batch_view.ex:519
 #: lib/block_scout_web/views/tokens/instance/overview_view.ex:197
 #: lib/block_scout_web/views/tokens/overview_view.ex:39
-#: lib/block_scout_web/views/transaction_view.ex:703
+#: lib/block_scout_web/views/transaction_view.ex:796
 #: lib/block_scout_web/views/txn_batch_view.ex:524
 #, elixir-autogen, elixir-format
 msgid "Token Transfers"
@@ -3242,7 +3199,7 @@ msgstr "토큰 타입"
 #: lib/block_scout_web/templates/address_token/overview.html.eex:58
 #: lib/block_scout_web/templates/address_token_transfer/index.html.eex:13
 #: lib/block_scout_web/templates/address_withdraw/index.html.eex:13
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:63
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:64
 #: lib/block_scout_web/templates/tokens/index.html.eex:10
 #: lib/block_scout_web/views/address_view.ex:369
 #, elixir-autogen, elixir-format
@@ -3252,7 +3209,7 @@ msgstr "토큰"
 #: lib/block_scout_web/templates/l1_to_l2_txn/overview.html.eex:273
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:273
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:355
-#: lib/block_scout_web/templates/transaction/overview.html.eex:372
+#: lib/block_scout_web/templates/transaction/overview.html.eex:379
 #, elixir-autogen, elixir-format
 msgid "Tokens Burnt"
 msgstr "토큰 소각된 것입니다."
@@ -3260,7 +3217,7 @@ msgstr "토큰 소각된 것입니다."
 #: lib/block_scout_web/templates/l1_to_l2_txn/overview.html.eex:289
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:289
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:371
-#: lib/block_scout_web/templates/transaction/overview.html.eex:388
+#: lib/block_scout_web/templates/transaction/overview.html.eex:395
 #, elixir-autogen, elixir-format
 msgid "Tokens Created"
 msgstr "토큰 생성됨"
@@ -3268,7 +3225,7 @@ msgstr "토큰 생성됨"
 #: lib/block_scout_web/templates/l1_to_l2_txn/overview.html.eex:256
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:256
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:338
-#: lib/block_scout_web/templates/transaction/overview.html.eex:355
+#: lib/block_scout_web/templates/transaction/overview.html.eex:362
 #, elixir-autogen, elixir-format
 msgid "Tokens Minted"
 msgstr "토큰 발행됨"
@@ -3276,7 +3233,7 @@ msgstr "토큰 발행됨"
 #: lib/block_scout_web/templates/l1_to_l2_txn/overview.html.eex:240
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:240
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:314
-#: lib/block_scout_web/templates/transaction/overview.html.eex:338
+#: lib/block_scout_web/templates/transaction/overview.html.eex:345
 #, elixir-autogen, elixir-format
 msgid "Tokens Transferred"
 msgstr "토큰 전송됨"
@@ -3353,7 +3310,7 @@ msgstr "총 거래량"
 #: lib/block_scout_web/views/l2_to_l1_txn_view.ex:477
 #: lib/block_scout_web/views/state_batch_transaction_view.ex:512
 #: lib/block_scout_web/views/state_batch_view.ex:468
-#: lib/block_scout_web/views/transaction_view.ex:642
+#: lib/block_scout_web/views/transaction_view.ex:735
 #: lib/block_scout_web/views/txn_batch_view.ex:473
 #, elixir-autogen, elixir-format
 msgid "Transaction"
@@ -3384,7 +3341,7 @@ msgid "Transaction %{transaction}, %{subnetwork} %{transaction}"
 msgstr "%{거래} 거래, %{하위네트워크} %{거래}"
 
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:483
-#: lib/block_scout_web/templates/transaction/overview.html.eex:574
+#: lib/block_scout_web/templates/transaction/overview.html.eex:581
 #, elixir-autogen, elixir-format
 msgid "Transaction Burnt Fee"
 msgstr "거래 소각 수수료"
@@ -3400,7 +3357,7 @@ msgstr "거래 내역"
 #: lib/block_scout_web/templates/l1_to_l2_txn/overview.html.eex:322
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:322
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:404
-#: lib/block_scout_web/templates/transaction/overview.html.eex:421
+#: lib/block_scout_web/templates/transaction/overview.html.eex:428
 #, elixir-autogen, elixir-format
 msgid "Transaction Fee"
 msgstr "거래 수수료"
@@ -3441,7 +3398,7 @@ msgid "Transaction Tags"
 msgstr "거래 태그"
 
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:425
-#: lib/block_scout_web/templates/transaction/overview.html.eex:524
+#: lib/block_scout_web/templates/transaction/overview.html.eex:531
 #, elixir-autogen, elixir-format
 msgid "Transaction Type"
 msgstr "거래 유형"
@@ -3449,13 +3406,13 @@ msgstr "거래 유형"
 #: lib/block_scout_web/templates/l1_to_l2_txn/overview.html.eex:361
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:361
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:506
-#: lib/block_scout_web/templates/transaction/overview.html.eex:597
+#: lib/block_scout_web/templates/transaction/overview.html.eex:604
 #, elixir-autogen, elixir-format
 msgid "Transaction number from the sending address. Each transaction sent from an address increments the nonce by 1."
 msgstr "보내는 주소의 거래 번호입니다. 주소에서 보낸 각 거래는 Nonce를 1 씩 증가시킵니다."
 
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:424
-#: lib/block_scout_web/templates/transaction/overview.html.eex:523
+#: lib/block_scout_web/templates/transaction/overview.html.eex:530
 #, elixir-autogen, elixir-format
 msgid "Transaction type, introduced in EIP-2718."
 msgstr "트랜잭션 유형, EIP-2718에서 소개됩니다."
@@ -3540,7 +3497,7 @@ msgstr "UML 다이어그램"
 #: lib/block_scout_web/templates/l1_to_l2_txn/overview.html.eex:387
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:387
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:532
-#: lib/block_scout_web/templates/transaction/overview.html.eex:623
+#: lib/block_scout_web/templates/transaction/overview.html.eex:630
 #, elixir-autogen, elixir-format
 msgid "UTF-8"
 msgstr "UTF-8: 유니코드 문자 인코딩 방식 중 하나로, ASCII 영문자와 호환되면서도 전세계 대부분의 언어를 표현할 수 있다."
@@ -3587,13 +3544,13 @@ msgid "Update"
 msgstr "업데이트"
 
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:462
-#: lib/block_scout_web/templates/transaction/overview.html.eex:553
+#: lib/block_scout_web/templates/transaction/overview.html.eex:560
 #, elixir-autogen, elixir-format
 msgid "User defined maximum fee (tip) per unit of gas paid to validator for transaction prioritization."
 msgstr "거래 우선순위를 위해 검증자에게 지불되는 가스 단위당 최대 수수료(팁)를 사용자가 정의합니다."
 
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:472
-#: lib/block_scout_web/templates/transaction/overview.html.eex:563
+#: lib/block_scout_web/templates/transaction/overview.html.eex:570
 #, elixir-autogen, elixir-format
 msgid "User-defined tip sent to validator for transaction priority/inclusion."
 msgstr "거래 우선순위 / 포함을 위해 사용자 정의 팁이 검증자에게 전송되었습니다."
@@ -3603,17 +3560,17 @@ msgstr "거래 우선순위 / 포함을 위해 사용자 정의 팁이 검증자
 msgid "User-defined tips sent to validator for transaction priority/inclusion."
 msgstr "거래 우선순위/포함에 대한 사용자 정의 팁이 유효성 검사자에게 전송됩니다."
 
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:31
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:32
 #, elixir-autogen, elixir-format
 msgid "Validated"
 msgstr "검증된 거래"
 
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:51
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:52
 #, elixir-format, elixir-autogen
 msgid "L1 State Batches"
 msgstr "L1 상태 배치들"
 
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:46
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:47
 #, elixir-format, elixir-autogen
 msgid "Mantle DA Txn Batches"
 msgstr "맨틀 DA 거래 배치들"
@@ -3623,7 +3580,7 @@ msgstr "맨틀 DA 거래 배치들"
 msgid "L1 Txn Batches"
 msgstr "L1 거래 일괄 처리"
 
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:36
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:37
 #, elixir-format, elixir-autogen
 msgid "L1 to L2 Txns"
 msgstr "L1에서 L2로의 거래"
@@ -3673,7 +3630,7 @@ msgstr "검증기 이름"
 #: lib/block_scout_web/templates/l1_to_l2_txn/overview.html.eex:306
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:306
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:388
-#: lib/block_scout_web/templates/transaction/overview.html.eex:405
+#: lib/block_scout_web/templates/transaction/overview.html.eex:412
 #, elixir-autogen, elixir-format
 msgid "Value"
 msgstr "가치"
@@ -3681,7 +3638,7 @@ msgstr "가치"
 #: lib/block_scout_web/templates/l1_to_l2_txn/overview.html.eex:305
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:305
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:387
-#: lib/block_scout_web/templates/transaction/overview.html.eex:404
+#: lib/block_scout_web/templates/transaction/overview.html.eex:411
 #, elixir-autogen, elixir-format
 msgid "Value sent in the native token (and USD) if applicable."
 msgstr "해당되는 경우, 원래 토큰으로 보낸 가치 (USD 환산)"
@@ -3709,7 +3666,7 @@ msgstr "검증된 계약서"
 msgid "Verified at"
 msgstr "검증됨"
 
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:55
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:56
 #, elixir-autogen, elixir-format
 msgid "Verified contracts"
 msgstr "검증된 계약서"
@@ -3947,7 +3904,7 @@ msgid "balance of the address"
 msgstr "주소의 균형"
 
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:482
-#: lib/block_scout_web/templates/transaction/overview.html.eex:573
+#: lib/block_scout_web/templates/transaction/overview.html.eex:580
 #, elixir-autogen, elixir-format
 msgid "burned for this transaction. Equals Block Base Fee per Gas * Gas Used."
 msgstr "이 거래를 위해 소모된 가스의 양에 따라 계산된 블록 기본 수수료와 동일합니다."
@@ -3965,7 +3922,7 @@ msgstr "버튼"
 #: lib/block_scout_web/templates/l1_to_l2_txn/overview.html.eex:211
 #: lib/block_scout_web/templates/l2_to_l1_txn/overview.html.eex:211
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:287
-#: lib/block_scout_web/templates/transaction/overview.html.eex:311
+#: lib/block_scout_web/templates/transaction/overview.html.eex:318
 #, elixir-autogen, elixir-format
 msgid "created"
 msgstr "생성되었습니다."
@@ -4133,13 +4090,13 @@ msgid "Your request contained an error, perhaps a mistyped tx/block/address hash
 msgstr "당신의 요청에는 오류가 포함되어 있습니다. 아마도 잘못된 tx/block/address 해시일 수 있습니다. 다시 시도하고 개발자 도구 콘솔에서 자세한 정보를 확인하십시오."
 
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:229
-#: lib/block_scout_web/templates/transaction/overview.html.eex:253
+#: lib/block_scout_web/templates/transaction/overview.html.eex:260
 #, elixir-autogen, elixir-format
 msgid " L1 State Batch Index"
 msgstr "L1 상태 일괄처리 인덱스"
 
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:228
-#: lib/block_scout_web/templates/transaction/overview.html.eex:252
+#: lib/block_scout_web/templates/transaction/overview.html.eex:259
 #, elixir-autogen, elixir-format
 msgid " L1 State Batch Index."
 msgstr "L1 상태 일꾼 인덱스."
@@ -4156,24 +4113,24 @@ msgstr "집에 돌아오다"
 
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:635
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:636
-#: lib/block_scout_web/templates/transaction/overview.html.eex:756
-#: lib/block_scout_web/templates/transaction/overview.html.eex:757
+#: lib/block_scout_web/templates/transaction/overview.html.eex:763
+#: lib/block_scout_web/templates/transaction/overview.html.eex:764
 #, elixir-autogen, elixir-format
 msgid "DA Fee"
 msgstr "DA 수수료"
 
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:627
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:628
-#: lib/block_scout_web/templates/transaction/overview.html.eex:801
-#: lib/block_scout_web/templates/transaction/overview.html.eex:802
+#: lib/block_scout_web/templates/transaction/overview.html.eex:808
+#: lib/block_scout_web/templates/transaction/overview.html.eex:809
 #, elixir-autogen, elixir-format
 msgid "DA Gas Price"
 msgstr "DA 가스 가격"
 
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:643
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:644
-#: lib/block_scout_web/templates/transaction/overview.html.eex:810
-#: lib/block_scout_web/templates/transaction/overview.html.eex:811
+#: lib/block_scout_web/templates/transaction/overview.html.eex:817
+#: lib/block_scout_web/templates/transaction/overview.html.eex:818
 #, elixir-autogen, elixir-format
 msgid "DA Gas Used"
 msgstr "DA 가스 사용 중입니다."
@@ -4189,7 +4146,7 @@ msgid "During times when the network is busy (i.e during ICOs) it can take a whi
 msgstr "네트워크가 바쁜 경우 (예: ICO 중)에는 거래가 네트워크를 통해 전파되고 우리가 색인화하기까지 시간이 오래 걸릴 수 있습니다."
 
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:416
-#: lib/block_scout_web/templates/transaction/overview.html.eex:513
+#: lib/block_scout_web/templates/transaction/overview.html.eex:520
 #, elixir-autogen, elixir-format
 msgid "Gas Price on L2"
 msgstr "L2에서의 가스 가격"
@@ -4252,40 +4209,40 @@ msgstr "L1 요금"
 
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:598
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:599
-#: lib/block_scout_web/templates/transaction/overview.html.eex:727
-#: lib/block_scout_web/templates/transaction/overview.html.eex:728
+#: lib/block_scout_web/templates/transaction/overview.html.eex:734
+#: lib/block_scout_web/templates/transaction/overview.html.eex:735
 #, elixir-autogen, elixir-format
 msgid "L1 Fee Scalar"
 msgstr "L1 요금 스칼라"
 
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:573
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:574
-#: lib/block_scout_web/templates/transaction/overview.html.eex:710
-#: lib/block_scout_web/templates/transaction/overview.html.eex:711
+#: lib/block_scout_web/templates/transaction/overview.html.eex:717
+#: lib/block_scout_web/templates/transaction/overview.html.eex:718
 #, elixir-autogen, elixir-format
 msgid "L1 Gas Price"
 msgstr "L1 가스 가격"
 
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:607
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:608
-#: lib/block_scout_web/templates/transaction/overview.html.eex:736
-#: lib/block_scout_web/templates/transaction/overview.html.eex:737
+#: lib/block_scout_web/templates/transaction/overview.html.eex:743
+#: lib/block_scout_web/templates/transaction/overview.html.eex:744
 #, elixir-autogen, elixir-format
 msgid "L1 Gas Used"
 msgstr "L1 가스 사용됨"
 
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:617
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:618
-#: lib/block_scout_web/templates/transaction/overview.html.eex:746
-#: lib/block_scout_web/templates/transaction/overview.html.eex:747
+#: lib/block_scout_web/templates/transaction/overview.html.eex:753
+#: lib/block_scout_web/templates/transaction/overview.html.eex:754
 #, elixir-autogen, elixir-format
 msgid "L1 Origin Txn Hash"
 msgstr "L1 원본 거래 해시"
 
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:241
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:242
-#: lib/block_scout_web/templates/transaction/overview.html.eex:265
-#: lib/block_scout_web/templates/transaction/overview.html.eex:266
+#: lib/block_scout_web/templates/transaction/overview.html.eex:272
+#: lib/block_scout_web/templates/transaction/overview.html.eex:273
 #, elixir-autogen, elixir-format
 msgid "L1 State Root Submission Txn Hash"
 msgstr "L1 상태 루트 제출 거래 해시"
@@ -4295,7 +4252,7 @@ msgstr "L1 상태 루트 제출 거래 해시"
 msgid "L2 Fee"
 msgstr "L2 요금"
 
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:41
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:42
 #, elixir-autogen, elixir-format
 msgid "L2 to L1 Txns"
 msgstr "L2에서 L1로의 거래"
@@ -4326,13 +4283,13 @@ msgid "There is no withdrawal Txn for this adress."
 msgstr "이 주소에서는 인출이 불가합니다."
 
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:403
-#: lib/block_scout_web/templates/transaction/overview.html.eex:420
+#: lib/block_scout_web/templates/transaction/overview.html.eex:427
 #, elixir-autogen, elixir-format
 msgid "Total transaction fee spent on L1 and L2."
 msgstr "L1과 L2에서 총 거래 수수료 사용량."
 
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:443
-#: lib/block_scout_web/templates/transaction/overview.html.eex:466
+#: lib/block_scout_web/templates/transaction/overview.html.eex:473
 #, elixir-autogen, elixir-format
 msgid "Transaction fee on layer2."
 msgstr "레이어2의 거래 수수료."
@@ -4347,25 +4304,25 @@ msgstr "레이어2의 거래 수수료."
 msgid "is not a valid transaction hash"
 msgstr "유효한 트랜잭션 해시가 아닙니다."
 
-#: lib/block_scout_web/templates/transaction/overview.html.eex:664
+#: lib/block_scout_web/templates/transaction/overview.html.eex:671
 #, elixir-autogen, elixir-format
 msgid "L1 Gas Price*L1 Gas Used*L1 Fee Scalar"
 msgstr "L1 가스 가격*L1 가스 사용량*L1 수수료 스칼라"
 
-#: lib/block_scout_web/templates/transaction/overview.html.eex:665
+#: lib/block_scout_web/templates/transaction/overview.html.eex:672
 #, elixir-autogen, elixir-format
 msgid "L1 Rollup Fee"
 msgstr "L1 롤업 수수료"
 
-#: lib/block_scout_web/templates/transaction/overview.html.eex:467
+#: lib/block_scout_web/templates/transaction/overview.html.eex:474
 #, elixir-autogen, elixir-format
 msgid "L2 Txn Fee"
 msgstr "L2 거래 수수료"
 
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:215
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:216
-#: lib/block_scout_web/templates/transaction/overview.html.eex:238
-#: lib/block_scout_web/templates/transaction/overview.html.eex:239
+#: lib/block_scout_web/templates/transaction/overview.html.eex:245
+#: lib/block_scout_web/templates/transaction/overview.html.eex:246
 #, elixir-autogen, elixir-format
 msgid "Mantle DA Submission Hash"
 msgstr "맨틀 DA 제출 해시"
@@ -4377,13 +4334,13 @@ msgid "Mantle DA Txn"
 msgstr "맨틀 DA 거래"
 
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:202
-#: lib/block_scout_web/templates/transaction/overview.html.eex:225
+#: lib/block_scout_web/templates/transaction/overview.html.eex:232
 #, elixir-autogen, elixir-format
 msgid "Mantle DA Txn Batch Index"
 msgstr "맨틀 DA 거래 일괄 처리 인덱스"
 
 #: lib/block_scout_web/templates/state_batch_transaction/overview.html.eex:201
-#: lib/block_scout_web/templates/transaction/overview.html.eex:224
+#: lib/block_scout_web/templates/transaction/overview.html.eex:231
 #, elixir-autogen, elixir-format
 msgid "Mantle DA Txn Batch Index."
 msgstr "맨틀 DA 트랜잭션 배치 인덱스."
@@ -4392,11 +4349,6 @@ msgstr "맨틀 DA 트랜잭션 배치 인덱스."
 #, elixir-autogen
 msgid "Contact Us"
 msgstr "연락처 바로가기"
-
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:135
-#, elixir-autogen
-msgid "Mantle Testnet"
-msgstr "Mantle Testnet"
 
 #: lib/block_scout_web/templates/chain/show.html.eex:235
 #, elixir-autogen
@@ -4500,26 +4452,31 @@ msgstr "L2-L1 철회에 대한 전반적인 상황."
 msgid "Waiting for Relay"
 msgstr "릴레이 대기 중입니다."
 
+#: lib/block_scout_web/controllers/l2_to_l1_txn_controller.ex:118
 #: lib/block_scout_web/templates/l2_to_l1_txn/index.html.eex:45
 #, elixir-autogen
 msgid "Withdrawn on L2 but not ready for claim on L1"
 msgstr "L2에서는 철회되었지만 L1에서는 청구 준비가 되지 않았습니다."
 
+#: lib/block_scout_web/controllers/l2_to_l1_txn_controller.ex:107
 #: lib/block_scout_web/templates/l2_to_l1_txn/index.html.eex:46
 #, elixir-autogen
 msgid "Ready for Claim"
 msgstr "청구 준비 완료"
 
+#: lib/block_scout_web/controllers/l2_to_l1_txn_controller.ex:120
 #: lib/block_scout_web/templates/l2_to_l1_txn/index.html.eex:47
 #, elixir-autogen
 msgid "Ready for claim on L1"
 msgstr "L1에 대한 청구 준비 완료"
 
+#: lib/block_scout_web/controllers/l2_to_l1_txn_controller.ex:109
 #: lib/block_scout_web/templates/l2_to_l1_txn/index.html.eex:48
 #, elixir-autogen
 msgid "Claimed"
 msgstr "주장된"
 
+#: lib/block_scout_web/controllers/l2_to_l1_txn_controller.ex:122
 #: lib/block_scout_web/templates/l2_to_l1_txn/index.html.eex:49
 #, elixir-autogen
 msgid "Withdrawal has been claimed on L1"
@@ -4610,6 +4567,8 @@ msgstr "자세한 내용"
 msgid "Hide Details"
 msgstr "세부 사항 숨기기"
 
+#: lib/block_scout_web/etherscan.ex:1226
+#, elixir-autogen
 msgid "Mimics Ethereum JSON RPC's eth_getBalance. Returns the balance as of the provided block (defaults to latest)"
 msgstr "이더리움 JSON RPC의 eth_getBalance을 모방합니다. 제공된 블록의 잔액을 반환합니다 (기본값은 최신입니다)"
 
@@ -4619,51 +4578,72 @@ msgstr "블록 번호를 문자열로 지정하거나, latest, earliest 또는 p
 msgid "Get balance for address. Also available through a GraphQL 'addresses' query. If the balance hasn't been updated in a long time, we will double check with the node to fetch the absolute latest balance. This will not be reflected in the current request, but once it is updated, subsequent requests will show the updated balance. If you want to know whether or not we are checking for another balance, use the `balancemulti` action. That contains a property called `stale` that will let you know to recheck that balance in the near future."
 msgstr "주소의 잔액을 가져옵니다. 또한 GraphQL의 'addresses' 쿼리를 통해서도 이용할 수 있습니다. 잔액이 오랜 시간 동안 업데이트되지 않은 경우, 최신 절대 잔액을 가져오기 위해 노드와 이중 확인을 진행합니다. 이는 현재 요청에는 반영되지 않지만, 업데이트된 이후에는 이후의 요청에서 업데이트된 잔액이 표시됩니다. 다른 잔액을 확인하고 있는지 여부를 알고 싶다면 'balancemulti' 액션을 사용하세요. 이에는 'stale'라는 속성이 포함되어 있어, 가까운 미래에 해당 잔액을 다시 확인해야 함을 알려줍니다."
 
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:73
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:75
 #, elixir-autogen, elixir-format, fuzzy
 msgid "ERC1155"
 msgstr "ERC-1155"
 
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:67
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:69
 #, elixir-autogen, elixir-format, fuzzy
 msgid "ERC20"
 msgstr "ERC-20"
 
-#: lib/block_scout_web/templates/layout/_topnav.html.eex:70
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:72
 #, elixir-autogen, elixir-format, fuzzy
 msgid "ERC721"
 msgstr "ERC-721"
 
-#: lib/block_scout_web/templates/layout/_search.html.eex:20
+#: lib/block_scout_web/templates/address_coin_balance/index.html.eex:12
+#: lib/block_scout_web/templates/block/index.html.eex:5
 #, elixir-autogen
-msgid "Display %{number} result"
-msgstr "%{number}개의 결과 표시하기"
-
-#: lib/block_scout_web/templates/layout/_search.html.eex:21
-#, elixir-autogen
-msgid "Found %{number} matching results for "
-msgstr "%{number}개의 일치하는 결과를 찾았습니다"
-
 msgid "More blocks come in, click for an update"
 msgstr "더 많은 블록이 들어오고 있습니다, 업데이트를 위해 클릭하세요"
 
+#: lib/block_scout_web/templates/address_internal_transaction/index.html.eex:15
+#, elixir-autogen
 msgid "More internal transactions come in, click for an update"
 msgstr "더 많은 내부 거래가 들어오고 있습니다, 업데이트를 위해 클릭하세요"
 
+#: lib/block_scout_web/templates/address_transaction/index.html.eex:11
+#: lib/block_scout_web/templates/da_batch_transaction/index.html.eex:22
+#: lib/block_scout_web/templates/eigenda_batch/index.html.eex:22
+#: lib/block_scout_web/templates/l1_to_l2_txn/index.html.eex:35
+#: lib/block_scout_web/templates/l2_to_l1_txn/index.html.eex:21
+#: lib/block_scout_web/templates/pending_transaction/index.html.eex:16
+#: lib/block_scout_web/templates/state_batch/index.html.eex:22
+#: lib/block_scout_web/templates/state_batch_transaction/index.html.eex:25
+#: lib/block_scout_web/templates/transaction/index.html.eex:18
+#: lib/block_scout_web/templates/txn_batch/index.html.eex:22
+#, elixir-autogen
 msgid "More transactions come in, click for an update"
 msgstr "더 많은 거래가 들어오고 있습니다, 업데이트를 위해 클릭하세요"
 
+#: lib/block_scout_web/templates/address_validation/index.html.eex:10
+#, elixir-autogen
 msgid "More validations come in, click for an update"
 msgstr "더 많은 유효성 검사가 들어오고 있습니다, 업데이트를 위해 클릭하세요"
 
+#: lib/block_scout_web/templates/layout/_search.html.eex:20
+#, elixir-autogen
 msgid "Display {number} result"
 msgstr "{number}개의 결과 표시하기"
 
+#: lib/block_scout_web/templates/layout/_search.html.eex:21
+#, elixir-autogen
 msgid "Found {number} matching results for "
 msgstr "{number}개의 일치하는 결과를 찾았습니다"
 
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:109
+#, elixir-autogen
 msgid "Tools"
 msgstr "도구"
 
+#: lib/block_scout_web/templates/layout/_topnav.html.eex:114
+#, elixir-autogen
 msgid "Token Approval Checker"
 msgstr "토큰 승인 확인기"
+
+#: lib/block_scout_web/controllers/l2_to_l1_txn_controller.ex:105
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Waiting for relay"
+msgstr "릴레이 대기 중입니다."

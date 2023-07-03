@@ -3,6 +3,8 @@ defmodule BlockScoutWeb.Etherscan do
   Documentation data for Etherscan-compatible API.
   """
 
+  import BlockScoutWeb.Gettext
+
   @account_balance_example_value %{
     "status" => "1",
     "message" => "OK",
@@ -1221,7 +1223,7 @@ defmodule BlockScoutWeb.Etherscan do
   @account_eth_get_balance_action %{
     name: "eth_get_balance",
     description:
-      "Mimics Ethereum JSON RPC's eth_getBalance. Returns the balance as of the provided block (defaults to latest)",
+      gettext("Mimics Ethereum JSON RPC's eth_getBalance. Returns the balance as of the provided block (defaults to latest)"),
     required_params: [
       %{
         key: "address",
