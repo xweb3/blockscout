@@ -2454,7 +2454,7 @@ msgstr "原始输入"
 #: lib/block_scout_web/views/txn_batch_view.ex:527
 #, elixir-autogen, elixir-format
 msgid "Raw Trace"
-msgstr "生的痕迹"
+msgstr "Raw Trace"
 
 #: lib/block_scout_web/templates/address/_tabs.html.eex:96
 #: lib/block_scout_web/templates/tokens/overview/_tabs.html.eex:27

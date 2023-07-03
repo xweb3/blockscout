@@ -54,7 +54,7 @@
                 ) %>
                 <%= link(gettext("Verified contracts"),
                     to: verified_contracts_path(@conn, :index),
-                    class: "dropdown-item #{tab_status("reorgs", @conn.request_path)}")%>
+                    class: "dropdown-item #{tab_status("verified-contracts", @conn.request_path)}")%>
               </div>
             </li>
 
@@ -63,13 +63,13 @@
                 <%= gettext("Tokens") %>
               </a>
                <div class="dropdown-menu center" aria-labeledby="tokenDropdown">
-                <%= link to: tokens_erc20_path(@conn, :index), class: "dropdown-item #{tab_status("token-erc20", @conn.request_path)}" do %>
+                <%= link to: tokens_erc20_path(@conn, :index), class: "dropdown-item #{tab_status("tokens-erc20", @conn.request_path)}" do %>
                   <%= gettext("ERC20") %>
                 <% end %>
-                <%= link to: tokens_erc721_path(@conn, :index), class: "dropdown-item #{tab_status("token-erc721", @conn.request_path)}" do %>
+                <%= link to: tokens_erc721_path(@conn, :index), class: "dropdown-item #{tab_status("tokens-erc721", @conn.request_path)}" do %>
                   <%= gettext("ERC721") %>
                 <% end %>
-                <%= link to: tokens_erc1155_path(@conn, :index), class: "dropdown-item #{tab_status("token-erc1155", @conn.request_path)}" do %>
+                <%= link to: tokens_erc1155_path(@conn, :index), class: "dropdown-item #{tab_status("tokens-erc1155", @conn.request_path)}" do %>
                   <%= gettext("ERC1155") %>
                 <% end %>
               </div>
