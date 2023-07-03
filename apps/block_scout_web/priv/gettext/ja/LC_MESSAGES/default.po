@@ -4661,3 +4661,9 @@ msgstr "{number} つの結果を表示する"
 
 msgid "Found {number} matching results for "
 msgstr "{number} 件の一致する結果が見つかりました"
+
+msgid "Tools"
+msgstr "ツール"
+
+msgid "Token Approval Checker"
+msgstr "トークン承認チェッカー"

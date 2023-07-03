@@ -4665,3 +4665,9 @@ msgstr "Отображение {number} результата"
 
 msgid "Found {number} matching results for "
 msgstr "Найдено {number} совпадающих результатов для"
+
+msgid "Tools"
+msgstr "инструменты"
+
+msgid "Token Approval Checker"
+msgstr "Проверка подтверждения токена"

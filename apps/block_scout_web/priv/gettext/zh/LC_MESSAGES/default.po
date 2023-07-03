@@ -4406,7 +4406,7 @@ msgstr "最新交易"
 #: lib/block_scout_web/templates/chain/show.html.eex:224
 #, elixir-autogen
 msgid "View all Mantle DA batches"
-msgstr "查看所有Mantle DA批次。"
+msgstr "查看所有Mantle DA批次"
 
 #: lib/block_scout_web/templates/chain/show.html.eex:207
 #, elixir-autogen
@@ -4661,3 +4661,9 @@ msgstr "显示 {number} 个结果"
 
 msgid "Found {number} matching results for "
 msgstr "找到 {number} 个匹配结果"
+
+msgid "Tools"
+msgstr "工具"
+
+msgid "Token Approval Checker"
+msgstr "代币审批检查器"
