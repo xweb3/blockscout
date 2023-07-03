@@ -23,6 +23,7 @@
             <li class="nav-item dropdown" id="activeTransactions">
               <a href="#" role="button" id="navbarTransactionsDropdown" class="nav-link topnav-nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <%= gettext("Transactions") %>
+                <svg viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg" class="dropdown-toggle-icon"><path d="m3 5 3 3 3-3" stroke="white" stroke-width="1.2"></path></svg>
               </a>
               <% json_rpc_named_arguments = Application.fetch_env!(:indexer, :json_rpc_named_arguments)%>
               <% variant = Keyword.fetch!(json_rpc_named_arguments, :variant) %>
@@ -61,6 +62,7 @@
             <li class="nav-item dropdown">
               <a href="#" role="button" id="tokenDropdown" class="nav-link topnav-nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <%= gettext("Tokens") %>
+                <svg viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg" class="dropdown-toggle-icon"><path d="m3 5 3 3 3-3" stroke="white" stroke-width="1.2"></path></svg>
               </a>
                <div class="dropdown-menu center" aria-labeledby="tokenDropdown">
                 <%= link to: tokens_erc20_path(@conn, :index), class: "dropdown-item #{tab_status("tokens-erc20", @conn.request_path)}" do %>
@@ -80,6 +82,7 @@
             <li class="nav-item dropdown">
               <a href="#" role="button" id="navbarAPIsDropdown" class="nav-link topnav-nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <%= gettext("APIs") %>
+                <svg viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg" class="dropdown-toggle-icon"><path d="m3 5 3 3 3-3" stroke="white" stroke-width="1.2"></path></svg>
               </a>
               <div class="dropdown-menu center" aria-labeledby="navbarTransactionsDropdown">
                 <%= link(
@@ -104,6 +107,7 @@
           <li class="nav-item dropdown">
               <a href="#" role="button" id="navbarAPIsDropdown" class="nav-link topnav-nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <%= gettext("Tools") %>
+                <svg viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg" class="dropdown-toggle-icon"><path d="m3 5 3 3 3-3" stroke="white" stroke-width="1.2"></path></svg>
               </a>
               <div class="dropdown-menu center" aria-labeledby="navbarTransactionsDropdown">
                 <%= link(
@@ -124,6 +128,7 @@
                 <% else %>
                   <%= gettext("Stakes") %>
                 <% end %>
+                <svg viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg" class="dropdown-toggle-icon"><path d="m3 5 3 3 3-3" stroke="white" stroke-width="1.2"></path></svg>
               </a>
               <div class="dropdown-menu" aria-labeledby="navbarAppsDropdown">
                 <%= if apps_menu == true do %>
@@ -151,7 +156,8 @@
            <!--  language-changer -->
           <li class="nav-item dropdown language-changer">
               <a href="#" role="button" id="languageChangerDropdown" class="nav-link topnav-nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                EN
+                <span>EN</span>
+                <svg viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg" class="dropdown-toggle-icon"><path d="m3 5 3 3 3-3" stroke="white" stroke-width="1.2"></path></svg>
               </a>
               <div class="dropdown-menu right" aria-labeledby="languageChangerDropdown">
                 <button class="dropdown-item" data-lang="en">EN</button>

@@ -14,7 +14,7 @@ $(function () {
 
   if ($activeLangEle.length) {
     $activeLangEle.addClass('active')
-    $('#languageChangerDropdown').html(currentLang.toUpperCase())
+    $('#languageChangerDropdown span').html(currentLang.toUpperCase())
     $('html').attr('lang', currentLang)
   } else {
     $('.language-changer button[data-lang=en]').addClass('active')

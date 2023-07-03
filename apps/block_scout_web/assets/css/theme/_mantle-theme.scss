@@ -58,7 +58,7 @@ body{
 }
 // Switcher
 .dark-mode-changer {
-  display: inline-flex;
+  display: block;
   align-items: center;
   justify-content: center;
   width: 36px;
@@ -70,6 +70,7 @@ body{
   outline: none !important;
   box-shadow: none !important;
   transition: 0.2s ease-in;
+  padding: 0;
 
   &:hover {
     opacity: 0.8;
@@ -219,6 +220,19 @@ body{
 
   .navbar.navbar-primary .navbar-nav .nav-link {
     color: $dark-text-content-color;
+    .dropdown-toggle-icon{
+      path{
+        stroke:$dark-text-content-color;
+      }
+    }
+
+    &:hover{
+      .dropdown-toggle-icon{
+        path{
+          stroke:white;
+        }
+      }
+    }
 
     &.network-label {
       background-color: $dropdown-menu-background-dark;
