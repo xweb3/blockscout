@@ -6687,3 +6687,5 @@ msgstr "取引レシートのステータスを取得してください。また
 msgid "Get error status and error message. Also available through a GraphQL 'transaction' query."
 msgstr "エラーのステータスとエラーメッセージを取得してください。また、GraphQLの「トランザクション」クエリを通じても利用可能です。"
 
+msgid "Display with gwei on Mantle, converted from L1 gas price"
+msgstr "マントル上のGweiで表示され、L1ガス価格から変換されたものを表示します"

@@ -6686,3 +6686,6 @@ msgstr "거래 영수증 상태를 확인하세요. 또한 'transaction' 쿼리�
 
 msgid "Get error status and error message. Also available through a GraphQL 'transaction' query."
 msgstr "오류 상태와 오류 메시지를 가져옵니다. 또한 GraphQL 'transaction' 쿼리를 통해서도 사용할 수 있습니다."
+
+msgid "Display with gwei on Mantle, converted from L1 gas price"
+msgstr "맨틀에서 L1 가스 가격으로 변환된 gwei로 디스플레이합니다"

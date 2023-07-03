@@ -6685,3 +6685,6 @@ msgstr "Получить статус квитанции о транзакции
 
 msgid "Get error status and error message. Also available through a GraphQL 'transaction' query."
 msgstr "Получите статус ошибки и сообщение об ошибке. Также доступно через запрос GraphQL с использованием 'transaction'."
+
+msgid "Display with gwei on Mantle, converted from L1 gas price"
+msgstr "Дисплей с gwei на Мантле, преобразованный из цены газа L1"

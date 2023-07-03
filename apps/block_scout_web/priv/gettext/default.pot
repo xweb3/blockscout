@@ -6675,3 +6675,6 @@ msgstr ""
 
 msgid "Get error status and error message. Also available through a GraphQL 'transaction' query."
 msgstr ""
+
+msgid "Display with gwei on Mantle, converted from L1 gas price"
+msgstr ""

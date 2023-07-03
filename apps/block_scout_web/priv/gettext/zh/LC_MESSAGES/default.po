@@ -6679,3 +6679,6 @@ msgstr "获取交易收据状态。还可以通过GraphQL的“transaction”查
 
 msgid "Get error status and error message. Also available through a GraphQL 'transaction' query."
 msgstr "获取错误状态和错误消息。也可以通过GraphQL的“交易”查询获得。"
+
+msgid "Display with gwei on Mantle, converted from L1 gas price"
+msgstr "在Mantle上显示以Gwei为单位的价格，从L1 Gas价格进行转换"
