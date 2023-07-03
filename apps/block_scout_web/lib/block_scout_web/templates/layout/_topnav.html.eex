@@ -101,6 +101,18 @@
               </div>
             </li>
           <% end %>
+          <li class="nav-item dropdown">
+              <a href="#" role="button" id="navbarAPIsDropdown" class="nav-link topnav-nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <%= gettext("Tools") %>
+              </a>
+              <div class="dropdown-menu center" aria-labeledby="navbarTransactionsDropdown">
+                <%= link(
+                      gettext("Token Approval Checker"),
+                      class: "dropdown-item",
+                      to: "https://www.baidu.com"
+                    ) %>
+              </div>
+            </li>
           <%= if apps_menu == true do %>
             <li class="nav-item dropdown">
               <a href="#" role="button" id="navbarAppsDropdown" class="nav-link topnav-nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
