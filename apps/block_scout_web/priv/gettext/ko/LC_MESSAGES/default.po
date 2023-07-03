@@ -4661,3 +4661,9 @@ msgstr "{number}개의 결과 표시하기"
 
 msgid "Found {number} matching results for "
 msgstr "{number}개의 일치하는 결과를 찾았습니다"
+
+msgid "Tools"
+msgstr "도구"
+
+msgid "Token Approval Checker"
+msgstr "토큰 승인 확인기"

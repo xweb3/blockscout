@@ -4650,3 +4650,9 @@ msgstr ""
 
 msgid "Found {number} matching results for "
 msgstr ""
+
+msgid "Tools"
+msgstr ""
+
+msgid "Token Approval Checker"
+msgstr ""

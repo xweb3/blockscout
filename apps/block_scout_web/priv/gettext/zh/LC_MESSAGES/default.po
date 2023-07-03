@@ -4661,3 +4661,9 @@ msgstr "显示 {number} 个结果"
 
 msgid "Found {number} matching results for "
 msgstr "找到 {number} 个匹配结果"
+
+msgid "Tools"
+msgstr "工具"
+
+msgid "Token Approval Checker"
+msgstr "代币审批检查器"
