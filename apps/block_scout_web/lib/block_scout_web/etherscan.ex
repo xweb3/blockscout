@@ -3,6 +3,8 @@ defmodule BlockScoutWeb.Etherscan do
   Documentation data for Etherscan-compatible API.
   """
 
+  import BlockScoutWeb.Gettext
+
   @account_balance_example_value %{
     "status" => "1",
     "message" => "OK",
@@ -1220,14 +1222,15 @@ defmodule BlockScoutWeb.Etherscan do
 
   @account_eth_get_balance_action %{
     name: "eth_get_balance",
-    description:
-      "Mimics Ethereum JSON RPC's eth_getBalance. Returns the balance as of the provided block (defaults to latest)",
+    description: "Mimics Ethereum JSON RPC's eth_getBalance. Returns the balance as of the provided block (defaults to latest)",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "address",
         placeholder: "addressHash",
         type: "string",
-        description: "The address of the account."
+        description: "The address of the account.",
+        getRequiredParamsDescription: &__MODULE__.generateRequiredParamsDescription/1,
       }
     ],
     optional_params: [
@@ -1263,22 +1266,15 @@ defmodule BlockScoutWeb.Etherscan do
 
   @account_balance_action %{
     name: "balance",
-    description: """
-        Get balance for address. Also available through a GraphQL 'addresses' query.
-
-        If the balance hasn't been updated in a long time, we will double check
-        with the node to fetch the absolute latest balance. This will not be
-        reflected in the current request, but once it is updated, subsequent requests
-        will show the updated balance. If you want to know whether or not we are checking
-        for another balance, use the `balancemulti` action. That contains a property
-        called `stale` that will let you know to recheck that balance in the near future.
-    """,
+    description: "Get balance for address. Also available through a GraphQL 'addresses' query. If the balance hasn't been updated in a long time, we will double check with the node to fetch the absolute latest balance. This will not be reflected in the current request, but once it is updated, subsequent requests will show the updated balance. If you want to know whether or not we are checking for another balance, use the `balancemulti` action. That contains a property called `stale` that will let you know to recheck that balance in the near future.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "address",
         placeholder: "addressHash",
         type: "string",
-        description: "A 160-bit code used for identifying Accounts."
+        description: "A 160-bit code used for identifying accounts.",
+        getRequiredParamsDescription: &__MODULE__.generateRequiredParamsDescription/1,
       }
     ],
     optional_params: [],
@@ -1306,22 +1302,16 @@ defmodule BlockScoutWeb.Etherscan do
 
   @account_balancemulti_action %{
     name: "balancemulti",
-    description: """
-        Get balance for multiple addresses. Also available through a GraphQL 'addresses' query.
-
-        If the balance hasn't been updated in a long time, we will double check
-        with the node to fetch the absolute latest balance. This will not be
-        reflected in the current request, but once it is updated, subsequent requests
-        will show the updated balance. You can know that this is taking place via
-        the `stale` attribute, which is set to `true` if a new balance is being fetched.
-    """,
+    description: "Get balance for multiple addresses. Also available through a GraphQL 'addresses' query. If the balance hasn't been updated in a long time, we will double check with the node to fetch the absolute latest balance. This will not be reflected in the current request, but once it is updated, subsequent requests will show the updated balance. You can know that this is taking place via the `stale` attribute, which is set to `true` if a new balance is being fetched.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "address",
         placeholder: "addressHash1,addressHash2,addressHash3",
         type: "string",
         description:
-          "A 160-bit code used for identifying Accounts. Separate addresses by comma. Maximum of 20 addresses."
+          "A 160-bit code used for identifying accounts. Separate addresses by comma. Maximum of 20 addresses.",
+        getRequiredParamsDescription: &__MODULE__.generateRequiredParamsDescription/1
       }
     ],
     optional_params: [],
@@ -1353,12 +1343,14 @@ defmodule BlockScoutWeb.Etherscan do
   @account_pendingtxlist_action %{
     name: "pendingtxlist",
     description: "Get pending transactions by address.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "address",
         placeholder: "addressHash",
         type: "string",
-        description: "A 160-bit code used for identifying Accounts."
+        description: "A 160-bit code used for identifying accounts.",
+        getRequiredParamsDescription: &__MODULE__.generateRequiredParamsDescription/1
       }
     ],
     optional_params: [
@@ -1404,12 +1396,14 @@ defmodule BlockScoutWeb.Etherscan do
     name: "txlist",
     description:
       "Get transactions by address. Up to a maximum of 10,000 transactions. Also available through a GraphQL 'address' query.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "address",
         placeholder: "addressHash",
         type: "string",
-        description: "A 160-bit code used for identifying Accounts."
+        description: "A 160-bit code used for identifying accounts.",
+        getRequiredParamsDescription: &__MODULE__.generateRequiredParamsDescription/1
       }
     ],
     optional_params: [
@@ -1490,13 +1484,15 @@ defmodule BlockScoutWeb.Etherscan do
     name: "txlistinternal",
     description:
       "Get internal transactions by transaction or address hash. Up to a maximum of 10,000 internal transactions. Also available through a GraphQL 'transaction' query.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "txhash",
         placeholder: "transactionHash",
         type: "string",
         description:
-          "Transaction hash. Hash of contents of the transaction. A transcation hash or address hash is required."
+          "Transaction hash. Hash of contents of the transaction. A transaction hash or address hash is required.",
+        getRequiredParamsDescription: &__MODULE__.generateRequiredParamsDescription/1
       }
     ],
     optional_params: [
@@ -1566,12 +1562,14 @@ defmodule BlockScoutWeb.Etherscan do
     name: "tokentx",
     description:
       "Get token transfer events by address. Up to a maximum of 10,000 token transfer events. Also available through a GraphQL 'token_transfers' query.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "address",
         placeholder: "addressHash",
         type: "string",
-        description: "A 160-bit code used for identifying accounts."
+        description: "A 160-bit code used for identifying accounts.",
+        getRequiredParamsDescription: &__MODULE__.generateRequiredParamsDescription/1
       }
     ],
     optional_params: [
@@ -1638,18 +1636,21 @@ defmodule BlockScoutWeb.Etherscan do
   @account_tokenbalance_action %{
     name: "tokenbalance",
     description: "Get token account balance for token contract address.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "contractaddress",
         placeholder: "contractAddressHash",
         type: "string",
-        description: "A 160-bit code used for identifying contracts."
+        description: "A 160-bit code used for identifying contracts.",
+        getRequiredParamsDescription: &__MODULE__.generateRequiredParamsDescription/1
       },
       %{
         key: "address",
         placeholder: "addressHash",
         type: "string",
-        description: "A 160-bit code used for identifying accounts."
+        description: "A 160-bit code used for identifying accounts.",
+        getRequiredParamsDescription: &__MODULE__.generateRequiredParamsDescription/1
       }
     ],
     optional_params: [],
@@ -1682,12 +1683,14 @@ defmodule BlockScoutWeb.Etherscan do
   @account_tokenlist_action %{
     name: "tokenlist",
     description: "Get list of tokens owned by address.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "address",
         placeholder: "addressHash",
         type: "string",
-        description: "A 160-bit code used for identifying accounts."
+        description: "A 160-bit code used for identifying accounts.",
+        getRequiredParamsDescription: &__MODULE__.generateRequiredParamsDescription/1
       }
     ],
     optional_params: [],
@@ -1719,12 +1722,14 @@ defmodule BlockScoutWeb.Etherscan do
   @account_getminedblocks_action %{
     name: "getminedblocks",
     description: "Get list of blocks mined by address.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "address",
         placeholder: "addressHash",
         type: "string",
-        description: "A 160-bit code used for identifying accounts."
+        description: "A 160-bit code used for identifying accounts.",
+        getRequiredParamsDescription: &__MODULE__.generateRequiredParamsDescription/1,
       }
     ],
     optional_params: [
@@ -1770,6 +1775,7 @@ defmodule BlockScoutWeb.Etherscan do
     name: "listaccounts",
     description:
       "Get a list of accounts and their balances, sorted ascending by the time they were first seen by the explorer.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [],
     optional_params: [
       %{
@@ -1808,32 +1814,37 @@ defmodule BlockScoutWeb.Etherscan do
   @logs_getlogs_action %{
     name: "getLogs",
     description: "Get event logs for an address and/or topics. Up to a maximum of 1,000 event logs.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "fromBlock",
         placeholder: "blockNumber",
         type: "integer",
         description:
-          "A nonnegative integer that represents the starting block number. The use of 'latest' is also supported."
+          "A nonnegative integer that represents the starting block number. The use of 'latest' is also supported.",
+        getRequiredParamsDescription: &__MODULE__.generateRequiredParamsDescription/1
       },
       %{
         key: "toBlock",
         placeholder: "blockNumber",
         type: "integer",
         description:
-          "A nonnegative integer that represents the ending block number. The use of 'latest' is also supported."
+          "A nonnegative integer that represents the ending block number. The use of 'latest' is also supported.",
+        getRequiredParamsDescription: &__MODULE__.generateRequiredParamsDescription/1
       },
       %{
         key: "address",
         placeholder: "addressHash",
         type: "string",
-        description: "A 160-bit code used for identifying contracts. An address and/or topic{x} is required."
+        description: "A 160-bit code used for identifying contracts. An address and/or topic{x} is required.",
+        getRequiredParamsDescription: &__MODULE__.generateRequiredParamsDescription/1
       },
       %{
         key: "topic0",
         placeholder: "firstTopic",
         type: "string",
-        description: "A string equal to the first topic. A topic{x} and/or address is required."
+        description: "A string equal to the first topic. A topic{x} and/or address is required.",
+        getRequiredParamsDescription: &__MODULE__.generateRequiredParamsDescription/1
       }
     ],
     optional_params: [
@@ -1925,12 +1936,14 @@ defmodule BlockScoutWeb.Etherscan do
     description:
       "Get <a href='https://github.com/ethereum/EIPs/issues/20'>ERC-20</a> " <>
         "or <a href='https://github.com/ethereum/EIPs/issues/721'>ERC-721</a> token by contract address.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "contractaddress",
         placeholder: "contractAddressHash",
         type: "string",
-        description: "A 160-bit code used for identifying contracts."
+        description: "A 160-bit code used for identifying contracts.",
+        getRequiredParamsDescription: &__MODULE__.generateRequiredParamsDescription/1
       }
     ],
     optional_params: [],
@@ -1962,12 +1975,14 @@ defmodule BlockScoutWeb.Etherscan do
   @token_gettokenholders_action %{
     name: "getTokenHolders",
     description: "Get token holders by contract address.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "contractaddress",
         placeholder: "contractAddressHash",
         type: "string",
-        description: "A 160-bit code used for identifying contracts."
+        description: "A 160-bit code used for identifying contracts.",
+        getRequiredParamsDescription: &__MODULE__.generateRequiredParamsDescription/1
       }
     ],
     optional_params: [
@@ -2015,12 +2030,14 @@ defmodule BlockScoutWeb.Etherscan do
       "Get <a href='https://github.com/ethereum/EIPs/issues/20'>ERC-20</a> or " <>
         "<a href='https://github.com/ethereum/EIPs/issues/721'>ERC-721</a> " <>
         " token total supply by contract address.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "contractaddress",
         placeholder: "contractAddressHash",
         type: "string",
-        description: "A 160-bit code used for identifying contracts."
+        description: "A 160-bit code used for identifying contracts.",
+        getRequiredParamsDescription: &__MODULE__.generateRequiredParamsDescription/1
       }
     ],
     optional_params: [],
@@ -2053,6 +2070,7 @@ defmodule BlockScoutWeb.Etherscan do
   @stats_ethsupplyexchange_action %{
     name: "ethsupplyexchange",
     description: "Get total supply in Wei from exchange.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [],
     optional_params: [],
     responses: [
@@ -2079,6 +2097,7 @@ defmodule BlockScoutWeb.Etherscan do
   @stats_ethsupply_action %{
     name: "ethsupply",
     description: "Get total supply in Wei from DB.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [],
     optional_params: [],
     responses: [
@@ -2105,6 +2124,7 @@ defmodule BlockScoutWeb.Etherscan do
   @stats_coinsupply_action %{
     name: "coinsupply",
     description: "Get total coin supply from DB minus burnt number.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [],
     optional_params: [],
     responses: [
@@ -2129,6 +2149,7 @@ defmodule BlockScoutWeb.Etherscan do
   @stats_coinprice_action %{
     name: "coinprice",
     description: "Get latest price of native coin in USD and BTC.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [],
     optional_params: [],
     responses: [
@@ -2154,12 +2175,14 @@ defmodule BlockScoutWeb.Etherscan do
   @stats_totalfees_action %{
     name: "totalfees",
     description: "Gets total transaction fees in Wei are paid by users to validators per day.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "date",
         placeholder: "date",
         type: "string",
-        description: "day in ISO 8601 format (yyyy-mm-dd)"
+        description: "day in ISO 8601 format (yyyy-mm-dd)",
+        getRequiredParamsDescription: &__MODULE__.generateRequiredParamsDescription/1
       }
     ],
     optional_params: [],
@@ -2191,13 +2214,15 @@ defmodule BlockScoutWeb.Etherscan do
   @block_eth_block_number_action %{
     name: "eth_block_number",
     description: "Mimics Ethereum JSON RPC's eth_blockNumber. Returns the lastest block number",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [],
     optional_params: [
       %{
         key: "id",
         placeholder: "request id",
         type: "integer",
-        description: "A nonnegative integer that represents the json rpc request id."
+        description: "A nonnegative integer that represents the json rpc request id.",
+        getRequiredParamsDescription: &__MODULE__.generateRequiredParamsDescription/1
       }
     ],
     responses: [
@@ -2220,12 +2245,14 @@ defmodule BlockScoutWeb.Etherscan do
   @block_getblockreward_action %{
     name: "getblockreward",
     description: "Get block reward by block number.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "blockno",
         placeholder: "blockNumber",
         type: "integer",
-        description: "A nonnegative integer that represents the block number."
+        description: "A nonnegative integer that represents the block number.",
+        getRequiredParamsDescription: &__MODULE__.generateRequiredParamsDescription/1
       }
     ],
     optional_params: [],
@@ -2257,18 +2284,21 @@ defmodule BlockScoutWeb.Etherscan do
   @block_getblocknobytime_action %{
     name: "getblocknobytime",
     description: "Get Block Number by Timestamp.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "timestamp",
         placeholder: "blockTimestamp",
         type: "integer",
-        description: "A nonnegative integer that represents the block timestamp (Unix timestamp in seconds)."
+        description: "A nonnegative integer that represents the block timestamp (Unix timestamp in seconds).",
+        getRequiredParamsDescription: &__MODULE__.generateRequiredParamsDescription/1
       },
       %{
         key: "closest",
         placeholder: "before/after",
         type: "string",
-        description: "Direction to find the closest block number to given timestamp. Available values: before/after."
+        description: "Direction to find the closest block number to given timestamp. Available values: before/after.",
+        getRequiredParamsDescription: &__MODULE__.generateRequiredParamsDescription/1
       }
     ],
     optional_params: [],
@@ -2299,12 +2329,8 @@ defmodule BlockScoutWeb.Etherscan do
 
   @contract_listcontracts_action %{
     name: "listcontracts",
-    description: """
-    Get a list of contracts, sorted ascending by the time they were first seen by the explorer.
-
-    If you provide the filters `not_decompiled`(`4`) or `not_verified(4)` the results will not
-    be sorted for performance reasons.
-    """,
+    description: "Get a list of contracts, sorted ascending by the time they were first seen by the explorer. If you provide the filters `not_decompiled`(`4`) or `not_verified(4)` the results will not be sorted for performance reasons.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [],
     optional_params: [
       %{
@@ -2384,36 +2410,42 @@ defmodule BlockScoutWeb.Etherscan do
     </div>
     </div>
     """,
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "addressHash",
         placeholder: "addressHash",
         type: "string",
-        description: "The address of the contract."
+        description: "The address of the contract.",
+        getRequiredParamsDescription: &__MODULE__.generateRequiredParamsDescription/1
       },
       %{
         key: "name",
         placeholder: "name",
         type: "string",
-        description: "The name of the contract."
+        description: "The name of the contract.",
+        getRequiredParamsDescription: &__MODULE__.generateRequiredParamsDescription/1
       },
       %{
         key: "compilerVersion",
         placeholder: "compilerVersion",
         type: "string",
-        description: "The compiler version for the contract."
+        description: "The compiler version for the contract.",
+        getRequiredParamsDescription: &__MODULE__.generateRequiredParamsDescription/1
       },
       %{
         key: "optimization",
         placeholder: false,
         type: "boolean",
-        description: "Whether or not compiler optimizations were enabled."
+        description: "Whether or not compiler optimizations were enabled.",
+        getRequiredParamsDescription: &__MODULE__.generateRequiredParamsDescription/1
       },
       %{
         key: "contractSourceCode",
         placeholder: "contractSourceCode",
         type: "string",
-        description: "The source code of the contract."
+        description: "The source code of the contract.",
+        getRequiredParamsDescription: &__MODULE__.generateRequiredParamsDescription/1
       }
     ],
     optional_params: [
@@ -2544,12 +2576,14 @@ defmodule BlockScoutWeb.Etherscan do
     </div>
     </div>
     """,
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "addressHash",
         placeholder: "addressHash",
         type: "string",
-        description: "The address of the contract."
+        description: "The address of the contract.",
+        getRequiredParamsDescription: &__MODULE__.generateRequiredParamsDescription/1
       }
     ],
     optional_params: [
@@ -2597,37 +2631,42 @@ defmodule BlockScoutWeb.Etherscan do
     </div>
     </div>
     """,
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "addressHash",
         placeholder: "addressHash",
         type: "string",
-        description: "The address of the contract."
+        description: "The address of the contract.",
+        getRequiredParamsDescription: &__MODULE__.generateRequiredParamsDescription/1
       },
       %{
         key: "name",
         placeholder: "name",
         type: "string",
-        description: "The name of the contract."
+        description: "The name of the contract.",
+        getRequiredParamsDescription: &__MODULE__.generateRequiredParamsDescription/1
       },
       %{
         key: "compilerVersion",
         placeholder: "compilerVersion",
         type: "string",
-        description: "The compiler version for the contract."
+        description: "The compiler version for the contract.",
+        getRequiredParamsDescription: &__MODULE__.generateRequiredParamsDescription/1
       },
       %{
         key: "contractSourceCode",
         placeholder: "contractSourceCode",
         type: "string",
-        description: "The source code of the contract."
+        description: "The source code of the contract.",
+        getRequiredParamsDescription: &__MODULE__.generateRequiredParamsDescription/1
       }
     ],
     optional_params: [
       %{
         key: "constructorArguments",
         type: "string",
-        description: "The constructor argument data provided."
+        description: "The constructor argument data provided.",
       }
     ],
     responses: [
@@ -2653,38 +2692,44 @@ defmodule BlockScoutWeb.Etherscan do
     <br/>
     <br/>
     """,
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         name: "solidity-standard-json-input",
         key: "codeformat",
         placeholder: "solidity-standard-json-input",
         type: "string",
-        description: "Format of sourceCode(supported only \"solidity-standard-json-input\")"
+        description: "Format of sourceCode(supported only \"solidity-standard-json-input\")",
+        getRequiredParamsDescription: &__MODULE__.generateRequiredParamsDescription/1
       },
       %{
         key: "contractaddress",
         placeholder: "contractaddress",
         type: "string",
-        description: "The address of the contract."
+        description: "The address of the contract.",
+        getRequiredParamsDescription: &__MODULE__.generateRequiredParamsDescription/1
       },
       %{
         key: "contractname",
         placeholder: "contractname",
         type: "string",
         description:
-          "The name of the contract. It could be empty string(\"\"), just contract name(\"ContractName\"), or filename and contract name(\"contracts/contract_1.sol:ContractName\")"
+          "The name of the contract. It could be empty string(\"\"), just contract name(\"ContractName\"), or filename and contract name(\"contracts/contract_1.sol:ContractName\")",
+        getRequiredParamsDescription: &__MODULE__.generateRequiredParamsDescription/1
       },
       %{
         key: "compilerversion",
         placeholder: "compilerversion",
         type: "string",
-        description: "The compiler version for the contract."
+        description: "The compiler version for the contract.",
+        getRequiredParamsDescription: &__MODULE__.generateRequiredParamsDescription/1
       },
       %{
         key: "sourceCode",
         placeholder: "sourceCode",
         type: "string",
-        description: "Standard input json"
+        description: "Standard input json",
+        getRequiredParamsDescription: &__MODULE__.generateRequiredParamsDescription/1
       }
     ],
     optional_params: [
@@ -2714,12 +2759,14 @@ defmodule BlockScoutWeb.Etherscan do
   @contract_checkverifystatus_action %{
     name: "checkverifystatus",
     description: "Return status of the verification attempt (works in addition to verifysourcecode method)",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "guid",
         placeholder: "identifierString",
         type: "string",
-        description: "A string used for identifying verification attempt"
+        description: "A string used for identifying verification attempt",
+        getRequiredParamsDescription: &__MODULE__.generateRequiredParamsDescription/1
       }
     ],
     optional_params: [],
@@ -2737,12 +2784,14 @@ defmodule BlockScoutWeb.Etherscan do
   @contract_getabi_action %{
     name: "getabi",
     description: "Get ABI for verified contract. Also available through a GraphQL 'addresses' query.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "address",
         placeholder: "addressHash",
         type: "string",
-        description: "A 160-bit code used for identifying contracts."
+        description: "A 160-bit code used for identifying contracts.",
+        getRequiredParamsDescription: &__MODULE__.generateRequiredParamsDescription/1
       }
     ],
     optional_params: [],
@@ -2774,12 +2823,14 @@ defmodule BlockScoutWeb.Etherscan do
   @contract_getsourcecode_action %{
     name: "getsourcecode",
     description: "Get contract source code for verified contract. Also available through a GraphQL 'addresses' query.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "address",
         placeholder: "addressHash",
         type: "string",
-        description: "A 160-bit code used for identifying contracts."
+        description: "A 160-bit code used for identifying contracts.",
+        getRequiredParamsDescription: &__MODULE__.generateRequiredParamsDescription/1
       }
     ],
     optional_params: [],
@@ -2811,12 +2862,14 @@ defmodule BlockScoutWeb.Etherscan do
   @transaction_gettxinfo_action %{
     name: "gettxinfo",
     description: "Get transaction info.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "txhash",
         placeholder: "transactionHash",
         type: "string",
-        description: "Transaction hash. Hash of contents of the transaction."
+        description: "Transaction hash. Hash of contents of the transaction.",
+        getRequiredParamsDescription: &__MODULE__.generateRequiredParamsDescription/1
       }
     ],
     optional_params: [
@@ -2854,12 +2907,14 @@ defmodule BlockScoutWeb.Etherscan do
   @transaction_gettxreceiptstatus_action %{
     name: "gettxreceiptstatus",
     description: "Get transaction receipt status. Also available through a GraphQL 'transaction' query.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "txhash",
         placeholder: "transactionHash",
         type: "string",
-        description: "Transaction hash. Hash of contents of the transaction."
+        description: "Transaction hash. Hash of contents of the transaction.",
+        getRequiredParamsDescription: &__MODULE__.generateRequiredParamsDescription/1
       }
     ],
     optional_params: [],
@@ -2891,12 +2946,14 @@ defmodule BlockScoutWeb.Etherscan do
   @transaction_getstatus_action %{
     name: "getstatus",
     description: "Get error status and error message. Also available through a GraphQL 'transaction' query.",
+    getDescription: &__MODULE__.generateDescription/1,
     required_params: [
       %{
         key: "txhash",
         placeholder: "transactionHash",
         type: "string",
-        description: "Transaction hash. Hash of contents of the transaction."
+        description: "Transaction hash. Hash of contents of the transaction.",
+        getRequiredParamsDescription: &__MODULE__.generateRequiredParamsDescription/1
       }
     ],
     optional_params: [],
@@ -3022,4 +3079,172 @@ defmodule BlockScoutWeb.Etherscan do
   def coin_usd_type_definition(coin) do
     "#{coin} price in US dollars."
   end
+
+  def generateDescription(namespace) do
+    case namespace do
+      "eth_get_balance" ->
+        gettext("Mimics Ethereum JSON RPC's eth_getBalance. Returns the balance as of the provided block (defaults to latest)")
+      "balance" ->
+        gettext("Get balance for address. Also available through a GraphQL 'addresses' query. If the balance hasn't been updated in a long time, we will double check with the node to fetch the absolute latest balance. This will not be reflected in the current request, but once it is updated, subsequent requests will show the updated balance. If you want to know whether or not we are checking for another balance, use the `balancemulti` action. That contains a property called `stale` that will let you know to recheck that balance in the near future.")
+      "balancemulti" ->
+        gettext("Get balance for multiple addresses. Also available through a GraphQL 'addresses' query. If the balance hasn't been updated in a long time, we will double check with the node to fetch the absolute latest balance. This will not be reflected in the current request, but once it is updated, subsequent requests will show the updated balance. You can know that this is taking place via the `stale` attribute, which is set to `true` if a new balance is being fetched.")
+      "pendingtxlist" ->
+        gettext("Get pending transactions by address.")
+      "txlist" ->
+        gettext("Get transactions by address. Up to a maximum of 10,000 transactions. Also available through a GraphQL 'address' query.")
+      "txlistinternal" ->
+        gettext("Get internal transactions by transaction or address hash. Up to a maximum of 10,000 internal transactions. Also available through a GraphQL 'transaction' query.")
+      "tokentx" ->
+        gettext("Get token transfer events by address. Up to a maximum of 10,000 token transfer events. Also available through a GraphQL 'token_transfers' query.")
+      "tokenbalance" ->
+        gettext("Get token account balance for token contract address.")
+      "tokenlist" ->
+        gettext("Get list of tokens owned by address.")
+      "getminedblocks" ->
+        gettext("Get list of blocks mined by address.")
+      "listaccounts" ->
+        gettext("Get a list of accounts and their balances, sorted ascending by the time they were first seen by the explorer.")
+      "getLogs" ->
+        gettext("Get event logs for an address and/or topics. Up to a maximum of 1,000 event logs.")
+      "getToken" ->
+        gettext("Get <a href='https://github.com/ethereum/EIPs/issues/20'>ERC-20</a> or <a href='https://github.com/ethereum/EIPs/issues/721'>ERC-721</a> token by contract address.")
+      "getTokenHolders" ->
+        gettext("Get token holders by contract address.")
+      "tokensupply" ->
+        gettext("Get <a href='https://github.com/ethereum/EIPs/issues/20'>ERC-20</a> or <a href='https://github.com/ethereum/EIPs/issues/721'>ERC-721</a> token total supply by contract address.")
+      "ethsupplyexchange" ->
+        gettext("Get total supply in Wei from exchange.")
+      "ethsupply" ->
+        gettext("Get total supply in Wei from DB.")
+      "coinsupply" ->
+        gettext("Get total coin supply from DB minus burnt number.")
+      "coinprice" ->
+        gettext("Get latest price of native coin in USD and BTC.")
+      "totalfees" ->
+        gettext("Gets total transaction fees in Wei are paid by users to validators per day.")
+      "eth_block_number" ->
+        gettext("Mimics Ethereum JSON RPC's eth_blockNumber. Returns the lastest block number")
+      "getblockreward" ->
+        gettext("Get block reward by block number.")
+      "getblocknobytime" ->
+        gettext("Get Block Number by Timestamp.")
+      "listcontracts" ->
+        gettext("Get a list of contracts, sorted ascending by the time they were first seen by the explorer. If you provide the filters `not_decompiled`(`4`) or `not_verified(4)` the results will not be sorted for performance reasons.")
+      "getabi" ->
+        gettext("Get ABI for verified contract. Also available through a GraphQL 'addresses' query.")
+      "getsourcecode" ->
+        gettext("Get contract source code for verified contract. Also available through a GraphQL 'addresses' query.")
+      "gettxinfo" ->
+        gettext("Get transaction info.")
+      "gettxreceiptstatus" ->
+        gettext("Get transaction receipt status. Also available through a GraphQL 'transaction' query.")
+      "getstatus" ->
+        gettext("Get error status and error message. Also available through a GraphQL 'transaction' query.")
+      "verify" ->
+        gettext("Verify a contract with its source code and contract creation information. <br/> <br/> <p class=\"api-doc-list-item-text\">curl POST example:</p> <br/> <div class='tab-content'> <div class='tab-pane fade show active'> <div class=\"tile tile-muted p-1\"> <div class=\"m-2\"> curl -d '{\"addressHash\":\"0xc63BB6555C90846afACaC08A0F0Aa5caFCB382a1\",\"compilerVersion\":\"v0.5.4+commit.9549d8ff\", \"contractSourceCode\":\"pragma solidity ^0.5.4; \ncontract Test {\n}\",\"name\":\"Test\",\"optimization\":false}' -H \"Content-Type: application/json\" -X POST  \"https://blockscout.com/poa/sokol/api?module=contract&action=verify\" </pre> </div> </div> </div>")
+      "verify_via_sourcify" ->
+        gettext("Verify a contract through <a href=\"https://sourcify.dev\">Sourcify</a>.<br/> a) if smart-contract already verified on Sourcify, it will automatically fetch the data from the <a href=\"https://repo.sourcify.dev\">repo</a><br/> b) otherwise you have to upload source files and JSON metadata file(s). <br/> <br/> <p class=\"api-doc-list-item-text\">POST body example:</p> <br/> <div class='tab-content'> <div class='tab-pane fade show active'> <div class=\"tile tile-muted p-1\"> <div class=\"m-2\"> --6e1e4c11657c62dc1e4349d024de9e28<br/> Content-Disposition: form-data; name=\"addressHash\"<br/> <br/> 0xb77b7443e0F32F1FEBf0BE0fBd7124D135d0a525<br/> <br/> --6e1e4c11657c62dc1e4349d024de9e28<br/> Content-Disposition: form-data; name=\"files[0]\"; filename=\"contract.sol\"<br/> Content-Type: application/json<br/> <br/> ...Source code...<br/> <br/> --6e1e4c11657c62dc1e4349d024de9e28<br/> Content-Disposition: form-data; name=\"files[1]\"; filename=\"metadata.json\"<br/> Content-Type: application/json<br/> <br/> ...JSON metadata...<br/> <br/> --6e1e4c11657c62dc1e4349d024de9e28--<br/> </pre> </div> </div> </div>")
+      "verify_vyper_contract" ->
+        gettext("Verify a vyper contract with its source code and contract creation information. <br/> <br/> <p class=\"api-doc-list-item-text\">curl POST example:</p> <br/> <div class='tab-content'> <div class='tab-pane fade show active'> <div class=\"tile tile-muted p-1\"> <div class=\"m-2\"> curl --location --request POST 'http://localhost:4000/api?module=contract&action=verify_vyper_contract' --form 'contractSourceCode=\"SOURCE_CODE\"' --form 'name=\"Vyper_contract\"' --form 'addressHash=\"0xE60B1B8bD493569a3E945be50A6c89d29a560Fa1\"' --form 'compilerVersion=\"v0.2.12\"' </pre> </div> </div> </div>")
+      "verifysourcecode" ->
+        gettext("Verify a contract with Standard input JSON file. Its interface the same as <a href=\"https://docs.etherscan.io/tutorials/verifying-contracts-programmatically\">Etherscan</a>'s API endpoint <br/> <br/>")
+      "checkverifystatus" ->
+        gettext("Return status of the verification attempt (works in addition to verifysourcecode method)")
+    end
+  end
+
+  def generateRequiredParamsDescription(namespace) do
+    case namespace do
+      "eth_get_balance-address" ->
+        gettext("The address of the account.")
+      "balance-address" ->
+        gettext("A 160-bit code used for identifying accounts.")
+      "balancemulti-address" ->
+        gettext("A 160-bit code used for identifying accounts. Separate addresses by comma. Maximum of 20 addresses.")
+      "pendingtxlist-address" ->
+        gettext("A 160-bit code used for identifying accounts.")
+      "txlist-address" ->
+        gettext("A 160-bit code used for identifying accounts.")
+      "txlistinternal-txhash" ->
+        gettext("Transaction hash. Hash of contents of the transaction. A transaction hash or address hash is required.")
+      "tokentx-address" ->
+        gettext("A 160-bit code used for identifying accounts.")
+      "tokenbalance-contractaddress" ->
+        gettext("A 160-bit code used for identifying contracts.")
+      "tokenbalance-address" ->
+        gettext("A 160-bit code used for identifying accounts.")
+      "tokenlist-address" ->
+        gettext("A 160-bit code used for identifying accounts.")
+      "getminedblocks-address" ->
+        gettext("A 160-bit code used for identifying accounts.")
+      "getLogs-fromBlock" ->
+        gettext("A nonnegative integer that represents the starting block number. The use of 'latest' is also supported.")
+      "getLogs-toBlock" ->
+        gettext("A nonnegative integer that represents the ending block number. The use of 'latest' is also supported.")
+      "getLogs-address" ->
+        gettext("A 160-bit code used for identifying contracts. An address and/or topic{x} is required.")
+      "getLogs-topic0" ->
+        gettext("A string equal to the first topic. A topic{x} and/or address is required.")
+      "getToken-contractaddress" ->
+        gettext("A 160-bit code used for identifying contracts.")
+      "getTokenHolders-contractaddress" ->
+        gettext("A 160-bit code used for identifying contracts.")
+      "tokensupply-contractaddress" ->
+        gettext("A 160-bit code used for identifying contracts.")
+      "totalfees-date" ->
+        gettext("day in ISO 8601 format (yyyy-mm-dd)")
+      "eth_block_number-id" ->
+        gettext("A nonnegative integer that represents the json rpc request id.")
+      "getblockreward-blockno" ->
+        gettext("A nonnegative integer that represents the block number.")
+      "getblocknobytime-timestamp" ->
+        gettext("A nonnegative integer that represents the block timestamp (Unix timestamp in seconds).")
+      "getblocknobytime-closest" ->
+        gettext("Direction to find the closest block number to given timestamp. Available values: before/after.")
+      "verify-addressHash" ->
+        gettext("The address of the contract.")
+      "verify-name" ->
+        gettext("The name of the contract.")
+      "verify-compilerVersion" ->
+        gettext("The compiler version for the contract.")
+      "verify-optimization" ->
+        gettext("Whether or not compiler optimizations were enabled.")
+      "verify-contractSourceCode" ->
+        gettext("The source code of the contract.")
+      "verify_via_sourcify-addressHash" ->
+        gettext("The address of the contract.")
+      "verify_vyper_contract-addressHash" ->
+        gettext("The address of the contract.")
+      "verify_vyper_contract-name" ->
+        gettext("The name of the contract.")
+      "verify_vyper_contract-compilerVersion" ->
+        gettext("The compiler version for the contract.")
+      "verify_vyper_contract-contractSourceCode" ->
+        gettext("The source code of the contract.")
+      "verifysourcecode-codeformat" ->
+        gettext("Format of sourceCode(supported only \"solidity-standard-json-input\")")
+      "verifysourcecode-contractaddress" ->
+        gettext("The address of the contract.")
+      "verifysourcecode-contractname" ->
+        gettext("The name of the contract. It could be empty string(\"\"), just contract name(\"ContractName\"), or filename and contract name(\"contracts/contract_1.sol:ContractName\")")
+      "verifysourcecode-compilerversion" ->
+        gettext("The compiler version for the contract.")
+      "verifysourcecode-sourceCode" ->
+        gettext("Standard input json")
+      "checkverifystatus-guid" ->
+        gettext("A string used for identifying verification attempt")
+      "getabi-address" ->
+        gettext("A 160-bit code used for identifying contracts.")
+      "getsourcecode-address" ->
+        gettext("A 160-bit code used for identifying contracts.")
+      "gettxinfo-txhash" ->
+        gettext("Transaction hash. Hash of contents of the transaction.")
+      "gettxreceiptstatus-txhash" ->
+        gettext("Transaction hash. Hash of contents of the transaction.")
+      "getstatus-txhash" ->
+        gettext("Transaction hash. Hash of contents of the transaction.")
+    end
+  end
+
+
 end
