@@ -109,7 +109,7 @@
         </div>
         <div class="col-sm-8 col-md-10">
           <p class="api-doc-parameters-list-item-description">
-            <%= generateOptionalParamsDescription(optional_param,@action) %>
+            <%= generateOptionalParamsDescription(optional_param, @action) %>
           </p>
           <input
             class="collapse form-control"

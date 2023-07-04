@@ -1359,13 +1359,15 @@ defmodule BlockScoutWeb.Etherscan do
         key: "page",
         type: "integer",
         description:
-          "A nonnegative integer that represents the page number to be used for pagination. 'offset' must be provided in conjunction."
+          "A nonnegative integer that represents the page number to be used for pagination. 'offset' must be provided in conjunction.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       },
       %{
         key: "offset",
         type: "integer",
         description:
-          "A nonnegative integer that represents the maximum number of records to return when paginating. 'page' must be provided in conjunction."
+          "A nonnegative integer that represents the maximum number of records to return when paginating. 'page' must be provided in conjunction.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       }
     ],
     responses: [
@@ -1412,29 +1414,34 @@ defmodule BlockScoutWeb.Etherscan do
         key: "sort",
         type: "string",
         description:
-          "A string representing the order by block number direction. Defaults to descending order. Available values: asc, desc"
+          "A string representing the order by block number direction. Defaults to descending order. Available values: asc, desc",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       },
       %{
         key: "start_block",
         type: "integer",
-        description: "A nonnegative integer that represents the starting block number."
+        description: "A nonnegative integer that represents the starting block number.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       },
       %{
         key: "end_block",
         type: "integer",
-        description: "A nonnegative integer that represents the ending block number."
+        description: "A nonnegative integer that represents the ending block number.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       },
       %{
         key: "page",
         type: "integer",
         description:
-          "A nonnegative integer that represents the page number to be used for pagination. 'offset' must be provided in conjunction."
+          "A nonnegative integer that represents the page number to be used for pagination. 'offset' must be provided in conjunction.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       },
       %{
         key: "offset",
         type: "integer",
         description:
-          "A nonnegative integer that represents the maximum number of records to return when paginating. 'page' must be provided in conjunction."
+          "A nonnegative integer that represents the maximum number of records to return when paginating. 'page' must be provided in conjunction.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       },
       %{
         key: "filter_by",
@@ -1443,17 +1450,20 @@ defmodule BlockScoutWeb.Etherscan do
         A string representing the field to filter by. If none is given
         it returns transactions that match to, from, or contract address.
         Available values: to, from
-        """
+        """,
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       },
       %{
         key: "start_timestamp",
         type: "unix timestamp",
-        description: "Represents the starting block timestamp."
+        description: "Represents the starting block timestamp.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       },
       %{
         key: "end_timestamp",
         type: "unix timestamp",
-        description: "Represents the ending block timestamp."
+        description: "Represents the ending block timestamp.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       }
     ],
     responses: [
@@ -1501,37 +1511,43 @@ defmodule BlockScoutWeb.Etherscan do
         key: "address",
         placeholder: "addressHash",
         type: "string",
-        description: "A 160-bit code used for identifying accounts. An address hash or transaction hash is required."
+        description: "A 160-bit code used for identifying accounts. An address hash or transaction hash is required.",
+      getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       },
       %{
         key: "sort",
         type: "string",
         description:
-          "A string representing the order by block number direction. Defaults to ascending order. Available values: asc, desc. WARNING: Only available if 'address' is provided."
+          "A string representing the order by block number direction. Defaults to ascending order. Available values: asc, desc. WARNING: Only available if 'address' is provided.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       },
       %{
         key: "start_block",
         type: "integer",
         description:
-          "A nonnegative integer that represents the starting block number. WARNING: Only available if 'address' is provided."
+          "A nonnegative integer that represents the starting block number. WARNING: Only available if 'address' is provided.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       },
       %{
         key: "end_block",
         type: "integer",
         description:
-          "A nonnegative integer that represents the ending block number. WARNING: Only available if 'address' is provided."
+          "A nonnegative integer that represents the ending block number. WARNING: Only available if 'address' is provided.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       },
       %{
         key: "page",
         type: "integer",
         description:
-          "A nonnegative integer that represents the page number to be used for pagination. 'offset' must be provided in conjunction. WARNING: Only available if 'address' is provided."
+          "A nonnegative integer that represents the page number to be used for pagination. 'offset' must be provided in conjunction. WARNING: Only available if 'address' is provided.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       },
       %{
         key: "offset",
         type: "integer",
         description:
-          "A nonnegative integer that represents the maximum number of records to return when paginating. 'page' must be provided in conjunction. WARNING: Only available if 'address' is provided."
+          "A nonnegative integer that represents the maximum number of records to return when paginating. 'page' must be provided in conjunction. WARNING: Only available if 'address' is provided.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       }
     ],
     responses: [
@@ -1578,35 +1594,41 @@ defmodule BlockScoutWeb.Etherscan do
         key: "contractaddress",
         placeholder: "contractAddressHash",
         type: "string",
-        description: "A 160-bit code used for identifying contracts."
+        description: "A 160-bit code used for identifying contracts.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1
       },
       %{
         key: "sort",
         type: "string",
         description:
-          "A string representing the order by block number direction. Defaults to ascending order. Available values: asc, desc"
+          "A string representing the order by block number direction. Defaults to ascending order. Available values: asc, desc",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       },
       %{
         key: "start_block",
         type: "integer",
-        description: "A nonnegative integer that represents the starting block number."
+        description: "A nonnegative integer that represents the starting block number.",
+      getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       },
       %{
         key: "end_block",
         type: "integer",
-        description: "A nonnegative integer that represents the ending block number."
+        description: "A nonnegative integer that represents the ending block number.",
+      getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       },
       %{
         key: "page",
         type: "integer",
         description:
-          "A nonnegative integer that represents the page number to be used for pagination. 'offset' must be provided in conjunction."
+          "A nonnegative integer that represents the page number to be used for pagination. 'offset' must be provided in conjunction.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       },
       %{
         key: "offset",
         type: "integer",
         description:
-          "A nonnegative integer that represents the maximum number of records to return when paginating. 'page' must be provided in conjunction."
+          "A nonnegative integer that represents the maximum number of records to return when paginating. 'page' must be provided in conjunction.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       }
     ],
     responses: [
@@ -1738,13 +1760,15 @@ defmodule BlockScoutWeb.Etherscan do
         key: "page",
         type: "integer",
         description:
-          "A nonnegative integer that represents the page number to be used for pagination. 'offset' must be provided in conjunction."
+          "A nonnegative integer that represents the page number to be used for pagination. 'offset' must be provided in conjunction.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1
       },
       %{
         key: "offset",
         type: "integer",
         description:
-          "A nonnegative integer that represents the maximum number of records to return when paginating. 'page' must be provided in conjunction."
+          "A nonnegative integer that represents the maximum number of records to return when paginating. 'page' must be provided in conjunction.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1
       }
     ],
     responses: [
@@ -1783,13 +1807,15 @@ defmodule BlockScoutWeb.Etherscan do
         key: "page",
         type: "integer",
         description:
-          "A nonnegative integer that represents the page number to be used for pagination. 'offset' must be provided in conjunction."
+          "A nonnegative integer that represents the page number to be used for pagination. 'offset' must be provided in conjunction.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1
       },
       %{
         key: "offset",
         type: "integer",
         description:
-          "A nonnegative integer that represents the maximum number of records to return when paginating. 'page' must be provided in conjunction."
+          "A nonnegative integer that represents the maximum number of records to return when paginating. 'page' must be provided in conjunction.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1
       }
     ],
     responses: [
@@ -1852,59 +1878,68 @@ defmodule BlockScoutWeb.Etherscan do
       %{
         key: "topic1",
         type: "string",
-        description: "A string equal to the second topic. A topic{x} and/or address is required."
+        description: "A string equal to the second topic. A topic{x} and/or address is required.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1
       },
       %{
         key: "topic2",
         type: "string",
-        description: "A string equal to the third topic. A topic{x} and/or address is required."
+        description: "A string equal to the third topic. A topic{x} and/or address is required.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1
       },
       %{
         key: "topic3",
         type: "string",
-        description: "A string equal to the fourth topic. A topic{x} and/or address is required."
+        description: "A string equal to the fourth topic. A topic{x} and/or address is required.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1
       },
       %{
         key: "topic0_1_opr",
         type: "string",
         description:
           "A string representing the and|or operator for topic0 and topic1. " <>
-            "Required if topic0 and topic1 is used. Available values: and, or"
+            "Required if topic0 and topic1 is used. Available values: and, or",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1
       },
       %{
         key: "topic0_2_opr",
         type: "string",
         description:
           "A string representing the and|or operator for topic0 and topic2. " <>
-            "Required if topic0 and topic2 is used. Available values: and, or"
+            "Required if topic0 and topic2 is used. Available values: and, or",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1
       },
       %{
         key: "topic0_3_opr",
         type: "string",
         description:
           "A string representing the and|or operator for topic0 and topic3. " <>
-            "Required if topic0 and topic3 is used. Available values: and, or"
+            "Required if topic0 and topic3 is used. Available values: and, or",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1
       },
       %{
         key: "topic1_2_opr",
         type: "string",
         description:
           "A string representing the and|or operator for topic1 and topic2. " <>
-            "Required if topic1 and topic2 is used. Available values: and, or"
+            "Required if topic1 and topic2 is used. Available values: and, or",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1
       },
       %{
         key: "topic1_3_opr",
         type: "string",
         description:
           "A string representing the and|or operator for topic1 and topic3. " <>
-            "Required if topic1 and topic3 is used. Available values: and, or"
+            "Required if topic1 and topic3 is used. Available values: and, or",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1
       },
       %{
         key: "topic2_3_opr",
         type: "string",
         description:
           "A string representing the and|or operator for topic2 and topic3. " <>
-            "Required if topic2 and topic3 is used. Available values: and, or"
+            "Required if topic2 and topic3 is used. Available values: and, or",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1
       }
     ],
     responses: [
@@ -1991,13 +2026,15 @@ defmodule BlockScoutWeb.Etherscan do
         key: "page",
         type: "integer",
         description:
-          "A nonnegative integer that represents the page number to be used for pagination. 'offset' must be provided in conjunction."
+          "A nonnegative integer that represents the page number to be used for pagination. 'offset' must be provided in conjunction.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1
       },
       %{
         key: "offset",
         type: "integer",
         description:
-          "A nonnegative integer that represents the maximum number of records to return when paginating. 'page' must be provided in conjunction."
+          "A nonnegative integer that represents the maximum number of records to return when paginating. 'page' must be provided in conjunction.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1
       }
     ],
     responses: [
@@ -2223,7 +2260,7 @@ defmodule BlockScoutWeb.Etherscan do
         placeholder: "request id",
         type: "integer",
         description: "A nonnegative integer that represents the json rpc request id.",
-        getRequiredParamsDescription: &__MODULE__.generateRequiredParamsDescription/1
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       }
     ],
     responses: [
@@ -2338,37 +2375,43 @@ defmodule BlockScoutWeb.Etherscan do
         key: "page",
         type: "integer",
         description:
-          "A nonnegative integer that represents the page number to be used for pagination. 'offset' must be provided in conjunction."
+          "A nonnegative integer that represents the page number to be used for pagination. 'offset' must be provided in conjunction.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       },
       %{
         key: "offset",
         type: "integer",
         description:
-          "A nonnegative integer that represents the maximum number of records to return when paginating. 'page' must be provided in conjunction."
+          "A nonnegative integer that represents the maximum number of records to return when paginating. 'page' must be provided in conjunction.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       },
       %{
         key: "filter",
         type: "string",
         description:
-          "verified|decompiled|unverified|not_decompiled|empty, or 1|2|3|4|5 respectively. This requests only contracts with that status."
+          "verified|decompiled|unverified|not_decompiled|empty, or 1|2|3|4|5 respectively. This requests only contracts with that status.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       },
       %{
         key: "not_decompiled_with_version",
         type: "string",
         description:
-          "Ensures that none of the returned contracts were decompiled with the provided version. Ignored unless filtering for decompiled contracts."
+          "Ensures that none of the returned contracts were decompiled with the provided version. Ignored unless filtering for decompiled contracts.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       },
       %{
         key: "verified_at_start_timestamp",
         type: "unix timestamp",
         description:
-          "Represents the starting timestamp when contracts verified. Taking into account only with `verified` filter."
+          "Represents the starting timestamp when contracts verified. Taking into account only with `verified` filter.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       },
       %{
         key: "verified_at_end_timestamp",
         type: "unix timestamp",
         description:
-          "Represents the ending timestamp when contracts verified. Taking into account only with `verified` filter."
+          "Represents the ending timestamp when contracts verified. Taking into account only with `verified` filter.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       }
     ],
     responses: [
@@ -2453,75 +2496,89 @@ defmodule BlockScoutWeb.Etherscan do
       %{
         key: "constructorArguments",
         type: "string",
-        description: "The constructor argument data provided."
+        description: "The constructor argument data provided.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       },
       %{
         key: "autodetectConstructorArguments",
         placeholder: false,
         type: "boolean",
-        description: "Whether or not automatically detect constructor argument."
+        description: "Whether or not automatically detect constructor argument.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       },
       %{
         key: "evmVersion",
         placeholder: "evmVersion",
         type: "string",
-        description: "The EVM version for the contract."
+        description: "The EVM version for the contract.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       },
       %{
         key: "optimizationRuns",
         placeholder: "optimizationRuns",
         type: "integer",
-        description: "The number of optimization runs used during compilation"
+        description: "The number of optimization runs used during compilation",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       },
       %{
         key: "library1Name",
         type: "string",
-        description: "The name of the first library used."
+        description: "The name of the first library used.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       },
       %{
         key: "library1Address",
         type: "string",
-        description: "The address of the first library used."
+        description: "The address of the first library used.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       },
       %{
         key: "library2Name",
         type: "string",
-        description: "The name of the second library used."
+        description: "The name of the second library used.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       },
       %{
         key: "library2Address",
         type: "string",
-        description: "The address of the second library used."
+        description: "The address of the second library used.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       },
       %{
         key: "library3Name",
         type: "string",
-        description: "The name of the third library used."
+        description: "The name of the third library used.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       },
       %{
         key: "library3Address",
         type: "string",
-        description: "The address of the third library used."
+        description: "The address of the third library used.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       },
       %{
         key: "library4Name",
         type: "string",
-        description: "The name of the fourth library used."
+        description: "The name of the fourth library used.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       },
       %{
         key: "library4Address",
         type: "string",
-        description: "The address of the fourth library used."
+        description: "The address of the fourth library used.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       },
       %{
         key: "library5Name",
         type: "string",
-        description: "The name of the fourth library used."
+        description: "The name of the fourth library used.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       },
       %{
         key: "library5Address",
         type: "string",
-        description: "The address of the fourth library used."
+        description: "The address of the fourth library used.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       }
     ],
     responses: [
@@ -2591,7 +2648,8 @@ defmodule BlockScoutWeb.Etherscan do
       %{
         key: "files",
         type: "file[]",
-        description: "Array with sources and metadata files"
+        description: "Array with sources and metadata files",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       }
     ],
     responses: [
@@ -2668,6 +2726,7 @@ defmodule BlockScoutWeb.Etherscan do
         key: "constructorArguments",
         type: "string",
         description: "The constructor argument data provided.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       }
     ],
     responses: [
@@ -2737,13 +2796,15 @@ defmodule BlockScoutWeb.Etherscan do
       %{
         key: "constructorArguements",
         type: "string",
-        description: "The constructor argument data provided."
+        description: "The constructor argument data provided.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       },
       %{
         key: "autodetectConstructorArguments",
         placeholder: false,
         type: "boolean",
-        description: "Whether or not automatically detect constructor argument."
+        description: "Whether or not automatically detect constructor argument.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       }
     ],
     responses: [
@@ -2877,7 +2938,8 @@ defmodule BlockScoutWeb.Etherscan do
       %{
         key: "index",
         type: "integer",
-        description: "A nonnegative integer that represents the log index to be used for pagination."
+        description: "A nonnegative integer that represents the log index to be used for pagination.",
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       }
     ],
     responses: [
@@ -3194,8 +3256,6 @@ defmodule BlockScoutWeb.Etherscan do
         gettext("A 160-bit code used for identifying contracts.")
       "totalfees-date" ->
         gettext("day in ISO 8601 format (yyyy-mm-dd)")
-      "eth_block_number-id" ->
-        gettext("A nonnegative integer that represents the json rpc request id.")
       "getblockreward-blockno" ->
         gettext("A nonnegative integer that represents the block number.")
       "getblocknobytime-timestamp" ->
@@ -3251,6 +3311,134 @@ defmodule BlockScoutWeb.Etherscan do
     case namespace do
       "eth_get_balance-block" ->
         gettext("Either the block number as a string, or one of latest, earliest or pending latest will be the latest balance in a *consensus* block. earliest will be the first recorded balance for the address. pending will be the latest balance in consensus *or* nonconcensus blocks.")
+      "pendingtxlist-page" ->
+        gettext("A nonnegative integer that represents the page number to be used for pagination. 'offset' must be provided in conjunction.")
+      "pendingtxlist-offset" ->
+        gettext("A nonnegative integer that represents the maximum number of records to return when paginating. 'page' must be provided in conjunction.")
+      "txlist-sort" ->
+        gettext("A string representing the order by block number direction. Defaults to descending order. Available values: asc, desc")
+      "txlist-start_block" ->
+        gettext("A nonnegative integer that represents the starting block number.")
+      "txlist-end_block" ->
+        gettext("A nonnegative integer that represents the ending block number.")
+      "txlist-page" ->
+        gettext("A nonnegative integer that represents the page number to be used for pagination. 'offset' must be provided in conjunction.")
+      "txlist-offset" ->
+        gettext("A nonnegative integer that represents the maximum number of records to return when paginating. 'page' must be provided in conjunction.")
+      "txlist-filter_by" ->
+        gettext("A string representing the field to filter by. If none is given it returns transactions that match to, from, or contract address. Available values: to, from")
+      "txlist-start_timestamp" ->
+        gettext("Represents the starting block timestamp.")
+      "txlist-end_timestamp" ->
+        gettext("Represents the ending block timestamp.")
+      "txlistinternal-address" ->
+        gettext("A 160-bit code used for identifying accounts. An address hash or transaction hash is required.")
+      "txlistinternal-sort" ->
+        gettext("A string representing the order by block number direction. Defaults to ascending order. Available values: asc, desc. WARNING: Only available if 'address' is provided.")
+      "txlistinternal-start_block" ->
+        gettext("A nonnegative integer that represents the starting block number. WARNING: Only available if 'address' is provided.")
+      "txlistinternal-end_block" ->
+        gettext("A nonnegative integer that represents the ending block number. WARNING: Only available if 'address' is provided.")
+      "txlistinternal-page" ->
+        gettext("A nonnegative integer that represents the page number to be used for pagination. 'offset' must be provided in conjunction. WARNING: Only available if 'address' is provided.")
+      "txlistinternal-offset" ->
+        gettext("A nonnegative integer that represents the maximum number of records to return when paginating. 'page' must be provided in conjunction. WARNING: Only available if 'address' is provided.")
+      "tokentx-contractaddress" ->
+        gettext("A 160-bit code used for identifying contracts.")
+      "tokentx-sort" ->
+        gettext("A string representing the order by block number direction. Defaults to ascending order. Available values: asc, desc")
+      "tokentx-start_block" ->
+        gettext("A nonnegative integer that represents the starting block number.")
+      "tokentx-end_block" ->
+        gettext("A nonnegative integer that represents the ending block number.")
+      "tokentx-page" ->
+        gettext("A nonnegative integer that represents the page number to be used for pagination. 'offset' must be provided in conjunction.")
+      "tokentx-offset" ->
+        gettext("A nonnegative integer that represents the maximum number of records to return when paginating. 'page' must be provided in conjunction.")
+      "getminedblocks-page" ->
+        gettext("A nonnegative integer that represents the page number to be used for pagination. 'offset' must be provided in conjunction.")
+      "getminedblocks-offset" ->
+        gettext("A nonnegative integer that represents the maximum number of records to return when paginating. 'page' must be provided in conjunction.")
+      "listaccounts-page" ->
+        gettext("A nonnegative integer that represents the page number to be used for pagination. 'offset' must be provided in conjunction.")
+      "listaccounts-offset" ->
+        gettext("A nonnegative integer that represents the maximum number of records to return when paginating. 'page' must be provided in conjunction.")
+      "getLogs-topic1" ->
+        gettext("A string equal to the second topic. A topic{x} and/or address is required.")
+      "getLogs-topic2" ->
+        gettext("A string equal to the third topic. A topic{x} and/or address is required.")
+      "getLogs-topic3" ->
+        gettext("A string equal to the fourth topic. A topic{x} and/or address is required.")
+      "getLogs-topic0_1_opr" ->
+        gettext("A string representing the and|or operator for topic0 and topic1. Required if topic0 and topic1 is used. Available values: and, or")
+      "getLogs-topic0_2_opr" ->
+        gettext("A string representing the and|or operator for topic0 and topic2. Required if topic0 and topic2 is used. Available values: and, or")
+      "getLogs-topic0_3_opr" ->
+        gettext("A string representing the and|or operator for topic0 and topic3. Required if topic0 and topic3 is used. Available values: and, or")
+      "getLogs-topic1_2_opr" ->
+        gettext("A string representing the and|or operator for topic1 and topic2. Required if topic1 and topic2 is used. Available values: and, or")
+      "getLogs-topic1_3_opr" ->
+        gettext("A string representing the and|or operator for topic1 and topic3. Required if topic1 and topic3 is used. Available values: and, or")
+      "getLogs-topic2_3_opr" ->
+        gettext("A string representing the and|or operator for topic2 and topic3. Required if topic2 and topic3 is used. Available values: and, or")
+      "getTokenHolders-page" ->
+        gettext("A nonnegative integer that represents the page number to be used for pagination. 'offset' must be provided in conjunction.")
+      "getTokenHolders-offset" ->
+        gettext("A nonnegative integer that represents the maximum number of records to return when paginating. 'page' must be provided in conjunction.")
+      "eth_block_number-id" ->
+        gettext("A nonnegative integer that represents the json rpc request id.")
+      "verify-constructorArguments" ->
+        gettext("The constructor argument data provided.")
+      "verify-autodetectConstructorArguments" ->
+        gettext("Whether or not automatically detect constructor argument.")
+      "verify-evmVersion" ->
+        gettext("The EVM version for the contract.")
+      "verify-optimizationRuns" ->
+        gettext("The number of optimization runs used during compilation")
+      "verify-library1Name" ->
+        gettext("The name of the first library used.")
+      "verify-library1Address" ->
+        gettext("The address of the first library used.")
+      "verify-library2Name" ->
+        gettext("The name of the second library used.")
+      "verify-library2Address" ->
+        gettext("The address of the second library used.")
+      "verify-library3Name" ->
+        gettext("The name of the third library used.")
+      "verify-library3Address" ->
+        gettext("The address of the third library used.")
+      "verify-library4Name" ->
+        gettext("The name of the fourth library used.")
+      "verify-library4Address" ->
+        gettext("The address of the fourth library used.")
+      "verify-library5Name" ->
+        gettext("The name of the fourth library used.")
+      "verify-library5Address" ->
+        gettext("The address of the fourth library used.")
+      "verify_via_sourcify-files" ->
+        gettext("Array with sources and metadata files")
+      "verify_vyper_contract-constructorArguments" ->
+        gettext("The constructor argument data provided.")
+      "verifysourcecode-constructorArguements" ->
+        gettext("The constructor argument data provided.")
+      "verifysourcecode-autodetectConstructorArguments" ->
+        gettext("Whether or not automatically detect constructor argument.")
+      "gettxinfo-index" ->
+        gettext("A nonnegative integer that represents the log index to be used for pagination.")
+      "listcontracts-page" ->
+        gettext("A nonnegative integer that represents the page number to be used for pagination. 'offset' must be provided in conjunction.")
+      "listcontracts-offset" ->
+        gettext("A nonnegative integer that represents the maximum number of records to return when paginating. 'page' must be provided in conjunction.")
+      "listcontracts-filter" ->
+        gettext("verified|decompiled|unverified|not_decompiled|empty, or 1|2|3|4|5 respectively. This requests only contracts with that status")
+      "listcontracts-not_decompiled_with_version" ->
+        gettext("Ensures that none of the returned contracts were decompiled with the provided version. Ignored unless filtering for decompiled contracts.")
+      "listcontracts-verified_at_start_timestamp" ->
+        gettext("Represents the starting timestamp when contracts verified. Taking into account only with `verified` filter.")
+      "listcontracts-verified_at_end_timestamp" ->
+        gettext("Represents the ending timestamp when contracts verified. Taking into account only with `verified` filter.")
+
+
     end
   end
 

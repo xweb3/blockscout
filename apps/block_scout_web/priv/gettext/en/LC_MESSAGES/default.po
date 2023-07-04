@@ -289,6 +289,7 @@ msgstr ""
 #: lib/block_scout_web/templates/address_internal_transaction/index.html.eex:26
 #: lib/block_scout_web/templates/address_token_transfer/index.html.eex:28
 #: lib/block_scout_web/templates/address_transaction/index.html.eex:22
+#: lib/block_scout_web/templates/l1_to_l2_txn/index.html.eex:16
 #: lib/block_scout_web/templates/l1_to_l2_txn/index.html.eex:63
 #: lib/block_scout_web/templates/verified_contracts/index.html.eex:20
 #: lib/block_scout_web/views/address_internal_transaction_view.ex:11
@@ -560,7 +561,7 @@ msgstr ""
 msgid "Chore Reward"
 msgstr ""
 
-#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:141
+#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:143
 #: lib/block_scout_web/templates/api_docs/_eth_rpc_item.html.eex:106
 #, elixir-autogen
 msgid "Clear"
@@ -576,8 +577,8 @@ msgid "Close"
 msgstr ""
 
 #: lib/block_scout_web/templates/address/_tabs.html.eex:73
-#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:169
-#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:191
+#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:171
+#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:193
 #: lib/block_scout_web/templates/api_docs/_eth_rpc_item.html.eex:126
 #: lib/block_scout_web/templates/api_docs/_eth_rpc_item.html.eex:149
 #: lib/block_scout_web/views/address_view.ex:373
@@ -1044,7 +1045,7 @@ msgstr ""
 msgid "Creator"
 msgstr ""
 
-#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:150
+#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:152
 #: lib/block_scout_web/templates/api_docs/_eth_rpc_item.html.eex:116
 #, elixir-autogen
 msgid "Curl"
@@ -1161,7 +1162,7 @@ msgid "Deployed ByteCode"
 msgstr ""
 
 #: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:55
-#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:192
+#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:194
 #: lib/block_scout_web/templates/api_docs/_eth_rpc_item.html.eex:60
 #: lib/block_scout_web/templates/api_docs/_eth_rpc_item.html.eex:150
 #, elixir-autogen
@@ -1174,7 +1175,7 @@ msgid "Description*"
 msgstr ""
 
 #: lib/block_scout_web/templates/address/overview.html.eex:30
-#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:170
+#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:172
 #: lib/block_scout_web/templates/api_docs/_eth_rpc_item.html.eex:127
 #, elixir-autogen
 msgid "Details"
@@ -1408,13 +1409,13 @@ msgstr ""
 msgid "Eth RPC"
 msgstr ""
 
-#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:215
+#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:217
 #: lib/block_scout_web/templates/api_docs/_eth_rpc_item.html.eex:164
 #, elixir-autogen
 msgid "Example Value"
 msgstr ""
 
-#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:132
+#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:134
 #: lib/block_scout_web/templates/api_docs/_eth_rpc_item.html.eex:99
 #, elixir-autogen
 msgid "Execute"
@@ -1967,7 +1968,7 @@ msgstr ""
 msgid "Minimum fee required per unit of gas. Fee adjusts based on network congestion."
 msgstr ""
 
-#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:227
+#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:229
 #, elixir-autogen
 msgid "Model"
 msgstr ""
@@ -2448,7 +2449,7 @@ msgstr ""
 msgid "Remove from Watch list"
 msgstr ""
 
-#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:159
+#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:161
 #, elixir-autogen
 msgid "Request URL"
 msgstr ""
@@ -2477,13 +2478,13 @@ msgstr ""
 msgid "Reset"
 msgstr ""
 
-#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:177
+#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:179
 #: lib/block_scout_web/templates/api_docs/_eth_rpc_item.html.eex:134
 #, elixir-autogen
 msgid "Response Body"
 msgstr ""
 
-#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:189
+#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:191
 #: lib/block_scout_web/templates/api_docs/_eth_rpc_item.html.eex:147
 #, elixir-autogen
 msgid "Responses"
@@ -2568,7 +2569,7 @@ msgstr ""
 msgid "Send request"
 msgstr ""
 
-#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:167
+#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:169
 #: lib/block_scout_web/templates/api_docs/_eth_rpc_item.html.eex:124
 #, elixir-autogen
 msgid "Server Response"
@@ -4405,16 +4406,22 @@ msgstr ""
 msgid "Txn Type"
 msgstr ""
 
+#: lib/block_scout_web/controllers/l1_to_l2_txn_controller.ex:106
+#: lib/block_scout_web/templates/l1_to_l2_txn/index.html.eex:12
 #: lib/block_scout_web/templates/l1_to_l2_txn/index.html.eex:66
 #, elixir-autogen
 msgid "User Deposit"
 msgstr ""
 
+#: lib/block_scout_web/controllers/l1_to_l2_txn_controller.ex:104
+#: lib/block_scout_web/templates/l1_to_l2_txn/index.html.eex:10
 #: lib/block_scout_web/templates/l1_to_l2_txn/index.html.eex:69
 #, elixir-autogen, fuzzy
 msgid "Tss Reward"
 msgstr ""
 
+#: lib/block_scout_web/controllers/l1_to_l2_txn_controller.ex:108
+#: lib/block_scout_web/templates/l1_to_l2_txn/index.html.eex:14
 #: lib/block_scout_web/templates/l1_to_l2_txn/index.html.eex:72
 #, elixir-autogen
 msgid "L2 Txn Rollback"
@@ -4574,15 +4581,17 @@ msgstr ""
 msgid "Hide Details"
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3086
+#: lib/block_scout_web/etherscan.ex:3143
 #, elixir-autogen
 msgid "Mimics Ethereum JSON RPC's eth_getBalance. Returns the balance as of the provided block (defaults to latest)"
 msgstr ""
 
+#: lib/block_scout_web/etherscan.ex:3307
+#, elixir-autogen
 msgid "Either the block number as a string, or one of latest, earliest or pending latest will be the latest balance in a *consensus* block. earliest will be the first recorded balance for the address. pending will be the latest balance in consensus *or* nonconcensus blocks."
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3088
+#: lib/block_scout_web/etherscan.ex:3145
 #, elixir-autogen
 msgid "Get balance for address. Also available through a GraphQL 'addresses' query. If the balance hasn't been updated in a long time, we will double check with the node to fetch the absolute latest balance. This will not be reflected in the current request, but once it is updated, subsequent requests will show the updated balance. If you want to know whether or not we are checking for another balance, use the `balancemulti` action. That contains a property called `stale` that will let you know to recheck that balance in the near future."
 msgstr ""
@@ -4645,112 +4654,112 @@ msgstr ""
 msgid "Found {number} matching results for "
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3090
+#: lib/block_scout_web/etherscan.ex:3147
 #, elixir-autogen
 msgid "Get balance for multiple addresses. Also available through a GraphQL 'addresses' query. If the balance hasn't been updated in a long time, we will double check with the node to fetch the absolute latest balance. This will not be reflected in the current request, but once it is updated, subsequent requests will show the updated balance. You can know that this is taking place via the `stale` attribute, which is set to `true` if a new balance is being fetched."
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3092
+#: lib/block_scout_web/etherscan.ex:3149
 #, elixir-autogen
 msgid "Get pending transactions by address."
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3094
+#: lib/block_scout_web/etherscan.ex:3151
 #, elixir-autogen
 msgid "Get transactions by address. Up to a maximum of 10,000 transactions. Also available through a GraphQL 'address' query."
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3096
+#: lib/block_scout_web/etherscan.ex:3153
 #, elixir-autogen
 msgid "Get internal transactions by transaction or address hash. Up to a maximum of 10,000 internal transactions. Also available through a GraphQL 'transaction' query."
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3098
+#: lib/block_scout_web/etherscan.ex:3155
 #, elixir-autogen
 msgid "Get token transfer events by address. Up to a maximum of 10,000 token transfer events. Also available through a GraphQL 'token_transfers' query."
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3100
+#: lib/block_scout_web/etherscan.ex:3157
 #, elixir-autogen
 msgid "Get token account balance for token contract address."
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3102
+#: lib/block_scout_web/etherscan.ex:3159
 #, elixir-autogen
 msgid "Get list of tokens owned by address."
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3104
+#: lib/block_scout_web/etherscan.ex:3161
 #, elixir-autogen
 msgid "Get list of blocks mined by address."
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3106
+#: lib/block_scout_web/etherscan.ex:3163
 #, elixir-autogen
 msgid "Get a list of accounts and their balances, sorted ascending by the time they were first seen by the explorer."
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3108
+#: lib/block_scout_web/etherscan.ex:3165
 #, elixir-autogen
 msgid "Get event logs for an address and/or topics. Up to a maximum of 1,000 event logs."
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3110
+#: lib/block_scout_web/etherscan.ex:3167
 #, elixir-autogen
 msgid "Get <a href='https://github.com/ethereum/EIPs/issues/20'>ERC-20</a> or <a href='https://github.com/ethereum/EIPs/issues/721'>ERC-721</a> token by contract address."
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3112
+#: lib/block_scout_web/etherscan.ex:3169
 #, elixir-autogen
 msgid "Get token holders by contract address."
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3114
+#: lib/block_scout_web/etherscan.ex:3171
 #, elixir-autogen
 msgid "Get <a href='https://github.com/ethereum/EIPs/issues/20'>ERC-20</a> or <a href='https://github.com/ethereum/EIPs/issues/721'>ERC-721</a> token total supply by contract address."
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3116
+#: lib/block_scout_web/etherscan.ex:3173
 #, elixir-autogen
 msgid "Get total supply in Wei from exchange."
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3118
+#: lib/block_scout_web/etherscan.ex:3175
 #, elixir-autogen
 msgid "Get total supply in Wei from DB."
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3120
+#: lib/block_scout_web/etherscan.ex:3177
 #, elixir-autogen
 msgid "Get total coin supply from DB minus burnt number."
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3122
+#: lib/block_scout_web/etherscan.ex:3179
 #, elixir-autogen
 msgid "Get latest price of native coin in USD and BTC."
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3124
+#: lib/block_scout_web/etherscan.ex:3181
 #, elixir-autogen
 msgid "Gets total transaction fees in Wei are paid by users to validators per day."
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3126
+#: lib/block_scout_web/etherscan.ex:3183
 #, elixir-autogen
 msgid "Mimics Ethereum JSON RPC's eth_blockNumber. Returns the lastest block number"
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3128
+#: lib/block_scout_web/etherscan.ex:3185
 #, elixir-autogen
 msgid "Get block reward by block number."
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3130
+#: lib/block_scout_web/etherscan.ex:3187
 #, elixir-autogen
 msgid "Get Block Number by Timestamp."
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3132
+#: lib/block_scout_web/etherscan.ex:3189
 #, elixir-autogen
 msgid "Get a list of contracts, sorted ascending by the time they were first seen by the explorer. If you provide the filters `not_decompiled`(`4`) or `not_verified(4)` the results will not be sorted for performance reasons."
 msgstr ""
@@ -4789,22 +4798,22 @@ msgstr ""
 msgid "Waiting for relay"
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3134
+#: lib/block_scout_web/etherscan.ex:3191
 #, elixir-autogen
 msgid "Get ABI for verified contract. Also available through a GraphQL 'addresses' query."
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3138
+#: lib/block_scout_web/etherscan.ex:3195
 #, elixir-autogen
 msgid "Get transaction info."
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3140
+#: lib/block_scout_web/etherscan.ex:3197
 #, elixir-autogen
 msgid "Get transaction receipt status. Also available through a GraphQL 'transaction' query."
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3142
+#: lib/block_scout_web/etherscan.ex:3199
 #, elixir-autogen
 msgid "Get error status and error message. Also available through a GraphQL 'transaction' query."
 msgstr ""
@@ -4815,172 +4824,410 @@ msgstr ""
 msgid "Display with gwei on Mantle, converted from L1 gas price"
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3136
+#: lib/block_scout_web/etherscan.ex:3193
 #, elixir-autogen
 msgid "Get contract source code for verified contract. Also available through a GraphQL 'addresses' query."
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3146
+#: lib/block_scout_web/etherscan.ex:3203
 #, elixir-autogen
 msgid "Verify a contract through <a href=\"https://sourcify.dev\">Sourcify</a>.<br/> a) if smart-contract already verified on Sourcify, it will automatically fetch the data from the <a href=\"https://repo.sourcify.dev\">repo</a><br/> b) otherwise you have to upload source files and JSON metadata file(s). <br/> <br/> <p class=\"api-doc-list-item-text\">POST body example:</p> <br/> <div class='tab-content'> <div class='tab-pane fade show active'> <div class=\"tile tile-muted p-1\"> <div class=\"m-2\"> --6e1e4c11657c62dc1e4349d024de9e28<br/> Content-Disposition: form-data; name=\"addressHash\"<br/> <br/> 0xb77b7443e0F32F1FEBf0BE0fBd7124D135d0a525<br/> <br/> --6e1e4c11657c62dc1e4349d024de9e28<br/> Content-Disposition: form-data; name=\"files[0]\"; filename=\"contract.sol\"<br/> Content-Type: application/json<br/> <br/> ...Source code...<br/> <br/> --6e1e4c11657c62dc1e4349d024de9e28<br/> Content-Disposition: form-data; name=\"files[1]\"; filename=\"metadata.json\"<br/> Content-Type: application/json<br/> <br/> ...JSON metadata...<br/> <br/> --6e1e4c11657c62dc1e4349d024de9e28--<br/> </pre> </div> </div> </div>"
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3148
+#: lib/block_scout_web/etherscan.ex:3205
 #, elixir-autogen, fuzzy
 msgid "Verify a vyper contract with its source code and contract creation information. <br/> <br/> <p class=\"api-doc-list-item-text\">curl POST example:</p> <br/> <div class='tab-content'> <div class='tab-pane fade show active'> <div class=\"tile tile-muted p-1\"> <div class=\"m-2\"> curl --location --request POST 'http://localhost:4000/api?module=contract&action=verify_vyper_contract' --form 'contractSourceCode=\"SOURCE_CODE\"' --form 'name=\"Vyper_contract\"' --form 'addressHash=\"0xE60B1B8bD493569a3E945be50A6c89d29a560Fa1\"' --form 'compilerVersion=\"v0.2.12\"' </pre> </div> </div> </div>"
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3150
+#: lib/block_scout_web/etherscan.ex:3207
 #, elixir-autogen
 msgid "Verify a contract with Standard input JSON file. Its interface the same as <a href=\"https://docs.etherscan.io/tutorials/verifying-contracts-programmatically\">Etherscan</a>'s API endpoint <br/> <br/>"
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3152
+#: lib/block_scout_web/etherscan.ex:3209
 #, elixir-autogen
 msgid "Return status of the verification attempt (works in addition to verifysourcecode method)"
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3159
+#: lib/block_scout_web/etherscan.ex:3216
 #, elixir-autogen
 msgid "The address of the account."
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3144
+#: lib/block_scout_web/etherscan.ex:3201
 #, elixir-autogen, elixir-format
 msgid "Verify a contract with its source code and contract creation information. <br/> <br/> <p class=\"api-doc-list-item-text\">curl POST example:</p> <br/> <div class='tab-content'> <div class='tab-pane fade show active'> <div class=\"tile tile-muted p-1\"> <div class=\"m-2\"> curl -d '{\"addressHash\":\"0xc63BB6555C90846afACaC08A0F0Aa5caFCB382a1\",\"compilerVersion\":\"v0.5.4+commit.9549d8ff\", \"contractSourceCode\":\"pragma solidity ^0.5.4; \ncontract Test {\n}\",\"name\":\"Test\",\"optimization\":false}' -H \"Content-Type: application/json\" -X POST  \"https://blockscout.com/poa/sokol/api?module=contract&action=verify\" </pre> </div> </div> </div>"
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3161
-#: lib/block_scout_web/etherscan.ex:3165
-#: lib/block_scout_web/etherscan.ex:3167
-#: lib/block_scout_web/etherscan.ex:3171
-#: lib/block_scout_web/etherscan.ex:3175
-#: lib/block_scout_web/etherscan.ex:3177
-#: lib/block_scout_web/etherscan.ex:3179
+#: lib/block_scout_web/etherscan.ex:3218
+#: lib/block_scout_web/etherscan.ex:3222
+#: lib/block_scout_web/etherscan.ex:3224
+#: lib/block_scout_web/etherscan.ex:3228
+#: lib/block_scout_web/etherscan.ex:3232
+#: lib/block_scout_web/etherscan.ex:3234
+#: lib/block_scout_web/etherscan.ex:3236
 #, elixir-autogen
 msgid "A 160-bit code used for identifying accounts."
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3163
+#: lib/block_scout_web/etherscan.ex:3220
 #, elixir-autogen
 msgid "A 160-bit code used for identifying accounts. Separate addresses by comma. Maximum of 20 addresses."
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3169
+#: lib/block_scout_web/etherscan.ex:3226
 #, elixir-autogen
 msgid "Transaction hash. Hash of contents of the transaction. A transaction hash or address hash is required."
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3181
+#: lib/block_scout_web/etherscan.ex:3238
 #, elixir-autogen
 msgid "A nonnegative integer that represents the starting block number. The use of 'latest' is also supported."
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3183
+#: lib/block_scout_web/etherscan.ex:3240
 #, elixir-autogen
 msgid "A nonnegative integer that represents the ending block number. The use of 'latest' is also supported."
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3185
+#: lib/block_scout_web/etherscan.ex:3242
 #, elixir-autogen
 msgid "A 160-bit code used for identifying contracts. An address and/or topic{x} is required."
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3187
+#: lib/block_scout_web/etherscan.ex:3244
 #, elixir-autogen
 msgid "A string equal to the first topic. A topic{x} and/or address is required."
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3173
-#: lib/block_scout_web/etherscan.ex:3189
-#: lib/block_scout_web/etherscan.ex:3191
-#: lib/block_scout_web/etherscan.ex:3193
-#: lib/block_scout_web/etherscan.ex:3237
-#: lib/block_scout_web/etherscan.ex:3239
+#: lib/block_scout_web/etherscan.ex:3230
+#: lib/block_scout_web/etherscan.ex:3246
+#: lib/block_scout_web/etherscan.ex:3248
+#: lib/block_scout_web/etherscan.ex:3250
+#: lib/block_scout_web/etherscan.ex:3292
+#: lib/block_scout_web/etherscan.ex:3294
+#: lib/block_scout_web/etherscan.ex:3341
 #, elixir-autogen
 msgid "A 160-bit code used for identifying contracts."
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3195
+#: lib/block_scout_web/etherscan.ex:3252
 #, elixir-autogen
 msgid "day in ISO 8601 format (yyyy-mm-dd)"
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3197
+#: lib/block_scout_web/etherscan.ex:3383
 #, elixir-autogen
 msgid "A nonnegative integer that represents the json rpc request id."
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3199
+#: lib/block_scout_web/etherscan.ex:3254
 #, elixir-autogen
 msgid "A nonnegative integer that represents the block number."
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3201
+#: lib/block_scout_web/etherscan.ex:3256
 #, elixir-autogen
 msgid "A nonnegative integer that represents the block timestamp (Unix timestamp in seconds)."
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3203
+#: lib/block_scout_web/etherscan.ex:3258
 #, elixir-autogen
 msgid "Direction to find the closest block number to given timestamp. Available values: before/after."
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3205
-#: lib/block_scout_web/etherscan.ex:3215
-#: lib/block_scout_web/etherscan.ex:3217
-#: lib/block_scout_web/etherscan.ex:3227
+#: lib/block_scout_web/etherscan.ex:3260
+#: lib/block_scout_web/etherscan.ex:3270
+#: lib/block_scout_web/etherscan.ex:3272
+#: lib/block_scout_web/etherscan.ex:3282
 #, elixir-autogen, fuzzy
 msgid "The address of the contract."
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3207
-#: lib/block_scout_web/etherscan.ex:3219
+#: lib/block_scout_web/etherscan.ex:3262
+#: lib/block_scout_web/etherscan.ex:3274
 #, elixir-autogen, fuzzy
 msgid "The name of the contract."
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3209
-#: lib/block_scout_web/etherscan.ex:3221
-#: lib/block_scout_web/etherscan.ex:3231
+#: lib/block_scout_web/etherscan.ex:3264
+#: lib/block_scout_web/etherscan.ex:3276
+#: lib/block_scout_web/etherscan.ex:3286
 #, elixir-autogen
 msgid "The compiler version for the contract."
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3211
+#: lib/block_scout_web/etherscan.ex:3266
 #, elixir-autogen
 msgid "Whether or not compiler optimizations were enabled."
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3213
-#: lib/block_scout_web/etherscan.ex:3223
+#: lib/block_scout_web/etherscan.ex:3268
+#: lib/block_scout_web/etherscan.ex:3278
 #, elixir-autogen
 msgid "The source code of the contract."
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3225
+#: lib/block_scout_web/etherscan.ex:3280
 #, elixir-autogen
 msgid "Format of sourceCode(supported only \"solidity-standard-json-input\")"
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3229
+#: lib/block_scout_web/etherscan.ex:3284
 #, elixir-autogen
 msgid "The name of the contract. It could be empty string(\"\"), just contract name(\"ContractName\"), or filename and contract name(\"contracts/contract_1.sol:ContractName\")"
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3235
+#: lib/block_scout_web/etherscan.ex:3290
 #, elixir-autogen
 msgid "A string used for identifying verification attempt"
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3241
-#: lib/block_scout_web/etherscan.ex:3243
-#: lib/block_scout_web/etherscan.ex:3245
+#: lib/block_scout_web/etherscan.ex:3296
+#: lib/block_scout_web/etherscan.ex:3298
+#: lib/block_scout_web/etherscan.ex:3300
 #, elixir-autogen
 msgid "Transaction hash. Hash of contents of the transaction."
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3233
+#: lib/block_scout_web/etherscan.ex:3288
 #, elixir-autogen, elixir-format, fuzzy
 msgid "Standard input json"
+msgstr ""
+
+#: lib/block_scout_web/etherscan.ex:3309
+#: lib/block_scout_web/etherscan.ex:3319
+#: lib/block_scout_web/etherscan.ex:3349
+#: lib/block_scout_web/etherscan.ex:3353
+#: lib/block_scout_web/etherscan.ex:3357
+#: lib/block_scout_web/etherscan.ex:3379
+#, elixir-autogen
+msgid "A nonnegative integer that represents the page number to be used for pagination. 'offset' must be provided in conjunction."
+msgstr ""
+
+#: lib/block_scout_web/etherscan.ex:3311
+#: lib/block_scout_web/etherscan.ex:3321
+#: lib/block_scout_web/etherscan.ex:3351
+#: lib/block_scout_web/etherscan.ex:3355
+#: lib/block_scout_web/etherscan.ex:3359
+#: lib/block_scout_web/etherscan.ex:3381
+#, elixir-autogen
+msgid "A nonnegative integer that represents the maximum number of records to return when paginating. 'page' must be provided in conjunction."
+msgstr ""
+
+#: lib/block_scout_web/etherscan.ex:3313
+#, elixir-autogen
+msgid "A string representing the order by block number direction. Defaults to descending order. Available values: asc, desc"
+msgstr ""
+
+#: lib/block_scout_web/etherscan.ex:3315
+#: lib/block_scout_web/etherscan.ex:3345
+#, elixir-autogen
+msgid "A nonnegative integer that represents the starting block number."
+msgstr ""
+
+#: lib/block_scout_web/etherscan.ex:3317
+#: lib/block_scout_web/etherscan.ex:3347
+#, elixir-autogen
+msgid "A nonnegative integer that represents the ending block number."
+msgstr ""
+
+#: lib/block_scout_web/etherscan.ex:3323
+#, elixir-autogen
+msgid "A string representing the field to filter by. If none is given it returns transactions that match to, from, or contract address. Available values: to, from"
+msgstr ""
+
+#: lib/block_scout_web/etherscan.ex:3325
+#, elixir-autogen
+msgid "Represents the starting block timestamp."
+msgstr ""
+
+#: lib/block_scout_web/etherscan.ex:3327
+#, elixir-autogen
+msgid "Represents the ending block timestamp."
+msgstr ""
+
+#: lib/block_scout_web/etherscan.ex:3329
+#, elixir-autogen
+msgid "A 160-bit code used for identifying accounts. An address hash or transaction hash is required."
+msgstr ""
+
+#: lib/block_scout_web/etherscan.ex:3331
+#, elixir-autogen
+msgid "A string representing the order by block number direction. Defaults to ascending order. Available values: asc, desc. WARNING: Only available if 'address' is provided."
+msgstr ""
+
+#: lib/block_scout_web/etherscan.ex:3333
+#, elixir-autogen
+msgid "A nonnegative integer that represents the starting block number. WARNING: Only available if 'address' is provided."
+msgstr ""
+
+#: lib/block_scout_web/etherscan.ex:3335
+#, elixir-autogen
+msgid "A nonnegative integer that represents the ending block number. WARNING: Only available if 'address' is provided."
+msgstr ""
+
+#: lib/block_scout_web/etherscan.ex:3337
+#, elixir-autogen
+msgid "A nonnegative integer that represents the page number to be used for pagination. 'offset' must be provided in conjunction. WARNING: Only available if 'address' is provided."
+msgstr ""
+
+#: lib/block_scout_web/etherscan.ex:3339
+#, elixir-autogen
+msgid "A nonnegative integer that represents the maximum number of records to return when paginating. 'page' must be provided in conjunction. WARNING: Only available if 'address' is provided."
+msgstr ""
+
+#: lib/block_scout_web/etherscan.ex:3343
+#, elixir-autogen
+msgid "A string representing the order by block number direction. Defaults to ascending order. Available values: asc, desc"
+msgstr ""
+
+#: lib/block_scout_web/etherscan.ex:3361
+#, elixir-autogen
+msgid "A string equal to the second topic. A topic{x} and/or address is required."
+msgstr ""
+
+#: lib/block_scout_web/etherscan.ex:3365
+#, elixir-autogen
+msgid "A string equal to the fourth topic. A topic{x} and/or address is required."
+msgstr ""
+
+#: lib/block_scout_web/etherscan.ex:3363
+#, elixir-autogen
+msgid "A string equal to the third topic. A topic{x} and/or address is required."
+msgstr ""
+
+#: lib/block_scout_web/etherscan.ex:3367
+#, elixir-autogen
+msgid "A string representing the and|or operator for topic0 and topic1. Required if topic0 and topic1 is used. Available values: and, or"
+msgstr ""
+
+#: lib/block_scout_web/etherscan.ex:3369
+#, elixir-autogen
+msgid "A string representing the and|or operator for topic0 and topic2. Required if topic0 and topic2 is used. Available values: and, or"
+msgstr ""
+
+#: lib/block_scout_web/etherscan.ex:3371
+#, elixir-autogen
+msgid "A string representing the and|or operator for topic0 and topic3. Required if topic0 and topic3 is used. Available values: and, or"
+msgstr ""
+
+#: lib/block_scout_web/etherscan.ex:3373
+#, elixir-autogen
+msgid "A string representing the and|or operator for topic1 and topic2. Required if topic1 and topic2 is used. Available values: and, or"
+msgstr ""
+
+msgid " string representing the and|or operator for topic1 and topic3. Required if topic1 and topic3 is used. Available values: and, or"
+msgstr ""
+
+#: lib/block_scout_web/etherscan.ex:3375
+#, elixir-autogen
+msgid "A string representing the and|or operator for topic1 and topic3. Required if topic1 and topic3 is used. Available values: and, or"
+msgstr ""
+
+#: lib/block_scout_web/etherscan.ex:3377
+#, elixir-autogen
+msgid "A string representing the and|or operator for topic2 and topic3. Required if topic2 and topic3 is used. Available values: and, or"
+msgstr ""
+
+#: lib/block_scout_web/etherscan.ex:3385
+#: lib/block_scout_web/etherscan.ex:3415
+#: lib/block_scout_web/etherscan.ex:3417
+#, elixir-autogen
+msgid "The constructor argument data provided."
+msgstr ""
+
+#: lib/block_scout_web/etherscan.ex:3387
+#: lib/block_scout_web/etherscan.ex:3419
+#, elixir-autogen
+msgid "Whether or not automatically detect constructor argument."
+msgstr ""
+
+#: lib/block_scout_web/etherscan.ex:3389
+#, elixir-autogen
+msgid "The EVM version for the contract."
+msgstr ""
+
+#: lib/block_scout_web/etherscan.ex:3391
+#, elixir-autogen
+msgid "The number of optimization runs used during compilation"
+msgstr ""
+
+#: lib/block_scout_web/etherscan.ex:3393
+#, elixir-autogen
+msgid "The name of the first library used."
+msgstr ""
+
+#: lib/block_scout_web/etherscan.ex:3395
+#, elixir-autogen
+msgid "The address of the first library used."
+msgstr ""
+
+#: lib/block_scout_web/etherscan.ex:3397
+#, elixir-autogen
+msgid "The name of the second library used."
+msgstr ""
+
+#: lib/block_scout_web/etherscan.ex:3399
+#, elixir-autogen
+msgid "The address of the second library used."
+msgstr ""
+
+#: lib/block_scout_web/etherscan.ex:3401
+#, elixir-autogen
+msgid "The name of the third library used."
+msgstr ""
+
+#: lib/block_scout_web/etherscan.ex:3403
+#, elixir-autogen
+msgid "The address of the third library used."
+msgstr ""
+
+#: lib/block_scout_web/etherscan.ex:3405
+#: lib/block_scout_web/etherscan.ex:3409
+#, elixir-autogen
+msgid "The name of the fourth library used."
+msgstr ""
+
+#: lib/block_scout_web/etherscan.ex:3407
+#: lib/block_scout_web/etherscan.ex:3411
+#, elixir-autogen
+msgid "The address of the fourth library used."
+msgstr ""
+
+#: lib/block_scout_web/etherscan.ex:3413
+#, elixir-autogen
+msgid "Array with sources and metadata files"
+msgstr ""
+
+#: lib/block_scout_web/etherscan.ex:3421
+#, elixir-autogen
+msgid "A nonnegative integer that represents the log index to be used for pagination."
+msgstr ""
+
+msgid "verified|decompiled|unverified|not_decompiled|empty, or 1|2|3|4|5 respectively. This requests only contracts with that status"
+msgstr ""
+
+msgid "Ensures that none of the returned contracts were decompiled with the provided version. Ignored unless filtering for decompiled contracts."
+msgstr ""
+
+msgid "Represents the starting timestamp when contracts verified. Taking into account only with `verified` filter."
+msgstr ""
+
+msgid "Represents the ending timestamp when contracts verified. Taking into account only with `verified` filter."
+msgstr ""
+
+msgid "The `earliest` parameter will not work as expected currently, because genesis block balances are not currently imported"
+msgstr ""
+
+msgid "Will never return more than 1000 log entries. For this reason, you can use pagination options to request the next page. Pagination options params: {\"logIndex\": \"3D\", \"blockNumber\": \"6423AC\", \"transactionIndex\": 53} which include parameters from the last log received from the previous request. These three parameters are required for pagination."
+msgstr ""
+
+msgid "The filter options"
+msgstr ""
+
+msgid "20 Bytes - address to check for balance"
+msgstr ""
+
+msgid "Integer block number, or the string \"latest\", \"earliest\" or \"pending\""
 msgstr ""
