@@ -9,22 +9,12 @@ defmodule BlockScoutWeb.AddressWithdrawController do
   alias Phoenix.View
 require Logger
   import BlockScoutWeb.Chain,
-    only: [current_filter: 1, next_page_params: 3, paging_options: 1, split_list_by_page: 1]
+    only: [fetch_page_number: 1, update_page_parameters: 3, current_filter: 1, next_page_params: 3, paging_options: 1, split_list_by_page: 1]
     import BlockScoutWeb.Account.AuthController, only: [current_user: 1]
     import BlockScoutWeb.Models.GetAddressTags, only: [get_address_tags: 2]
 
   @transaction_necessity_by_association [
     necessity_by_association: %{
-      [created_contract_address: :names] => :optional,
-      [from_address: :names] => :optional,
-      [to_address: :names] => :optional,
-      [created_contract_address: :smart_contract] => :optional,
-      [from_address: :smart_contract] => :optional,
-      [to_address: :smart_contract] => :optional,
-      [token_transfers: :token] => :optional,
-      [token_transfers: :to_address] => :optional,
-      [token_transfers: :from_address] => :optional,
-      [token_transfers: :token_contract_address] => :optional,
       :block => :required
     }
   ]
@@ -42,32 +32,71 @@ require Logger
     with {:ok, address_hash} <- Chain.string_to_address_hash(address_hash_string),
          {:ok, address} <- Chain.hash_to_address(address_hash),
          {:ok, false} <- AccessHelpers.restricted_access?(address_hash_string, params) do
+
+
       options =
         @transaction_necessity_by_association
         |> Keyword.merge(paging_options(params))
-        |> Keyword.merge(current_filter(params))
-        {:ok, burn_address_hash} = Chain.string_to_address_hash("0x0000000000000000000000000000000000000000")
-      transactions =
+
+      full_options =
+        options
+        |> Keyword.put(
+          :paging_options,
+          params
+          |> fetch_page_number()
+          |> update_page_parameters(Chain.default_page_size(), Keyword.get(options, :paging_options))
+        )
+
+
+      {:ok, burn_address_hash} = Chain.string_to_address_hash("0x0000000000000000000000000000000000000000")
+      %{withdraw_count: withdraw_count, transactions: transactions} =
         Chain.address_withdraw_transactions(
           address_hash,
           address_hash_string,
           burn_address_hash,
-          options
+          full_options
         )
-      {transactions_paginated, next_page} = split_list_by_page(transactions)
+
+
+      {transactions_paginated, next_page} =
+      if fetch_page_number(params) == 1 do
+        split_list_by_page(transactions)
+      else
+        {transactions, nil}
+      end
+      a = fetch_page_number(params)
+      Logger.info("----------")
+      Logger.info("#{inspect(length(transactions))}")
+      Logger.info("#{inspect(next_page)}")
 
       next_page_path =
-        case next_page_params(next_page, transactions_paginated, params) do
-          nil ->
-            nil
+        if fetch_page_number(params) == 1 do
+          page_size = Chain.default_page_size()
+          pages_limit = withdraw_count |> Kernel./(page_size) |> Float.ceil() |> trunc()
 
-          next_page_params ->
-            address_withdraw_path(
-              conn,
-              :index,
-              address_hash_string,
-              Map.delete(next_page_params, "type")
-            )
+          case next_page_params(next_page, transactions_paginated, params) do
+            nil ->
+              nil
+
+              next_page_params ->
+                p = next_page_params
+                |> Map.delete("type")
+                |> Map.delete("items_count")
+                |> Map.delete("index")
+                |> Map.put("pages_limit", pages_limit)
+                |> Map.put("page_size", page_size)
+                |> Map.put("page_number", 1)
+
+
+                address_withdraw_path(
+                  conn,
+                  :index,
+                  address_hash_string,
+                  p
+                )
+          end
+        else
+          Map.delete(params, "type")
         end
 
       transfers_json =

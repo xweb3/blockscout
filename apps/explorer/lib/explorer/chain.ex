@@ -604,7 +604,11 @@ defmodule Explorer.Chain do
     |> Repo.all()
   end
 
-  @spec address_withdraw_transactions(Hash.Address.t(),Hash.Address.t(), Keyword.t()) :: [Transaction.t()]
+
+  @spec address_withdraw_transactions(Hash.Address.t(),Hash.Address.t(), Keyword.t()) :: %{
+    :withdraw_count => non_neg_integer(),
+    :transactions => [Transaction.t()]
+  }
   def address_withdraw_transactions(address_hash, address_string, burn_address_hash, options \\ []) do
     paging_options = Keyword.get(options, :paging_options, @default_paging_options)
     list = address_withdraw_list(address_string, options)
@@ -616,10 +620,20 @@ defmodule Explorer.Chain do
           nil
       end
     end)
-
-    Transaction.transactions_withdraw(address_hash, burn_address_hash, hash_list)
+    transactions = Transaction.transactions_withdraw(address_hash, burn_address_hash, hash_list)
     |> Transaction.preload_token_transfers(address_hash)
     |> Repo.all()
+
+    l2_to_l1_count = address_withdraw_count(address_string)
+    %{withdraw_count: l2_to_l1_count, transactions: transactions}
+
+  end
+
+  def address_withdraw_count(address_string) do
+    L2ToL1
+    |> where([l2_to_l1], l2_to_l1.from == ^address_string)
+    |> limit(^@limit_showing_transactions)
+    |> Repo.aggregate(:count, :msg_nonce)
   end
 
   defp address_withdraw_list(address_string, options) do
@@ -627,8 +641,8 @@ defmodule Explorer.Chain do
 
     L2ToL1
     |> order_by([l2_to_l1], desc: l2_to_l1.msg_nonce)
-    |> where([l2_to_l1], l2_to_l1.from_address == ^address_string)
-    |> handle_paging_options(paging_options)
+    |> where([l2_to_l1], l2_to_l1.from == ^address_string)
+    |> no_cache_handle_options(paging_options)
     |> Repo.all()
   end
 
@@ -5105,6 +5119,9 @@ defmodule Explorer.Chain do
   defp no_cache_handle_page(query, paging_options) do
     page_number = paging_options |> Map.get(:page_number, 1) |> proccess_page_number()
     page_size = Map.get(paging_options, :page_size, @default_page_size)
+    Logger.info("-----------2222-")
+    Logger.info("#{inspect(page_number)}")
+    Logger.info("#{inspect(page_size)}")
     cond do
       page_in_bounds?(page_number, page_size) && page_number == 1 ->
         query

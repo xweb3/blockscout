@@ -38,7 +38,7 @@ defmodule BlockScoutWeb.Chain do
   }
 
   alias Explorer.PagingOptions
-
+require Logger
   defimpl Poison.Encoder, for: Decimal do
     def encode(value, _opts) do
       # silence the xref warning
@@ -104,6 +104,8 @@ defmodule BlockScoutWeb.Chain do
   def next_page_params(_, list, params) do
     next_page_params = Map.merge(params, paging_params(List.last(list)))
     current_items_count_str = Map.get(next_page_params, "items_count")
+    Logger.info("---=0-0-0-0-")
+    Logger.info("#{inspect(current_items_count_str)}")
 
     items_count =
       if current_items_count_str do

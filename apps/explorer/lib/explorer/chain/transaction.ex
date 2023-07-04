@@ -787,7 +787,7 @@ defmodule Explorer.Chain.Transaction do
       on: t.hash == tt.transaction_hash,
       where: t.hash in ^hash_list,
       where: tt.to_address_hash == ^address_hash,
-      where: tt.from_address_hash == ^burn_address_hash,
+      #where: tt.from_address_hash == ^burn_address_hash,
       distinct: :hash
     )
 
@@ -805,7 +805,7 @@ defmodule Explorer.Chain.Transaction do
       on: t.hash == tt.transaction_hash,
       where: t.hash in ^hash_list,
       where: tt.from_address_hash == ^address_hash,
-      where: tt.to_address_hash == ^burn_address_hash,
+      #where: tt.to_address_hash == ^burn_address_hash,
       distinct: :hash
     )
 

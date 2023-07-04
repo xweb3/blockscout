@@ -51,10 +51,10 @@ export class L2IngestionService {
       configService.get('L2_CROSS_DOMAIN_MESSENGER_ADDRESS'),
     );
     this.web3 = web3;
-    if(configService.get('ENV') !== 'mainnet'){
+    /* if(configService.get('ENV') !== 'mainnet'){
       this.WithdrawalMethod = 'finalizeBitWithdrawal'
       this.WithdrawalMethodHexPrefix = '0x839f0ec6'
-    }
+    } */
   }
   async getSentMessageByBlockNumber(fromBlock: number, toBlock: number) {
     return this.crossDomainMessengerContract.getPastEvents('SentMessage', {
