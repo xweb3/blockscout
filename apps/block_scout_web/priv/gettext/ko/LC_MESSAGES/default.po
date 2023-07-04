@@ -298,6 +298,7 @@ msgstr "주소"
 #: lib/block_scout_web/templates/address_internal_transaction/index.html.eex:26
 #: lib/block_scout_web/templates/address_token_transfer/index.html.eex:28
 #: lib/block_scout_web/templates/address_transaction/index.html.eex:22
+#: lib/block_scout_web/templates/l1_to_l2_txn/index.html.eex:16
 #: lib/block_scout_web/templates/l1_to_l2_txn/index.html.eex:63
 #: lib/block_scout_web/templates/verified_contracts/index.html.eex:20
 #: lib/block_scout_web/views/address_internal_transaction_view.ex:11
@@ -569,7 +570,7 @@ msgstr "변화"
 msgid "Chore Reward"
 msgstr "할일 보상"
 
-#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:141
+#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:143
 #: lib/block_scout_web/templates/api_docs/_eth_rpc_item.html.eex:106
 #, elixir-autogen
 msgid "Clear"
@@ -585,8 +586,8 @@ msgid "Close"
 msgstr "가까이."
 
 #: lib/block_scout_web/templates/address/_tabs.html.eex:73
-#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:169
-#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:191
+#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:171
+#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:193
 #: lib/block_scout_web/templates/api_docs/_eth_rpc_item.html.eex:126
 #: lib/block_scout_web/templates/api_docs/_eth_rpc_item.html.eex:149
 #: lib/block_scout_web/views/address_view.ex:373
@@ -1053,7 +1054,7 @@ msgstr "Create2 -> 만들기2"
 msgid "Creator"
 msgstr "창조자"
 
-#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:150
+#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:152
 #: lib/block_scout_web/templates/api_docs/_eth_rpc_item.html.eex:116
 #, elixir-autogen
 msgid "Curl"
@@ -1170,7 +1171,7 @@ msgid "Deployed ByteCode"
 msgstr "ByteCode 배포됨"
 
 #: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:55
-#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:192
+#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:194
 #: lib/block_scout_web/templates/api_docs/_eth_rpc_item.html.eex:60
 #: lib/block_scout_web/templates/api_docs/_eth_rpc_item.html.eex:150
 #, elixir-autogen
@@ -1183,7 +1184,7 @@ msgid "Description*"
 msgstr "설명*"
 
 #: lib/block_scout_web/templates/address/overview.html.eex:30
-#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:170
+#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:172
 #: lib/block_scout_web/templates/api_docs/_eth_rpc_item.html.eex:127
 #, elixir-autogen
 msgid "Details"
@@ -1417,13 +1418,13 @@ msgstr "오류: (이유로 인해 내부 거래를 기다리고 있습니다)"
 msgid "Eth RPC"
 msgstr "Eth RPC"
 
-#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:215
+#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:217
 #: lib/block_scout_web/templates/api_docs/_eth_rpc_item.html.eex:164
 #, elixir-autogen
 msgid "Example Value"
 msgstr "예시 값"
 
-#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:132
+#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:134
 #: lib/block_scout_web/templates/api_docs/_eth_rpc_item.html.eex:99
 #, elixir-autogen
 msgid "Execute"
@@ -1976,7 +1977,7 @@ msgstr "최소한의 프록시 계약서"
 msgid "Minimum fee required per unit of gas. Fee adjusts based on network congestion."
 msgstr "가스 단위당 최소 요금이 필요합니다. 요금은 네트워크 혼잡도에 따라 조정됩니다."
 
-#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:227
+#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:229
 #, elixir-autogen
 msgid "Model"
 msgstr "모델"
@@ -2457,7 +2458,7 @@ msgstr "제거하기"
 msgid "Remove from Watch list"
 msgstr "관심 목록에서 제거하기"
 
-#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:159
+#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:161
 #, elixir-autogen
 msgid "Request URL"
 msgstr "요청 URL"
@@ -2486,13 +2487,13 @@ msgstr "공개 태그/라벨 수정 요청합니다."
 msgid "Reset"
 msgstr "재설정"
 
-#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:177
+#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:179
 #: lib/block_scout_web/templates/api_docs/_eth_rpc_item.html.eex:134
 #, elixir-autogen
 msgid "Response Body"
 msgstr "응답 본문"
 
-#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:189
+#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:191
 #: lib/block_scout_web/templates/api_docs/_eth_rpc_item.html.eex:147
 #, elixir-autogen
 msgid "Responses"
@@ -2577,7 +2578,7 @@ msgstr "자가 파괴"
 msgid "Send request"
 msgstr "요청을 보내세요."
 
-#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:167
+#: lib/block_scout_web/templates/api_docs/_action_tile.html.eex:169
 #: lib/block_scout_web/templates/api_docs/_eth_rpc_item.html.eex:124
 #, elixir-autogen
 msgid "Server Response"
@@ -4414,16 +4415,22 @@ msgstr "L2 거래 해시"
 msgid "Txn Type"
 msgstr "거래 유형"
 
+#: lib/block_scout_web/controllers/l1_to_l2_txn_controller.ex:106
+#: lib/block_scout_web/templates/l1_to_l2_txn/index.html.eex:12
 #: lib/block_scout_web/templates/l1_to_l2_txn/index.html.eex:66
 #, elixir-autogen
 msgid "User Deposit"
 msgstr "사용자 예치금"
 
+#: lib/block_scout_web/controllers/l1_to_l2_txn_controller.ex:104
+#: lib/block_scout_web/templates/l1_to_l2_txn/index.html.eex:10
 #: lib/block_scout_web/templates/l1_to_l2_txn/index.html.eex:69
 #, elixir-autogen
 msgid "Tss Reward"
 msgstr "TSS 보상"
 
+#: lib/block_scout_web/controllers/l1_to_l2_txn_controller.ex:108
+#: lib/block_scout_web/templates/l1_to_l2_txn/index.html.eex:14
 #: lib/block_scout_web/templates/l1_to_l2_txn/index.html.eex:72
 #, elixir-autogen
 msgid "L2 Txn Rollback"
@@ -4583,15 +4590,17 @@ msgstr "자세한 내용"
 msgid "Hide Details"
 msgstr "세부 사항 숨기기"
 
-#: lib/block_scout_web/etherscan.ex:3086
+#: lib/block_scout_web/etherscan.ex:3143
 #, elixir-autogen
 msgid "Mimics Ethereum JSON RPC's eth_getBalance. Returns the balance as of the provided block (defaults to latest)"
 msgstr "이더리움 JSON RPC의 eth_getBalance을 모방합니다. 제공된 블록의 잔액을 반환합니다 (기본값은 최신입니다)"
 
+#: lib/block_scout_web/etherscan.ex:3307
+#, elixir-autogen
 msgid "Either the block number as a string, or one of latest, earliest or pending latest will be the latest balance in a *consensus* block. earliest will be the first recorded balance for the address. pending will be the latest balance in consensus *or* nonconcensus blocks."
 msgstr "블록 번호를 문자열로 지정하거나, latest, earliest 또는 pending latest 중 하나를 사용할 수 있습니다. 최신 잔액은 합의 블록에 있습니다. earliest는 해당 주소의 처음 기록된 잔액이 될 것입니다. pending은 합의 또는 비합의 블록 내의 최신 잔액이 될 것입니다."
 
-#: lib/block_scout_web/etherscan.ex:3088
+#: lib/block_scout_web/etherscan.ex:3145
 #, elixir-autogen
 msgid "Get balance for address. Also available through a GraphQL 'addresses' query. If the balance hasn't been updated in a long time, we will double check with the node to fetch the absolute latest balance. This will not be reflected in the current request, but once it is updated, subsequent requests will show the updated balance. If you want to know whether or not we are checking for another balance, use the `balancemulti` action. That contains a property called `stale` that will let you know to recheck that balance in the near future."
 msgstr "주소의 잔액을 가져옵니다. 또한 GraphQL의 'addresses' 쿼리를 통해서도 이용할 수 있습니다. 잔액이 오랜 시간 동안 업데이트되지 않은 경우, 최신 절대 잔액을 가져오기 위해 노드와 이중 확인을 진행합니다. 이는 현재 요청에는 반영되지 않지만, 업데이트된 이후에는 이후의 요청에서 업데이트된 잔액이 표시됩니다. 다른 잔액을 확인하고 있는지 여부를 알고 싶다면 'balancemulti' 액션을 사용하세요. 이에는 'stale'라는 속성이 포함되어 있어, 가까운 미래에 해당 잔액을 다시 확인해야 함을 알려줍니다."
@@ -4652,112 +4661,112 @@ msgstr "{number}개의 결과 표시하기"
 msgid "Found {number} matching results for "
 msgstr "{number}개의 일치하는 결과를 찾았습니다 "
 
-#: lib/block_scout_web/etherscan.ex:3090
+#: lib/block_scout_web/etherscan.ex:3147
 #, elixir-autogen
 msgid "Get balance for multiple addresses. Also available through a GraphQL 'addresses' query. If the balance hasn't been updated in a long time, we will double check with the node to fetch the absolute latest balance. This will not be reflected in the current request, but once it is updated, subsequent requests will show the updated balance. You can know that this is taking place via the `stale` attribute, which is set to `true` if a new balance is being fetched."
 msgstr "여러 주소에 대한 잔액을 확인하세요. 또한 GraphQL 'addresses' 쿼리를 통해서도 이용할 수 있습니다. 잔액이 오랜 시간 동안 업데이트되지 않은 경우, 우리는 노드와 확인하여 절대 최신 잔액을 가져올 것입니다. 이것은 현재 요청에는 반영되지 않지만, 업데이트된 후에는 이전 요청에서 업데이트된 잔액이 나타날 것입니다. 새로운 잔액이 가져와지는 경우 `stale` 속성이 `true`로 설정되기 때문에 이런 사실을 알 수 있습니다."
 
-#: lib/block_scout_web/etherscan.ex:3092
+#: lib/block_scout_web/etherscan.ex:3149
 #, elixir-autogen
 msgid "Get pending transactions by address."
 msgstr "주소별 보류 중인 거래내역을 가져옵니다."
 
-#: lib/block_scout_web/etherscan.ex:3094
+#: lib/block_scout_web/etherscan.ex:3151
 #, elixir-autogen
 msgid "Get transactions by address. Up to a maximum of 10,000 transactions. Also available through a GraphQL 'address' query."
 msgstr "주소별 거래내역을 받아오세요. 최대 10,000개의 거래내역까지 가능합니다. 또한 GraphQL 'address' 쿼리를 통해서도 이용할 수 있습니다."
 
-#: lib/block_scout_web/etherscan.ex:3096
+#: lib/block_scout_web/etherscan.ex:3153
 #, elixir-autogen
 msgid "Get internal transactions by transaction or address hash. Up to a maximum of 10,000 internal transactions. Also available through a GraphQL 'transaction' query."
 msgstr "트랜잭션 또는 주소 해시로부터 내부 거래를 가져옵니다. 최대 10,000개의 내부 거래까지 가능합니다. 또한 GraphQL 'transaction' 쿼리를 통해서도 사용할 수 있습니다."
 
-#: lib/block_scout_web/etherscan.ex:3098
+#: lib/block_scout_web/etherscan.ex:3155
 #, elixir-autogen
 msgid "Get token transfer events by address. Up to a maximum of 10,000 token transfer events. Also available through a GraphQL 'token_transfers' query."
 msgstr "주소별 토큰 전송 이벤트를 가져옵니다. 최대 10,000개의 토큰 전송 이벤트까지 가능합니다. 또한 GraphQL 'token_transfers' 질의를 통해서도 사용할 수 있습니다."
 
-#: lib/block_scout_web/etherscan.ex:3100
+#: lib/block_scout_web/etherscan.ex:3157
 #, elixir-autogen
 msgid "Get token account balance for token contract address."
 msgstr "토큰 계약 주소에 대한 토큰 계정 잔액을 가져옵니다."
 
-#: lib/block_scout_web/etherscan.ex:3102
+#: lib/block_scout_web/etherscan.ex:3159
 #, elixir-autogen
 msgid "Get list of tokens owned by address."
 msgstr "주소가 소유한 토큰 목록을 얻으세요."
 
-#: lib/block_scout_web/etherscan.ex:3104
+#: lib/block_scout_web/etherscan.ex:3161
 #, elixir-autogen
 msgid "Get list of blocks mined by address."
 msgstr "주소별로 채굴된 블록 목록을 얻어주세요."
 
-#: lib/block_scout_web/etherscan.ex:3106
+#: lib/block_scout_web/etherscan.ex:3163
 #, elixir-autogen
 msgid "Get a list of accounts and their balances, sorted ascending by the time they were first seen by the explorer."
 msgstr "계정 및 잔액 목록을 탐색기에서 처음으로 본 시간에 따라 오름차순으로 정렬하여 가져옵니다."
 
-#: lib/block_scout_web/etherscan.ex:3108
+#: lib/block_scout_web/etherscan.ex:3165
 #, elixir-autogen
 msgid "Get event logs for an address and/or topics. Up to a maximum of 1,000 event logs."
 msgstr "한 주소 및/또는 주제에 대한 이벤트 로그를 가져오십시오. 최대 1,000개의 이벤트 로그까지 가능합니다."
 
-#: lib/block_scout_web/etherscan.ex:3110
+#: lib/block_scout_web/etherscan.ex:3167
 #, elixir-autogen
 msgid "Get <a href='https://github.com/ethereum/EIPs/issues/20'>ERC-20</a> or <a href='https://github.com/ethereum/EIPs/issues/721'>ERC-721</a> token by contract address."
 msgstr "계약 주소로 <a href='https://github.com/ethereum/EIPs/issues/20'>ERC-20</a> 또는 <a href='https://github.com/ethereum/EIPs/issues/721'>ERC-721</a> 토큰을 얻으세요."
 
-#: lib/block_scout_web/etherscan.ex:3112
+#: lib/block_scout_web/etherscan.ex:3169
 #, elixir-autogen
 msgid "Get token holders by contract address."
 msgstr "계약 주소로 토큰 홀더들을 얻으세요."
 
-#: lib/block_scout_web/etherscan.ex:3114
+#: lib/block_scout_web/etherscan.ex:3171
 #, elixir-autogen
 msgid "Get <a href='https://github.com/ethereum/EIPs/issues/20'>ERC-20</a> or <a href='https://github.com/ethereum/EIPs/issues/721'>ERC-721</a> token total supply by contract address."
 msgstr "계약 주소로 <a href='https://github.com/ethereum/EIPs/issues/20'>ERC-20</a> 또는 <a href='https://github.com/ethereum/EIPs/issues/721'>ERC-721</a> 토큰의 총 공급량을 얻으십시오."
 
-#: lib/block_scout_web/etherscan.ex:3116
+#: lib/block_scout_web/etherscan.ex:3173
 #, elixir-autogen
 msgid "Get total supply in Wei from exchange."
 msgstr "교환소로부터 웨이 단위의 총 공급량을 받아오세요."
 
-#: lib/block_scout_web/etherscan.ex:3118
+#: lib/block_scout_web/etherscan.ex:3175
 #, elixir-autogen
 msgid "Get total supply in Wei from DB."
 msgstr "DB에서 Wei로 총 공급량을 얻습니다."
 
-#: lib/block_scout_web/etherscan.ex:3120
+#: lib/block_scout_web/etherscan.ex:3177
 #, elixir-autogen
 msgid "Get total coin supply from DB minus burnt number."
 msgstr "DB에서 인쇄된 총 동전 공급량에서 소각된 동전 수를 빼세요."
 
-#: lib/block_scout_web/etherscan.ex:3122
+#: lib/block_scout_web/etherscan.ex:3179
 #, elixir-autogen
 msgid "Get latest price of native coin in USD and BTC."
 msgstr "USD와 BTC로 네이티브 코인의 최신 가격을 확인하세요."
 
-#: lib/block_scout_web/etherscan.ex:3124
+#: lib/block_scout_web/etherscan.ex:3181
 #, elixir-autogen
 msgid "Gets total transaction fees in Wei are paid by users to validators per day."
 msgstr "사용자들이 일일로 유효성 검사자들에게 지불하는 총 거래 수수료는 웨이로 받게 됩니다."
 
-#: lib/block_scout_web/etherscan.ex:3126
+#: lib/block_scout_web/etherscan.ex:3183
 #, elixir-autogen
 msgid "Mimics Ethereum JSON RPC's eth_blockNumber. Returns the lastest block number"
 msgstr "이 텍스트를 한국어로 번역해 주세요: 이더리움 JSON RPC의 eth_blockNumber과 동일한 기능을 제공합니다. 가장 최신 블록 번호를 반환합니다."
 
-#: lib/block_scout_web/etherscan.ex:3128
+#: lib/block_scout_web/etherscan.ex:3185
 #, elixir-autogen
 msgid "Get block reward by block number."
 msgstr "블록 번호에 따라 블록 리워드를 받으세요."
 
-#: lib/block_scout_web/etherscan.ex:3130
+#: lib/block_scout_web/etherscan.ex:3187
 #, elixir-autogen
 msgid "Get Block Number by Timestamp."
 msgstr "타임스탬프로 블록 번호 가져오기."
 
-#: lib/block_scout_web/etherscan.ex:3132
+#: lib/block_scout_web/etherscan.ex:3189
 #, elixir-autogen
 msgid "Get a list of contracts, sorted ascending by the time they were first seen by the explorer. If you provide the filters `not_decompiled`(`4`) or `not_verified(4)` the results will not be sorted for performance reasons."
 msgstr "탐색기에서 처음으로 발견된 시간에 따라 오름차순으로 정렬된 계약 목록을 가져오십시오. 성능상의 이유로 `not_decompiled(4)` 또는 `not_verified(4)` 필터를 제공하는 경우 결과는 정렬되지 않습니다."
@@ -4794,22 +4803,22 @@ msgstr "ERC-721"
 msgid "Waiting for relay"
 msgstr "릴레이 대기 중입니다."
 
-#: lib/block_scout_web/etherscan.ex:3134
+#: lib/block_scout_web/etherscan.ex:3191
 #, elixir-autogen
 msgid "Get ABI for verified contract. Also available through a GraphQL 'addresses' query."
 msgstr "검증된 계약의 ABI를 가져옵니다. 또한 GraphQL 'addresses' 쿼리로도 사용할 수 있습니다."
 
-#: lib/block_scout_web/etherscan.ex:3138
+#: lib/block_scout_web/etherscan.ex:3195
 #, elixir-autogen
 msgid "Get transaction info."
 msgstr "거래 정보를 얻으세요."
 
-#: lib/block_scout_web/etherscan.ex:3140
+#: lib/block_scout_web/etherscan.ex:3197
 #, elixir-autogen
 msgid "Get transaction receipt status. Also available through a GraphQL 'transaction' query."
 msgstr "거래 영수증 상태를 확인하세요. 또한 'transaction' 쿼리를 통해 이용할 수 있습니다."
 
-#: lib/block_scout_web/etherscan.ex:3142
+#: lib/block_scout_web/etherscan.ex:3199
 #, elixir-autogen
 msgid "Get error status and error message. Also available through a GraphQL 'transaction' query."
 msgstr "오류 상태와 오류 메시지를 가져옵니다. 또한 GraphQL 'transaction' 쿼리를 통해서도 사용할 수 있습니다."
@@ -4820,173 +4829,410 @@ msgstr "오류 상태와 오류 메시지를 가져옵니다. 또한 GraphQL 'tr
 msgid "Display with gwei on Mantle, converted from L1 gas price"
 msgstr "맨틀에서 L1 가스 가격으로 변환된 gwei로 디스플레이합니다"
 
-#: lib/block_scout_web/etherscan.ex:3136
+#: lib/block_scout_web/etherscan.ex:3193
 #, elixir-autogen
 msgid "Get contract source code for verified contract. Also available through a GraphQL 'addresses' query."
 msgstr "검증된 계약을 위한 계약 소스 코드를 가져옵니다. 또한 GraphQL 'addresses' 쿼리를 통해서도 이용할 수 있습니다."
 
-
-#: lib/block_scout_web/etherscan.ex:3146
+#: lib/block_scout_web/etherscan.ex:3203
 #, elixir-autogen
 msgid "Verify a contract through <a href=\"https://sourcify.dev\">Sourcify</a>.<br/> a) if smart-contract already verified on Sourcify, it will automatically fetch the data from the <a href=\"https://repo.sourcify.dev\">repo</a><br/> b) otherwise you have to upload source files and JSON metadata file(s). <br/> <br/> <p class=\"api-doc-list-item-text\">POST body example:</p> <br/> <div class='tab-content'> <div class='tab-pane fade show active'> <div class=\"tile tile-muted p-1\"> <div class=\"m-2\"> --6e1e4c11657c62dc1e4349d024de9e28<br/> Content-Disposition: form-data; name=\"addressHash\"<br/> <br/> 0xb77b7443e0F32F1FEBf0BE0fBd7124D135d0a525<br/> <br/> --6e1e4c11657c62dc1e4349d024de9e28<br/> Content-Disposition: form-data; name=\"files[0]\"; filename=\"contract.sol\"<br/> Content-Type: application/json<br/> <br/> ...Source code...<br/> <br/> --6e1e4c11657c62dc1e4349d024de9e28<br/> Content-Disposition: form-data; name=\"files[1]\"; filename=\"metadata.json\"<br/> Content-Type: application/json<br/> <br/> ...JSON metadata...<br/> <br/> --6e1e4c11657c62dc1e4349d024de9e28--<br/> </pre> </div> </div> </div>"
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3148
+#: lib/block_scout_web/etherscan.ex:3205
 #, elixir-autogen, fuzzy
 msgid "Verify a vyper contract with its source code and contract creation information. <br/> <br/> <p class=\"api-doc-list-item-text\">curl POST example:</p> <br/> <div class='tab-content'> <div class='tab-pane fade show active'> <div class=\"tile tile-muted p-1\"> <div class=\"m-2\"> curl --location --request POST 'http://localhost:4000/api?module=contract&action=verify_vyper_contract' --form 'contractSourceCode=\"SOURCE_CODE\"' --form 'name=\"Vyper_contract\"' --form 'addressHash=\"0xE60B1B8bD493569a3E945be50A6c89d29a560Fa1\"' --form 'compilerVersion=\"v0.2.12\"' </pre> </div> </div> </div>"
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3150
+#: lib/block_scout_web/etherscan.ex:3207
 #, elixir-autogen
 msgid "Verify a contract with Standard input JSON file. Its interface the same as <a href=\"https://docs.etherscan.io/tutorials/verifying-contracts-programmatically\">Etherscan</a>'s API endpoint <br/> <br/>"
 msgstr "표준 입력 JSON 파일로 계약을 확인하세요. 그 인터페이스는 <a href=\"https://docs.etherscan.io/tutorials/verifying-contracts-programmatically\">Etherscan</a>의 API 엔드포인트와 동일합니다<br/> <br/>"
 
-#: lib/block_scout_web/etherscan.ex:3152
+#: lib/block_scout_web/etherscan.ex:3209
 #, elixir-autogen
 msgid "Return status of the verification attempt (works in addition to verifysourcecode method)"
 msgstr "검증 시도의 상태를 반환합니다 (verifysourcecode 메서드와 함께 작동합니다)"
 
-#: lib/block_scout_web/etherscan.ex:3159
+#: lib/block_scout_web/etherscan.ex:3216
 #, elixir-autogen
 msgid "The address of the account."
 msgstr "계정의 주소."
 
-#: lib/block_scout_web/etherscan.ex:3144
+#: lib/block_scout_web/etherscan.ex:3201
 #, elixir-autogen, elixir-format
 msgid "Verify a contract with its source code and contract creation information. <br/> <br/> <p class=\"api-doc-list-item-text\">curl POST example:</p> <br/> <div class='tab-content'> <div class='tab-pane fade show active'> <div class=\"tile tile-muted p-1\"> <div class=\"m-2\"> curl -d '{\"addressHash\":\"0xc63BB6555C90846afACaC08A0F0Aa5caFCB382a1\",\"compilerVersion\":\"v0.5.4+commit.9549d8ff\", \"contractSourceCode\":\"pragma solidity ^0.5.4; \ncontract Test {\n}\",\"name\":\"Test\",\"optimization\":false}' -H \"Content-Type: application/json\" -X POST  \"https://blockscout.com/poa/sokol/api?module=contract&action=verify\" </pre> </div> </div> </div>"
 msgstr ""
 
-#: lib/block_scout_web/etherscan.ex:3161
-#: lib/block_scout_web/etherscan.ex:3165
-#: lib/block_scout_web/etherscan.ex:3167
-#: lib/block_scout_web/etherscan.ex:3171
-#: lib/block_scout_web/etherscan.ex:3175
-#: lib/block_scout_web/etherscan.ex:3177
-#: lib/block_scout_web/etherscan.ex:3179
+#: lib/block_scout_web/etherscan.ex:3218
+#: lib/block_scout_web/etherscan.ex:3222
+#: lib/block_scout_web/etherscan.ex:3224
+#: lib/block_scout_web/etherscan.ex:3228
+#: lib/block_scout_web/etherscan.ex:3232
+#: lib/block_scout_web/etherscan.ex:3234
+#: lib/block_scout_web/etherscan.ex:3236
 #, elixir-autogen
 msgid "A 160-bit code used for identifying accounts."
 msgstr "계정을 식별하기 위해 사용되는 160비트 코드입니다."
 
-#: lib/block_scout_web/etherscan.ex:3163
+#: lib/block_scout_web/etherscan.ex:3220
 #, elixir-autogen
 msgid "A 160-bit code used for identifying accounts. Separate addresses by comma. Maximum of 20 addresses."
 msgstr "계정을 식별하는 데 사용되는 160 비트 코드입니다. 주소는 쉼표로 구분합니다. 최대 20개의 주소까지 입력할 수 있습니다."
 
-#: lib/block_scout_web/etherscan.ex:3169
+#: lib/block_scout_web/etherscan.ex:3226
 #, elixir-autogen
 msgid "Transaction hash. Hash of contents of the transaction. A transaction hash or address hash is required."
 msgstr "트랜잭션 해시. 트랜잭션의 내용의 해시값입니다. 트랜잭션 해시 또는 주소 해시가 필요합니다."
 
-#: lib/block_scout_web/etherscan.ex:3181
+#: lib/block_scout_web/etherscan.ex:3238
 #, elixir-autogen
 msgid "A nonnegative integer that represents the starting block number. The use of 'latest' is also supported."
 msgstr "시작 블록 번호를 나타내는 음수가 아닌 정수입니다. 'latest'의 사용도 지원됩니다."
 
-#: lib/block_scout_web/etherscan.ex:3183
+#: lib/block_scout_web/etherscan.ex:3240
 #, elixir-autogen
 msgid "A nonnegative integer that represents the ending block number. The use of 'latest' is also supported."
 msgstr "종료 블록 번호를 나타내는 음수가 아닌 정수입니다. \"latest\" 사용도 지원됩니다."
 
-#: lib/block_scout_web/etherscan.ex:3185
+#: lib/block_scout_web/etherscan.ex:3242
 #, elixir-autogen
 msgid "A 160-bit code used for identifying contracts. An address and/or topic{x} is required."
 msgstr "계약을 식별하기 위해 사용되는 160비트 코드입니다. 주소와/또는 주제{x}가 필요합니다."
 
-#: lib/block_scout_web/etherscan.ex:3187
+#: lib/block_scout_web/etherscan.ex:3244
 #, elixir-autogen
 msgid "A string equal to the first topic. A topic{x} and/or address is required."
 msgstr "첫 번째 주제와 같은 문자열. 주제{x}와/과 주소가 필요합니다."
 
-#: lib/block_scout_web/etherscan.ex:3173
-#: lib/block_scout_web/etherscan.ex:3189
-#: lib/block_scout_web/etherscan.ex:3191
-#: lib/block_scout_web/etherscan.ex:3193
-#: lib/block_scout_web/etherscan.ex:3237
-#: lib/block_scout_web/etherscan.ex:3239
+#: lib/block_scout_web/etherscan.ex:3230
+#: lib/block_scout_web/etherscan.ex:3246
+#: lib/block_scout_web/etherscan.ex:3248
+#: lib/block_scout_web/etherscan.ex:3250
+#: lib/block_scout_web/etherscan.ex:3292
+#: lib/block_scout_web/etherscan.ex:3294
+#: lib/block_scout_web/etherscan.ex:3341
 #, elixir-autogen
 msgid "A 160-bit code used for identifying contracts."
 msgstr "계약을 식별하기 위해 사용되는 160비트 코드."
 
-#: lib/block_scout_web/etherscan.ex:3195
+#: lib/block_scout_web/etherscan.ex:3252
 #, elixir-autogen
 msgid "day in ISO 8601 format (yyyy-mm-dd)"
 msgstr "ISO 8601 형식 (yyyy-mm-dd)으로 다음의 영어 텍스트를 한국어로 번역하십시오."
 
-#: lib/block_scout_web/etherscan.ex:3197
+#: lib/block_scout_web/etherscan.ex:3383
 #, elixir-autogen
 msgid "A nonnegative integer that represents the json rpc request id."
 msgstr "JSON RPC 요청 ID를 나타내는 음이 아닌 정수입니다."
 
-#: lib/block_scout_web/etherscan.ex:3199
+#: lib/block_scout_web/etherscan.ex:3254
 #, elixir-autogen
 msgid "A nonnegative integer that represents the block number."
 msgstr "블록 번호를 나타내는 음이 아닌 정수입니다."
 
-#: lib/block_scout_web/etherscan.ex:3201
+#: lib/block_scout_web/etherscan.ex:3256
 #, elixir-autogen
 msgid "A nonnegative integer that represents the block timestamp (Unix timestamp in seconds)."
 msgstr "블록 타임스탬프를 나타내는 음이 아닌 정수 (초 단위의 Unix 타임스탬프)."
 
-#: lib/block_scout_web/etherscan.ex:3203
+#: lib/block_scout_web/etherscan.ex:3258
 #, elixir-autogen
 msgid "Direction to find the closest block number to given timestamp. Available values: before/after."
 msgstr "주어진 타임스탬프에 가장 가까운 블록 번호를 찾는 방법. 사용 가능한 값: 이전/이후."
 
-#: lib/block_scout_web/etherscan.ex:3205
-#: lib/block_scout_web/etherscan.ex:3215
-#: lib/block_scout_web/etherscan.ex:3217
-#: lib/block_scout_web/etherscan.ex:3227
+#: lib/block_scout_web/etherscan.ex:3260
+#: lib/block_scout_web/etherscan.ex:3270
+#: lib/block_scout_web/etherscan.ex:3272
+#: lib/block_scout_web/etherscan.ex:3282
 #, elixir-autogen
 msgid "The address of the contract."
 msgstr "계약의 주소."
 
-#: lib/block_scout_web/etherscan.ex:3207
-#: lib/block_scout_web/etherscan.ex:3219
+#: lib/block_scout_web/etherscan.ex:3262
+#: lib/block_scout_web/etherscan.ex:3274
 #, elixir-autogen
 msgid "The name of the contract."
 msgstr "계약 이름."
 
-#: lib/block_scout_web/etherscan.ex:3209
-#: lib/block_scout_web/etherscan.ex:3221
-#: lib/block_scout_web/etherscan.ex:3231
+#: lib/block_scout_web/etherscan.ex:3264
+#: lib/block_scout_web/etherscan.ex:3276
+#: lib/block_scout_web/etherscan.ex:3286
 #, elixir-autogen
 msgid "The compiler version for the contract."
 msgstr "계약에 대한 컴파일러 버전입니다."
 
-#: lib/block_scout_web/etherscan.ex:3211
+#: lib/block_scout_web/etherscan.ex:3266
 #, elixir-autogen
 msgid "Whether or not compiler optimizations were enabled."
 msgstr "컴파일러 최적화가 활성화되었는지 여부에 대해."
 
-#: lib/block_scout_web/etherscan.ex:3213
-#: lib/block_scout_web/etherscan.ex:3223
+#: lib/block_scout_web/etherscan.ex:3268
+#: lib/block_scout_web/etherscan.ex:3278
 #, elixir-autogen
 msgid "The source code of the contract."
 msgstr "계약의 소스 코드."
 
-#: lib/block_scout_web/etherscan.ex:3225
+#: lib/block_scout_web/etherscan.ex:3280
 #, elixir-autogen
 msgid "Format of sourceCode(supported only \"solidity-standard-json-input\")"
 msgstr "소스 코드 형식 (\"solidity-standard-json-input\" 만 지원)"
 
-#: lib/block_scout_web/etherscan.ex:3229
+#: lib/block_scout_web/etherscan.ex:3284
 #, elixir-autogen
 msgid "The name of the contract. It could be empty string(\"\"), just contract name(\"ContractName\"), or filename and contract name(\"contracts/contract_1.sol:ContractName\")"
 msgstr "계약 이름입니다. 빈 문자열(\"\")이거나, 계약 이름만(\"ContractName\")이거나, 파일 이름과 계약 이름이 있을 수 있습니다(\"contracts/contract_1.sol:ContractName\")."
 
-#: lib/block_scout_web/etherscan.ex:3235
+#: lib/block_scout_web/etherscan.ex:3290
 #, elixir-autogen
 msgid "A string used for identifying verification attempt"
 msgstr "검증 시도 식별을 위해 사용되는 문자열"
 
-#: lib/block_scout_web/etherscan.ex:3241
-#: lib/block_scout_web/etherscan.ex:3243
-#: lib/block_scout_web/etherscan.ex:3245
+#: lib/block_scout_web/etherscan.ex:3296
+#: lib/block_scout_web/etherscan.ex:3298
+#: lib/block_scout_web/etherscan.ex:3300
 #, elixir-autogen
 msgid "Transaction hash. Hash of contents of the transaction."
 msgstr "거래 해시. 거래 내용의 해시."
 
-#: lib/block_scout_web/etherscan.ex:3233
+#: lib/block_scout_web/etherscan.ex:3288
 #, elixir-autogen, elixir-format, fuzzy
 msgid "Standard input json"
 msgstr "표준 입력 JSON"
+
+#: lib/block_scout_web/etherscan.ex:3309
+#: lib/block_scout_web/etherscan.ex:3319
+#: lib/block_scout_web/etherscan.ex:3349
+#: lib/block_scout_web/etherscan.ex:3353
+#: lib/block_scout_web/etherscan.ex:3357
+#: lib/block_scout_web/etherscan.ex:3379
+#, elixir-autogen
+msgid "A nonnegative integer that represents the page number to be used for pagination. 'offset' must be provided in conjunction."
+msgstr "페이지 구분에 사용될 페이지 번호를 나타내는 음이 아닌 정수입니다. 'offset'은 동반하여 제공되어야 합니다."
+
+#: lib/block_scout_web/etherscan.ex:3311
+#: lib/block_scout_web/etherscan.ex:3321
+#: lib/block_scout_web/etherscan.ex:3351
+#: lib/block_scout_web/etherscan.ex:3355
+#: lib/block_scout_web/etherscan.ex:3359
+#: lib/block_scout_web/etherscan.ex:3381
+#, elixir-autogen
+msgid "A nonnegative integer that represents the maximum number of records to return when paginating. 'page' must be provided in conjunction."
+msgstr "'페이지'와 함께 제공되어야 하는 페이지네이션할 때 반환할 최대 레코드 수를 나타내는 음이 아닌 정수입니다."
+
+#: lib/block_scout_web/etherscan.ex:3313
+#, elixir-autogen
+msgid "A string representing the order by block number direction. Defaults to descending order. Available values: asc, desc"
+msgstr "주어진 텍스트를 한국어로 번역하면 다음과 같습니다: 블록 번호 방향을 나타내는 문자열입니다. 기본값은 내림차순입니다. 사용 가능한 값: 오름차순(asc), 내림차순(desc)"
+
+#: lib/block_scout_web/etherscan.ex:3315
+#: lib/block_scout_web/etherscan.ex:3345
+#, elixir-autogen
+msgid "A nonnegative integer that represents the starting block number."
+msgstr "시작 블록 번호를 나타내는 음이 아닌 정수입니다."
+
+#: lib/block_scout_web/etherscan.ex:3317
+#: lib/block_scout_web/etherscan.ex:3347
+#, elixir-autogen
+msgid "A nonnegative integer that represents the ending block number."
+msgstr "종료 블록 번호를 나타내는 음이 아닌 정수입니다."
+
+#: lib/block_scout_web/etherscan.ex:3323
+#, elixir-autogen
+msgid "A string representing the field to filter by. If none is given it returns transactions that match to, from, or contract address. Available values: to, from"
+msgstr "필터링할 필드를 나타내는 문자열입니다. 지정하지 않으면, 송신자, 수신자 또는 계약 주소와 일치하는 거래 내역을 반환합니다. 사용 가능한 값: 수신자(to), 송신자(from)"
+
+#: lib/block_scout_web/etherscan.ex:3325
+#, elixir-autogen
+msgid "Represents the starting block timestamp."
+msgstr "시작 블록 타임스탬프를 나타냅니다."
+
+#: lib/block_scout_web/etherscan.ex:3327
+#, elixir-autogen
+msgid "Represents the ending block timestamp."
+msgstr "끝 블록 타임스탬프를 나타냅니다."
+
+#: lib/block_scout_web/etherscan.ex:3329
+#, elixir-autogen
+msgid "A 160-bit code used for identifying accounts. An address hash or transaction hash is required."
+msgstr "계정을 식별하는 데 사용되는 160비트 코드입니다. 주소 해시 또는 트랜잭션 해시가 필요합니다."
+
+#: lib/block_scout_web/etherscan.ex:3331
+#, elixir-autogen
+msgid "A string representing the order by block number direction. Defaults to ascending order. Available values: asc, desc. WARNING: Only available if 'address' is provided."
+msgstr "블록 순서를 나타내는 문자열. 기본값은 오름차순입니다. 가능한 값은 asc, desc 입니다. 주의: '주소'가 제공된 경우에만 사용할 수 있습니다."
+
+#: lib/block_scout_web/etherscan.ex:3333
+#, elixir-autogen
+msgid "A nonnegative integer that represents the starting block number. WARNING: Only available if 'address' is provided."
+msgstr "시작 블록 번호를 나타내는 음수가 아닌 정수입니다. 주의: 'address'가 제공되는 경우에만 사용할 수 있습니다."
+
+#: lib/block_scout_web/etherscan.ex:3335
+#, elixir-autogen
+msgid "A nonnegative integer that represents the ending block number. WARNING: Only available if 'address' is provided."
+msgstr "경고: '주소'가 제공될 경우에만 사용 가능한 종료 블록 번호를 나타내는 음수가 아닌 정수입니다."
+
+#: lib/block_scout_web/etherscan.ex:3337
+#, elixir-autogen
+msgid "A nonnegative integer that represents the page number to be used for pagination. 'offset' must be provided in conjunction. WARNING: Only available if 'address' is provided."
+msgstr "페이지 나누기에 사용할 페이지 번호를 나타내는 음이 아닌 정수입니다. 'offset'은 함께 제공되어야합니다. 주소가 제공된 경우에만 사용 가능합니다."
+
+#: lib/block_scout_web/etherscan.ex:3339
+#, elixir-autogen
+msgid "A nonnegative integer that represents the maximum number of records to return when paginating. 'page' must be provided in conjunction. WARNING: Only available if 'address' is provided."
+msgstr "페이징할 때 반환할 수 있는 레코드의 최대 수를 나타내는 음이 아닌 정수입니다. 'page'는 반드시 함께 제공되어야합니다. 주의: 'address'가 제공되는 경우에만 사용할 수 있습니다."
+
+#: lib/block_scout_web/etherscan.ex:3343
+#, elixir-autogen
+msgid "A string representing the order by block number direction. Defaults to ascending order. Available values: asc, desc"
+msgstr "블록 번호 방향을 나타내는 문자열입니다. 기본값은 오름차순입니다. 사용 가능한 값: asc, desc"
+
+#: lib/block_scout_web/etherscan.ex:3361
+#, elixir-autogen
+msgid "A string equal to the second topic. A topic{x} and/or address is required."
+msgstr "두 번째 주제와 동일한 문자열입니다. 주제{x}와/또는 주소가 필요합니다."
+
+#: lib/block_scout_web/etherscan.ex:3365
+#, elixir-autogen
+msgid "A string equal to the fourth topic. A topic{x} and/or address is required."
+msgstr "4번째 주제와 같은 문자열입니다. 주제{x}와/과 주소가 필요합니다."
+
+#: lib/block_scout_web/etherscan.ex:3363
+#, elixir-autogen
+msgid "A string equal to the third topic. A topic{x} and/or address is required."
+msgstr "세 번째 주제와 같은 문자열입니다. 주제{x}와/과 주소가 필요합니다."
+
+#: lib/block_scout_web/etherscan.ex:3367
+#, elixir-autogen
+msgid "A string representing the and|or operator for topic0 and topic1. Required if topic0 and topic1 is used. Available values: and, or"
+msgstr "topic0과 topic1에 대한 and|or 연산자를 나타내는 문자열입니다. topic0과 topic1을 사용하는 경우 필요합니다. 가능한 값은 and, or입니다."
+
+#: lib/block_scout_web/etherscan.ex:3369
+#, elixir-autogen
+msgid "A string representing the and|or operator for topic0 and topic2. Required if topic0 and topic2 is used. Available values: and, or"
+msgstr "주제0과 주제2에 대한 and 또는 or 연산자를 나타내는 문자열입니다. 주제0과 주제2가 사용되는 경우에만 필요합니다. 가능한 값: and, or"
+
+#: lib/block_scout_web/etherscan.ex:3371
+#, elixir-autogen
+msgid "A string representing the and|or operator for topic0 and topic3. Required if topic0 and topic3 is used. Available values: and, or"
+msgstr "주제0과 주제3에 대한 and|or 연산자를 나타내는 문자열입니다. 주제0과 주제3을 사용한다면 필요합니다. 가능한 값은 and, or입니다."
+
+#: lib/block_scout_web/etherscan.ex:3373
+#, elixir-autogen
+msgid "A string representing the and|or operator for topic1 and topic2. Required if topic1 and topic2 is used. Available values: and, or"
+msgstr "topic1과 topic2에 대한 and|or 연산자를 나타내는 문자열입니다. topic1과 topic2가 사용될 경우 필수입니다. 가능한 값은 and, or입니다."
+
+msgid " string representing the and|or operator for topic1 and topic3. Required if topic1 and topic3 is used. Available values: and, or"
+msgstr "topic1과 topic3에 대한 and 또는 or 연산자를 나타내는 문자열입니다. topic1과 topic3를 사용하는 경우 필요합니다. 사용 가능한 값: and, or."
+
+#: lib/block_scout_web/etherscan.ex:3375
+#, elixir-autogen
+msgid "A string representing the and|or operator for topic1 and topic3. Required if topic1 and topic3 is used. Available values: and, or"
+msgstr "topic1과 topic3에 대한 and|or 연산자를 나타내는 문자열입니다. topic1과 topic3을 사용하는 경우 필요합니다. 사용 가능한 값은 and, or입니다."
+
+#: lib/block_scout_web/etherscan.ex:3377
+#, elixir-autogen
+msgid "A string representing the and|or operator for topic2 and topic3. Required if topic2 and topic3 is used. Available values: and, or"
+msgstr "topic2와 topic3에 대한 and 또는 or 연산자를 나타내는 문자열입니다. topic2와 topic3를 사용하는 경우 필요합니다. 가능한 값: and, or"
+
+#: lib/block_scout_web/etherscan.ex:3385
+#: lib/block_scout_web/etherscan.ex:3415
+#: lib/block_scout_web/etherscan.ex:3417
+#, elixir-autogen
+msgid "The constructor argument data provided."
+msgstr "제공된 생성자 인수 데이터."
+
+#: lib/block_scout_web/etherscan.ex:3387
+#: lib/block_scout_web/etherscan.ex:3419
+#, elixir-autogen
+msgid "Whether or not automatically detect constructor argument."
+msgstr "자동으로 생성자 인수를 감지하는지 여부"
+
+#: lib/block_scout_web/etherscan.ex:3389
+#, elixir-autogen
+msgid "The EVM version for the contract."
+msgstr "계약에 대한 EVM 버전을 번역해주세요."
+
+#: lib/block_scout_web/etherscan.ex:3391
+#, elixir-autogen
+msgid "The number of optimization runs used during compilation"
+msgstr "컴파일 동안 사용된 최적화 실행 횟수"
+
+#: lib/block_scout_web/etherscan.ex:3393
+#, elixir-autogen
+msgid "The name of the first library used."
+msgstr "처음 사용된 도서관의 이름입니다."
+
+#: lib/block_scout_web/etherscan.ex:3395
+#, elixir-autogen
+msgid "The address of the first library used."
+msgstr "처음 사용된 도서관의 주소."
+
+#: lib/block_scout_web/etherscan.ex:3397
+#, elixir-autogen
+msgid "The name of the second library used."
+msgstr "두 번째로 사용된 도서관의 이름입니다."
+
+#: lib/block_scout_web/etherscan.ex:3399
+#, elixir-autogen
+msgid "The address of the second library used."
+msgstr "두 번째 도서관의 주소입니다."
+
+#: lib/block_scout_web/etherscan.ex:3401
+#, elixir-autogen
+msgid "The name of the third library used."
+msgstr "세 번째로 사용된 도서관의 이름."
+
+#: lib/block_scout_web/etherscan.ex:3403
+#, elixir-autogen
+msgid "The address of the third library used."
+msgstr "세 번째로 사용한 도서관의 주소입니다."
+
+#: lib/block_scout_web/etherscan.ex:3405
+#: lib/block_scout_web/etherscan.ex:3409
+#, elixir-autogen
+msgid "The name of the fourth library used."
+msgstr "네 번째 사용된 도서관의 이름."
+
+#: lib/block_scout_web/etherscan.ex:3407
+#: lib/block_scout_web/etherscan.ex:3411
+#, elixir-autogen
+msgid "The address of the fourth library used."
+msgstr "네 번째 도서관의 주소입니다."
+
+#: lib/block_scout_web/etherscan.ex:3413
+#, elixir-autogen
+msgid "Array with sources and metadata files"
+msgstr "소스 및 메타데이터 파일을 포함하는 배열"
+
+#: lib/block_scout_web/etherscan.ex:3421
+#, elixir-autogen
+msgid "A nonnegative integer that represents the log index to be used for pagination."
+msgstr "페이지네이션에 사용될 로그 인덱스를 나타내는 음수가 아닌 정수입니다."
+
+msgid "verified|decompiled|unverified|not_decompiled|empty, or 1|2|3|4|5 respectively. This requests only contracts with that status"
+msgstr "검증됨 | 디컴파일됨 | 검증되지 않음 | 디컴파일되지 않음 | 비어 있음, 또는 각각 1|2|3|4|5입니다. 이 요청은 해당 상태로만 계약을 포함합니다."
+
+msgid "Ensures that none of the returned contracts were decompiled with the provided version. Ignored unless filtering for decompiled contracts."
+msgstr "제공된 버전으로 디컴파일된 계약서가 없는지 확인하고, 디컴파일된 계약서를 필터링하는 경우에만 무시합니다."
+
+msgid "Represents the starting timestamp when contracts verified. Taking into account only with `verified` filter."
+msgstr "계약이 확인된 시점을 나타냅니다. `확인된` 필터만을 고려합니다."
+
+msgid "Represents the ending timestamp when contracts verified. Taking into account only with `verified` filter."
+msgstr "계약이 확인되었을 때의 종료 타임스탬프를 나타냅니다. '확인된' 필터만 고려합니다."
+
+msgid "The `earliest` parameter will not work as expected currently, because genesis block balances are not currently imported"
+msgstr "`earliest` 파라미터는 현재 예상대로 작동하지 않을 것입니다. 왜냐하면 genesis 블록 잔액은 현재로서는 가져오지 않았기 때문입니다."
+
+msgid "Will never return more than 1000 log entries. For this reason, you can use pagination options to request the next page. Pagination options params: {\"logIndex\": \"3D\", \"blockNumber\": \"6423AC\", \"transactionIndex\": 53} which include parameters from the last log received from the previous request. These three parameters are required for pagination."
+msgstr "1000개 이상의 로그 항목을 반환하지 않습니다. 이러한 이유로 다음 페이지를 요청하기 위해 페이지네이션 옵션을 사용할 수 있습니다. 페이지네이션 옵션 매개변수: {\"logIndex\": \"3D\", \"blockNumber\": \"6423AC\", \"transactionIndex\": 53} 이는 이전 요청에서 받은 마지막 로그의 매개변수를 포함합니다. 이 세 가지 매개변수는 페이지네이션에 필요합니다."
+
+msgid "The filter options"
+msgstr "필터 옵션"
+
+msgid "20 Bytes - address to check for balance"
+msgstr "20바이트 - 잔액을 확인할 주소"
+
+msgid "Integer block number, or the string \"latest\", \"earliest\" or \"pending\""
+msgstr "정수 블록 번호 또는 \"latest\", \"earliest\" 또는 \"pending\" 이라는 문자열"

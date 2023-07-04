@@ -27,6 +27,7 @@ defmodule Explorer.EthRPC do
       The `earliest` parameter will not work as expected currently, because genesis block balances
       are not currently imported
       """,
+      name: "eth_getBalance",
       example: """
       {"id": 0, "jsonrpc": "2.0", "method": "eth_getBalance", "params": ["0x0000000000000000000000000000000000000007", "latest"]}
       """,
@@ -56,6 +57,7 @@ defmodule Explorer.EthRPC do
       Will never return more than 1000 log entries.\n
       For this reason, you can use pagination options to request the next page. Pagination options params: {"logIndex": "3D", "blockNumber": "6423AC", "transactionIndex": 53} which include parameters from the last log received from the previous request. These three parameters are required for pagination.
       """,
+      name: "eth_getLogs",
       example: """
       {"id": 0, "jsonrpc": "2.0", "method": "eth_getLogs",
        "params": [
