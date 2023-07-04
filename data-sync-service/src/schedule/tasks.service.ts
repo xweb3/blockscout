@@ -105,11 +105,11 @@ export class TasksService {
     await this.cacheManager.set(DA_BATCH_INDEX, Number(da_batch_index), {
       ttl: 0,
     });
-    //this.sync_token_price_history();
+    this.sync_token_price_history();
     console.log('================end init cache================');
 
   }
-  @Interval(2000)
+  @Interval(12000)
   async l1_sent() {
     let end = 0;
     const currentL1BlockNumber =
@@ -138,7 +138,7 @@ export class TasksService {
     }
   }
 
-  @Interval(2200)
+  @Interval(12200)
   async l1_relayed() {
     let end = 0;
     const currentL1BlockNumber =
@@ -223,7 +223,7 @@ export class TasksService {
     }
   }
 
-  @Interval(2300)
+  @Interval(12300)
   async state_batch() {
     let end = 0;
     const currentL1BlockNumber =
@@ -303,7 +303,7 @@ export class TasksService {
     }
   }
 
-  /* @Interval(1800000)
+  @Interval(1800000)
   async sync_token_price_history() {
     console.log('start sync token price service')
     this.l1IngestionService.syncTokenPriceHistory();
@@ -312,7 +312,7 @@ export class TasksService {
   @Interval(10000)
   async sync_token_price_real_time() {
     this.l1IngestionService.syncTokenPriceRealTime();
-  } */
+  }
 
   @Interval(60000)
   async updateReorgBlockMessage() {
@@ -321,9 +321,9 @@ export class TasksService {
     });
   }
   
-  /* @Interval(1000)
+  @Interval(1000)
   async monitor_service() {
     this.monitorService.missBlockNumber();
     this.monitorService.syncBridgeData();
-  } */
+  }
 }
