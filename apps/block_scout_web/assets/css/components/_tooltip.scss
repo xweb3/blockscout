@@ -2,7 +2,7 @@ $tooltip-background-color: #CBE9E7 !default;
 $tooltip-color: #fff !default;
 
 .tooltip {
-  max-width: 335px;
+  max-width: 340px;
   min-width: 100px;
   opacity: 1 !important;
 
@@ -12,7 +12,7 @@ $tooltip-color: #fff !default;
     color: #15181C;
     padding: 15px;
     font-size: 12px;
-    max-width: 335px;
+    max-width: 340px;
   }
 
   .arrow::before {
