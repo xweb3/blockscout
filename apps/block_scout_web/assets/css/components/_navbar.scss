@@ -71,6 +71,13 @@ $navbar-network-label-background-color: #bae1d7;
         @media (min-width: 992px) {
           margin: 0 10px;
         }
+        &:hover{
+          .dropdown-toggle-icon{
+            path{
+              stroke: #21413f;
+            }
+          }
+        }
         &.active,
         &:hover,
         &.active-icon {

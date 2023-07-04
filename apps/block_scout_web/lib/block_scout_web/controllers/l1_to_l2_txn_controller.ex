@@ -101,11 +101,11 @@ defmodule BlockScoutWeb.L1ToL2TxnController do
           Enum.map(l1_to_l2, fn l ->
             display_type = case l.type do
               0 ->
-                "Tss Reward"
+                gettext("Tss Reward")
               1 ->
-                "User Deposit"
+                gettext("User Deposit")
               2 ->
-                "L2 Txn Rollback"
+                gettext("L2 Txn Rollback")
               _ ->
                 l.type
             end

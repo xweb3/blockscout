@@ -236,6 +236,18 @@ body{
 
     &.network-label {
       background-color: $dropdown-menu-background-dark;
+      .dropdown-toggle-icon{
+        path{
+          stroke: #06dd76;
+        }
+      }
+      &:hover{
+        .dropdown-toggle-icon{
+          path{
+            stroke: #06dd76;
+          }
+        }
+      }
       &.active,
       &:hover,
       &.active-icon {
