@@ -43,32 +43,38 @@ require Logger
     with {:ok, address_hash} <- Chain.string_to_address_hash(address_hash_string),
          {:ok, address} <- Chain.hash_to_address(address_hash),
          {:ok, false} <- AccessHelpers.restricted_access?(address_hash_string, params) do
-      options =
-        @transaction_necessity_by_association
-        |> Keyword.merge(paging_options(params))
-        |> Keyword.merge(current_filter(params))
-        {:ok, burn_address_hash} = Chain.string_to_address_hash("0x0000000000000000000000000000000000000000")
-      transactions =
-        Chain.address_deposit_transactions(
-          address_hash,
-          address_hash_string,
-          burn_address_hash,
-          options
-        )
-      {transactions_paginated, next_page} = split_list_by_page(transactions)
+          full_options =
+          [
+            necessity_by_association: %{
+              [created_contract_address: :names] => :optional,
+              [from_address: :names] => :optional,
+              [to_address: :names] => :optional,
+              [created_contract_address: :smart_contract] => :optional,
+              [from_address: :smart_contract] => :optional,
+              [to_address: :smart_contract] => :optional
+            }
+          ]
+          |> Keyword.merge(paging_options(params))
+        transactions =
+          Chain.address_deposit_transactions(
+            address_hash,
+            address_hash_string,
+            full_options
+          )
+        {transactions_paginated, next_page} = split_list_by_page(transactions)
 
       next_page_path =
         case next_page_params(next_page, transactions_paginated, params) do
           nil ->
             nil
 
-          next_page_params ->
-            address_deposit_path(
-              conn,
-              :index,
-              address_hash_string,
-              Map.delete(next_page_params, "type")
-            )
+            next_page_params ->
+              address_deposit_path(
+                conn,
+                :index,
+                address_hash_string,
+                Map.delete(next_page_params, "type")
+              )
         end
 
       transfers_json =

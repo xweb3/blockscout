@@ -577,8 +577,8 @@ defmodule Explorer.Chain do
     |> Repo.all()
   end
 
-  @spec address_deposit_transactions(Hash.Address.t(),Hash.Address.t(), Keyword.t()) :: [Transaction.t()]
-  def address_deposit_transactions(address_hash, address_string, burn_address_hash, options \\ []) do
+  @spec address_deposit_transactions(Hash.t(), String.t(), [paging_options]) :: [Transaction.t()]
+  def address_deposit_transactions(address_hash, address_string, options \\ []) do
     paging_options = Keyword.get(options, :paging_options, @default_paging_options)
     list = address_deposit_list(address_string, options)
     hash_list = Enum.map(list, fn deposit_item ->
@@ -589,27 +589,23 @@ defmodule Explorer.Chain do
           nil
       end
     end)
-    Transaction.transactions_deposit(address_hash, burn_address_hash, hash_list)
+    address_hash
+    |> Transaction.transactions_deposit(hash_list)
     |> Transaction.preload_token_transfers(address_hash)
-    |> Repo.all()
-  end
-
-  defp address_deposit_list(address_string, options) do
-    paging_options = Keyword.get(options, :paging_options, @default_paging_options)
-
-    L1ToL2
-    |> order_by([l1_to_l2], desc: l1_to_l2.queue_index)
-    |> where([l1_to_l2], l1_to_l2.from == ^address_string and not is_nil(l1_to_l2.l2_hash))
     |> handle_paging_options(paging_options)
     |> Repo.all()
   end
 
+  defp address_deposit_list(address_string, options) do
+    L1ToL2
+    |> order_by([l1_to_l2], desc: l1_to_l2.queue_index)
+    |> where([l1_to_l2], l1_to_l2.from == ^address_string and not is_nil(l1_to_l2.l2_hash))
+    |> Repo.all()
+  end
 
-  @spec address_withdraw_transactions(Hash.Address.t(),Hash.Address.t(), Keyword.t()) :: %{
-    :withdraw_count => non_neg_integer(),
-    :transactions => [Transaction.t()]
-  }
-  def address_withdraw_transactions(address_hash, address_string, burn_address_hash, options \\ []) do
+
+  @spec address_withdraw_transactions(Hash.t(), String.t(), [paging_options]) :: [Transaction.t()]
+  def address_withdraw_transactions(address_hash, address_string, options \\ []) do
     paging_options = Keyword.get(options, :paging_options, @default_paging_options)
     list = address_withdraw_list(address_string, options)
     hash_list = Enum.map(list, fn withdraw_item ->
@@ -620,29 +616,18 @@ defmodule Explorer.Chain do
           nil
       end
     end)
-    transactions = Transaction.transactions_withdraw(address_hash, burn_address_hash, hash_list)
+
+    address_hash
+    |> Transaction.transactions_withdraw(hash_list)
     |> Transaction.preload_token_transfers(address_hash)
+    |> handle_paging_options(paging_options)
     |> Repo.all()
-
-    l2_to_l1_count = address_withdraw_count(address_string)
-    %{withdraw_count: l2_to_l1_count, transactions: transactions}
-
-  end
-
-  def address_withdraw_count(address_string) do
-    L2ToL1
-    |> where([l2_to_l1], l2_to_l1.from == ^address_string)
-    |> limit(^@limit_showing_transactions)
-    |> Repo.aggregate(:count, :msg_nonce)
   end
 
   defp address_withdraw_list(address_string, options) do
-    paging_options = Keyword.get(options, :paging_options, @default_paging_options)
-
     L2ToL1
     |> order_by([l2_to_l1], desc: l2_to_l1.msg_nonce)
     |> where([l2_to_l1], l2_to_l1.from == ^address_string)
-    |> no_cache_handle_options(paging_options)
     |> Repo.all()
   end
 

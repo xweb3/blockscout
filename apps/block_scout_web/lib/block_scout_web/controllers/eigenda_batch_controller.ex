@@ -73,9 +73,7 @@ require Logger
       else
         {eigenda_batch_plus_one, nil}
       end
-      Logger.info("----------")
-      Logger.info("#{inspect(length(eigenda_batch_plus_one))}")
-      Logger.info("#{inspect(next_page)}")
+
     next_page_params =
       if fetch_page_number(params) == 1 do
         page_size = Chain.default_page_size()
