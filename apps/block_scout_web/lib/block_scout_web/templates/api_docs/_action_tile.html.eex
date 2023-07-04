@@ -108,7 +108,9 @@
           <p class="api-doc-parameters-list-item-subtitle"><%= optional_param.type %> <em><%= gettext "(query)" %></em></p>
         </div>
         <div class="col-sm-8 col-md-10">
-          <p class="api-doc-parameters-list-item-description"><%= optional_param.description %></p>
+          <p class="api-doc-parameters-list-item-description">
+            <%= generateOptionalParamsDescription(optional_param,@action) %>
+          </p>
           <input
             class="collapse form-control"
             data-parameter-key="<%= optional_param.key %>"

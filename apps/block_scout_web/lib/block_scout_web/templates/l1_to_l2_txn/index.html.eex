@@ -7,13 +7,13 @@
 <% tx_type = if Map.has_key?(@conn.path_params, "tx_type"), do: String.to_integer(@conn.path_params["tx_type"]), else: nil %>
 <% display_type = case tx_type do
               0 ->
-                "Tss Reward"
+                 gettext("Tss Reward")
               1 ->
-                "User Deposit"
+               gettext("User Deposit")
               2 ->
-                "L2 Txn Rollback"
+                gettext("L2 Txn Rollback")
               _ ->
-                "All"
+                 gettext("All")
             end %>
 <section class="container" data-page="l1-to-l2-txn-list">
   <%= render BlockScoutWeb.Advertisement.TextAdView, "index.html", conn: @conn %>

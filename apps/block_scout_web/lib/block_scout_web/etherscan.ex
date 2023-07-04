@@ -1244,7 +1244,8 @@ defmodule BlockScoutWeb.Etherscan do
         latest will be the latest balance in a *consensus* block.
         earliest will be the first recorded balance for the address.
         pending will be the latest balance in consensus *or* nonconcensus blocks.
-        """
+        """,
+        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
       }
     ],
     responses: [
@@ -3246,5 +3247,11 @@ defmodule BlockScoutWeb.Etherscan do
     end
   end
 
+  def generateOptionalParamsDescription(namespace) do
+    case namespace do
+      "eth_get_balance-block" ->
+        gettext("Either the block number as a string, or one of latest, earliest or pending latest will be the latest balance in a *consensus* block. earliest will be the first recorded balance for the address. pending will be the latest balance in consensus *or* nonconcensus blocks.")
+    end
+  end
 
 end

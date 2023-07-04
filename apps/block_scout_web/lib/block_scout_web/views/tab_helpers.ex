@@ -63,4 +63,11 @@ defmodule BlockScoutWeb.TabHelpers do
   def tab_active?(tab_name, request_path) do
     String.match?(request_path, ~r/\/\b#{tab_name}\b/)
   end
+
+  def host_status(url, host) do
+    if String.contains?(url, host) do
+      "active"
+    end
+  end
+
 end

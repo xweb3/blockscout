@@ -24,6 +24,14 @@ defmodule BlockScoutWeb.APIDocsView do
     end
   end
 
+  def generateOptionalParamsDescription(optional_param, action) do
+    if(optional_param[:getOptionalParamsDescription] && optional_param.getOptionalParamsDescription.(action.name <> "-" <> optional_param.key)) do
+      optional_param.getOptionalParamsDescription.(action.name <> "-" <> optional_param.key)
+    else
+      optional_param.description
+    end
+  end
+
   def query_params(module, action) do
     module_and_action(module, action) <> Enum.join(required_params(action))
   end
