@@ -96,7 +96,11 @@ export class MonitorService {
       this.metricEthTotalDepositValue.set(Number(utils.formatEther(ethTotalDeposit)))
       this.metricEthTotalWithdrawValue.set(Number(utils.formatEther(ethTotalWithdraw)))
     } catch (error) {
-      this.logger.error(`sync bridge data error: ${error}`);
+      console.log({
+        type: 'error',
+        time: new Date().getTime(),
+        msg: `sync bridge data error: ${error?.message}`
+      })
     }
   }
   async getTotalDepositValueByL1Token(tokenAddress) {
@@ -143,7 +147,11 @@ export class MonitorService {
       this.metricMissBlockNumber.set(Number(result.count));
       return result.count;
     } catch (error) {
-      this.logger.error(`miss BlockNumber error: ${error}`);
+      console.log({
+        type: 'error',
+        time: new Date().getTime(),
+        msg: `miss BlockNumber error: ${error?.message}`
+      })
     }
   }
 }

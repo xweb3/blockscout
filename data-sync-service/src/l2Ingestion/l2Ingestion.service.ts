@@ -138,9 +138,14 @@ export class L2IngestionService {
         value = this.web3.utils.hexToNumberString(decodeMsg._amount._hex);
         l1_token = '0x0000000000000000000000000000000000000000'
         l2_token = '0xdeaddeaddeaddeaddeaddeaddeaddeaddead1111'
-        this.logger.log(
-          `finalizeETHWithdrawal: from: [${from}], to: [${to}], value: [${value}]`,
-        );
+        console.log({
+          type: 'log',
+          time: new Date().getTime(),
+          msg: {
+            message: 'finalizeETHWithdrawal: from, to, value',
+            from, to, value
+          }
+        })
       }
       // finalizeERC20Withdrawal
       if (funName === '0xa9f9e675') {
@@ -155,9 +160,14 @@ export class L2IngestionService {
         from = decodeMsg._from;
         to = decodeMsg._to;
         value = this.web3.utils.hexToNumberString(decodeMsg._amount._hex);
-        this.logger.log(
-          `finalizeERC20Withdrawal: l1_token: [${l1_token}], l2_token: [${l2_token}], from: [${from}], to: [${to}], value: [${value}]`,
-        );
+        console.log({
+          type: 'log',
+          time: new Date().getTime(),
+          msg: {
+            message: 'finalizeERC20Withdrawal: l1_token, l2_token, from, to, value',
+            l1_token, l2_token, from, to, value
+          }
+        })
       }
       // finalizeMantleWithdrawal
       if (funName === this.WithdrawalMethodHexPrefix) {
@@ -172,9 +182,14 @@ export class L2IngestionService {
         value = this.web3.utils.hexToNumberString(decodeMsg._amount._hex);
         l1_token = '0x1a4b46696b2bb4794eb3d4c26f1c55f9170fa4c5'
         l2_token = '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'
-        this.logger.log(
-          `${this.WithdrawalMethod}: from: [${from}], to: [${to}], value: [${value}]`,
-        );
+        console.log({
+          type: 'log',
+          time: new Date().getTime(),
+          msg: {
+            message: 'finalizeMantleWithdrawal: from, to, value',
+            from, to, value
+          }
+        })
       }
       const { timestamp } = await this.web3.eth.getBlock(blockNumber);
       const msgHash = this.verifyDomainCalldataHash({
@@ -238,7 +253,11 @@ export class L2IngestionService {
         .values(l2SentMessageEventsInsertData)
         .onConflict(`("message_nonce") DO NOTHING`)
         .execute().catch(e => {
-          console.error('insert l2 sent message events failed:', e.message)
+          console.log({
+            type: 'error',
+            time: new Date().getTime(),
+            msg: `insert l2 sent message events failed ${e?.message}`
+          })
           throw Error(e.message)
         });
 
@@ -249,13 +268,16 @@ export class L2IngestionService {
         .values(l2ToL1InsertData)
         .onConflict(`("l2_hash") DO NOTHING`)
         .execute().catch(e => {
-          console.error('insert l2 to l1 failed:', e.message)
+          console.log({
+            type: 'error',
+            time: new Date().getTime(),
+            msg: `insert l2 to l1 failed ${e?.message}`
+          })
           throw Error(e.message)
         });
       await queryRunner.commitTransaction();
     } catch (error) {
       inserted = false;
-      console.error(error)
       await queryRunner.rollbackTransaction();
     } finally {
       await queryRunner.release();
@@ -267,7 +289,14 @@ export class L2IngestionService {
       startBlock,
       endBlock,
     );
-    console.log('---------------------------------- l2 relayed message events start and end:', startBlock, endBlock)
+    console.log({
+      type: 'log',
+      time: new Date().getTime(),
+      msg: {
+        message: 'l2 relayed message events start and end:',
+        startBlock, endBlock
+      }
+    })
     const l2RelayedMessageEventsInsertData: any = [];
     for (const item of list) {
       const {
@@ -296,7 +325,11 @@ export class L2IngestionService {
       .values(l2RelayedMessageEventsInsertData)
       .onConflict(`("msg_hash") DO NOTHING`)
       .execute().catch(e => {
-        console.error(`insert l2 relayed message events failed,`, e.message)
+        console.log({
+          type: 'error',
+          time: new Date().getTime(),
+          msg: `insert l2 relayed message events failed ${e?.message}`
+        })
         throw Error(e.message)
       });
 
@@ -342,7 +375,6 @@ export class L2IngestionService {
       take: 1000
     })
     if (list.length <= 0) {
-      this.logger.log('fixedL2ToL1TokenAddress0x000Bug finished');
       return [];
     }
     const updateL2ToL1Data = []
@@ -402,15 +434,15 @@ export class L2IngestionService {
         })
         .execute();
       await queryRunner.commitTransaction();
-      this.logger.log(`commit l1->l2 data successes`);
     } catch (error) {
-      this.logger.error(
-        `create l1->l2 relation to l1_to_l2 table error ${error}`,
-      );
+      console.log({
+        type: 'error',
+        time: new Date().getTime(),
+        msg: `create l1->l2 relation to l1_to_l2 table error ${error?.message}`
+      })
       await queryRunner.rollbackTransaction();
     } finally {
       await queryRunner.release();
-      this.logger.log(`create l1->l2 relation to l1_to_l2 table finish`);
     }
     return updateL2ToL1Data;
   }
@@ -446,15 +478,28 @@ export class L2IngestionService {
     for (let item of list) {
       const l2_hash = item.l2_hash.toString();
       const { result } = await this.getTxStatusDetailByHash(l2_hash);
-      const timestamp = new Date().getTime();
-      console.log(`tx detail: ${timestamp} `, result);
+      console.log({
+        type: 'log',
+        time: new Date().getTime(),
+        msg: {
+          message: 'tx detail: ',
+          result
+        }
+      })
       if (result && (result.status === '0x3' || result.status === '0x03')) {
         updateL2ToL1Data.push({
           l2_hash: l2_hash,
           status: '1'
         })
-      } else {
-        console.log('this l2 hash can not find its status detail', l2_hash)
+      } else if(!result) {
+        console.log({
+          type: 'log',
+          time: new Date().getTime(),
+          msg: {
+            message: 'this l2 hash can not find its status detail',
+            l2_hash
+          }
+        })
       }
     }
     const dataSource = getConnection();
@@ -474,11 +519,14 @@ export class L2IngestionService {
         .execute();
       await queryRunner.commitTransaction();
     } catch (error) {
-      this.logger.error(`l2l1 change status error ${error}`);
+      console.log({
+        type: 'error',
+        time: new Date().getTime(),
+        msg: `l2l1 change status error ${error?.message}`
+      })
       await queryRunner.rollbackTransaction();
     } finally {
       await queryRunner.release();
-      this.logger.log(`l2l1 change status to Waiting finish`);
     }
   }
 }
