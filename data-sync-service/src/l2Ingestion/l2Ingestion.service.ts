@@ -254,7 +254,7 @@ export class L2IngestionService {
         .onConflict(`("message_nonce") DO NOTHING`)
         .execute().catch(e => {
           console.log({
-            type: 'error',
+            type: 'ERROR',
             time: new Date().getTime(),
             msg: `insert l2 sent message events failed ${e?.message}`
           })
@@ -269,7 +269,7 @@ export class L2IngestionService {
         .onConflict(`("l2_hash") DO NOTHING`)
         .execute().catch(e => {
           console.log({
-            type: 'error',
+            type: 'ERROR',
             time: new Date().getTime(),
             msg: `insert l2 to l1 failed ${e?.message}`
           })
@@ -326,7 +326,7 @@ export class L2IngestionService {
       .onConflict(`("msg_hash") DO NOTHING`)
       .execute().catch(e => {
         console.log({
-          type: 'error',
+          type: 'ERROR',
           time: new Date().getTime(),
           msg: `insert l2 relayed message events failed ${e?.message}`
         })
@@ -436,7 +436,7 @@ export class L2IngestionService {
       await queryRunner.commitTransaction();
     } catch (error) {
       console.log({
-        type: 'error',
+        type: 'ERROR',
         time: new Date().getTime(),
         msg: `create l1->l2 relation to l1_to_l2 table error ${error?.message}`
       })
@@ -520,7 +520,7 @@ export class L2IngestionService {
       await queryRunner.commitTransaction();
     } catch (error) {
       console.log({
-        type: 'error',
+        type: 'ERROR',
         time: new Date().getTime(),
         msg: `l2l1 change status error ${error?.message}`
       })

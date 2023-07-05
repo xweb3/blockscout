@@ -40,7 +40,7 @@ export class TasksService {
         }
       } catch (error) {
         console.log({
-          type: 'error',
+          type: 'ERROR',
           time: new Date().getTime(),
           msg: `error fixedL2ToL1TokenAddress0x000Bug: ${error?.message}`
         })
@@ -145,7 +145,7 @@ export class TasksService {
         this.cacheManager.set(L1_SENT, end, { ttl: 0 });
       } else {
         console.log({
-          type: 'error',
+          type: 'ERROR',
           time: new Date().getTime(),
           msg: `insert l1 sent message events failed start: ${start}, end: ${end}`
         })
@@ -182,7 +182,7 @@ export class TasksService {
         this.cacheManager.set(L1_RELAYED, end, { ttl: 0 });
       } else {
         console.log({
-          type: 'error',
+          type: 'ERROR',
           time: new Date().getTime(),
           msg: `insert l1 relayed message events failed start: ${start}, end: ${end}`
         })
@@ -218,7 +218,7 @@ export class TasksService {
         this.cacheManager.set(L2_SENT, end, { ttl: 0 });
       } else {
         console.log({
-          type: 'error',
+          type: 'ERROR',
           time: new Date().getTime(),
           msg: `insert l2 sent message events failed: ${start}, end: ${end}`
         })
@@ -254,7 +254,7 @@ export class TasksService {
         this.cacheManager.set(L2_RELAYED, end, { ttl: 0 });
       } else {
         console.log({
-          type: 'error',
+          type: 'ERROR',
           time: new Date().getTime(),
           msg: `insert l2 relayed message events failed: ${start}, end: ${end}`
         })
@@ -290,7 +290,7 @@ export class TasksService {
         end,
       ).catch(e => {
         console.log({
-          type: 'error',
+          type: 'ERROR',
           time: new Date().getTime(),
           msg: {
             message: `insert state batch failed ${e?.message}`,
@@ -313,7 +313,7 @@ export class TasksService {
         await this.cacheManager.set(STATE_BATCH, end, { ttl: 0 });
       } else {
         console.log({
-          type: 'error',
+          type: 'ERROR',
           time: new Date().getTime(),
           msg: 'result insert state batch data failed'
         })
@@ -334,7 +334,7 @@ export class TasksService {
       await this.l1IngestionService.createL1L2Relation();
     } catch (error) {
       console.log({
-        type: 'error',
+        type: 'ERROR',
         time: new Date().getTime(),
         msg: `error l1->l2 [handle_l1l2_merge]: ${error?.message}`
       })
@@ -346,7 +346,7 @@ export class TasksService {
       await this.l1IngestionService.createL2L1Relation();
     } catch (error) {
       console.log({
-        type: 'error',
+        type: 'ERROR',
         time: new Date().getTime(),
         msg: `error l1->l2 [handle_l2l1__merge]: ${error?.message}`
       })
@@ -358,7 +358,7 @@ export class TasksService {
       await this.l2IngestionService.handleWaitTransaction();
     } catch (error) {
       console.log({
-        type: 'error',
+        type: 'ERROR',
         time: new Date().getTime(),
         msg: `error l1l2 [handle_l2l1_merge_waiting]: ${error?.message}`
       })
@@ -375,7 +375,7 @@ export class TasksService {
     })
     const result = await this.l1IngestionService.syncEigenDaBatch(fromStoreNumber).catch(error => {
       console.log({
-        type: 'error',
+        type: 'ERROR',
         time: new Date().getTime(),
         msg: `[syncEigenDaBatch] error eigen da batches error: ${error?.message}`
       })
@@ -399,7 +399,7 @@ export class TasksService {
   async updateReorgBlockMessage() {
     this.l1IngestionService.updateReorgBlockMessage().catch(e => {
       console.log({
-        type: 'error',
+        type: 'ERROR',
         time: new Date().getTime(),
         msg: `update reorg block failed ${e?.message}`
       })

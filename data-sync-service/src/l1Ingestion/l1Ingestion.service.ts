@@ -346,7 +346,7 @@ export class L1IngestionService {
       await queryRunner.commitTransaction();
     } catch (error) {
       console.log({
-        type: 'error',
+        type: 'ERROR',
         time: new Date().getTime(),
         msg: {
           message: `l1 create state batches events failed: ${error?.message}`,
@@ -499,7 +499,7 @@ export class L1IngestionService {
         .onConflict(`("message_nonce") DO NOTHING`)
         .execute().catch(e => {
           console.log({
-            type: 'error',
+            type: 'ERROR',
             time: new Date().getTime(),
             msg: `insert l1 sent message events failed:: ${e?.message}`
           })
@@ -514,7 +514,7 @@ export class L1IngestionService {
         .onConflict(`("queue_index") DO NOTHING`)
         .execute().catch(e => {
           console.log({
-            type: 'error',
+            type: 'ERROR',
             time: new Date().getTime(),
             msg: `insert l1 to l2 failed ${e?.message}`
           })
@@ -524,7 +524,7 @@ export class L1IngestionService {
     } catch (error) {
       inserted = false;
       console.log({
-        type: 'error',
+        type: 'ERROR',
         time: new Date().getTime(),
         msg: `insert l1 to l2 failed ${error?.message}`
       })
@@ -608,7 +608,7 @@ export class L1IngestionService {
           .where({ message_nonce: messageNonce })
           .execute().catch(e => {
             console.log({
-              type: 'error',
+              type: 'ERROR',
               time: new Date().getTime(),
               msg: `update reorg block l1 sent message events failed ${e?.message}`
             })
@@ -623,7 +623,7 @@ export class L1IngestionService {
           .where({ queue_index: Number(messageNonce) })
           .execute().catch(e => {
             console.log({
-              type: 'error',
+              type: 'ERROR',
               time: new Date().getTime(),
               msg: `update reorg block l1 to l2 failed ${e?.message}`
             })
@@ -640,7 +640,7 @@ export class L1IngestionService {
         await queryRunner.commitTransaction();
       } catch (error) {
         console.log({
-          type: 'error',
+          type: 'ERROR',
           time: new Date().getTime(),
           msg: `update reorg block l1 to l2 failed ${error?.message}`
         })
@@ -684,7 +684,7 @@ export class L1IngestionService {
       .onConflict(`("msg_hash") DO NOTHING`)
       .execute().catch(e => {
         console.log({
-          type: 'error',
+          type: 'ERROR',
           time: new Date().getTime(),
           msg: `insert l1 relayed message events failed ${e?.message}`
         })
@@ -753,7 +753,7 @@ export class L1IngestionService {
         await queryRunner.commitTransaction();
       } catch (error) {
         console.log({
-          type: 'error',
+          type: 'ERROR',
           time: new Date().getTime(),
           msg: `create l1->l2 relation to l1_to_l2 table error ${error?.message}`
         })
@@ -780,7 +780,7 @@ export class L1IngestionService {
       .onConflict(`("da_hash") DO NOTHING`)
       .execute().catch(e => {
         console.log({
-          type: 'error',
+          type: 'ERROR',
           time: new Date().getTime(),
           msg: `'insert da batches failed ${e?.message}`
         })
@@ -798,7 +798,7 @@ export class L1IngestionService {
       })
       .execute().catch(e => {
         console.log({
-          type: 'error',
+          type: 'ERROR',
           time: new Date().getTime(),
           msg: `insert da batch transactions failed ${e?.message}`
         })
@@ -862,7 +862,7 @@ export class L1IngestionService {
       await queryRunner.commitTransaction();
     } catch (error) {
       console.log({
-        type: 'error',
+        type: 'ERROR',
         time: new Date().getTime(),
         msg: `create l2->l1 relation to l2_to_l1 table error ${error?.message}`
       })
@@ -1349,7 +1349,7 @@ export class L1IngestionService {
     })
     const historyLatestTime = await this.getTokenPriceStartTime().catch(e => {
       console.log({
-        type: 'error',
+        type: 'ERROR',
         time: new Date().getTime(),
         msg: `query start time from token price history failed ${e?.message}`
       })
@@ -1405,7 +1405,7 @@ export class L1IngestionService {
       }
     } catch (e) {
       console.log({
-        type: 'error',
+        type: 'ERROR',
         time: new Date().getTime(),
         msg: `fetch token price failed ${e?.message}`
       })
@@ -1449,7 +1449,7 @@ export class L1IngestionService {
       await queryRunner.commitTransaction();
     } catch (error) {
       console.log({
-        type: 'error',
+        type: 'ERROR',
         time: new Date().getTime(),
         msg: `insert token price data failed ${error?.message}`
       })
@@ -1493,7 +1493,7 @@ export class L1IngestionService {
       }
     } catch (e) {
       console.log({
-        type: 'error',
+        type: 'ERROR',
         time: new Date().getTime(),
         msg: `fetch token price failed ${e?.message}`
       })
@@ -1533,7 +1533,7 @@ export class L1IngestionService {
       await queryRunner.commitTransaction();
     } catch (error) {
       console.log({
-        type: 'error',
+        type: 'ERROR',
         time: new Date().getTime(),
         msg: `update token price real time failed ${error?.message}`
       })

@@ -97,7 +97,7 @@ export class MonitorService {
       this.metricEthTotalWithdrawValue.set(Number(utils.formatEther(ethTotalWithdraw)))
     } catch (error) {
       console.log({
-        type: 'error',
+        type: 'ERROR',
         time: new Date().getTime(),
         msg: `sync bridge data error: ${error?.message}`
       })
@@ -148,7 +148,7 @@ export class MonitorService {
       return result.count;
     } catch (error) {
       console.log({
-        type: 'error',
+        type: 'ERROR',
         time: new Date().getTime(),
         msg: `miss BlockNumber error: ${error?.message}`
       })
