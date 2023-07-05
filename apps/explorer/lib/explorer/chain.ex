@@ -2688,6 +2688,12 @@ defmodule Explorer.Chain do
     |> Repo.all()
   end
 
+  @spec native_token_holders :: non_neg_integer()
+  def native_token_holders() do
+    query = from(a in Address, where: a.fetched_coin_balance > ^0)
+    count = Repo.aggregate(query, :count)
+  end
+
   @doc """
   Lists the top `t:Explorer.Chain.Token.t/0`'s'.
 

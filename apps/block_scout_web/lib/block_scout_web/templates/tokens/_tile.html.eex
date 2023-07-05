@@ -43,7 +43,7 @@
   <td class="stakes-td">
     <span class="mr-4">
       <span data-test="transaction_count">
-        <%= @token.holder_count %>
+        <%= @token.new_token_holder %>
     </span>
   </td>
 </tr>
