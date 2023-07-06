@@ -16,6 +16,9 @@ const grid = {
   drawBorder: false,
   drawOnChartArea: false
 }
+const border = {
+  display: false
+}
 
 function getTxChartColor () {
   if (Cookies.get('chakra-ui-color-mode') === 'dark') {
@@ -41,19 +44,19 @@ function getMarketCapChartColor () {
   }
 }
 
-function getAxisColor(){
+function getAxisColor () {
   if (Cookies.get('chakra-ui-color-mode') === 'dark') {
-    return "#FFFFFF"
+    return '#FFFFFF'
   } else {
-    return "#41474D"
+    return '#41474D'
   }
 }
 
-function getAxisBorderColor(){
+function getAxisBorderColor () {
   if (Cookies.get('chakra-ui-color-mode') === 'dark') {
-    return "rgba(255, 255, 255, 0.15)"
+    return 'rgba(255, 255, 255, 0.15)'
   } else {
-    return "#7FD8D2"
+    return '#7FD8D2'
   }
 }
 
@@ -66,6 +69,7 @@ function xAxe () {
   }
   return {
     grid,
+    border,
     type: 'time',
     time: {
       unit: 'day',
@@ -119,6 +123,7 @@ const config = {
       price: {
         position: 'left',
         grid,
+        border,
         ticks: {
           beginAtZero: true,
           callback: (value, _index, _values) => `$${numeral(value).format('0,0.00')}`,
@@ -129,6 +134,7 @@ const config = {
       marketCap: {
         position: 'right',
         grid,
+        border,
         ticks: {
           callback: (_value, _index, _values) => '',
           maxTicksLimit: 6,
@@ -142,6 +148,7 @@ const config = {
           color: getAxisBorderColor(),
           drawBorder: false
         },
+        border,
         ticks: {
           beginAtZero: true,
           callback: (value, _index, _values) => formatValue(value),
@@ -315,7 +322,6 @@ class MarketHistoryChart {
     } else {
       window.sessionStorage.setItem(isChartLoadedKey, true)
     }
-
     this.chart = new Chart(el, config)
   }
 
