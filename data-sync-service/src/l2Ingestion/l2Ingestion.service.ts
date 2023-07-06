@@ -293,8 +293,8 @@ export class L2IngestionService {
       type: 'log',
       time: new Date().getTime(),
       msg: {
-        message: 'l2 relayed message events start and end:',
-        startBlock, endBlock
+        message: 'l2 relayed message events start and end and list length',
+        startBlock, endBlock, length: list.length
       }
     })
     const l2RelayedMessageEventsInsertData: any = [];
