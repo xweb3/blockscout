@@ -656,6 +656,15 @@ export class L1IngestionService {
       startBlock,
       endBlock,
     );
+    console.log({
+      type: 'log',
+      time: new Date().getTime(),
+      msg: {
+        message: `l1 relayed list result`,
+        startBlock, endBlock,
+        length: list.length,
+      }
+    })
     const l1RelayedMessageEventsInsertData: any[] = [];
     for (const item of list) {
       const {
