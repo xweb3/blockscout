@@ -56,6 +56,11 @@ body{
     }
   }
 }
+
+.button-primary, .btn-full-primary {
+  border-radius: 12px;
+}
+
 // Switcher
 .dark-mode-changer {
   display: block;
