@@ -1097,9 +1097,10 @@ export class L1IngestionService {
         message: 'eigenda data result',
         daBatchIndex: res?.batchIndex,
         dataStore: res?.dataStore,
+        batchIndex: res?.batchIndexParam,
       }
     })
-    if (!res || res?.batchIndex === null || res?.dataStore === null) {
+    if (res?.dataStore === null) {
       return Promise.resolve(true);
     }
     let fromStoreNumber, upgrade_data_store_id
