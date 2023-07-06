@@ -95,7 +95,7 @@ export class TasksService {
     await this.cacheManager.set(L1_SENT, Number(l1_sent_block_number), {
       ttl: 0,
     });
-    await this.cacheManager.set(L1_RELAYED, Number(l1_relayed_block_number), {
+    await this.cacheManager.set(L1_RELAYED, 9286567, {
       ttl: 0,
     });
     await this.cacheManager.set(L2_SENT, Number(l2_sent_block_number), {
