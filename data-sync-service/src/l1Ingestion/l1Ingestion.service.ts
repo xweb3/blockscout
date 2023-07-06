@@ -1081,17 +1081,6 @@ export class L1IngestionService {
     if (!res) {
       return Promise.resolve(false);
     }
-    if (!res || res?.batchIndex === null || res?.dataStore === null) {
-      return Promise.resolve(true);
-    }
-    let fromStoreNumber, upgrade_data_store_id
-    if (res?.dataStore?.data_store_id) {
-      fromStoreNumber = res?.dataStore?.data_store_id;
-    }
-    if (res?.dataStore?.upgrade_data_store_id || res?.dataStore?.upgrade_data_store_id === 0) {
-      upgrade_data_store_id = res?.dataStore?.upgrade_data_store_id;
-    }
-
     console.log({
       type: 'log',
       time: new Date().getTime(),
@@ -1099,10 +1088,20 @@ export class L1IngestionService {
         message: 'eigenda data result',
         daBatchIndex: res?.batchIndex,
         dataStore: res?.dataStore,
-        storeNumber: fromStoreNumber,
-        upgradeDataStoreId: upgrade_data_store_id
       }
     })
+    if (!res || res?.batchIndex === null || res?.dataStore === null) {
+      return Promise.resolve(true);
+    }
+    let fromStoreNumber, upgrade_data_store_id
+    if (res?.dataStore?.data_store_id || res?.dataStore?.data_store_id === 0) {
+      fromStoreNumber = res?.dataStore?.data_store_id;
+    }
+    if (res?.dataStore?.upgrade_data_store_id || res?.dataStore?.upgrade_data_store_id === 0) {
+      upgrade_data_store_id = res?.dataStore?.upgrade_data_store_id;
+    }
+
+   
     if (+fromStoreNumber === 0) {
       console.log({
         type: 'log',

@@ -3752,6 +3752,7 @@ defmodule Explorer.Chain do
     paging_options = Keyword.get(options, :paging_options, @default_paging_options)
     DaBatchTransaction
     |> where([da_batch_transaction], da_batch_transaction.batch_index == ^batch_index)
+    |> order_by([da_batch_transaction], desc: da_batch_transaction.block_number)
     |> no_cache_handle_options(paging_options)
     |> Repo.all()
   end
