@@ -435,13 +435,13 @@ export class L1IngestionService {
         message: message.toString(),
         messageNonce: messageNonce.toString(),
       });
-      
+
       console.log({
         type: 'log',
         time: new Date().getTime(),
         msg: {
           message: 'l1 sent message block ',
-          blockNumber,target,sender,messageNonce,msgHash,
+          blockNumber, target, sender, messageNonce, msgHash,
           msg: message
         }
       })
@@ -1075,6 +1075,11 @@ export class L1IngestionService {
       result: result,
     };
   }
+
+  getLatestTransactionBatchIndex() {
+    return this.eigenlayerService.getLatestTransactionBatchIndex();
+  }
+
   async syncEigenDaBatch(batchIndexParam) {
     const { batchIndex } = await this.eigenlayerService.getLatestTransactionBatchIndex();
     console.log({
@@ -1111,7 +1116,7 @@ export class L1IngestionService {
       upgrade_data_store_id = res?.dataStore?.upgrade_data_store_id;
     }
 
-   
+
     if (+fromStoreNumber === 0) {
       console.log({
         type: 'log',
@@ -1552,5 +1557,193 @@ export class L1IngestionService {
     }
 
   }
+
+  getEmptyEigenDaData(start, end) {
+    const list = [];
+    for (let i = start; i <= end; i++) {
+      list.push(i);
+    }
+    /* return this.daBatchesRepository.find({
+      where: {
+        batch_index: {
+          $gt: start,
+          $lt: end, 
+          //$in: list, 
+        },
+      },
+      take: 20,
+      order: { batch_index: 'ASC' },
+      select: ["batch_index"],
+    }); */
+    return this.daBatchesRepository
+      .createQueryBuilder('entity')
+      //.select('entity.batch_index', 'batch_index')
+      //.where('entity.batch_index NOT IN (:values)', { values: list })
+      .where('entity.batch_index >= :minValue', { minValue: start })
+      .andWhere('entity.batch_index <= :maxValue', { maxValue: end })
+      .getMany();
+  }
+
+
+
+  async updateDaBatchMissed(batchIndexParam) {
+    const { batchIndex } = await this.eigenlayerService.getLatestTransactionBatchIndex();
+    console.log({
+      type: 'log',
+      time: new Date().getTime(),
+      msg: `sync eigenda batch and batch index: ${batchIndex}`
+    })
+    if (batchIndexParam > Number(batchIndex)) {
+      return Promise.resolve(false);
+    }
+    this.metricEigenlayerBatchIndex.set(Number(batchIndex))
+    const res = await this.eigenlayerService.getRollupStoreByRollupBatchIndex(batchIndexParam);
+    if (!res) {
+      return Promise.resolve(false);
+    }
+    console.log({
+      type: 'log',
+      time: new Date().getTime(),
+      msg: {
+        message: 'eigenda data result',
+        daBatchIndex: res?.batchIndex,
+        dataStore: res?.dataStore,
+        batchIndex: res?.batchIndexParam,
+      }
+    })
+    if (res?.dataStore === null) {
+      return Promise.resolve(true);
+    }
+    let fromStoreNumber, upgrade_data_store_id
+    if (res?.dataStore?.data_store_id || res?.dataStore?.data_store_id === 0) {
+      fromStoreNumber = res?.dataStore?.data_store_id;
+    }
+    if (res?.dataStore?.upgrade_data_store_id || res?.dataStore?.upgrade_data_store_id === 0) {
+      upgrade_data_store_id = res?.dataStore?.upgrade_data_store_id;
+    }
+
+
+    if (+fromStoreNumber === 0) {
+      console.log({
+        type: 'log',
+        time: new Date().getTime(),
+        msg: `sync eigenda batch and latestBatchIndex batch index: ${fromStoreNumber}`
+      })
+      return Promise.resolve(false);
+    }
+    let number = fromStoreNumber;
+    if (upgrade_data_store_id && upgrade_data_store_id !== 0) {
+      number += upgrade_data_store_id
+    }
+    const dataStoreData = await this.eigenlayerService.getDataStore(fromStoreNumber);
+    console.log({
+      type: 'log',
+      time: new Date().getTime(),
+      msg: {
+        message: 'current data store data:',
+        daData: dataStoreData?.dataStore,
+      }
+    })
+    if (dataStoreData?.dataStore !== null) {
+      const {
+        index: Index,
+        storePeriodLength: StorePeriodLength,
+        confirmed: Confirmed,
+        msgHash: MsgHash,
+        durationDataStoreId: DurationDataStoreId,
+        storeNumber: StoreNumber,
+        fee: Fee,
+        initTxHash: InitTxHash,
+        confirmTxHash: ConfirmTxHash,
+        dataCommitment: DataCommitment,
+        stakesFromBlockNumber: StakesFromBlockNumber,
+        initTime: InitTime,
+        expireTime: ExpireTime,
+        duration: Duration,
+        numSys: NumSys,
+        numPar: NumPar,
+        degree: Degree,
+        confirmer: Confirmer,
+        header: Header,
+        initGasUsed: InitGasUsed,
+        initBlockNumber: InitBlockNumber,
+        ethSigned: EthSigned,
+        eigenSigned: EigenSigned,
+        signatoryRecord: SignatoryRecord,
+        confirmGasUsed: ConfirmGasUsed
+      } = dataStoreData.dataStore
+      console.log({
+        type: 'log',
+        time: new Date().getTime(),
+        msg: `[syncEigenDaBatch] latestBatchIndex index:${Index}`
+      })
+      if (Index === undefined || Index === '') {
+        console.log({
+          type: 'log',
+          time: new Date().getTime(),
+          msg: `[syncEigenDaBatch] latestBatchIndex Index === undefined || Index === ''`
+        })
+        return Promise.resolve(true);
+      }
+      const CURRENT_TIMESTAMP = new Date().toISOString();
+      const insertBatchData = {
+        batch_index: batchIndexParam,
+        batch_size: 0,
+        status: Confirmed ? 'confirmed' : 'init',
+        da_hash: utils.hexlify(MsgHash),
+        store_id: DurationDataStoreId,
+        store_number: StoreNumber,
+        da_fee: Fee,
+        da_init_hash: utils.hexlify(InitTxHash),
+        da_store_hash: utils.hexlify(ConfirmTxHash),
+        from_store_number: fromStoreNumber,
+        inserted_at: CURRENT_TIMESTAMP,
+        updated_at: CURRENT_TIMESTAMP,
+        data_commitment: DataCommitment,
+        stakes_from_block_number: StakesFromBlockNumber,
+        init_time: new Date(Number(InitTime) * 1000).toISOString(),
+        expire_time: new Date(Number(ExpireTime) * 1000).toISOString(),
+        duration: Duration,
+        num_sys: NumSys,
+        num_par: NumPar,
+        degree: Degree,
+        confirmer: Confirmer,
+        header: Header,
+        init_gas_used: InitGasUsed,
+        init_block_number: InitBlockNumber,
+        eth_signed: EthSigned,
+        eigen_signed: EigenSigned,
+        signatory_record: SignatoryRecord,
+        confirm_gas_used: ConfirmGasUsed
+      }
+      let insertHashData = null;
+      // if Confirmed = true then get EigenDa tx list, else skip
+      if (Confirmed) {
+        const { txList } = await this.eigenlayerService.getTxn(number) || [];
+        const insertHashList = [];
+        insertBatchData.batch_size = txList.length || 0;
+        txList.forEach((item) => {
+          insertHashList.push({
+            batch_index: batchIndexParam,
+            block_number: item.blockNumber,
+            tx_hash: item.txHash,
+            inserted_at: CURRENT_TIMESTAMP,
+            updated_at: CURRENT_TIMESTAMP
+          })
+        })
+        insertHashData = insertHashList
+      }
+      await this.createEigenBatchTransaction(insertBatchData, insertHashData);
+    } else {
+      console.log({
+        type: 'log',
+        time: new Date().getTime(),
+        msg: "da_batch data response null"
+      })
+    }
+    return Promise.resolve(true);
+  }
+
+
 
 }

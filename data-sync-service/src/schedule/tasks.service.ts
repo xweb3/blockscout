@@ -15,6 +15,7 @@ const STATE_BATCH = 'state_batch_block_number';
 const DA_BATCH_INDEX = 'DA_BATCH_INDEX';
 const SYNC_STEP = 10;
 const SYNC_STEP_L2 = 100;
+const DA_MISS_UPDATE_LATEST_BATCH = 'DA_MISS_UPDATE_LATEST_BATCH';
 
 @Injectable()
 export class TasksService {
@@ -57,6 +58,7 @@ export class TasksService {
     let txn_batch_block_number = await this.cacheManager.get(TXN_BATCH);
     let state_batch_block_number = await this.cacheManager.get(STATE_BATCH);
     let da_batch_index = await this.cacheManager.get(DA_BATCH_INDEX);
+    let da_miss_update_latest_batch = await this.cacheManager.get(DA_MISS_UPDATE_LATEST_BATCH) || 0;
     if (!l1_sent_block_number) {
       l1_sent_block_number =
         (await this.l1IngestionService.getSentEventsBlockNumber()) ||
@@ -113,10 +115,16 @@ export class TasksService {
     await this.cacheManager.set(DA_BATCH_INDEX, Number(da_batch_index), {
       ttl: 0,
     });
-    this.sync_token_price_history();
+    
+    await this.cacheManager.set(DA_MISS_UPDATE_LATEST_BATCH, Number(da_miss_update_latest_batch), {
+      ttl: 0,
+    });
+
+    //this.sync_token_price_history();
+    this.updateDaBatchMissed();
 
   }
-  @Interval(12000)
+  /* @Interval(12000)
   async l1_sent() {
     let end = 0;
     const currentL1BlockNumber =
@@ -414,5 +422,34 @@ export class TasksService {
   async monitor_service() {
     this.monitorService.missBlockNumber();
     this.monitorService.syncBridgeData();
+  } */
+
+  @Interval(6000)
+  async updateDaBatchMissed() {
+    /* this.l1IngestionService.updateDaBatchMissed().catch(e => {
+      console.log({
+        type: 'ERROR',
+        time: new Date().getTime(),
+        msg: `update da batch missed data failed ${e?.message}`
+      })
+    }); */
+    try {
+      const { batchIndex } = await this.l1IngestionService.getLatestTransactionBatchIndex();
+      if(batchIndex && batchIndex > 0){
+        const maxBatchIndex = batchIndex - 1;
+        const start = Number(await this.cacheManager.get(DA_MISS_UPDATE_LATEST_BATCH));
+        const step = 100;
+        const end = start + step >= maxBatchIndex ? maxBatchIndex : start + step;
+        
+        const emptyList = await this.l1IngestionService.getEmptyEigenDaData(start, end); 
+        console.log('------------')
+        console.log(emptyList)
+
+      }
+    } catch (error) {
+      console.error(error)
+    }
+
+
   }
 }
