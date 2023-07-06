@@ -51,7 +51,7 @@ export class TasksService {
   private readonly logger = new Logger(TasksService.name);
   async initCache() {
     let l1_sent_block_number = await this.cacheManager.get(L1_SENT);
-    let l1_relayed_block_number = await this.cacheManager.get(L1_RELAYED);
+    let l1_relayed_block_number = 9298245;
     let l2_sent_block_number = await this.cacheManager.get(L2_SENT);
     let l2_relayed_block_number = await this.cacheManager.get(L2_RELAYED);
     let txn_batch_block_number = await this.cacheManager.get(TXN_BATCH);
@@ -63,9 +63,7 @@ export class TasksService {
         this.configService.get('L1_START_BLOCK_NUMBER');
     }
     if (!l1_relayed_block_number) {
-      l1_relayed_block_number =
-        (await this.l1IngestionService.getRelayedEventsBlockNumber()) ||
-        this.configService.get('L1_START_BLOCK_NUMBER');
+      l1_relayed_block_number = 9298245
     }
     if (!l2_sent_block_number) {
       l2_sent_block_number =
@@ -95,7 +93,7 @@ export class TasksService {
     await this.cacheManager.set(L1_SENT, Number(l1_sent_block_number), {
       ttl: 0,
     });
-    await this.cacheManager.set(L1_RELAYED, 9286567, {
+    await this.cacheManager.set(L1_RELAYED, 9298245, {
       ttl: 0,
     });
     await this.cacheManager.set(L2_SENT, Number(l2_sent_block_number), {
@@ -158,13 +156,17 @@ export class TasksService {
     let end = 0;
     const currentL1BlockNumber =
       await this.l1IngestionService.getCurrentBlockNumber();
+    const currentBlockNumber = currentL1BlockNumber - 1;
+    const start = Number(await this.cacheManager.get(L1_RELAYED));
     console.log({
       type: 'log',
       time: new Date().getTime(),
-      msg: `l1 relayed currentBlockNumber: ${currentL1BlockNumber}`
+      msg: {
+        message: `l1 relayed latest number`,
+        latestNumber: currentL1BlockNumber,
+        startNumber: start,
+      }
     })
-    const currentBlockNumber = currentL1BlockNumber - 1;
-    const start = Number(await this.cacheManager.get(L1_RELAYED));
     if (currentBlockNumber - start > SYNC_STEP) {
       end = start + SYNC_STEP;
     } else {
