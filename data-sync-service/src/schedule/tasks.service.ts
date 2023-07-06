@@ -51,7 +51,7 @@ export class TasksService {
   private readonly logger = new Logger(TasksService.name);
   async initCache() {
     let l1_sent_block_number = await this.cacheManager.get(L1_SENT);
-    let l1_relayed_block_number = 9298245;
+    let l1_relayed_block_number = await this.cacheManager.get(L1_RELAYED);
     let l2_sent_block_number = await this.cacheManager.get(L2_SENT);
     let l2_relayed_block_number = await this.cacheManager.get(L2_RELAYED);
     let txn_batch_block_number = await this.cacheManager.get(TXN_BATCH);
@@ -63,7 +63,9 @@ export class TasksService {
         this.configService.get('L1_START_BLOCK_NUMBER');
     }
     if (!l1_relayed_block_number) {
-      l1_relayed_block_number = 9298245
+      l1_relayed_block_number =
+        (await this.l1IngestionService.getRelayedEventsBlockNumber()) ||
+        this.configService.get('L1_START_BLOCK_NUMBER');
     }
     if (!l2_sent_block_number) {
       l2_sent_block_number =
@@ -93,7 +95,7 @@ export class TasksService {
     await this.cacheManager.set(L1_SENT, Number(l1_sent_block_number), {
       ttl: 0,
     });
-    await this.cacheManager.set(L1_RELAYED, 9298245, {
+    await this.cacheManager.set(L1_RELAYED, Number(l1_relayed_block_number), {
       ttl: 0,
     });
     await this.cacheManager.set(L2_SENT, Number(l2_sent_block_number), {
