@@ -150,7 +150,26 @@
                 <%= render BlockScoutWeb.IconsView, "_active_icon.html" %>
               </span>
               <%= System.get_env("SUBNETWORK") %>
+              <%= if  System.get_env("ENABLE_SWITCH_NETWORK") == "true" do %>
+               <svg viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg" class="dropdown-toggle-icon"><path d="m3 5 3 3 3-3" stroke="white" stroke-width="1.2"></path></svg>
+              <% end %>
             </a>
+            <%= if  System.get_env("ENABLE_SWITCH_NETWORK") == "true" do %>
+              <div class="dropdown-menu right" aria-labeledby="networkChangerDropdown">
+                <a href='<%= System.get_env("MAINNET_URL") %>' class='dropdown-item <%= host_status(System.get_env("MAINNET_URL"), @conn.host) %>' >
+                  <span class="nav-link-icon">
+                    <%= render BlockScoutWeb.IconsView, "_active_icon.html" %>
+                  </span>
+                  Mantle
+                </a>
+                <a href='<%= System.get_env("TESTNET_URL") %>' class='dropdown-item <%= host_status(System.get_env("TESTNET_URL"), @conn.host) %>' >
+                  <span class="nav-link-icon">
+                    <%= render BlockScoutWeb.IconsView, "_active_icon.html" %>
+                  </span>
+                  Mantle Testnet
+                </a>
+              </div>
+            <% end %>
           </li>
            <!--  language-changer -->
           <li class="nav-item dropdown language-changer">
