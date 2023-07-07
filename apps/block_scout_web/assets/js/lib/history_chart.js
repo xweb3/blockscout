@@ -7,9 +7,31 @@ import numeral from 'numeral'
 import { DateTime } from 'luxon'
 import { formatUsdValue } from '../lib/currency'
 import sassVariables from '../../css/export-vars-to-js.module.scss'
+import 'chartjs-adapter-date-fns'
+import {zhCN, enGB, ja, ko, ru} from 'date-fns/locale'
 
 Chart.defaults.font.family = 'Nunito, "Helvetica Neue", Arial, sans-serif,"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
 Chart.register(LineController, LineElement, PointElement, LinearScale, TimeScale, Title, Tooltip)
+
+let lang = Cookies.get('locale')
+if (!lang) {
+  lang = 'en'
+}
+
+const getDateLocale = (lang) => {
+  switch (lang) {
+    case 'zh':
+      return zhCN
+    case 'ja':
+      return ja
+    case 'ko':
+      return ko
+    case 'ru':
+      return ru
+    default:
+      return enGB
+  }
+}
 
 const grid = {
   display: false,
@@ -18,6 +40,12 @@ const grid = {
 }
 const border = {
   display: false
+}
+
+const adapters = {
+  date: {
+    locale: getDateLocale(lang)
+  }
 }
 
 function getTxChartColor () {
@@ -73,14 +101,15 @@ function xAxe () {
     type: 'time',
     time: {
       unit: 'day',
-      tooltipFormat: 'DD',
+      tooltipFormat: 'd MMM yyyy',
       stepSize: 14
     },
     ticks: {
       color: getAxisColor(),
       align: 'start',
       stepSize: 14
-    }
+    },
+    adapters
   }
 }
 
@@ -152,7 +181,7 @@ const config = {
         ticks: {
           beginAtZero: true,
           callback: (value, _index, _values) => formatValue(value),
-          maxTicksLimit: 3,
+          maxTicksLimit: 4,
           color: getAxisColor()
         }
       }
