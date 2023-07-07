@@ -29,7 +29,7 @@
               <% variant = Keyword.fetch!(json_rpc_named_arguments, :variant) %>
               <div class="dropdown-menu center" style="min-width:185px" aria-labeledby="navbarTransactionsDropdown">
                 <%= link(
-                  gettext("Validated"),
+                  gettext("Transactions"),
                   to: transaction_path(@conn, :index),
                   class: "#{if variant == EthereumJSONRPC.Besu, do: "border-bottom", else: ""} dropdown-item #{tab_status("txs", @conn.request_path)}"
                 ) %>

@@ -34,12 +34,13 @@
         <span style="width: 14%;">
             <%= gettext "Status" %>
         </span>
+        <span style="width: 10%;">
+            <%= gettext "Age" %>
+        </span>
         <span style="width: 50%;">
           <%= gettext "DA Hash" %>
         </span>
-        <span style="width: 10%;">
-            <%= gettext "Store Number" %>
-        </span>
+
       </div>
       <div data-empty-response-message style="display: none;">
         <div class="tile tile-muted text-center">

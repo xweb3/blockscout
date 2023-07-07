@@ -1102,7 +1102,6 @@ export class L1IngestionService {
         message: 'eigenda data result',
         daBatchIndex: res?.batchIndex,
         dataStore: res?.dataStore,
-        batchIndex: res?.batchIndexParam,
       }
     })
     if (res?.dataStore === null) {
@@ -1574,7 +1573,7 @@ export class L1IngestionService {
       type: 'log',
       time: new Date().getTime(),
       msg: {
-        message: 'eigenda data result',
+        message: 'update missed eigenda data result',
         daBatchIndex: res?.batchIndex,
         dataStore: res?.dataStore,
       }
@@ -1595,7 +1594,7 @@ export class L1IngestionService {
       console.log({
         type: 'log',
         time: new Date().getTime(),
-        msg: `sync eigenda batch and latestBatchIndex batch index: ${fromStoreNumber}`
+        msg: `update missed sync eigenda batch and latestBatchIndex batch index: ${fromStoreNumber}`
       })
       return Promise.resolve(false);
     }
@@ -1608,7 +1607,7 @@ export class L1IngestionService {
       type: 'log',
       time: new Date().getTime(),
       msg: {
-        message: 'current data store data:',
+        message: 'update missed current data store data:',
         daData: dataStoreData?.dataStore,
       }
     })
@@ -1643,13 +1642,13 @@ export class L1IngestionService {
       console.log({
         type: 'log',
         time: new Date().getTime(),
-        msg: `[syncEigenDaBatch] latestBatchIndex index:${Index}`
+        msg: `update missed [syncEigenDaBatch] latestBatchIndex index:${Index}`
       })
       if (Index === undefined || Index === '') {
         console.log({
           type: 'log',
           time: new Date().getTime(),
-          msg: `[syncEigenDaBatch] latestBatchIndex Index === undefined || Index === ''`
+          msg: `update missed [syncEigenDaBatch] latestBatchIndex Index === undefined || Index === ''`
         })
         return Promise.resolve(true);
       }
@@ -1706,7 +1705,7 @@ export class L1IngestionService {
       console.log({
         type: 'log',
         time: new Date().getTime(),
-        msg: "da_batch data response null"
+        msg: "update missed da_batch data response null"
       })
     }
     return Promise.resolve(true);
