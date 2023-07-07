@@ -424,7 +424,7 @@ export class TasksService {
     this.monitorService.syncBridgeData();
   }
 
-  @Interval(300000)
+  @Interval(60000)
   async updateDaBatchMissed() {
     try {
       const { batchIndex } = await this.l1IngestionService.getLatestTransactionBatchIndex();
