@@ -120,11 +120,11 @@ export class TasksService {
       ttl: 0,
     });
 
-    //this.sync_token_price_history();
+    this.sync_token_price_history();
     this.updateDaBatchMissed();
 
   }
-  /* @Interval(12000)
+  @Interval(12000)
   async l1_sent() {
     let end = 0;
     const currentL1BlockNumber =
@@ -422,17 +422,10 @@ export class TasksService {
   async monitor_service() {
     this.monitorService.missBlockNumber();
     this.monitorService.syncBridgeData();
-  } */
+  }
 
   @Interval(600000)
   async updateDaBatchMissed() {
-    /* this.l1IngestionService.updateDaBatchMissed().catch(e => {
-      console.log({
-        type: 'ERROR',
-        time: new Date().getTime(),
-        msg: `update da batch missed data failed ${e?.message}`
-      })
-    }); */
     try {
       const { batchIndex } = await this.l1IngestionService.getLatestTransactionBatchIndex();
       if(batchIndex && batchIndex > 0){
@@ -440,42 +433,73 @@ export class TasksService {
         const start = Number(await this.cacheManager.get(DA_MISS_UPDATE_LATEST_BATCH));
         const step = 200;
         const end = start + step >= maxBatchIndex ? maxBatchIndex : start + step;
-        
-        const emptyList = await this.l1IngestionService.getEmptyEigenDaData(start, end); 
-        if(emptyList?.length > 0){
-          console.log('------------ start, end', start, end)
-          //console.log(emptyList)
+        console.log({
+          type: 'log',
+          time: new Date().getTime(),
+          msg: `update missed eigenda start and end: ${start} ${end}`
+        })
+        const compareList = await this.l1IngestionService.getEmptyEigenDaData(start, end); 
+        console.log({
+          type: 'log',
+          time: new Date().getTime(),
+          msg: `update missed eigenda data compare list length: ${compareList?.length}`
+        })
+        if(compareList?.length > 0){
           const list = [], shouldUpdateList = [];
           for(let i = start; i <= end; i++){
             list.push(i);
           }
-          console.log('------------compare list', list)
           list.forEach((l)=> {
-            if(emptyList.every((e)=> Number(e.batch_index) !== l)){
+            if(compareList.every((e)=> Number(e.batch_index) !== l)){
               shouldUpdateList.push(l)
             }
           })
-          console.log(shouldUpdateList)
-          Promise.all(shouldUpdateList.map(s=> this.l1IngestionService.updateDaBatchMissed(s))).then((res)=> {
-            console.log('======== update missed eigenda data successful', res)
-            this.cacheManager.set(DA_MISS_UPDATE_LATEST_BATCH, end, { ttl: 0 });
-            console.log('======== DA_MISS_UPDATE_LATEST_BATCH end', end)
-          }).catch(e=> {
-            console.error(e)
-            console.log({
-              type: 'ERROR',
-              time: new Date().getTime(),
-              msg: `update missed eigenda batches error: ${e?.message}`
-            })
+          console.log({
+            type: 'log',
+            time: new Date().getTime(),
+            msg: {
+              message: `update missed eigenda data should update list`,
+              shouldUpdateList
+            }
           })
+          if(shouldUpdateList?.length > 0){
+            Promise.all(shouldUpdateList.map(s=> this.l1IngestionService.updateDaBatchMissed(s))).then((res)=> {
+              console.log({
+                type: 'log',
+                time: new Date().getTime(),
+                msg: {
+                  message: `update missed eigenda data successful`,
+                  updatedList:shouldUpdateList
+                }
+              })
+              this.cacheManager.set(DA_MISS_UPDATE_LATEST_BATCH, end, { ttl: 0 });
+            }).catch(e=> {
+              console.log({
+                type: 'ERROR',
+                time: new Date().getTime(),
+                msg: `update missed eigenda batches error: ${e?.message}`
+              })
+            })
+          }else {
+            console.log({
+              type: 'log',
+              time: new Date().getTime(),
+              msg: {
+                message: `update missed eigenda data from and start does need to update`,
+                start, end
+              }
+            })
+            this.cacheManager.set(DA_MISS_UPDATE_LATEST_BATCH, end, { ttl: 0 });
+          }
+          
         }
-        
-
       }
-    } catch (error) {
-      console.error(error)
+    } catch (e) {
+      console.log({
+        type: 'ERROR',
+        time: new Date().getTime(),
+        msg: `update missed eigenda batches catch error: ${e?.message}`
+      })
     }
-
-
   }
 }
