@@ -1559,44 +1559,13 @@ export class L1IngestionService {
   }
 
   getEmptyEigenDaData(start, end) {
-    const list = [];
-    for (let i = start; i <= end; i++) {
-      list.push(i);
-    }
-    /* return this.daBatchesRepository.find({
-      where: {
-        batch_index: {
-          $gt: start,
-          $lt: end, 
-          //$in: list, 
-        },
-      },
-      take: 20,
-      order: { batch_index: 'ASC' },
-      select: ["batch_index"],
-    }); */
-    return this.daBatchesRepository
-      .createQueryBuilder('entity')
-      //.select('entity.batch_index', 'batch_index')
-      //.where('entity.batch_index NOT IN (:values)', { values: list })
-      .where('entity.batch_index >= :minValue', { minValue: start })
-      .andWhere('entity.batch_index <= :maxValue', { maxValue: end })
-      .getMany();
+    const q = `select batch_index from da_batches where batch_index >= ${start} and batch_index <= ${end}`
+    return this.daBatchesRepository.query(q)
   }
 
 
 
   async updateDaBatchMissed(batchIndexParam) {
-    const { batchIndex } = await this.eigenlayerService.getLatestTransactionBatchIndex();
-    console.log({
-      type: 'log',
-      time: new Date().getTime(),
-      msg: `sync eigenda batch and batch index: ${batchIndex}`
-    })
-    if (batchIndexParam > Number(batchIndex)) {
-      return Promise.resolve(false);
-    }
-    this.metricEigenlayerBatchIndex.set(Number(batchIndex))
     const res = await this.eigenlayerService.getRollupStoreByRollupBatchIndex(batchIndexParam);
     if (!res) {
       return Promise.resolve(false);
@@ -1608,7 +1577,6 @@ export class L1IngestionService {
         message: 'eigenda data result',
         daBatchIndex: res?.batchIndex,
         dataStore: res?.dataStore,
-        batchIndex: res?.batchIndexParam,
       }
     })
     if (res?.dataStore === null) {

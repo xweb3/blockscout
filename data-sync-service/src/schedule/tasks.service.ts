@@ -58,7 +58,7 @@ export class TasksService {
     let txn_batch_block_number = await this.cacheManager.get(TXN_BATCH);
     let state_batch_block_number = await this.cacheManager.get(STATE_BATCH);
     let da_batch_index = await this.cacheManager.get(DA_BATCH_INDEX);
-    let da_miss_update_latest_batch = await this.cacheManager.get(DA_MISS_UPDATE_LATEST_BATCH) || 0;
+    let da_miss_update_latest_batch = await this.cacheManager.get(DA_MISS_UPDATE_LATEST_BATCH) || 1;
     if (!l1_sent_block_number) {
       l1_sent_block_number =
         (await this.l1IngestionService.getSentEventsBlockNumber()) ||
@@ -424,7 +424,7 @@ export class TasksService {
     this.monitorService.syncBridgeData();
   } */
 
-  @Interval(6000)
+  @Interval(600000)
   async updateDaBatchMissed() {
     /* this.l1IngestionService.updateDaBatchMissed().catch(e => {
       console.log({
@@ -438,12 +438,38 @@ export class TasksService {
       if(batchIndex && batchIndex > 0){
         const maxBatchIndex = batchIndex - 1;
         const start = Number(await this.cacheManager.get(DA_MISS_UPDATE_LATEST_BATCH));
-        const step = 100;
+        const step = 200;
         const end = start + step >= maxBatchIndex ? maxBatchIndex : start + step;
         
         const emptyList = await this.l1IngestionService.getEmptyEigenDaData(start, end); 
-        console.log('------------')
-        console.log(emptyList)
+        if(emptyList?.length > 0){
+          console.log('------------ start, end', start, end)
+          //console.log(emptyList)
+          const list = [], shouldUpdateList = [];
+          for(let i = start; i <= end; i++){
+            list.push(i);
+          }
+          console.log('------------compare list', list)
+          list.forEach((l)=> {
+            if(emptyList.every((e)=> Number(e.batch_index) !== l)){
+              shouldUpdateList.push(l)
+            }
+          })
+          console.log(shouldUpdateList)
+          Promise.all(shouldUpdateList.map(s=> this.l1IngestionService.updateDaBatchMissed(s))).then((res)=> {
+            console.log('======== update missed eigenda data successful', res)
+            this.cacheManager.set(DA_MISS_UPDATE_LATEST_BATCH, end, { ttl: 0 });
+            console.log('======== DA_MISS_UPDATE_LATEST_BATCH end', end)
+          }).catch(e=> {
+            console.error(e)
+            console.log({
+              type: 'ERROR',
+              time: new Date().getTime(),
+              msg: `update missed eigenda batches error: ${e?.message}`
+            })
+          })
+        }
+        
 
       }
     } catch (error) {
