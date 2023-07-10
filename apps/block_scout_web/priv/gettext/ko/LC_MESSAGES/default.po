@@ -5236,3 +5236,18 @@ msgstr "20바이트 - 잔액을 확인할 주소"
 
 msgid "Integer block number, or the string \"latest\", \"earliest\" or \"pending\""
 msgstr "정수 블록 번호 또는 \"latest\", \"earliest\" 또는 \"pending\" 이라는 문자열"
+
+msgid "seconds"
+msgstr "초"
+
+msgid "Accepted on L2"
+msgstr "L2에서 수락되었습니다"
+
+msgid "Rollup to L1"
+msgstr "L1로 롤업"
+
+msgid "Finalized on L1"
+msgstr "L1로 확정되었습니다"
+
+msgid "Challenge Period Passed"
+msgstr "도전 기간이 지났습니다"

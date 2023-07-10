@@ -243,7 +243,7 @@ defmodule BlockScoutWeb.DaBatchTransactionView do
         avg_time
         |> Duration.to_seconds()
 
-      {:ok, "<= #{avg_time_in_secs} seconds"}
+      {:ok, "<= #{avg_time_in_secs} #{gettext("seconds")}"}
     end
   end
 
