@@ -186,6 +186,11 @@ $tile-body-a-color: #007bff;
 }
 
 .tile {
+  [data-test="chain_transaction"]{
+    a[data-test="address_hash_link"]{
+      display: inline-block;
+    }
+  }
   span[data-address-hash] {
     color: $tile-body-a-color;
   }

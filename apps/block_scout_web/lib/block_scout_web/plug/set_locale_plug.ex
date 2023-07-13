@@ -9,7 +9,7 @@ defmodule BlockScoutWeb.Plug.SetLocale do
           atom | %{:params => nil | maybe_improper_list | map, optional(any) => any}
   def call(%Plug.Conn{params: %{"locale" => locale}} = conn, _options) when locale in @supported_locales do
     BlockScoutWeb.Gettext |> Gettext.put_locale(locale)
-    conn |> put_resp_cookie "locale", locale, max_age: 365*24*60*60, http_only: false
+    conn |> put_resp_cookie("locale", locale, max_age: 365*24*60*60, http_only: false)
   end
 
   def call(conn, _options) do
@@ -17,7 +17,7 @@ defmodule BlockScoutWeb.Plug.SetLocale do
       nil -> conn
       locale ->
         BlockScoutWeb.Gettext |> Gettext.put_locale(locale)
-        conn |> put_resp_cookie "locale", locale, max_age: 365*24*60*60, http_only: false
+        conn |> put_resp_cookie("locale", locale, max_age: 365*24*60*60, http_only: false)
     end
   end
 

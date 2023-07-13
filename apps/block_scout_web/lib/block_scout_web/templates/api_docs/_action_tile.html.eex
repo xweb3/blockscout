@@ -9,7 +9,9 @@
     href="#<%= action_tile_id(@module_name, @action.name) %>"
   >
     <div data-selector="stop-propagation" class="api-doc-list-item-description">
-      <h3 class="api-doc-list-item-title"><%= raw @action.description %></h3>
+      <h3 class="api-doc-list-item-title">
+        <%= generateDescription(@action) %>
+      </h3>
       <p class="api-doc-list-item-query api-text-monospace api-text-monospace-background"><%= raw query_params(@module_name, @action) %></p>
       <p class="api-doc-list-item-text"><%= @action.name %></p>
     </div>
@@ -82,7 +84,9 @@
           <p class="api-doc-parameters-list-item-subtitle"><%= required_param.type %> <em><%= gettext "(query)" %></em></p>
         </div>
         <div class="col-sm-8 col-md-10">
-          <p  class="api-doc-parameters-list-item-description"><%= required_param.description %></p>
+          <p  class="api-doc-parameters-list-item-description">
+            <%= generateRequiredParamsDescription(required_param,@action) %>
+          </p>
           <div class="form-group has-danger mb-0">
             <input
               data-selector='<%= "#{@module_name}-#{@action.name}-try-api-ui" %>'
@@ -104,7 +108,9 @@
           <p class="api-doc-parameters-list-item-subtitle"><%= optional_param.type %> <em><%= gettext "(query)" %></em></p>
         </div>
         <div class="col-sm-8 col-md-10">
-          <p class="api-doc-parameters-list-item-description"><%= optional_param.description %></p>
+          <p class="api-doc-parameters-list-item-description">
+            <%= generateOptionalParamsDescription(optional_param, @action) %>
+          </p>
           <input
             class="collapse form-control"
             data-parameter-key="<%= optional_param.key %>"

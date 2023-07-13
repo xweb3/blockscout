@@ -3,7 +3,9 @@ defmodule BlockScoutWeb.Tokens.HolderView do
 
   alias BlockScoutWeb.Tokens.OverviewView
   alias Explorer.Chain.Token
+  alias Explorer.Chain.{Address, Wei}
 
+require Logger
   @doc """
   Checks if the total supply percentage must be shown.
 
@@ -46,6 +48,24 @@ defmodule BlockScoutWeb.Tokens.HolderView do
       |> Decimal.to_string()
 
     result <> "%"
+  end
+
+  def balance(%Address{fetched_coin_balance: nil}), do: ""
+
+  def balance(%Address{fetched_coin_balance: balance}) do
+    format_wei_value(balance, :ether)
+  end
+
+  def ether_balance(%Address{fetched_coin_balance: nil}), do: ""
+
+  def ether_balance(%Address{fetched_coin_balance: balance}) do
+    format_wei_value(balance, :wei, include_unit_label: false)
+  end
+
+  def balance_with_no_unit(%Address{fetched_coin_balance: nil}), do: ""
+
+  def balance_with_no_unit(%Address{fetched_coin_balance: balance}) do
+    format_wei_value(balance, :ether, include_unit_label: false)
   end
 
   @doc """

@@ -12,6 +12,8 @@ defmodule Explorer.Chain.L1ToL2 do
           type: integer(),
           target: %Ecto.Association.NotLoaded{} | Address.t(),
           gas_limit: Gas.t(),
+          from: %Ecto.Association.NotLoaded{} | Address.t(),
+          to: %Ecto.Association.NotLoaded{} | Address.t(),
         }
 
   @primary_key {:queue_index, :integer, autogenerate: false}
@@ -24,6 +26,8 @@ defmodule Explorer.Chain.L1ToL2 do
     field(:tx_origin, :string)
     field(:target, :string)
     field(:gas_limit, :decimal)
+    field(:from, :string)
+    field(:to, :string)
     timestamps()
   end
 

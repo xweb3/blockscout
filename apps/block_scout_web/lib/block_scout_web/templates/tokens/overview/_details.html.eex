@@ -108,8 +108,7 @@
               <%= gettext("Holders") %>
             </dt>
             <dd class="col-sm-8 col-md-8 col-lg-9">
-              <% link = if @conn.request_path |> String.contains?("/token-holders"), do: "", else: AccessHelpers.get_path(@conn, :token_holder_path, :index, @token.contract_address_hash) %>
-              <a href="<%= link %>#holders" class="page-link bs-label large btn-no-border-link-to-tems" token-holder-count><%= render BlockScoutWeb.CommonComponentsView, "_loading_spinner.html", loading_text: gettext("Fetching holders...") %></a>
+              <span token-holder-count><%= render BlockScoutWeb.CommonComponentsView, "_loading_spinner.html", loading_text: gettext("Fetching holders...") %></span>
             </dd>
           </dl>
           <dl class="row">

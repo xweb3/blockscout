@@ -577,23 +577,57 @@ defmodule Explorer.Chain do
     |> Repo.all()
   end
 
-  @spec address_deposit_transactions(Hash.Address.t(),Hash.Address.t(), Keyword.t()) :: [Transaction.t()]
-  def address_deposit_transactions(address_hash, burn_address_hash, options \\ []) do
+  @spec address_deposit_transactions(Hash.t(), String.t(), [paging_options]) :: [Transaction.t()]
+  def address_deposit_transactions(address_hash, address_string, options \\ []) do
     paging_options = Keyword.get(options, :paging_options, @default_paging_options)
-
-    Transaction.transactions_deposit(address_hash, burn_address_hash)
+    list = address_deposit_list(address_string, options)
+    hash_list = Enum.map(list, fn deposit_item ->
+      case Chain.string_to_transaction_hash(deposit_item.l2_hash) do
+        {:ok, hash} ->
+          hash
+        _ ->
+          nil
+      end
+    end)
+    address_hash
+    |> Transaction.transactions_deposit(hash_list)
     |> Transaction.preload_token_transfers(address_hash)
     |> handle_paging_options(paging_options)
     |> Repo.all()
   end
 
-  @spec address_withdraw_transactions(Hash.Address.t(),Hash.Address.t(), Keyword.t()) :: [Transaction.t()]
-  def address_withdraw_transactions(address_hash, burn_address_hash, options \\ []) do
-    paging_options = Keyword.get(options, :paging_options, @default_paging_options)
+  defp address_deposit_list(address_string, options) do
+    L1ToL2
+    |> order_by([l1_to_l2], desc: l1_to_l2.queue_index)
+    |> where([l1_to_l2], l1_to_l2.from == ^address_string and not is_nil(l1_to_l2.l2_hash))
+    |> Repo.all()
+  end
 
-    Transaction.transactions_withdraw(address_hash, burn_address_hash)
+
+  @spec address_withdraw_transactions(Hash.t(), String.t(), [paging_options]) :: [Transaction.t()]
+  def address_withdraw_transactions(address_hash, address_string, options \\ []) do
+    paging_options = Keyword.get(options, :paging_options, @default_paging_options)
+    list = address_withdraw_list(address_string, options)
+    hash_list = Enum.map(list, fn withdraw_item ->
+      case Chain.string_to_transaction_hash(withdraw_item.l2_hash) do
+        {:ok, hash} ->
+          hash
+        _ ->
+          nil
+      end
+    end)
+
+    address_hash
+    |> Transaction.transactions_withdraw(hash_list)
     |> Transaction.preload_token_transfers(address_hash)
     |> handle_paging_options(paging_options)
+    |> Repo.all()
+  end
+
+  defp address_withdraw_list(address_string, options) do
+    L2ToL1
+    |> order_by([l2_to_l1], desc: l2_to_l1.msg_nonce)
+    |> where([l2_to_l1], l2_to_l1.from == ^address_string)
     |> Repo.all()
   end
 
@@ -2654,6 +2688,12 @@ defmodule Explorer.Chain do
     |> Repo.all()
   end
 
+  @spec native_token_holders :: non_neg_integer()
+  def native_token_holders() do
+    query = from(a in Address, where: a.fetched_coin_balance > ^0)
+    count = Repo.aggregate(query, :count)
+  end
+
   @doc """
   Lists the top `t:Explorer.Chain.Token.t/0`'s'.
 
@@ -3712,6 +3752,7 @@ defmodule Explorer.Chain do
     paging_options = Keyword.get(options, :paging_options, @default_paging_options)
     DaBatchTransaction
     |> where([da_batch_transaction], da_batch_transaction.batch_index == ^batch_index)
+    |> order_by([da_batch_transaction], desc: da_batch_transaction.block_number)
     |> no_cache_handle_options(paging_options)
     |> Repo.all()
   end
@@ -5070,6 +5111,9 @@ defmodule Explorer.Chain do
   defp no_cache_handle_page(query, paging_options) do
     page_number = paging_options |> Map.get(:page_number, 1) |> proccess_page_number()
     page_size = Map.get(paging_options, :page_size, @default_page_size)
+    Logger.info("-----------2222-")
+    Logger.info("#{inspect(page_number)}")
+    Logger.info("#{inspect(page_size)}")
     cond do
       page_in_bounds?(page_number, page_size) && page_number == 1 ->
         query
@@ -5559,7 +5603,7 @@ defmodule Explorer.Chain do
     TokenTransfer.fetch_token_transfers_from_token_hash(token_address_hash, options)
   end
 
-  @spec fetch_token_transfers_from_token_hash_and_token_id(Hash.t(), binary(), [paging_options]) :: []
+  @spec fetch_token_transfers_from_token_hash_and_token_id(Hash.t(), non_neg_integer(), [paging_options]) :: []
   def fetch_token_transfers_from_token_hash_and_token_id(token_address_hash, token_id, options \\ []) do
     TokenTransfer.fetch_token_transfers_from_token_hash_and_token_id(token_address_hash, token_id, options)
   end
@@ -5569,7 +5613,7 @@ defmodule Explorer.Chain do
     TokenTransfer.count_token_transfers_from_token_hash(token_address_hash)
   end
 
-  @spec count_token_transfers_from_token_hash_and_token_id(Hash.t(), binary()) :: non_neg_integer()
+  @spec count_token_transfers_from_token_hash_and_token_id(Hash.t(), non_neg_integer()) :: non_neg_integer()
   def count_token_transfers_from_token_hash_and_token_id(token_address_hash, token_id) do
     TokenTransfer.count_token_transfers_from_token_hash_and_token_id(token_address_hash, token_id)
   end
@@ -5750,7 +5794,7 @@ defmodule Explorer.Chain do
     |> Repo.all()
   end
 
-  @spec erc721_or_erc1155_token_instance_from_token_id_and_token_address(binary(), Hash.Address.t()) ::
+  @spec erc721_or_erc1155_token_instance_from_token_id_and_token_address(non_neg_integer(), Hash.Address.t()) ::
           {:ok, Instance.t()} | {:error, :not_found}
   def erc721_or_erc1155_token_instance_from_token_id_and_token_address(token_id, token_contract_address) do
     query =
@@ -6143,6 +6187,7 @@ defmodule Explorer.Chain do
     |> TypeDecoder.decode_raw(types)
   end
 
+  @spec get_token_type(Hash.Address.t()) :: String.t() | nil
   def get_token_type(hash) do
     query =
       from(
@@ -6152,6 +6197,18 @@ defmodule Explorer.Chain do
       )
 
     Repo.one(query)
+  end
+
+  @spec is_erc_20_token?(Token.t()) :: bool
+  def is_erc_20_token?(token) do
+    is_erc_20_token_type?(token.type)
+  end
+
+  defp is_erc_20_token_type?(type) do
+    case type do
+      "ERC-20" -> true
+      _ -> false
+    end
   end
 
   @doc """

@@ -780,13 +780,13 @@ defmodule Explorer.Chain.Transaction do
     )
   end
 
-  def transactions_deposit(address_hash, burn_address_hash) do
+  def transactions_deposit(address_hash, hash_list) do
     query = from(
       t in Transaction,
       inner_join: tt in TokenTransfer,
       on: t.hash == tt.transaction_hash,
+      where: t.hash in ^hash_list,
       where: tt.to_address_hash == ^address_hash,
-      where: tt.from_address_hash == ^burn_address_hash,
       distinct: :hash
     )
 
@@ -797,13 +797,13 @@ defmodule Explorer.Chain.Transaction do
     )
   end
 
-  def transactions_withdraw(address_hash, burn_address_hash) do
+  def transactions_withdraw(address_hash, hash_list) do
     query = from(
       t in Transaction,
       inner_join: tt in TokenTransfer,
       on: t.hash == tt.transaction_hash,
-      where: tt.from_address_hash == ^address_hash,
-      where: tt.to_address_hash == ^burn_address_hash,
+      where: t.hash in ^hash_list,
+      where: tt.from_address_hash == ^address_hash or tt.to_address_hash == ^address_hash,
       distinct: :hash
     )
 

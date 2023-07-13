@@ -56,9 +56,14 @@ body{
     }
   }
 }
+
+.button-primary, .btn-full-primary {
+  border-radius: 12px;
+}
+
 // Switcher
 .dark-mode-changer {
-  display: inline-flex;
+  display: block;
   align-items: center;
   justify-content: center;
   width: 36px;
@@ -70,6 +75,7 @@ body{
   outline: none !important;
   box-shadow: none !important;
   transition: 0.2s ease-in;
+  padding: 0;
 
   &:hover {
     opacity: 0.8;
@@ -219,9 +225,34 @@ body{
 
   .navbar.navbar-primary .navbar-nav .nav-link {
     color: $dark-text-content-color;
+    .dropdown-toggle-icon{
+      path{
+        stroke:$dark-text-content-color;
+      }
+    }
+
+    &:hover{
+      .dropdown-toggle-icon{
+        path{
+          stroke:white;
+        }
+      }
+    }
 
     &.network-label {
       background-color: $dropdown-menu-background-dark;
+      .dropdown-toggle-icon{
+        path{
+          stroke: #06dd76;
+        }
+      }
+      &:hover{
+        .dropdown-toggle-icon{
+          path{
+            stroke: #06dd76;
+          }
+        }
+      }
       &.active,
       &:hover,
       &.active-icon {
@@ -588,7 +619,12 @@ body{
 
   .dropdown-item {
     color: #fff;
-
+    &[target='_blank']{
+      padding-right: 20px;
+      &:after{
+        content: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M13 8.5L9 8.5C7.89543 8.5 7 9.39543 7 10.5L7 14' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M12 6L14.5 8.5L12 11' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
+      }
+    }
     &:hover {
       background-color: rgba(#fff, 0.1);
     }
