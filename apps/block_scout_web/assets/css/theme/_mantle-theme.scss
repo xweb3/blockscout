@@ -67,6 +67,11 @@ body {
     border-radius: 8px;
     background-color: transparent;
     color: #15181c;
+    &:not(.active) {
+      &:hover {
+        background-color: rgba(101, 179, 174, 0.15);
+      }
+    }
     &.active {
       background-color: #65b3ae;
       font-weight: bold;
@@ -87,6 +92,15 @@ body {
         padding: 7px 17px;
         border-radius: 8px;
         color: #15181c;
+        transition: all 0.4s ease-in-out;
+        &:not(.active) {
+          &:hover {
+            background-color: rgba(101, 179, 174, 0.15);
+          }
+        }
+        &.active {
+          font-weight: bold;
+        }
       }
     }
   }
@@ -269,6 +283,39 @@ body {
 
 .dark-theme-applied {
   color: #fff;
+
+  .contract-tabs {
+    ul {
+      .nav-item {
+        .nav-link {
+          background-color: #ffffff26;
+          color: #ffffff99;
+          &:not(.active) {
+            &:hover {
+              background-color: rgba(101, 179, 174, 0.15);
+              color: #65b3ae;
+            }
+          }
+          &.active {
+            background-color: #65b3ae;
+            color: #15181c;
+          }
+        }
+      }
+    }
+  }
+
+  .card-tabs {
+    background-color: #ffffff0d;
+    .card-tab {
+      height: 40px;
+      color: #ffffffcc;
+      &.active {
+        background-color: #65b3ae;
+        color: #15181c;
+      }
+    }
+  }
 
   .dark-mode-changer {
     [data-icon='moon'] {
@@ -498,7 +545,7 @@ body {
   }
 
   .card {
-    background-color: $dark-light-bg;
+    background-color: #141918;
     box-shadow: none;
     overflow: hidden;
   }

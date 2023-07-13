@@ -68,7 +68,9 @@
         <% end %>
 
         <%= if is_proxy do %>
-            <div class="tab-pane fade" id="read-proxy" role="tabpanel" aria-labelledby="read-proxy-tab">read proxy</div>
+            <div class="tab-pane fade" id="read-proxy" role="tabpanel" aria-labelledby="read-proxy-tab">
+              <%= render BlockScoutWeb.AddressReadProxyView, "_read_proxy.html", address: @address, conn: @conn %>
+            </div>
         <% end %>
 
         <%= if smart_contract_with_write_functions?(@address) || has_address_custom_abi_with_write_functions?(@conn, @address.hash) do %>
@@ -78,7 +80,9 @@
         <% end %>
 
         <%= if smart_contract_with_write_functions?(@address) && is_proxy do %>
-          <div class="tab-pane fade" id="write-proxy" role="tabpanel" aria-labelledby="write-proxy-tab">write proxy</div>
+          <div class="tab-pane fade" id="write-proxy" role="tabpanel" aria-labelledby="write-proxy-tab">
+            <%= render BlockScoutWeb.AddressWriteProxyView, "_write_proxy.html", address: @address, conn: @conn %>
+          </div>
         <% end %>
 
       </div>
