@@ -207,33 +207,45 @@ export const getCurrentAccountFromMMPromise = () => {
 }
 
 function hideConnectedToContainer() {
-  document.querySelector(connectedToSelector) &&
-    document.querySelector(connectedToSelector).classList.add('hidden')
+  $(connectedToSelector).length &&
+    $(connectedToSelector).each((_, ele) => {
+      $(ele).addClass('hidden')
+    })
 }
 
 function showConnectedToContainer() {
-  document.querySelector(connectedToSelector) &&
-    document.querySelector(connectedToSelector).classList.remove('hidden')
+  $(connectedToSelector).length &&
+    $(connectedToSelector).each((_, ele) => {
+      $(ele).removeClass('hidden')
+    })
 }
 
 function hideConnectContainer() {
-  document.querySelector(connectSelector) &&
-    document.querySelector(connectSelector).classList.add('hidden')
+  $(connectSelector).length &&
+    $(connectSelector).each((_, ele) => {
+      $(ele).addClass('hidden')
+    })
 }
 
 function showConnectContainer() {
-  document.querySelector(connectSelector) &&
-    document.querySelector(connectSelector).classList.remove('hidden')
+  $(connectSelector).length &&
+    $(connectSelector).each((_, ele) => {
+      $(ele).removeClass('hidden')
+    })
 }
 
 function hideConnectToContainer() {
-  document.querySelector(connectToSelector) &&
-    document.querySelector(connectToSelector).classList.add('hidden')
+  $(connectToSelector).length &&
+    $(connectToSelector).each((_, ele) => {
+      $(ele).addClass('hidden')
+    })
 }
 
 function showConnectToContainer() {
-  document.querySelector(connectToSelector) &&
-    document.querySelector(connectToSelector).classList.remove('hidden')
+  $(connectToSelector).length &&
+    $(connectToSelector).each((_, ele) => {
+      $(ele).removeClass('hidden')
+    })
 }
 
 export function showHideDisconnectButton() {
@@ -243,11 +255,15 @@ export function showHideDisconnectButton() {
     window.web3.currentProvider &&
     window.web3.currentProvider.wc
   ) {
-    document.querySelector(disconnectSelector) &&
-      document.querySelector(disconnectSelector).classList.remove('hidden')
+    $(disconnectSelector).length &&
+      $(disconnectSelector).each((_, ele) => {
+        $(ele).removeClass('hidden')
+      })
   } else {
-    document.querySelector(disconnectSelector) &&
-      document.querySelector(disconnectSelector).classList.add('hidden')
+    $(disconnectSelector).length &&
+      $(disconnectSelector).each((_, ele) => {
+        $(ele).addClass('hidden')
+      })
   }
 }
 
@@ -272,12 +288,14 @@ export function hideConnectButton() {
 }
 
 function setConnectToAddress(account) {
-  if (document.querySelector('[connected-to-address]')) {
-    document.querySelector(
-      '[connected-to-address]'
-    ).innerHTML = `[<a target="_blank" href='/address/${account}'>${trimmedAddressHash(
-      account
-    )}</a>]`
+  if ($('[connected-to-address]').length) {
+    $('[connected-to-address]').each((_, ele) => {
+      $(ele).html(
+        `[<a target="_blank" href='/address/${account}'>${trimmedAddressHash(
+          account
+        )}</a>]`
+      )
+    })
   }
 }
 

@@ -91,6 +91,5 @@
 
     </div>
   </div>
-  <script defer data-cfasync="false" src="<%= static_path(@conn, "/js/address.js") %>"></script>
   <script defer data-cfasync="false" src="<%= static_path(@conn, "/js/smart-contract-helpers.js") %>"></script>
 </section>

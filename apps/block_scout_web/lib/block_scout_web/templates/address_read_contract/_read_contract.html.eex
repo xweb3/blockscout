@@ -29,11 +29,11 @@
     <% end %>
     <%= if read_contract_data[:non_custom_abi] do %>
       <!-- loaded via AJAX -->
-      <div class="tab-pane fade show active" id="read-verified" role="tabpanel" aria-labelledby="read-verified-tab" data-smart-contract-functions data-hash="<%= to_string(@address.hash) %>" data-type="<%= read_contract_data[:type] %>" data-action="<%= read_contract_data[:action] %>" data-url="<%= smart_contract_path(@conn, :index) %>">
-        <div>
-          <%= render BlockScoutWeb.CommonComponentsView, "_loading_spinner.html", loading_text: gettext("Loading...") %>
+        <div class="tab-pane fade show active" id="read-verified" role="tabpanel" aria-labelledby="read-verified-tab" data-smart-contract-functions data-hash="<%= to_string(@address.hash) %>" data-type="<%= read_contract_data[:type] %>" data-action="<%= read_contract_data[:action] %>" data-url="<%= smart_contract_path(@conn, :index) %>">
+          <div>
+            <%= render BlockScoutWeb.CommonComponentsView, "_loading_spinner.html", loading_text: gettext("Loading...") %>
+          </div>
         </div>
-      </div>
     <% end %>
     <%= if read_contract_data[:custom_abi] do %>
       <!-- loaded via AJAX -->

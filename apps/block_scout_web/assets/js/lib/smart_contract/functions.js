@@ -16,6 +16,7 @@ import {
 } from './connect.js'
 import '../../pages/address'
 
+let walletInit = false
 const loadFunctions = (element, isCustomABI, from) => {
   const $element = $(element)
   const url = $element.data('url')
@@ -29,15 +30,22 @@ const loadFunctions = (element, isCustomABI, from) => {
     (response) => $element.html(response)
   )
     .done(function () {
-      document.querySelector(connectSelector) &&
-        document
-          .querySelector(connectSelector)
-          .addEventListener('click', connectToWallet)
-      document.querySelector(disconnectSelector) &&
-        document
-          .querySelector(disconnectSelector)
-          .addEventListener('click', disconnectWallet)
-      web3ModalInit(connectToWallet)
+      $(connectSelector, $(`#${action}-contract`)).length &&
+        $(connectSelector, $(`#${action}-contract`)).on(
+          'click',
+          connectToWallet
+        )
+
+      $(disconnectSelector, $(`#${action}-contract`)).length &&
+        $(disconnectSelector, $(`#${action}-contract`)).on(
+          'click',
+          disconnectWallet
+        )
+
+      if (!walletInit) {
+        web3ModalInit(connectToWallet)
+        walletInit = true
+      }
 
       const selector = isCustomABI
         ? '[data-function-custom]'
