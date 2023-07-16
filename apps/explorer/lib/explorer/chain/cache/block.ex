@@ -37,7 +37,7 @@ defmodule Explorer.Chain.Cache.Block do
         limit: 1
       )
 
-    Repo.one!(query, timeout: :infinity) + 1
+    Repo.one!(query, timeout: :infinity)
 
     #cached_value = __MODULE__.get_count()
     # TODO(Jayce) Cache of count of transactions is wrong now, hide cache temporary
