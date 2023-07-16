@@ -103,7 +103,7 @@ config :block_scout_web,
   json_rpc: System.get_env("JSON_RPC"),
   verification_max_libraries: verification_max_libraries
 
-default_api_rate_limit = 50000 # TODO(Jayce) hardcode need be deleted after test
+default_api_rate_limit = 50
 default_api_rate_limit_str = Integer.to_string(default_api_rate_limit)
 
 global_api_rate_limit_value =
