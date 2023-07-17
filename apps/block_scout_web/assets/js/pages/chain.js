@@ -67,12 +67,12 @@ function baseReducer(state = initialState, action) {
             action.msg,
             ...pastBlocks
           ],
-          blockCount: action.msg.blockNumber + 1
+          blockCount: action.msg.blockNumber
         })
       } else {
         return Object.assign({}, state, {
           blocks: state.blocks.map((block) => block.blockNumber === action.msg.blockNumber ? action.msg : block),
-          blockCount: action.msg.blockNumber + 1
+          blockCount: action.msg.blockNumber
         })
       }
     }

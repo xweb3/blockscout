@@ -85,12 +85,7 @@
                 <svg viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg" class="dropdown-toggle-icon"><path d="m3 5 3 3 3-3" stroke="white" stroke-width="1.2"></path></svg>
               </a>
               <div class="dropdown-menu center" aria-labeledby="navbarTransactionsDropdown">
-                <%= link(
-                      gettext("GraphQL"),
-                      class: "dropdown-item #{tab_status("graphiql", @conn.request_path)}",
-                      to: api_url() <> "/graphiql",
-                      target: "_blank"
-                    ) %>
+
                 <%= link(
                       gettext("RPC"),
                       class: "dropdown-item #{tab_status("api-docs", @conn.request_path)}",
