@@ -138,13 +138,11 @@ defmodule BlockScoutWeb.L2ToL1TxnController do
   end
 
   def index(conn, _params) do
-    transaction_estimated_count = TransactionCache.estimated_count()
 
     render(
       conn,
       "index.html",
       current_path: Controller.current_full_path(conn),
-      transaction_estimated_count: transaction_estimated_count
     )
   end
 
