@@ -487,12 +487,33 @@ body {
     }
   }
 
+  .btn-expand-code {
+    background: #ffffff26;
+    svg {
+      path {
+        stroke: #ffffff99;
+      }
+    }
+  }
+
   .tab-content {
     .connect-container {
       .web3-btn {
         border-color: #ffffff4d;
         background-color: #1f2425;
         color: #ffffffcc;
+        &[connect-wallet] {
+          svg {
+            path {
+              &:not(:last-child) {
+                fill: #9fa5a9;
+              }
+              &:last-child {
+                stroke: #9fa5a9;
+              }
+            }
+          }
+        }
         [disconnect-wallet] {
           path {
             stroke: #cfd2d4;
