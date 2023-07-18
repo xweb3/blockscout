@@ -1,5 +1,6 @@
 .modal-backdrop {
-  background-color: $modal-overlay-color;
+  background-color: #00000033;
+  backdrop-filter: blur(8px);
 
   &.show {
     opacity: 1;
@@ -16,7 +17,7 @@
   margin: 0 auto;
 }
 
-.close.close-modal{
+.close.close-modal {
   left: auto;
   opacity: 1;
   position: absolute;
@@ -25,7 +26,7 @@
   outline: none !important;
 
   path {
-    fill: #F6F7F9;
+    fill: #f6f7f9;
   }
 }
 
