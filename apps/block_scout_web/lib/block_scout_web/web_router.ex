@@ -269,33 +269,33 @@ defmodule BlockScoutWeb.WebRouter do
         as: :verify_vyper_contract
       )
 
-      resources(
-        "/read-contract",
-        AddressReadContractController,
-        only: [:index, :show],
-        as: :read_contract
-      )
+      # resources(
+      #   "/read-contract",
+      #   AddressReadContractController,
+      #   only: [:index, :show],
+      #   as: :read_contract
+      # )
 
-      resources(
-        "/read-proxy",
-        AddressReadProxyController,
-        only: [:index, :show],
-        as: :read_proxy
-      )
+      # resources(
+      #   "/read-proxy",
+      #   AddressReadProxyController,
+      #   only: [:index, :show],
+      #   as: :read_proxy
+      # )
 
-      resources(
-        "/write-contract",
-        AddressWriteContractController,
-        only: [:index, :show],
-        as: :write_contract
-      )
+      # resources(
+      #   "/write-contract",
+      #   AddressWriteContractController,
+      #   only: [:index, :show],
+      #   as: :write_contract
+      # )
 
-      resources(
-        "/write-proxy",
-        AddressWriteProxyController,
-        only: [:index, :show],
-        as: :write_proxy
-      )
+      # resources(
+      #   "/write-proxy",
+      #   AddressWriteProxyController,
+      #   only: [:index, :show],
+      #   as: :write_proxy
+      # )
 
       resources(
         "/token-transfers",
@@ -344,32 +344,39 @@ defmodule BlockScoutWeb.WebRouter do
       )
 
       resources(
-        "/read-contract",
+        "/contracts",
         Tokens.ContractController,
         only: [:index],
-        as: :read_contract
+        as: :contract
       )
 
-      resources(
-        "/write-contract",
-        Tokens.ContractController,
-        only: [:index],
-        as: :write_contract
-      )
+      # resources(
+      #   "/read-contract",
+      #   Tokens.ContractController,
+      #   only: [:index],
+      #   as: :read_contract
+      # )
 
-      resources(
-        "/read-proxy",
-        Tokens.ContractController,
-        only: [:index],
-        as: :read_proxy
-      )
+      # resources(
+      #   "/write-contract",
+      #   Tokens.ContractController,
+      #   only: [:index],
+      #   as: :write_contract
+      # )
 
-      resources(
-        "/write-proxy",
-        Tokens.ContractController,
-        only: [:index],
-        as: :write_proxy
-      )
+      # resources(
+      #   "/read-proxy",
+      #   Tokens.ContractController,
+      #   only: [:index],
+      #   as: :read_proxy
+      # )
+
+      # resources(
+      #   "/write-proxy",
+      #   Tokens.ContractController,
+      #   only: [:index],
+      #   as: :write_proxy
+      # )
 
       resources(
         "/token-holders",

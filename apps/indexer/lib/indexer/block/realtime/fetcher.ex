@@ -179,9 +179,6 @@ defmodule Indexer.Block.Realtime.Fetcher do
         {:error, :disabled} -> 2_000
         block_time -> round(Duration.to_milliseconds(block_time) / 2)
         #block_time -> 1000
-          #Logger.info("----------")
-          #Logger.info("#{inspect(round(Duration.to_milliseconds(block_time) / 2))}")
-          #round(Duration.to_milliseconds(block_time) / 2)
       end
 
     safe_polling_period = max(polling_period, @minimum_safe_polling_period)
