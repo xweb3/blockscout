@@ -1732,6 +1732,14 @@ export class L1IngestionService {
       select: ['block_number'],
       order: { block_number: 'DESC' },
     })
+    console.log({
+      type: 'log',
+      time: new Date().getTime(),
+      msg: {
+        message: 'initMetrics metricL2ToL1L1Hash',
+        relayedEventsItem
+      }
+    })
     this.metricL2ToL1L1Hash.set(Number(relayedEventsItem?.block_number || 0))
   }
 }

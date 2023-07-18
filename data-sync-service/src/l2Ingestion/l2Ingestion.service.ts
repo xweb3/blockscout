@@ -535,6 +535,14 @@ export class L2IngestionService {
       select: ['msg_nonce'],
       order: { msg_nonce: 'DESC' },
     })
+    console.log({
+      type: 'log',
+      time: new Date().getTime(),
+      msg: {
+        message: 'initMetrics metricMsgNonce',
+        l2ToL1Item
+      }
+    })
     this.metricMsgNonce.set(Number(l2ToL1Item?.msg_nonce || 0))
     const relayedEventsItem = await this.relayedEventsRepository.findOne({
       select: ['block_number'],
@@ -547,6 +555,14 @@ export class L2IngestionService {
       where: {
         status: '0'
       },
+    })
+    console.log({
+      type: 'log',
+      time: new Date().getTime(),
+      msg: {
+        message: 'initMetrics metricL2ToL1Status',
+        l2ToL1Item2
+      }
     })
     this.metricL2ToL1Status.set(Number(l2ToL1Item2.msg_nonce || 0))
   }
