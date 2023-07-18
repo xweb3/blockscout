@@ -51,6 +51,7 @@ export class L2IngestionService {
       configService.get('L2_CROSS_DOMAIN_MESSENGER_ADDRESS'),
     );
     this.web3 = web3;
+    this.initMetrics();
     /* if(configService.get('ENV') !== 'mainnet'){
       this.WithdrawalMethod = 'finalizeBitWithdrawal'
       this.WithdrawalMethodHexPrefix = '0x839f0ec6'
@@ -528,5 +529,25 @@ export class L2IngestionService {
     } finally {
       await queryRunner.release();
     }
+  }
+  async initMetrics() {
+    const l2ToL1Item = await this.l2ToL1Repository.findOne({
+      select: ['msg_nonce'],
+      order: { msg_nonce: 'DESC' },
+    })
+    this.metricMsgNonce.set(Number(l2ToL1Item?.msg_nonce || 0))
+    const relayedEventsItem = await this.relayedEventsRepository.findOne({
+      select: ['block_number'],
+      order: { block_number: 'DESC' },
+    })
+    this.metricL1ToL2L2Hash.set(Number(relayedEventsItem?.block_number || 0))
+    const l2ToL1Item2 = await this.l2ToL1Repository.findOne({
+      select: ['msg_nonce'],
+      order: { block: 'DESC' },
+      where: {
+        status: '0'
+      },
+    })
+    this.metricL2ToL1Status.set(Number(l2ToL1Item2.msg_nonce || 0))
   }
 }
