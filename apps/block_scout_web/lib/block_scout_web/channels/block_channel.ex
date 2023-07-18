@@ -40,7 +40,7 @@ defmodule BlockScoutWeb.BlockChannel do
     rendered_block =
       View.render_to_string(
         BlockView,
-        "_tile.html",
+        "_table_tile.html",
         block: block,
         block_type: BlockView.block_type(block)
       )
