@@ -5253,3 +5253,6 @@ msgstr "最终确认在L1"
 
 msgid "Challenge Period Passed"
 msgstr "挑战期已过"
+
+msgid "Txn Hash"
+msgstr "交易哈希"

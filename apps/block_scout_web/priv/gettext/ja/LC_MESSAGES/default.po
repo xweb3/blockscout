@@ -3384,6 +3384,8 @@ msgstr "取引手数料 (Torihiki Tesuryō)"
 msgid "Transaction Hash"
 msgstr "トランザクションハッシュ"
 
+
+
 #: lib/block_scout_web/templates/da_batch_transaction/_decoded_input_body.html.eex:2
 #: lib/block_scout_web/templates/da_batch_transaction/_decoded_input_body.html.eex:19
 #: lib/block_scout_web/templates/eigenda_batch/_decoded_input_body.html.eex:2
@@ -5251,3 +5253,6 @@ msgstr "L1で最終決定"
 
 msgid "Challenge Period Passed"
 msgstr "チャレンジ期間が終了しました"
+
+msgid "Txn Hash"
+msgstr "トランザクションハッシュ"

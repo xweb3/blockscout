@@ -5246,3 +5246,6 @@ msgstr ""
 
 msgid "Challenge Period Passed"
 msgstr ""
+
+msgid "Txn Hash"
+msgstr ""

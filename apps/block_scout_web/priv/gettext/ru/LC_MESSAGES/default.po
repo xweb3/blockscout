@@ -5261,3 +5261,6 @@ msgstr "Окончательно согласовано на L1"
 
 msgid "Challenge Period Passed"
 msgstr "Период испытаний прошел"
+
+msgid "Txn Hash"
+msgstr "Хэш транзакции"
