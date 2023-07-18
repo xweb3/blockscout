@@ -24,20 +24,27 @@ const loadFunctions = (element, isCustomABI, from) => {
   const type = $element.data('type')
   const action = $element.data('action')
 
+  const typeForId = type === 'proxy' ? 'proxy' : 'contract'
+
   $.get(
     url,
     { hash, type, action, is_custom_abi: isCustomABI, from },
     (response) => $element.html(response)
   )
     .done(function () {
-      $(connectSelector, $(`#${action}-contract`)).length &&
-        $(connectSelector, $(`#${action}-contract`)).on(
+      $(
+        '.web3-connect-wrapper',
+        $element.parents('.contract-handler-container')
+      ).fadeIn()
+
+      $(connectSelector, $(`#${action}-${typeForId}`)).length &&
+        $(connectSelector, $(`#${action}-${typeForId}`)).on(
           'click',
           connectToWallet
         )
 
-      $(disconnectSelector, $(`#${action}-contract`)).length &&
-        $(disconnectSelector, $(`#${action}-contract`)).on(
+      $(disconnectSelector, $(`#${action}-${typeForId}`)).length &&
+        $(disconnectSelector, $(`#${action}-${typeForId}`)).on(
           'click',
           disconnectWallet
         )
@@ -63,14 +70,20 @@ const loadFunctions = (element, isCustomABI, from) => {
         } else {
           power = parseInt($(event.currentTarget).data('power'), 10)
         }
+        // const $input = $(event.currentTarget)
+        //   .parent()
+        //   .parent()
+        //   .parent()
+        //   .find('[name=function_input]')
         const $input = $(event.currentTarget)
-          .parent()
-          .parent()
-          .parent()
+          .parents('.number-input-container')
           .find('[name=function_input]')
-        const currentInputVal = parseInt($input.val(), 10) || 1
-        const newInputVal = (currentInputVal * Math.pow(10, power)).toString()
-        $input.val(newInputVal.toString())
+
+        if ($input.length) {
+          const currentInputVal = parseInt($input.val(), 10) || 1
+          const newInputVal = (currentInputVal * Math.pow(10, power)).toString()
+          $input.val(newInputVal.toString())
+        }
       })
 
       $('[name=custom_power]').on('click', (event) => {

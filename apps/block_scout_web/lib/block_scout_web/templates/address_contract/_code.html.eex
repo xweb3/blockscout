@@ -89,10 +89,10 @@
                   </div>
                 </section>
               <% end %>
-              <section>
-                <div class="d-flex justify-content-between align-items-baseline">
+              <section class="code-container">
+                <div class="d-flex justify-content-between align-items-baseline code-tools-container">
                   <h3><%= target_contract.file_path || gettext "Contract source code" %></h3>
-                  <div class="buttons">
+                  <div class="buttons contract-code-buttons">
                     <%= if visualize_sol2uml_enabled && !target_contract.is_vyper_contract && !is_nil(target_contract.abi) do %>
                       <span data-original-title="Visualize contract code using Sol2Uml JS library" data-placement="top" data-toggle="tooltip">
                         <a class="button button-primary button-sm" href="<%= visualize_sol2uml_path(@conn, :index, address: @address) %>">
@@ -104,8 +104,29 @@
                         </a>
                       </span>
                       <% end %>
-                      <button type="button" class="btn-line ml-3 float-right" id="button" data-toggle="tooltip" data-placement="top" data-clipboard-text="<%= target_contract.contract_source_code %>" aria-label="Copy Contract Source Code">
-                        <%= gettext "Copy Source Code" %>
+                      <button type="button" class="btn-copy-code" id="button" data-toggle="tooltip" data-placement="top" data-clipboard-text="<%= target_contract.contract_source_code %>" aria-label="Copy Contract Source Code">
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <rect x="1.39844" y="4.90039" width="7.7" height="7.7" rx="1.16667" stroke="#15181C" stroke-width="1.4"/>
+                          <path d="M9.65729 9.79961H10.7365C11.3808 9.79961 11.9031 9.27727 11.9031 8.63294V3.26628C11.9031 2.62194 11.3808 2.09961 10.7365 2.09961H5.36979C4.72546 2.09961 4.20312 2.62194 4.20312 3.26628V4.34544" stroke="#15181C" stroke-width="1.4" stroke-linecap="round"/>
+                        </svg>
+                       <%= gettext "Copy" %>
+                      </button>
+                      <button type="button" class="btn-expand-code">
+                       <span data-toggle="tooltip" data-placement="top" title="" data-custom-class="" data-original-title="<%= gettext "Toggle Fullscreen" %>">
+                        <svg id="expand-code" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M9 6L7 6C6.44772 6 6 6.44772 6 7L6 9" stroke="#585F65" stroke-width="1.5" stroke-linecap="round"/>
+                          <path d="M13 16L15 16C15.5523 16 16 15.5523 16 15L16 13" stroke="#585F65" stroke-width="1.5" stroke-linecap="round"/>
+                          <path d="M16 9L16 7C16 6.44772 15.5523 6 15 6L13 6" stroke="#585F65" stroke-width="1.5" stroke-linecap="round"/>
+                          <path d="M6 13L6 15C6 15.5523 6.44772 16 7 16L9 16" stroke="#585F65" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+
+                        <svg id="collapse-code" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M9 6V8C9 8.55228 8.55228 9 8 9H6" stroke="#585F65" stroke-width="1.5" stroke-linecap="round"/>
+                          <path d="M13 16L13 14C13 13.4477 13.4477 13 14 13L16 13" stroke="#585F65" stroke-width="1.5" stroke-linecap="round"/>
+                          <path d="M16 9L14 9C13.4477 9 13 8.55228 13 8L13 6" stroke="#585F65" stroke-width="1.5" stroke-linecap="round"/>
+                          <path d="M6 13L8 13C8.55229 13 9 13.4477 9 14L9 16" stroke="#585F65" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                      </span>
                       </button>
                   </div>
                 </div>
@@ -113,11 +134,32 @@
               </section>
 
               <%= additional_sources |> Enum.with_index() |> Enum.map(fn {additional_source, index} -> %>
-                <section>
-                  <div class="d-flex justify-content-between align-items-baseline">
+                <section class="code-container">
+                  <div class="d-flex justify-content-between align-items-baseline code-tools-container">
                     <h3><%= additional_source.file_name %></h3>
-                    <button type="button" class="btn-line" id="button" data-toggle="tooltip" data-placement="top" data-clipboard-text="<%= additional_source.contract_source_code %>" aria-label="Copy Contract Source Code">
-                      <%= gettext "Copy Source Code" %>
+                    <button type="button" class="btn-copy-code" id="button" data-toggle="tooltip" data-placement="top" data-clipboard-text="<%= additional_source.contract_source_code %>" aria-label="Copy Contract Source Code">
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="1.39844" y="4.90039" width="7.7" height="7.7" rx="1.16667" stroke="#15181C" stroke-width="1.4"/>
+                        <path d="M9.65729 9.79961H10.7365C11.3808 9.79961 11.9031 9.27727 11.9031 8.63294V3.26628C11.9031 2.62194 11.3808 2.09961 10.7365 2.09961H5.36979C4.72546 2.09961 4.20312 2.62194 4.20312 3.26628V4.34544" stroke="#15181C" stroke-width="1.4" stroke-linecap="round"/>
+                      </svg>
+                      <%= gettext "Copy" %>
+                    </button>
+                    <button type="button" class="btn-expand-code">
+                     <span data-toggle="tooltip" data-placement="top" title="" data-custom-class="" data-original-title="<%= gettext "Toggle Fullscreen" %>">
+                      <svg id="expand-code" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 6L7 6C6.44772 6 6 6.44772 6 7L6 9" stroke="#585F65" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M13 16L15 16C15.5523 16 16 15.5523 16 15L16 13" stroke="#585F65" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M16 9L16 7C16 6.44772 15.5523 6 15 6L13 6" stroke="#585F65" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M6 13L6 15C6 15.5523 6.44772 16 7 16L9 16" stroke="#585F65" stroke-width="1.5" stroke-linecap="round"/>
+                      </svg>
+
+                      <svg id="collapse-code" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 6V8C9 8.55228 8.55228 9 8 9H6" stroke="#585F65" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M13 16L13 14C13 13.4477 13.4477 13 14 13L16 13" stroke="#585F65" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M16 9L14 9C13.4477 9 13 8.55228 13 8L13 6" stroke="#585F65" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M6 13L8 13C8.55229 13 9 13.4477 9 14L9 16" stroke="#585F65" stroke-width="1.5" stroke-linecap="round"/>
+                      </svg>
+                      </span>
                     </button>
                   </div>
                   <pre class="tile-muted tile-code mb-4" id="code_viewer_<%= index %>"><%= additional_source.contract_source_code %><pre>
@@ -128,8 +170,12 @@
                 <section>
                   <div class="d-flex justify-content-between align-items-baseline">
                     <h3><%= gettext "Compiler Settings" %></h3>
-                    <button type="button" class="btn-line" id="button" data-clipboard-text="<%= format_smart_contract_abi(target_contract.compiler_settings) %>" aria-label="Copy Compiler Settings">
-                      <%= gettext "Copy Compiler Settings" %>
+                    <button type="button" class="btn-copy-code" id="button" data-clipboard-text="<%= format_smart_contract_abi(target_contract.compiler_settings) %>" aria-label="Copy Compiler Settings">
+                       <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="1.39844" y="4.90039" width="7.7" height="7.7" rx="1.16667" stroke="#15181C" stroke-width="1.4"/>
+                        <path d="M9.65729 9.79961H10.7365C11.3808 9.79961 11.9031 9.27727 11.9031 8.63294V3.26628C11.9031 2.62194 11.3808 2.09961 10.7365 2.09961H5.36979C4.72546 2.09961 4.20312 2.62194 4.20312 3.26628V4.34544" stroke="#15181C" stroke-width="1.4" stroke-linecap="round"/>
+                      </svg>
+                      <%= gettext "Copy" %>
                     </button>
                   </div>
                   <div class="tile tile-muted mb-4">
@@ -143,8 +189,12 @@
                 <section>
                   <div class="d-flex justify-content-between align-items-baseline">
                     <h3><%= gettext "Contract ABI" %></h3>
-                    <button type="button" class="btn-line" id="button" data-clipboard-text="<%= format_smart_contract_abi(target_contract.abi) %>" aria-label="Copy Contract ABI">
-                      <%= gettext "Copy ABI" %>
+                    <button type="button" class="btn-copy-code" id="button" data-clipboard-text="<%= format_smart_contract_abi(target_contract.abi) %>" aria-label="Copy Contract ABI">
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="1.39844" y="4.90039" width="7.7" height="7.7" rx="1.16667" stroke="#15181C" stroke-width="1.4"/>
+                        <path d="M9.65729 9.79961H10.7365C11.3808 9.79961 11.9031 9.27727 11.9031 8.63294V3.26628C11.9031 2.62194 11.3808 2.09961 10.7365 2.09961H5.36979C4.72546 2.09961 4.20312 2.62194 4.20312 3.26628V4.34544" stroke="#15181C" stroke-width="1.4" stroke-linecap="round"/>
+                      </svg>
+                      <%= gettext "Copy" %>
                     </button>
                   </div>
                   <div class="tile tile-muted mb-4">
@@ -160,8 +210,12 @@
                 <% {:selfdestructed, transaction_init} -> %>
                   <div class="d-flex justify-content-between align-items-baseline">
                     <h3><%= gettext "Contract Creation Code" %></h3>
-                    <button type="button" class="btn-line" id="button" data-clipboard-text="<%= transaction_init %>" aria-label="copy contract creation code">
-                      <%= gettext "Copy Contract Creation Code" %>
+                    <button type="button" class="btn-copy-code" id="button" data-clipboard-text="<%= transaction_init %>" aria-label="copy contract creation code">
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="1.39844" y="4.90039" width="7.7" height="7.7" rx="1.16667" stroke="#15181C" stroke-width="1.4"/>
+                        <path d="M9.65729 9.79961H10.7365C11.3808 9.79961 11.9031 9.27727 11.9031 8.63294V3.26628C11.9031 2.62194 11.3808 2.09961 10.7365 2.09961H5.36979C4.72546 2.09961 4.20312 2.62194 4.20312 3.26628V4.34544" stroke="#15181C" stroke-width="1.4" stroke-linecap="round"/>
+                      </svg>
+                      <%= gettext "Copy" %>
                     </button>
                   </div>
                   <div class="alert alert-info">
@@ -176,8 +230,12 @@
                     <div class="d-flex justify-content-between align-items-baseline">
                       <h3><%= gettext "Contract Creation Code" %></h3>
                       <div class="buttons">
-                        <button type="button" class="btn-line" style="float: left;" id="button" data-clipboard-text="<%= creation_code(@address) %>" aria-label="copy contract creation code">
-                          <%= gettext "Copy Contract Creation Code" %>
+                        <button type="button" class="btn-copy-code" style="float: left;" id="button" data-clipboard-text="<%= creation_code(@address) %>" aria-label="copy contract creation code">
+                          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="1.39844" y="4.90039" width="7.7" height="7.7" rx="1.16667" stroke="#15181C" stroke-width="1.4"/>
+                            <path d="M9.65729 9.79961H10.7365C11.3808 9.79961 11.9031 9.27727 11.9031 8.63294V3.26628C11.9031 2.62194 11.3808 2.09961 10.7365 2.09961H5.36979C4.72546 2.09961 4.20312 2.62194 4.20312 3.26628V4.34544" stroke="#15181C" stroke-width="1.4" stroke-linecap="round"/>
+                          </svg>
+                          <%= gettext "Copy" %>
                         </button>
                         <%= if !fully_verified do %>
                           <% path = address_verify_contract_path(@conn, :new, @address.hash) %>
@@ -197,8 +255,12 @@
                   <%= if fully_verified do %>
                     <div class="d-flex justify-content-between align-items-baseline">
                       <h3><%= gettext "Deployed ByteCode" %></h3>
-                      <button type="button" class="btn-line" style="float: left;" id="button" data-clipboard-text="<%= contract_code %>" aria-label="copy contract creation code">
-                        <%= gettext "Copy Deployed ByteCode" %>
+                      <button type="button" class="btn-copy-code" style="float: left;" id="button" data-clipboard-text="<%= contract_code %>" aria-label="copy contract creation code">
+                          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="1.39844" y="4.90039" width="7.7" height="7.7" rx="1.16667" stroke="#15181C" stroke-width="1.4"/>
+                            <path d="M9.65729 9.79961H10.7365C11.3808 9.79961 11.9031 9.27727 11.9031 8.63294V3.26628C11.9031 2.62194 11.3808 2.09961 10.7365 2.09961H5.36979C4.72546 2.09961 4.20312 2.62194 4.20312 3.26628V4.34544" stroke="#15181C" stroke-width="1.4" stroke-linecap="round"/>
+                          </svg>
+                          <%= gettext "Copy" %>
                       </button>
                     </div>
                   <% else %>
@@ -207,8 +269,12 @@
                         <h3><%= gettext "Deployed ByteCode" %></h3>
                       </div>
                       <div class="buttons">
-                        <button type="button" class="btn-line" style="float: left;" id="button" data-clipboard-text="<%= contract_code %>" aria-label="copy contract creation code">
-                          <%= gettext "Copy Deployed ByteCode" %>
+                        <button type="button" class="btn-copy-code" style="float: left;" id="button" data-clipboard-text="<%= contract_code %>" aria-label="copy contract creation code">
+                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="1.39844" y="4.90039" width="7.7" height="7.7" rx="1.16667" stroke="#15181C" stroke-width="1.4"/>
+                            <path d="M9.65729 9.79961H10.7365C11.3808 9.79961 11.9031 9.27727 11.9031 8.63294V3.26628C11.9031 2.62194 11.3808 2.09961 10.7365 2.09961H5.36979C4.72546 2.09961 4.20312 2.62194 4.20312 3.26628V4.34544" stroke="#15181C" stroke-width="1.4" stroke-linecap="round"/>
+                          </svg>
+                          <%= gettext "Copy" %>
                         </button>
                         <%= if !fully_verified and !creation_code(@address) do %>
                           <% path = address_verify_contract_path(@conn, :new, @address.hash) %>

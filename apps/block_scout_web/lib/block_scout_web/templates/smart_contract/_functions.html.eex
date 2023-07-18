@@ -37,7 +37,7 @@
 
   <div class="contract-function">
     <div class="contract-function-header" id="<%= if @action == "write" do "#{function["name"]}-write-#{counter}" else "#{function["name"]}-read-#{counter}" end %>-heading">
-        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#<%= if @action == "write" do "#{function["name"]}-write-#{counter}" else "#{function["name"]}-read-#{counter}" end %>" aria-expanded="true" aria-controls="<%= if @action == "write" do "#{function["name"]}-write-#{counter}" else "#{function["name"]}-read-#{counter}" end %>">
+        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#<%= if @action == "write" do "#{function["name"]}-write-#{counter}" else "#{function["name"]}-read-#{counter}" end %>" aria-expanded="false" aria-controls="<%= if @action == "write" do "#{function["name"]}-write-#{counter}" else "#{function["name"]}-read-#{counter}" end %>">
 
             <div class="text-nowrap">
               <%= counter %>.
@@ -83,22 +83,19 @@
 
             <%= if queryable?(function["inputs"]) do %>
               <%= for input <- function["inputs"] do %>
-                <div class="form-group d-flex" style="margin-bottom: 0.5rem !important;">
+                <div class="form-group d-flex">
                   <%= if int?(input["type"]) do %>
+                  <div class="number-input-container">
                     <input type="number" name="function_input" class="form-control form-control-sm address-input-sm"
                     placeholder='<%= input["name"] %>(<%= input["type"] %>)'
                     style="width: <%= (String.length(input["name"]) + String.length(input["type"]) + 2) * 10 %>px;"/>
-                    <span data-dropdown-toggle="" data-toggle="dropdown">
-                      <span class="button btn-line button-xs contract-plus-btn-container ml-1">
-                        <i class="fa fa-plus contract-plus-btn"></i>
-                      </span>
-                      <div class="dropdown-menu exponention-dropdown">
-                        <div class="dropdown-item contract-exponentiation-btn" data-power=6>10<sup>6</sup></div>
-                        <div class="dropdown-item contract-exponentiation-btn" data-power=8>10<sup>8</sup></div>
-                        <div class="dropdown-item contract-exponentiation-btn" data-power=18>10<sup>18</sup></div>
-                        <div class="dropdown-item contract-exponentiation-btn" data-power><input type="number" name="custom_power" class="form-control form-control-sm address-input-sm ml-1 custom-power-input" />10</div>
-                      </div>
-                    </span>
+                    <div class="contract-exponentiation-btn" data-power=6>10<sup>6</sup></div>
+                    <div class="contract-exponentiation-btn" data-power=8>10<sup>8</sup></div>
+                    <div class="contract-exponentiation-btn" data-power=18>10<sup>18</sup></div>
+                    <div class="contract-exponentiation-btn" data-power><input type="number" name="custom_power" class="form-control form-control-sm address-input-sm ml-1 custom-power-input" />10</div>
+                   </div>
+
+
 
                   <% else %>
                     <label><%= input["name"] %>(<%= input["type"] %>)</label>

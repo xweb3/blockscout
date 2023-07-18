@@ -19,10 +19,56 @@ body {
   overscroll-behavior: none;
 }
 
+.web3-connect-wrapper {
+  display: none;
+}
+.buttons {
+  display: flex;
+  align-items: center;
+}
+.contract-code-buttons {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.btn-copy-code {
+  border-radius: 6px;
+  padding: 4px 10px;
+  background-color: #65b3ae;
+  font-size: 14px;
+  color: #15181c;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.btn-expand-code {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: #f0f1f2;
+  border-radius: 6px;
+  width: 29px;
+  height: 29px;
+  #collapse-code {
+    display: none;
+  }
+  &.expand {
+    #collapse-code {
+      display: block;
+    }
+    #expand-code {
+      display: none;
+    }
+  }
+}
 .contract-function {
   width: 100%;
   border: 1px solid #f0f1f2;
   border-radius: 8px;
+  overflow: hidden;
 
   .contract-function-header {
     background-color: #f8f8f9;
@@ -39,6 +85,14 @@ body {
       color: #2b3034;
       text-decoration: none;
       box-shadow: none !important;
+      svg {
+        transition: all 0.3s ease;
+      }
+      &[aria-expanded='true'] {
+        svg {
+          transform: rotate(180deg);
+        }
+      }
     }
   }
   .contract-function-body {
@@ -47,6 +101,7 @@ body {
     .form-inline {
       flex-direction: column;
       align-items: flex-start;
+      gap: 10px;
       .form-group {
         width: 100%;
         label {
@@ -55,6 +110,34 @@ body {
         input[name='function_input'] {
           width: 100%;
           border-radius: 8px;
+          border-color: #f0f1f2;
+        }
+      }
+      .number-input-container {
+        display: flex;
+        align-items: center;
+        border: 1px solid #f0f1f2;
+        overflow: hidden;
+        border-radius: 8px;
+        padding: 0px 8px;
+        gap: 10px;
+        flex-wrap: wrap;
+        input[name='function_input'] {
+          padding: 0;
+          border-radius: 0;
+          border: none;
+        }
+        .contract-exponentiation-btn {
+          padding: 2px 10px;
+          border-radius: 4px;
+          background-color: #f0f1f2;
+          cursor: pointer;
+          &:hover {
+            background-color: #f0f1f2;
+          }
+        }
+        .custom-power-input {
+          margin-top: 0 !important;
         }
       }
       input[type='submit'] {
@@ -62,6 +145,7 @@ body {
         background-color: #f8f8f9;
         padding: 6px 16px 6px 16px !important;
         color: #152928;
+        border-radius: 8px;
         &:hover {
           background-color: #cfd2d4;
         }
@@ -78,7 +162,7 @@ body {
   .connect-container {
     .web3-btn {
       margin-left: 0 !important;
-      background-color: #f8f8f9;
+      background-color: #ffffff;
       border: 1px solid #cfd2d4;
       border-radius: 8px;
       color: #2b3034;
@@ -88,6 +172,21 @@ body {
       padding: 10px 16px;
       line-height: 1;
       height: 36px;
+      [disconnect-wallet] {
+        padding: 0;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: none;
+        border-radius: 4px;
+        background-color: transparent;
+        transition: all 0.3s ease;
+        &:hover {
+          background-color: #f8f8f9;
+        }
+      }
       p[connected-to-address] {
         margin: 0;
       }
@@ -332,8 +431,61 @@ body {
   }
 }
 
+// dark theme applied style start here
 .dark-theme-applied {
   color: #fff;
+
+  .contract-function {
+    border-color: #ffffff26;
+    .contract-function-header {
+      background-color: #ffffff0d;
+      &:hover {
+        background-color: #ffffff26;
+      }
+      button {
+        color: #ffffffcc;
+        svg {
+          path {
+            stroke: #ffffffcc;
+          }
+        }
+      }
+    }
+    .contract-function-body {
+      .form-inline {
+        .form-group {
+          label {
+            color: #ffffffcc;
+          }
+          input[name='function_input'] {
+            border-color: #ffffff26;
+            background-color: transparent;
+          }
+        }
+        .number-input-container {
+          border-color: #ffffff26;
+          .contract-exponentiation-btn {
+            background-color: #ffffff26;
+            &:hover {
+              background-color: #ffffff26;
+            }
+          }
+          .custom-power-input {
+            background-color: transparent;
+            border-color: #ffffff26;
+          }
+        }
+        input[type='submit'] {
+          border-color: #ffffff;
+          background-color: #ffffff0d;
+          color: #ffffff;
+          &:hover {
+            background-color: #ffffff0d;
+          }
+        }
+      }
+    }
+  }
 
   .tab-content {
     .connect-container {
@@ -341,6 +493,14 @@ body {
         border-color: #ffffff4d;
         background-color: #1f2425;
         color: #ffffffcc;
+        [disconnect-wallet] {
+          path {
+            stroke: #cfd2d4;
+          }
+          &:hover {
+            background-color: #ffffff26;
+          }
+        }
       }
     }
   }

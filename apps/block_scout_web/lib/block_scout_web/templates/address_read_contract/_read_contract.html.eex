@@ -3,11 +3,15 @@
 
 
 
-<div>
+<div class="contract-handler-container">
 
-     <div class="card-misc-container">
+
+
+      <%= if read_contract_data[:need_wallet] do %>
+      <div class="card-misc-container web3-connect-wrapper">
         <%= render BlockScoutWeb.SmartContractView, "_connect_container.html" %>
       </div>
+    <% end %>
 
     <%= if read_contract_data[:non_custom_abi] && read_contract_data[:custom_abi] do %>
       <ul class="card-misc-container nav nav-pills" id="functions-tab" role="tablist">

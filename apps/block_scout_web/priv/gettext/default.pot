@@ -5240,3 +5240,13 @@ msgstr ""
 
 msgid "Challenge Period Passed"
 msgstr ""
+
+msgid "Toggle Fullscreen"
+msgstr ""
+
+msgid "Copy"
+msgstr ""
+
+msgid "Disconnect"
+msgstr ""
+

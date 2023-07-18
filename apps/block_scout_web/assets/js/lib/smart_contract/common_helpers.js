@@ -271,7 +271,7 @@ export function showConnectedToElements(account) {
   hideConnectToContainer()
   showConnectContainer()
   showConnectedToContainer()
-  showHideDisconnectButton()
+  // showHideDisconnectButton()
   setConnectToAddress(account)
 }
 

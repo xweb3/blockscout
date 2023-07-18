@@ -19,6 +19,21 @@
       <i class="status-dot active"></i>
       Connected - Web3
       <span connected-to-address></span>
+
+      <button disconnect-wallet >
+        <span data-toggle="tooltip" data-placement="top" title="" data-custom-class="" data-original-title="<%= gettext "Disconnect" %>">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 8.66944L12.8206 7.8488L11.0779 6.10602C9.64592 4.6741 7.37217 4.62628 5.99922 5.99922C4.62628 7.37217 4.6741 9.64592 6.10602 11.0779L7.8488 12.8206L8.66944 12" stroke="#6E767D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M14.9718 12L15.9718 11L17.7196 12.7478C19.1515 14.1797 19.337 16.385 17.8264 17.8264C16.3158 19.2679 14.1797 19.1515 12.7478 17.7196L11 15.9718L11.9718 15" stroke="#6E767D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M10.9445 10.9445L9 9" stroke="#6E767D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M14.9446 14.9446L13 13" stroke="#6E767D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M15 7L15 5" stroke="#6E767D" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M9 19V17" stroke="#6E767D" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M17 9L19 9" stroke="#6E767D" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M5 15L7 15" stroke="#6E767D" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+         </span>
+      </button>
+
     </div>
-    <button disconnect-wallet class="button btn-line ml-3">Disconnect wallet</button>
 </div>
