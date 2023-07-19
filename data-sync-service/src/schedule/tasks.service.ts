@@ -122,7 +122,7 @@ export class TasksService {
 
     this.sync_token_price_history();
     this.updateDaBatchMissed();
-    // this.l1IngestionService.updateDaBatchMissed(0)
+    this.l1IngestionService.updateDaBatchMissed(0)
   }
   @Interval(12000)
   async l1_sent() {
