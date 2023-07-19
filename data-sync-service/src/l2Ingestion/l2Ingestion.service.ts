@@ -564,6 +564,6 @@ export class L2IngestionService {
         l2ToL1Item2
       }
     })
-    this.metricL2ToL1Status.set(Number(l2ToL1Item2.msg_nonce || 0))
+    this.metricL2ToL1Status.set(Number(l2ToL1Item2?.msg_nonce || 0))
   }
 }
