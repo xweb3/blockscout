@@ -33,12 +33,12 @@
           </div>
         </span>
         <span style="width: 10%;" class="tag-container text-truncate">
-          <%= if error_in_internal_tx do %>
-            <%= render BlockScoutWeb.CommonComponentsView, "_i_tooltip_2.html", text: gettext("Error in internal transactions"), additional_classes: ["color-inherit"] %>
-          <% end %>
           <span class="tile-label" data-test="transaction_type">
             <%= transaction_display_type(@transaction) %>
           </span>
+            <%= if error_in_internal_tx do %>
+            <%= render BlockScoutWeb.CommonComponentsView, "_i_tooltip_2.html", text: gettext("Error in internal transactions"), additional_classes: ["color-inherit"] %>
+          <% end %>
         </span>
         <span style="width: 9%;" class="tag-container text-truncate">
           <% method_name = Transaction.get_method_name(@transaction) %>
