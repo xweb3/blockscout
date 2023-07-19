@@ -156,7 +156,8 @@ $card-tab-icon-color-active: #fff !default;
 .card-body {
   padding: $card-horizontal-padding;
   overflow-x: auto;
-  .recent-tx-list-page {
+  .recent-tx-list-page,
+  .table-list-page {
     .recent-preview-item-content {
       display: none;
     }
@@ -262,7 +263,8 @@ $card-tab-icon-color-active: #fff !default;
       }
     }
   }
-  .recent-tx-list-page {
+  .recent-tx-list-page,
+  .table-list-page {
     min-width: 1130px;
   }
   .txn-list-table-item {

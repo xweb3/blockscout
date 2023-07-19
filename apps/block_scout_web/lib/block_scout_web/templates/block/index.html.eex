@@ -36,7 +36,7 @@
 
 
 
-      <div data-items class="recent-tx-list-page">
+      <div data-items class="table-list-page">
         <%= render BlockScoutWeb.CommonComponentsView, "_tile-loader.html" %>
       </div>
       <div data-empty-response-message style="display: none;">

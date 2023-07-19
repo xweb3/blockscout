@@ -29,9 +29,7 @@
         </div>
       </div>
 
-      <div
-        class="table-tile-header txn-list-table-head-container"
-      >
+      <div class="table-tile-header txn-list-table-head-container">
         <span style="width: 2%;">
          &nbsp;
         </span>
@@ -67,7 +65,7 @@
         </span>
       </div>
 
-      <div data-selector="transactions-list" data-items class="recent-tx-list-page">
+      <div data-selector="transactions-list" data-items class="table-list-page">
         <%= render BlockScoutWeb.CommonComponentsView, "_tile-loader.html" %>
       </div>
 
