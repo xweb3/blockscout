@@ -8,7 +8,7 @@
 <section class="container" data-page="transaction-list">
   <%= render BlockScoutWeb.Advertisement.TextAdView, "index.html", conn: @conn %>
   <div class="card">
-    <div class="card-body" data-async-listing="<%= @current_path %>">
+    <div class="card-body txn-list-container" data-async-listing="<%= @current_path %>">
       <h1 class="card-title list-title-description"><%= gettext "Transactions" %></h1>
       <div class="list-top-pagination-container-wrapper">
         <%= render BlockScoutWeb.CommonComponentsView, "_rap_pagination_container.html", position: "top", showing_limit: if Chain.transactions_available_count() >= Chain.limit_showing_transactions(), do: Chain.limit_showing_transactions(), else: nil %>
@@ -29,9 +29,49 @@
         </div>
       </div>
 
+      <div
+        class="table-tile-header txn-list-table-head-container"
+      >
+        <span style="width: 2%;">
+         &nbsp;
+        </span>
+        <span style="width: 11%;">
+           <%= gettext "Txn Hash" %>
+        </span>
+        <span style="width: 10%;">
+           <%= gettext "Txn Type" %>
+        </span>
+        <span style="width: 9%;">
+             <%= gettext "Method" %>
+        </span>
+        <span style="width: 8%;">
+           <%= gettext "Block" %>
+        </span>
+        <span style="width: 9%;">
+           <%= gettext "Age" %>
+        </span>
+        <span style="width: 14%;">
+          <%= gettext "From" %>
+        </span>
+        <span style="width: 3%;">
+        &nbsp;
+        </span>
+        <span style="width: 14%;">
+          <%= gettext "To" %>
+        </span>
+        <span style="width: 10%;">
+           <%= gettext "Value" %>
+        </span>
+        <span style="width: 10%;">
+           <%= gettext "Txn Fee" %>
+        </span>
+      </div>
+
       <div data-selector="transactions-list" data-items class="recent-tx-list-page">
         <%= render BlockScoutWeb.CommonComponentsView, "_tile-loader.html" %>
       </div>
+
+
       <%= render BlockScoutWeb.CommonComponentsView, "_rap_pagination_container.html", position: "bottom" %>
 
   </div>

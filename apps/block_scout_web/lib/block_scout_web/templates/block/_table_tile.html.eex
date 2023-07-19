@@ -5,7 +5,7 @@
   <div
     class="table-tile-row fade-in"
   >
-    <span style="width: 15%;">
+    <span style="width: 13%;">
         <%= if @block_type == "Block" do %>
           <%= link(
                 to: block_path(BlockScoutWeb.Endpoint, :show, @block),
@@ -22,10 +22,10 @@
             <% end %>
         <% end %>
     </span>
-    <span style="width: 15%;">
+    <span style="width: 13%;">
       <span data-from-now="<%= @block.timestamp %>"></span>
     </span>
-    <span style="width: 25%;" class="text-truncate">
+    <span style="width: 29%;" class="text-truncate">
       <%= if Enum.count(@block.transactions) > 0 do %>
         <a href="/tx/<%= List.first(@block.transactions) %>">
            <%= List.first(@block.transactions) %>

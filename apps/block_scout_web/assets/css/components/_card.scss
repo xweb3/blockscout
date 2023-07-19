@@ -161,11 +161,11 @@ $card-tab-icon-color-active: #fff !default;
       display: none;
     }
   }
-  .tx-fee-price-can-click{
+  .tx-fee-price-can-click {
     color: rgba(10, 143, 246, 1);
     cursor: pointer;
   }
-  .tx-fee-price-disable-click{
+  .tx-fee-price-disable-click {
     color: rgba(110, 118, 125, 1);
     cursor: auto;
   }
@@ -190,7 +190,7 @@ $card-tab-icon-color-active: #fff !default;
         position: relative;
         bottom: 1px;
       }
-      .transaction_detail_status_item_right_dark{
+      .transaction_detail_status_item_right_dark {
         display: none;
         margin-right: 5px;
         position: relative;
@@ -200,8 +200,8 @@ $card-tab-icon-color-active: #fff !default;
     .transaction_detail_status_item_true {
       margin-bottom: 8px;
     }
-    .transaction_detail_status_item_true_dark{
-      display:none;
+    .transaction_detail_status_item_true_dark {
+      display: none;
       margin-bottom: 8px;
     }
     .transaction_detail_status_item_active {
@@ -210,17 +210,17 @@ $card-tab-icon-color-active: #fff !default;
     }
   }
 }
-.dark-theme-applied{
+.dark-theme-applied {
   .transaction_detail_status_item_true {
-    display:none;
+    display: none;
   }
-  .transaction_detail_status_item_true_dark{
-    display:inline-block !important;
+  .transaction_detail_status_item_true_dark {
+    display: inline-block !important;
   }
   .transaction_detail_status_item_right {
     display: none;
   }
-  .transaction_detail_status_item_right_dark{
+  .transaction_detail_status_item_right_dark {
     display: inline-block !important;
   }
 }
@@ -330,7 +330,7 @@ $card-tab-icon-color-active: #fff !default;
 }
 
 .card-chain-blocks {
-  min-height: 233px;
+  // min-height: 233px;
   max-height: auto;
   [class*="col-"]:last-child {
     .tile {
@@ -354,13 +354,13 @@ $card-tab-icon-color-active: #fff !default;
   display: flex;
   flex-direction: row;
   box-shadow: none;
-  margin-bottom:120px;
+  margin-bottom: 120px;
   @media (max-width: 1254px) {
     flex-direction: column;
   }
-  a{
-    &:hover{
-      color:#007bff;
+  a {
+    &:hover {
+      color: #007bff;
     }
   }
   .recent-preview-item {
@@ -416,7 +416,7 @@ $card-tab-icon-color-active: #fff !default;
           width: 110px;
         }
       }
-      .recent-preview-item-content-txn-l1-2-l2-link{
+      .recent-preview-item-content-txn-l1-2-l2-link {
         width: 90px;
         color: #007bff;
         @media (max-width: 368px) {
@@ -434,7 +434,7 @@ $card-tab-icon-color-active: #fff !default;
           white-space: nowrap;
           text-overflow: ellipsis;
           margin-left: 5px;
-          color:#007bff;
+          color: #007bff;
           @media (max-width: 500px) {
             width: 160px;
           }
@@ -449,7 +449,7 @@ $card-tab-icon-color-active: #fff !default;
           white-space: nowrap;
           text-overflow: ellipsis;
           margin-left: 5px;
-          color:#007bff;
+          color: #007bff;
           @media (max-width: 500px) {
             width: 80px;
           }
@@ -559,8 +559,8 @@ $card-tab-icon-color-active: #fff !default;
       }
     }
   }
-  
-  .tx-fee-price-disable-click{
+
+  .tx-fee-price-disable-click {
     color: rgba(159, 165, 169, 1);
     cursor: auto;
   }
