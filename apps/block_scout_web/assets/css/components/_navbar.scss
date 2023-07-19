@@ -68,8 +68,37 @@ $navbar-network-label-background-color: #bae1d7;
         padding-left: $header-link-horizontal-padding;
         padding-right: $header-link-horizontal-padding;
         width: fit-content;
+        &+.dropdown-menu{
+          .dropdown-item{
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            .nav-link-icon{
+              display: none;
+              align-items: center;
+              justify-content: center;
+              filter: drop-shadow(0px 0px 5px #06dd76);
+              border: 1px solid #06dd76;
+              border-radius: 6px;
+              margin-right: 8px;
+              circle{
+                fill: #06dd76;
+              }
+            }
+            &.active .nav-link-icon{
+              display: flex;
+            }
+          }
+        }
         @media (min-width: 992px) {
           margin: 0 10px;
+        }
+        &:hover{
+          .dropdown-toggle-icon{
+            path{
+              stroke: #21413f;
+            }
+          }
         }
         &.active,
         &:hover,

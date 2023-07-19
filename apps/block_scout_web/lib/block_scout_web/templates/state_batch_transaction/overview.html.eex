@@ -578,7 +578,7 @@
                 <%= l1_gas_price(@transaction, :gwei) %>
               </span>
               <span style="font-size:12px;color:#585F65;">
-                Display with gwei on Mantle, converted from L1 gas price
+               <%= gettext "Display with gwei on Mantle, converted from L1 gas price" %>
               </span>
              </dd>
           </dl>

@@ -63,7 +63,7 @@
         <label for="smart_contract_multi_part_files"><%= if RustVerifierInterface.enabled?(), do: gettext("Sources *.sol or *.yul files"), else: gettext("Sources *.sol files") %></label>
           <div class="center-column">
             <div class="dropzone-1 dropzone-previews" style="display: flex; margin: 0 auto;", id="dropzone-previews">
-              <div style="text-align: center;">
+              <div style="text-align: center;" class="dz-message-wrapper">
                 <span class="dz-message btn-full-primary" id="dz-button-message"><%= gettext("Drop sources or click here") %></span>
                 <%= error_tag f, :file, id: "file-help-block", class: "text-danger form-error", style: "max-width: 600px;" %>
               </div>

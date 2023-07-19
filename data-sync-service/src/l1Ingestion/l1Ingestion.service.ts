@@ -211,7 +211,14 @@ export class L1IngestionService {
       .createQueryBuilder()
       .select('Max(start_time)', 'startTime')
       .getRawOne();
-    console.log("latest token price result", result)
+    console.log({
+      type: 'log',
+      time: new Date().getTime(),
+      msg: {
+        message: 'latest token price result',
+        result
+      }
+    })
     return Number(result?.startTime || this.configService.get('TOKEN_PRICE_START_TIME'));
   }
   async getUnMergeSentEvents() {
@@ -220,7 +227,7 @@ export class L1IngestionService {
   async getL2toL1WaitTx(status) {
     return this.txnL2ToL1Repository.find({ where: { status: status } });
   }
-  async createTxnBatchesEvents(startBlock, endBlock) {
+  /* async createTxnBatchesEvents(startBlock, endBlock) {
     console.log('txn batch start block', startBlock, endBlock)
     const list = await this.getCtcTransactionBatchAppendedByBlockNumber(
       startBlock,
@@ -265,18 +272,22 @@ export class L1IngestionService {
       result.push(savedResult);
       await queryRunner.commitTransaction();
     } catch (error) {
-      this.logger.error(
-        `l1 createTxnBatchesEvents ${error}`,
-      );
       await queryRunner.rollbackTransaction();
     } finally {
       await queryRunner.release();
     }
     return result;
-  }
+  } */
 
   async createStateBatchesEvents(startBlock, endBlock) {
-    console.log('state batch start block', startBlock, endBlock)
+    console.log({
+      type: 'log',
+      time: new Date().getTime(),
+      msg: {
+        message: 'state batch start block',
+        startBlock, endBlock
+      }
+    })
     const list = await this.getSccStateBatchAppendedByBlockNumber(
       startBlock,
       endBlock,
@@ -294,7 +305,14 @@ export class L1IngestionService {
           _extraData,
         },
       } = item;
-      console.log(`the state batch index will be insert into db: ${_batchIndex}`)
+      console.log({
+        type: 'log',
+        time: new Date().getTime(),
+        msg: {
+          message: 'the state batch index will be insert into db:',
+          _batchIndex,
+        }
+      })
       const { timestamp } = await this.web3.eth.getBlock(blockNumber);
       stateBatchesInsertData.push({
         batch_index: _batchIndex,
@@ -327,9 +345,15 @@ export class L1IngestionService {
       result.push(savedResult);
       await queryRunner.commitTransaction();
     } catch (error) {
-      this.logger.error(
-        `l1 createStateBatchesEvents ${error}, insert state batch failed, start and end block number ${startBlock} ${endBlock}`,
-      );
+      console.log({
+        type: 'ERROR',
+        time: new Date().getTime(),
+        msg: {
+          message: `l1 create state batches events failed: ${error?.message}`,
+          startBlock: startBlock,
+          endBlock: endBlock,
+        }
+      })
       await queryRunner.rollbackTransaction();
       return Promise.reject(`insert state batch failed`)
     } finally {
@@ -339,7 +363,15 @@ export class L1IngestionService {
   }
   async createSentEvents(startBlock, endBlock) {
     const list = await this.getSentMessageByBlockNumber(startBlock, endBlock);
-    console.log(`l1 sent message fetched list start block & end block & list length: `, startBlock, endBlock, list.length)
+    console.log({
+      type: 'log',
+      time: new Date().getTime(),
+      msg: {
+        message: 'l1 sent message fetched list start block & end block & list length: ',
+        startBlock, endBlock,
+        length: list.length
+      }
+    })
     const iface = new utils.Interface([
       'function claimReward(uint256 _blockStartHeight, uint32 _length, uint256 _batchTime, address[] calldata _tssMembers)',
       'function finalizeDeposit(address _l1Token, address _l2Token, address _from, address _to, uint256 _amount, bytes calldata _data)',
@@ -369,18 +401,33 @@ export class L1IngestionService {
         to = decodeMsg._to;
         value = this.web3.utils.hexToNumberString(decodeMsg._amount._hex);
         type = 1; // user deposit
-        this.logger.log(
-          `l1_token: [${l1_token}], l2_token: [${l2_token}], from: [${from}], to: [${to}], value: [${value}]`,
-        );
+        console.log({
+          type: 'log',
+          time: new Date().getTime(),
+          msg: {
+            message: 'l1 create sent event log',
+            l1_token,
+            l2_token,
+            from,
+            to,
+            value,
+          }
+        })
       } else if (funName === '0x0fae75d9') {
         const decodeMsg = iface.decodeFunctionData('claimReward', message);
         type = 0; // reward
-        this.logger.log(`reward tssMembers is [${decodeMsg._tssMembers}]`);
+        console.log({
+          type: 'log',
+          time: new Date().getTime(),
+          msg: {
+            message: `reward tssMembers is ${decodeMsg._tssMembers}`,
+          }
+        })
       } else if (funName === '0xf523f40d') {
         const decodeMsg = iface.decodeFunctionData('rollBackL2Chain', message);
         type = 2; // rollBackL2Chain
       }
-      if(type === -1) continue;
+      if (type === -1) continue;
       const { timestamp } = await this.web3.eth.getBlock(blockNumber);
       const msgHash = this.verifyDomainCalldataHash({
         target: target.toString(),
@@ -388,12 +435,16 @@ export class L1IngestionService {
         message: message.toString(),
         messageNonce: messageNonce.toString(),
       });
-      console.log("-------------- l1 sent message block", blockNumber)
-      console.log("target", target)
-      console.log("sender", sender)
-      console.log("message", message)
-      console.log("messageNonce", messageNonce)
-      console.log("msgHash", msgHash)
+
+      console.log({
+        type: 'log',
+        time: new Date().getTime(),
+        msg: {
+          message: 'l1 sent message block ',
+          blockNumber, target, sender, messageNonce, msgHash,
+          msg: message
+        }
+      })
       l1SentMessageEventsInsertData.push({
         tx_hash: transactionHash,
         block_number: blockNumber.toString(),
@@ -447,7 +498,11 @@ export class L1IngestionService {
         .values(l1SentMessageEventsInsertData)
         .onConflict(`("message_nonce") DO NOTHING`)
         .execute().catch(e => {
-          console.error('insert l1 sent message events failed:', e.message)
+          console.log({
+            type: 'ERROR',
+            time: new Date().getTime(),
+            msg: `insert l1 sent message events failed:: ${e?.message}`
+          })
           throw Error(e.message)
         });
 
@@ -458,13 +513,21 @@ export class L1IngestionService {
         .values(l1ToL2InsertData)
         .onConflict(`("queue_index") DO NOTHING`)
         .execute().catch(e => {
-          console.error('insert l1 to l2 failed:', e.message)
+          console.log({
+            type: 'ERROR',
+            time: new Date().getTime(),
+            msg: `insert l1 to l2 failed ${e?.message}`
+          })
           throw Error(e.message)
         });
       await queryRunner.commitTransaction();
     } catch (error) {
       inserted = false;
-      console.error(error)
+      console.log({
+        type: 'ERROR',
+        time: new Date().getTime(),
+        msg: `insert l1 to l2 failed ${error?.message}`
+      })
       await queryRunner.rollbackTransaction();
     } finally {
       await queryRunner.release();
@@ -491,10 +554,25 @@ export class L1IngestionService {
 
   async updateReorgBlockMessage() {
     const latestIncludesL2HashBlockNumber = await this.queryLatestBlockNumberWhichIncludeL2Hash();
-    console.log('latest l1 to l2 transaction block number not includes l2 hash', latestIncludesL2HashBlockNumber)
+    console.log({
+      type: 'log',
+      time: new Date().getTime(),
+      msg: {
+        message: 'latest l1 to l2 transaction block number not includes l2 hash',
+        latestIncludesL2HashBlockNumber
+      }
+    })
+
     if (latestIncludesL2HashBlockNumber.block && !Number.isNaN(latestIncludesL2HashBlockNumber.block)) {
       const reorgBlockNumberList = await this.queryReorgBlockNumber(Number(latestIncludesL2HashBlockNumber.block));
-      console.log('reorg block list', reorgBlockNumberList)
+      console.log({
+        type: 'log',
+        time: new Date().getTime(),
+        msg: {
+          message: 'reorg block list',
+          reorgBlockNumberList
+        }
+      })
       if (reorgBlockNumberList?.length === 0) return;
       reorgBlockNumberList.forEach((l) => {
         this.fetchReorgDataAndUpdate(l.block)
@@ -529,7 +607,11 @@ export class L1IngestionService {
           })
           .where({ message_nonce: messageNonce })
           .execute().catch(e => {
-            console.error('update reorg block l1 sent message events failed', e.message)
+            console.log({
+              type: 'ERROR',
+              time: new Date().getTime(),
+              msg: `update reorg block l1 sent message events failed ${e?.message}`
+            })
             throw Error(e.message)
           });
         await queryRunner.manager
@@ -540,15 +622,28 @@ export class L1IngestionService {
           })
           .where({ queue_index: Number(messageNonce) })
           .execute().catch(e => {
-            console.error('update reorg block l1 to l2 failed', e.message)
+            console.log({
+              type: 'ERROR',
+              time: new Date().getTime(),
+              msg: `update reorg block l1 to l2 failed ${e?.message}`
+            })
             throw Error(e.message)
           });
-          console.log(`update l1 sent message events and l1 to l2 successful, block`, block)
-          console.log(`nonce`, messageNonce)
-          console.log(`msg_hash`, msgHash)
+        console.log({
+          type: 'log',
+          time: new Date().getTime(),
+          msg: {
+            message: 'update l1 sent message events and l1 to l2 successful',
+            block, messageNonce, msgHash
+          }
+        })
         await queryRunner.commitTransaction();
       } catch (error) {
-        console.error(error)
+        console.log({
+          type: 'ERROR',
+          time: new Date().getTime(),
+          msg: `update reorg block l1 to l2 failed ${error?.message}`
+        })
         await queryRunner.rollbackTransaction();
       } finally {
         await queryRunner.release();
@@ -561,6 +656,15 @@ export class L1IngestionService {
       startBlock,
       endBlock,
     );
+    console.log({
+      type: 'log',
+      time: new Date().getTime(),
+      msg: {
+        message: `l1 relayed list result`,
+        startBlock, endBlock,
+        length: list.length,
+      }
+    })
     const l1RelayedMessageEventsInsertData: any[] = [];
     for (const item of list) {
       const {
@@ -580,7 +684,7 @@ export class L1IngestionService {
 
       this.metricL2ToL1L1Hash.set(blockNumber)
     }
-    
+
     return getConnection()
       .createQueryBuilder()
       .insert()
@@ -588,7 +692,11 @@ export class L1IngestionService {
       .values(l1RelayedMessageEventsInsertData)
       .onConflict(`("msg_hash") DO NOTHING`)
       .execute().catch(e => {
-        console.error(`insert l1 relayed message events failed,`, e.message)
+        console.log({
+          type: 'ERROR',
+          time: new Date().getTime(),
+          msg: `insert l1 relayed message events failed ${e?.message}`
+        })
         throw Error(e.message)
       });
 
@@ -597,7 +705,6 @@ export class L1IngestionService {
     if (!l1l2MergerIsProcessing) {
       const unMergeTxList =
         await this.l2IngestionService.getRelayedEventByIsMerge(false);
-      this.logger.log(`start create l1->l2 relation`);
       const l1ToL2UpdateList = []
       const l1SentMessageEventsTxHashList = []
       const l2RelayedMessageEventsTxHashList = []
@@ -653,21 +760,23 @@ export class L1IngestionService {
         //   [unMergeTxList[i].tx_hash, tx_type, l1ToL2Transaction.l2_hash],
         // );
         await queryRunner.commitTransaction();
-        this.logger.log(`commit l1->l2 data successes`);
       } catch (error) {
-        this.logger.error(
-          `create l1->l2 relation to l1_to_l2 table error ${error}`,
-        );
+        console.log({
+          type: 'ERROR',
+          time: new Date().getTime(),
+          msg: `create l1->l2 relation to l1_to_l2 table error ${error?.message}`
+        })
         await queryRunner.rollbackTransaction();
       } finally {
         await queryRunner.release();
-        this.logger.log(`create l1->l2 relation to l1_to_l2 table finish`);
       }
       l1l2MergerIsProcessing = false;
     } else {
-      this.logger.log(
-        `this task is in processing and l1l2MergerIsProcessing is ${l1l2MergerIsProcessing}`,
-      );
+      console.log({
+        type: 'log',
+        time: new Date().getTime(),
+        msg: `this task is in processing and l1l2MergerIsProcessing is ${l1l2MergerIsProcessing}`
+      })
     }
   }
   async createEigenBatchTransaction(insertBatchData, insertHashData) {
@@ -679,7 +788,11 @@ export class L1IngestionService {
       .values(insertBatchData)
       .onConflict(`("da_hash") DO NOTHING`)
       .execute().catch(e => {
-        console.error('insert da batches failed', e.message)
+        console.log({
+          type: 'ERROR',
+          time: new Date().getTime(),
+          msg: `'insert da batches failed ${e?.message}`
+        })
         throw Error(e.message)
       });
 
@@ -693,7 +806,11 @@ export class L1IngestionService {
         skipUpdateIfNoValuesChanged: true
       })
       .execute().catch(e => {
-        console.error('insert da batch transactions failed', e.message)
+        console.log({
+          type: 'ERROR',
+          time: new Date().getTime(),
+          msg: `insert da batch transactions failed ${e?.message}`
+        })
         throw Error(e.message)
       });
 
@@ -752,17 +869,15 @@ export class L1IngestionService {
       //   [unMergeTxList[i].tx_hash, 2, l2ToL1Transaction.l2_hash],
       // );
       await queryRunner.commitTransaction();
-      this.logger.log(
-        `create l2->l1 relation to l2_to_l1 table commit transaction finish`,
-      );
     } catch (error) {
-      this.logger.log(
-        `create l2->l1 relation to l2_to_l1 table error ${error}`,
-      );
+      console.log({
+        type: 'ERROR',
+        time: new Date().getTime(),
+        msg: `create l2->l1 relation to l2_to_l1 table error ${error?.message}`
+      })
       await queryRunner.rollbackTransaction();
     } finally {
       await queryRunner.release();
-      this.logger.log(`create l2->l1 relation to l2_to_l1 table finish`);
     }
   }
 
@@ -960,9 +1075,18 @@ export class L1IngestionService {
       result: result,
     };
   }
+
+  getLatestTransactionBatchIndex() {
+    return this.eigenlayerService.getLatestTransactionBatchIndex();
+  }
+
   async syncEigenDaBatch(batchIndexParam) {
     const { batchIndex } = await this.eigenlayerService.getLatestTransactionBatchIndex();
-    this.logger.log(`[syncEigenDaBatch] latestBatchIndex: ${batchIndex}`);
+    console.log({
+      type: 'log',
+      time: new Date().getTime(),
+      msg: `sync eigenda batch and batch index: ${batchIndex}`
+    })
     if (batchIndexParam > Number(batchIndex)) {
       return Promise.resolve(false);
     }
@@ -971,22 +1095,33 @@ export class L1IngestionService {
     if (!res) {
       return Promise.resolve(false);
     }
-    if (!res || res?.batchIndex === null || res?.dataStore === null) {
+    console.log({
+      type: 'log',
+      time: new Date().getTime(),
+      msg: {
+        message: 'eigenda data result',
+        daBatchIndex: res?.batchIndex,
+        dataStore: res?.dataStore,
+      }
+    })
+    if (res?.dataStore === null) {
       return Promise.resolve(true);
     }
     let fromStoreNumber, upgrade_data_store_id
-    if (res?.dataStore?.data_store_id) {
+    if (res?.dataStore?.data_store_id || res?.dataStore?.data_store_id === 0) {
       fromStoreNumber = res?.dataStore?.data_store_id;
     }
-    if (res?.dataStore?.upgrade_data_store_id) {
+    if (res?.dataStore?.upgrade_data_store_id || res?.dataStore?.upgrade_data_store_id === 0) {
       upgrade_data_store_id = res?.dataStore?.upgrade_data_store_id;
     }
 
-    console.log('eigenda data', res)
-    console.log('store number', fromStoreNumber)
-    console.log('upgrade_data_store_id', upgrade_data_store_id)
+
     if (+fromStoreNumber === 0) {
-      this.logger.log(`[syncEigenDaBatch] latestBatchIndex: ${fromStoreNumber}`);
+      console.log({
+        type: 'log',
+        time: new Date().getTime(),
+        msg: `sync eigenda batch and latestBatchIndex batch index: ${fromStoreNumber}`
+      })
       return Promise.resolve(false);
     }
     let number = fromStoreNumber;
@@ -994,7 +1129,14 @@ export class L1IngestionService {
       number += upgrade_data_store_id
     }
     const dataStoreData = await this.eigenlayerService.getDataStore(fromStoreNumber);
-    console.log('current data store data:', dataStoreData?.dataStore, fromStoreNumber)
+    console.log({
+      type: 'log',
+      time: new Date().getTime(),
+      msg: {
+        message: 'current data store data:',
+        daData: dataStoreData?.dataStore,
+      }
+    })
     if (dataStoreData?.dataStore !== null) {
       const {
         index: Index,
@@ -1023,9 +1165,17 @@ export class L1IngestionService {
         signatoryRecord: SignatoryRecord,
         confirmGasUsed: ConfirmGasUsed
       } = dataStoreData.dataStore
-      this.logger.log(`[syncEigenDaBatch] latestBatchIndex index:${Index}`);
+      console.log({
+        type: 'log',
+        time: new Date().getTime(),
+        msg: `[syncEigenDaBatch] latestBatchIndex index:${Index}`
+      })
       if (Index === undefined || Index === '') {
-        this.logger.log(`[syncEigenDaBatch] latestBatchIndex Index === undefined || Index === ''`);
+        console.log({
+          type: 'log',
+          time: new Date().getTime(),
+          msg: `[syncEigenDaBatch] latestBatchIndex Index === undefined || Index === ''`
+        })
         return Promise.resolve(true);
       }
       const CURRENT_TIMESTAMP = new Date().toISOString();
@@ -1078,7 +1228,11 @@ export class L1IngestionService {
       }
       await this.createEigenBatchTransaction(insertBatchData, insertHashData);
     } else {
-      console.log('------ da_batch data response null')
+      console.log({
+        type: 'log',
+        time: new Date().getTime(),
+        msg: "da_batch data response null"
+      })
     }
     return Promise.resolve(true);
   }
@@ -1201,31 +1355,54 @@ export class L1IngestionService {
   }
 
   async syncTokenPriceHistory() {
-    console.log('start sync token price')
+    console.log({
+      type: 'log',
+      time: new Date().getTime(),
+      msg: "start sync token price"
+    })
     const historyLatestTime = await this.getTokenPriceStartTime().catch(e => {
-      console.error(`query start time from token price history failed`, e)
+      console.log({
+        type: 'ERROR',
+        time: new Date().getTime(),
+        msg: `query start time from token price history failed ${e?.message}`
+      })
       throw Error('')
     });
-    console.log('latest history time', historyLatestTime)
+    console.log({
+      type: 'log',
+      time: new Date().getTime(),
+      msg: `latest history time ${historyLatestTime}`
+    })
     let startTime = historyLatestTime + 3600000;
-    console.log('sync token price start time', startTime)
+    console.log({
+      type: 'log',
+      time: new Date().getTime(),
+      msg: `sync token price start time ${startTime}`
+    })
     if (startTime) {
       if ((startTime + 3600000) <= (new Date().getTime())) {
         this.fetchTokenPriceHistory(startTime);
       } else {
-        console.log('token price has synced the latest one')
+        console.log({
+          type: 'log',
+          time: new Date().getTime(),
+          msg: `token price has synced the latest one`
+        })
       }
     }
   }
 
   async fetchTokenPriceHistory(startTime) {
     const endTime = startTime + 3599999;
-    //TODO(Jayce) use BIT token price temp
-    console.log('start fetch token price')
+    console.log({
+      type: 'log',
+      time: new Date().getTime(),
+      msg: `start fetch token price`
+    })
     try {
       const { data } = await firstValueFrom(
         this.httpService.get(
-          `https://api.bybit.com/v5/market/kline?symbol=BITUSDT&category=spot&interval=60&start=${startTime}&end=${endTime}`,
+          `https://api.bybit.com/v5/market/kline?symbol=MNTUSDT&category=spot&interval=60&start=${startTime}&end=${endTime}`,
           {
             timeout: 5000,
           }
@@ -1240,8 +1417,11 @@ export class L1IngestionService {
 
       }
     } catch (e) {
-      console.error(e)
-      console.error(`fetch token price failed, ${e.message}`)
+      console.log({
+        type: 'ERROR',
+        time: new Date().getTime(),
+        msg: `fetch token price failed ${e?.message}`
+      })
     }
   }
 
@@ -1263,16 +1443,29 @@ export class L1IngestionService {
         .values(historyData)
         //.onConflict(`("start_time") DO NOTHING`)
         .execute()
-      console.log('save result from token price', savedResult);
+      console.log({
+        type: 'log',
+        time: new Date().getTime(),
+        msg: {
+          message: 'save result from token price',
+          savedResult
+        }
+      })
       if (savedResult) {
-        console.log("restart sync data")
+        console.log({
+          type: 'log',
+          time: new Date().getTime(),
+          msg: "restart sync data"
+        })
         setTimeout(() => { this.syncTokenPriceHistory() }, 50)
       }
       await queryRunner.commitTransaction();
     } catch (error) {
-      this.logger.error(
-        `insert token price data failed ${error}`,
-      );
+      console.log({
+        type: 'ERROR',
+        time: new Date().getTime(),
+        msg: `insert token price data failed ${error?.message}`
+      })
       await queryRunner.rollbackTransaction();
     } finally {
       await queryRunner.release();
@@ -1282,17 +1475,27 @@ export class L1IngestionService {
 
   async syncTokenPriceRealTime() {
     try {
-      console.log('start sync token price real time')
+      console.log({
+        type: 'log',
+        time: new Date().getTime(),
+        msg: `start sync token price real time`
+      })
       const { data } = await firstValueFrom(
         this.httpService.get(
-          `https://api.bybit.com/v5/market/tickers?category=inverse&symbol=BITUSD`,
+          `https://api.bybit.com/v5/market/tickers?category=inverse&symbol=MNTUSDT`,
           {
             timeout: 5000,
           }
         )
       )
-      console.log('token price real time data')
-      console.log(data)
+      console.log({
+        type: 'log',
+        time: new Date().getTime(),
+        msg: {
+          message: 'token price real time data',
+          data
+        }
+      })
       if (data?.retCode === 0 && data?.result?.list?.length > 0) {
         const realtimePrice = data.result.list[0];
         if (realtimePrice.lastPrice) {
@@ -1302,8 +1505,11 @@ export class L1IngestionService {
 
       }
     } catch (e) {
-      console.error(e)
-      console.error(`fetch token price failed, ${e.message}`)
+      console.log({
+        type: 'ERROR',
+        time: new Date().getTime(),
+        msg: `fetch token price failed ${e?.message}`
+      })
     }
   }
 
@@ -1329,17 +1535,182 @@ export class L1IngestionService {
           skipUpdateIfNoValuesChanged: true
         })
         .execute();
-      console.log('token price real time updated', savedResult);
+      console.log({
+        type: 'log',
+        time: new Date().getTime(),
+        msg: {
+          message: 'token price real time updated',
+          savedResult
+        }
+      })
       await queryRunner.commitTransaction();
     } catch (error) {
-      this.logger.error(
-        `update token price real time failed ${error}`,
-      );
+      console.log({
+        type: 'ERROR',
+        time: new Date().getTime(),
+        msg: `update token price real time failed ${error?.message}`
+      })
       await queryRunner.rollbackTransaction();
     } finally {
       await queryRunner.release();
     }
 
   }
+
+  getEmptyEigenDaData(start, end) {
+    const q = `select batch_index from da_batches where batch_index >= ${start} and batch_index <= ${end}`
+    return this.daBatchesRepository.query(q)
+  }
+
+
+
+  async updateDaBatchMissed(batchIndexParam) {
+    const res = await this.eigenlayerService.getRollupStoreByRollupBatchIndex(batchIndexParam);
+    if (!res) {
+      return Promise.resolve(false);
+    }
+    console.log({
+      type: 'log',
+      time: new Date().getTime(),
+      msg: {
+        message: 'update missed eigenda data result',
+        daBatchIndex: res?.batchIndex,
+        dataStore: res?.dataStore,
+      }
+    })
+    if (res?.dataStore === null) {
+      return Promise.resolve(true);
+    }
+    let fromStoreNumber, upgrade_data_store_id
+    if (res?.dataStore?.data_store_id || res?.dataStore?.data_store_id === 0) {
+      fromStoreNumber = res?.dataStore?.data_store_id;
+    }
+    if (res?.dataStore?.upgrade_data_store_id || res?.dataStore?.upgrade_data_store_id === 0) {
+      upgrade_data_store_id = res?.dataStore?.upgrade_data_store_id;
+    }
+
+
+    if (+fromStoreNumber === 0) {
+      console.log({
+        type: 'log',
+        time: new Date().getTime(),
+        msg: `update missed sync eigenda batch and latestBatchIndex batch index: ${fromStoreNumber}`
+      })
+      return Promise.resolve(false);
+    }
+    let number = fromStoreNumber;
+    if (upgrade_data_store_id && upgrade_data_store_id !== 0) {
+      number += upgrade_data_store_id
+    }
+    const dataStoreData = await this.eigenlayerService.getDataStore(fromStoreNumber);
+    console.log({
+      type: 'log',
+      time: new Date().getTime(),
+      msg: {
+        message: 'update missed current data store data:',
+        daData: dataStoreData?.dataStore,
+      }
+    })
+    if (dataStoreData?.dataStore !== null) {
+      const {
+        index: Index,
+        storePeriodLength: StorePeriodLength,
+        confirmed: Confirmed,
+        msgHash: MsgHash,
+        durationDataStoreId: DurationDataStoreId,
+        storeNumber: StoreNumber,
+        fee: Fee,
+        initTxHash: InitTxHash,
+        confirmTxHash: ConfirmTxHash,
+        dataCommitment: DataCommitment,
+        stakesFromBlockNumber: StakesFromBlockNumber,
+        initTime: InitTime,
+        expireTime: ExpireTime,
+        duration: Duration,
+        numSys: NumSys,
+        numPar: NumPar,
+        degree: Degree,
+        confirmer: Confirmer,
+        header: Header,
+        initGasUsed: InitGasUsed,
+        initBlockNumber: InitBlockNumber,
+        ethSigned: EthSigned,
+        eigenSigned: EigenSigned,
+        signatoryRecord: SignatoryRecord,
+        confirmGasUsed: ConfirmGasUsed
+      } = dataStoreData.dataStore
+      console.log({
+        type: 'log',
+        time: new Date().getTime(),
+        msg: `update missed [syncEigenDaBatch] latestBatchIndex index:${Index}`
+      })
+      if (Index === undefined || Index === '') {
+        console.log({
+          type: 'log',
+          time: new Date().getTime(),
+          msg: `update missed [syncEigenDaBatch] latestBatchIndex Index === undefined || Index === ''`
+        })
+        return Promise.resolve(true);
+      }
+      const CURRENT_TIMESTAMP = new Date().toISOString();
+      const insertBatchData = {
+        batch_index: batchIndexParam,
+        batch_size: 0,
+        status: Confirmed ? 'confirmed' : 'init',
+        da_hash: utils.hexlify(MsgHash),
+        store_id: DurationDataStoreId,
+        store_number: StoreNumber,
+        da_fee: Fee,
+        da_init_hash: utils.hexlify(InitTxHash),
+        da_store_hash: utils.hexlify(ConfirmTxHash),
+        from_store_number: fromStoreNumber,
+        inserted_at: CURRENT_TIMESTAMP,
+        updated_at: CURRENT_TIMESTAMP,
+        data_commitment: DataCommitment,
+        stakes_from_block_number: StakesFromBlockNumber,
+        init_time: new Date(Number(InitTime) * 1000).toISOString(),
+        expire_time: new Date(Number(ExpireTime) * 1000).toISOString(),
+        duration: Duration,
+        num_sys: NumSys,
+        num_par: NumPar,
+        degree: Degree,
+        confirmer: Confirmer,
+        header: Header,
+        init_gas_used: InitGasUsed,
+        init_block_number: InitBlockNumber,
+        eth_signed: EthSigned,
+        eigen_signed: EigenSigned,
+        signatory_record: SignatoryRecord,
+        confirm_gas_used: ConfirmGasUsed
+      }
+      let insertHashData = null;
+      // if Confirmed = true then get EigenDa tx list, else skip
+      if (Confirmed) {
+        const { txList } = await this.eigenlayerService.getTxn(number) || [];
+        const insertHashList = [];
+        insertBatchData.batch_size = txList.length || 0;
+        txList.forEach((item) => {
+          insertHashList.push({
+            batch_index: batchIndexParam,
+            block_number: item.blockNumber,
+            tx_hash: item.txHash,
+            inserted_at: CURRENT_TIMESTAMP,
+            updated_at: CURRENT_TIMESTAMP
+          })
+        })
+        insertHashData = insertHashList
+      }
+      await this.createEigenBatchTransaction(insertBatchData, insertHashData);
+    } else {
+      console.log({
+        type: 'log',
+        time: new Date().getTime(),
+        msg: "update missed da_batch data response null"
+      })
+    }
+    return Promise.resolve(true);
+  }
+
+
 
 }

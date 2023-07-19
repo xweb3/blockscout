@@ -11,10 +11,11 @@
     <span style="width: 14%;">
       <%= @eigenda_batch .status %>
     </span>
+    <span style="width: 10%;">
+      <span class="transaction-details-address" in-tile data-from-now="<%= @eigenda_batch.init_time %>"></span>
+    </span>
     <span style="width: 50%;">
       <%= render "_link_to_detail.html", da_hash: @eigenda_batch.da_hash, data_test: "address_hash_link" %>
     </span>
-    <span style="width: 10%;">
-      <%= @eigenda_batch .store_number %>
-    </span>
+
 </div>

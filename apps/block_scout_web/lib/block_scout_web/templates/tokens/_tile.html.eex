@@ -43,7 +43,12 @@
   <td class="stakes-td">
     <span class="mr-4">
       <span data-test="transaction_count">
-        <%= @token.holder_count %>
+         <%= if Map.has_key?(@token, :new_token_holder) do %>
+           <%= @token.new_token_holder %>
+          <% else %>
+            <%= @token.holder_count %>
+          <% end %>
+
     </span>
   </td>
 </tr>

@@ -42,7 +42,7 @@ defmodule BlockScoutWeb.API.V2.StatsController do
       %{
         "total_blocks" => BlockCache.estimated_count() |> to_string(),
         "total_addresses" => Chain.address_estimated_count() |> to_string(),
-        "total_transactions" => TransactionCache.estimated_count() |> to_string(),
+        "total_transactions" => BlockCache.estimated_count() |> to_string(),
         "average_block_time" => AverageBlockTime.average_block_time() |> Duration.to_milliseconds(),
         "coin_price" => exchange_rate.usd_value,
         "total_gas_used" => GasUsage.total() |> to_string(),

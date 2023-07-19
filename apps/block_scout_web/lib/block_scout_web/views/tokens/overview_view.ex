@@ -45,15 +45,33 @@ defmodule BlockScoutWeb.Tokens.OverviewView do
   def display_inventory?(%Token{type: "ERC-1155"}), do: true
   def display_inventory?(_), do: false
 
+  def contract?(%Token{contract_address: %Address{contract_code: nil}}), do: false
+
+  def contract?(%Token{contract_address: %Address{contract_code: _}}), do: true
+
+  def contract?(%Token{contract_address: nil}), do: true
+
+  def smart_contract_verified?(%Token{contract_address: %Address{smart_contract: %{metadata_from_verified_twin: true}}}),
+    do: false
+
+  def smart_contract_verified?(%Token{contract_address: %Address{smart_contract: %SmartContract{}}}), do: true
+
+  def smart_contract_verified?(%Token{contract_address: %Address{smart_contract: nil}}), do: false
+
   def smart_contract_with_read_only_functions?(
         %Token{contract_address: %Address{smart_contract: %SmartContract{}}} = token
       ) do
     Enum.any?(token.contract_address.smart_contract.abi || [], &Helper.queriable_method?(&1))
   end
 
-  def smart_contract_with_read_only_functions?(%Token{contract_address: %Address{smart_contract: nil}}), do: false
+  def smart_contract_with_read_only_functions?(%Token{
+        contract_address: %Address{smart_contract: nil}
+      }),
+      do: false
 
-  def smart_contract_is_proxy?(%Token{contract_address: %Address{smart_contract: %SmartContract{} = smart_contract}}) do
+  def smart_contract_is_proxy?(%Token{
+        contract_address: %Address{smart_contract: %SmartContract{} = smart_contract}
+      }) do
     SmartContract.proxy_contract?(smart_contract)
   end
 
@@ -68,7 +86,8 @@ defmodule BlockScoutWeb.Tokens.OverviewView do
     )
   end
 
-  def smart_contract_with_write_functions?(%Token{contract_address: %Address{smart_contract: nil}}), do: false
+  def smart_contract_with_write_functions?(%Token{contract_address: %Address{smart_contract: nil}}),
+    do: false
 
   @doc """
   Get the total value of the token supply in USD.

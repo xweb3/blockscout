@@ -68,7 +68,7 @@ defmodule Explorer.Chain do
     L1ToL2,
     L2ToL1,
     TokenPriceHistory,
-    TokenPriceRealTime,
+    TokenPriceRealTime
   }
 
   alias Explorer.Chain.Block.{EmissionReward, Reward}
@@ -577,23 +577,63 @@ defmodule Explorer.Chain do
     |> Repo.all()
   end
 
-  @spec address_deposit_transactions(Hash.Address.t(),Hash.Address.t(), Keyword.t()) :: [Transaction.t()]
-  def address_deposit_transactions(address_hash, burn_address_hash, options \\ []) do
+  @spec address_deposit_transactions(Hash.t(), String.t(), [paging_options]) :: [Transaction.t()]
+  def address_deposit_transactions(address_hash, address_string, options \\ []) do
     paging_options = Keyword.get(options, :paging_options, @default_paging_options)
+    list = address_deposit_list(address_string, options)
 
-    Transaction.transactions_deposit(address_hash, burn_address_hash)
+    hash_list =
+      Enum.map(list, fn deposit_item ->
+        case Chain.string_to_transaction_hash(deposit_item.l2_hash) do
+          {:ok, hash} ->
+            hash
+
+          _ ->
+            nil
+        end
+      end)
+
+    address_hash
+    |> Transaction.transactions_deposit(hash_list)
     |> Transaction.preload_token_transfers(address_hash)
     |> handle_paging_options(paging_options)
     |> Repo.all()
   end
 
-  @spec address_withdraw_transactions(Hash.Address.t(),Hash.Address.t(), Keyword.t()) :: [Transaction.t()]
-  def address_withdraw_transactions(address_hash, burn_address_hash, options \\ []) do
-    paging_options = Keyword.get(options, :paging_options, @default_paging_options)
+  defp address_deposit_list(address_string, options) do
+    L1ToL2
+    |> order_by([l1_to_l2], desc: l1_to_l2.queue_index)
+    |> where([l1_to_l2], l1_to_l2.from == ^address_string and not is_nil(l1_to_l2.l2_hash))
+    |> Repo.all()
+  end
 
-    Transaction.transactions_withdraw(address_hash, burn_address_hash)
+  @spec address_withdraw_transactions(Hash.t(), String.t(), [paging_options]) :: [Transaction.t()]
+  def address_withdraw_transactions(address_hash, address_string, options \\ []) do
+    paging_options = Keyword.get(options, :paging_options, @default_paging_options)
+    list = address_withdraw_list(address_string, options)
+
+    hash_list =
+      Enum.map(list, fn withdraw_item ->
+        case Chain.string_to_transaction_hash(withdraw_item.l2_hash) do
+          {:ok, hash} ->
+            hash
+
+          _ ->
+            nil
+        end
+      end)
+
+    address_hash
+    |> Transaction.transactions_withdraw(hash_list)
     |> Transaction.preload_token_transfers(address_hash)
     |> handle_paging_options(paging_options)
+    |> Repo.all()
+  end
+
+  defp address_withdraw_list(address_string, options) do
+    L2ToL1
+    |> order_by([l2_to_l1], desc: l2_to_l1.msg_nonce)
+    |> where([l2_to_l1], l2_to_l1.from == ^address_string)
     |> Repo.all()
   end
 
@@ -1557,7 +1597,14 @@ defmodule Explorer.Chain do
     case Chain.string_to_address_hash(term) do
       {:ok, address_hash} ->
         from(address in Address,
-          left_join: address_name in Address.Name,
+          left_join:
+            address_name in subquery(
+              from(name in Address.Name,
+                where: name.address_hash == ^address_hash,
+                order_by: [desc: name.primary],
+                limit: 1
+              )
+            ),
           on: address.hash == address_name.address_hash,
           where: address.hash == ^address_hash,
           select: %{
@@ -1611,6 +1658,7 @@ defmodule Explorer.Chain do
     case Chain.string_to_transaction_hash(term) do
       {:ok, tx_hash} ->
         hash_string = Hash.to_string(tx_hash)
+
         from(da_batch in DaBatch,
           where: da_batch.da_hash == ^hash_string,
           select: %{
@@ -1628,6 +1676,7 @@ defmodule Explorer.Chain do
             block_number: 0
           }
         )
+
       _ ->
         nil
     end
@@ -1725,16 +1774,20 @@ defmodule Explorer.Chain do
             limit: ^paging_options.page_size,
             offset: ^offset
           )
+
         paginated_ordered_query =
           ordered_query
           |> page_search_results(paging_options)
+
         search_results = Repo.all(paginated_ordered_query)
         Logger.info("111111-----------")
+
         search_results
         |> Enum.map(fn result ->
           result_checksummed_address_hash =
             if result.address_hash do
               Logger.info("111111")
+
               result
               |> Map.put(:address_hash, Address.checksum(result.address_hash))
             else
@@ -2205,16 +2258,18 @@ defmodule Explorer.Chain do
     |> case do
       nil ->
         hash_string = Hash.to_string(hash)
+
         DaBatch
         |> where([da_batch], da_batch.da_hash == ^hash_string)
         |> limit(1)
         |> Repo.one()
         |> case do
-          nil -> {:error, :not_found}
+          nil ->
+            {:error, :not_found}
 
           da_transaction ->
             {:ok, da_transaction}
-          end
+        end
 
       transaction ->
         {:ok, transaction}
@@ -2224,7 +2279,6 @@ defmodule Explorer.Chain do
   @spec get_real_time_token_price() ::
           {:ok, TokenPriceRealTime.t()} | {:error, :not_found}
   def get_real_time_token_price() do
-
     TokenPriceRealTime
     |> where(token_id: "mnt")
     |> Repo.one()
@@ -2241,6 +2295,7 @@ defmodule Explorer.Chain do
           {:ok, TokenPriceHistory.t()} | {:error, :not_found}
   def get_token_price_history(%Block{timestamp: timestamp}) do
     unix = DateTime.to_unix(timestamp) * 1000
+
     query =
       from(
         t in TokenPriceHistory,
@@ -2254,19 +2309,19 @@ defmodule Explorer.Chain do
     |> case do
       nil ->
         {:error, :not_found}
+
       token_price_history ->
         {:ok, token_price_history}
     end
-
   end
 
   @spec hash_to_batch(String.t(), [necessity_by_association_option]) ::
           {:ok, map()} | {:error, :not_found}
   def hash_to_batch(
-      hash,
-      options \\ []
-    )
-  when is_list(options) do
+        hash,
+        options \\ []
+      )
+      when is_list(options) do
     query =
       from(
         t in DaBatchTransaction,
@@ -2280,6 +2335,7 @@ defmodule Explorer.Chain do
     |> case do
       nil ->
         {:error, :not_found}
+
       batch ->
         {:ok, batch}
     end
@@ -2288,10 +2344,10 @@ defmodule Explorer.Chain do
   @spec block_to_state_batch(Decimal.t(), [necessity_by_association_option]) ::
           {:ok, StateBatch.t()} | {:error, :not_found}
   def block_to_state_batch(
-      block_number,
-      options \\ []
-    )
-  when is_list(options) do
+        block_number,
+        options \\ []
+      )
+      when is_list(options) do
     query =
       from(
         s in StateBatch,
@@ -2303,6 +2359,7 @@ defmodule Explorer.Chain do
     |> case do
       nil ->
         {:error, :not_found}
+
       batch ->
         {:ok, batch}
     end
@@ -2654,6 +2711,12 @@ defmodule Explorer.Chain do
     |> Repo.all()
   end
 
+  @spec native_token_holders :: non_neg_integer()
+  def native_token_holders() do
+    query = from(a in Address, where: a.fetched_coin_balance > ^0)
+    count = Repo.aggregate(query, :count)
+  end
+
   @doc """
   Lists the top `t:Explorer.Chain.Token.t/0`'s'.
 
@@ -2665,7 +2728,6 @@ defmodule Explorer.Chain do
     fetch_top_tokens(filter, paging_options, token_type)
   end
 
-
   defp fetch_top_tokens(filter, paging_options, token_type) do
     # token_type: ERC-20 / ERC-721 / ERC-1155
     base_query =
@@ -2674,11 +2736,12 @@ defmodule Explorer.Chain do
         preload: [:contract_address]
       )
 
-    base_query = if token_type != "" do
-      from q in base_query, where: q.type == ^token_type
-    else
-      base_query
-    end
+    base_query =
+      if token_type != "" do
+        from(q in base_query, where: q.type == ^token_type)
+      else
+        base_query
+      end
 
     base_query_with_paging =
       base_query
@@ -3555,20 +3618,21 @@ defmodule Explorer.Chain do
   @spec recent_collated_txn_batches([paging_options]) :: [TxnBatch.t()]
   def recent_collated_txn_batches(options \\ []) when is_list(options) do
     paging_options = Keyword.get(options, :paging_options, @default_paging_options)
-      fetch_recent_collated_txn_batches(paging_options)
+    fetch_recent_collated_txn_batches(paging_options)
   end
 
   @spec recent_collated_eigenda_batches([paging_options]) :: [DaBatch.t()]
   def recent_collated_eigenda_batches(options \\ []) when is_list(options) do
     paging_options = Keyword.get(options, :paging_options, @default_paging_options)
-      fetch_recent_collated_eigenda_batches(paging_options)
+    fetch_recent_collated_eigenda_batches(paging_options)
   end
 
   @spec recent_collated_l1_to_l2([paging_options]) :: [L1ToL2.t()]
   def recent_collated_l1_to_l2(options \\ []) when is_list(options) do
     paging_options = Keyword.get(options, :paging_options, @default_paging_options)
-      fetch_recent_collated_l1_to_l2(paging_options)
+    fetch_recent_collated_l1_to_l2(paging_options)
   end
+
   # RAP - random access pagination
   @spec recent_collated_transactions_for_rap([paging_options | necessity_by_association_option]) :: %{
           :total_transactions_count => non_neg_integer(),
@@ -3579,6 +3643,7 @@ defmodule Explorer.Chain do
     paging_options = Keyword.get(options, :paging_options, @default_paging_options)
 
     total_transactions_count = transactions_available_count()
+
     fetched_transactions =
       if is_nil(paging_options.key) or paging_options.page_number == 1 do
         paging_options.page_size
@@ -3600,8 +3665,11 @@ defmodule Explorer.Chain do
     %{total_transactions_count: total_transactions_count, transactions: fetched_transactions}
   end
 
-
-  @spec recent_state_batch_transactions_for_rap([paging_options | necessity_by_association_option], Decimal.t(), Decimal.t()) :: %{
+  @spec recent_state_batch_transactions_for_rap(
+          [paging_options | necessity_by_association_option],
+          Decimal.t(),
+          Decimal.t()
+        ) :: %{
           :total_transactions_count => non_neg_integer(),
           :transactions => [Transaction.t()]
         }
@@ -3609,50 +3677,51 @@ defmodule Explorer.Chain do
     necessity_by_association = Keyword.get(options, :necessity_by_association, %{})
     paging_options = Keyword.get(options, :paging_options, @default_paging_options)
     total_transactions_count = state_batch_transactions_available_count(elements, size)
-    fetched_transactions = fetch_recent_collated_state_batch_transactions_for_rap(paging_options, necessity_by_association, elements, size)
+
+    fetched_transactions =
+      fetch_recent_collated_state_batch_transactions_for_rap(paging_options, necessity_by_association, elements, size)
 
     %{total_transactions_count: total_transactions_count, transactions: fetched_transactions}
   end
 
-
   def default_page_size, do: @default_page_size
 
   @spec recent_collated_state_batches_for_rap([paging_options]) :: %{
-    :total_transactions_count => non_neg_integer(),
-    :state_batches => [StateBatch.t()]
-  }
+          :total_transactions_count => non_neg_integer(),
+          :state_batches => [StateBatch.t()]
+        }
 
   def recent_collated_state_batches_for_rap(options \\ []) when is_list(options) do
-    #necessity_by_association = Keyword.get(options, :necessity_by_association, %{})
+    # necessity_by_association = Keyword.get(options, :necessity_by_association, %{})
     paging_options = Keyword.get(options, :paging_options, @default_paging_options)
 
     state_batch_count = state_batch_available_count()
-    fetched_state_batches =fetch_recent_collated_state_batch_for_rap(paging_options)
+    fetched_state_batches = fetch_recent_collated_state_batch_for_rap(paging_options)
     %{total_transactions_count: state_batch_count, state_batches: fetched_state_batches}
   end
 
   @spec recent_collated_l2_to_l1_for_rap([paging_options]) :: %{
-    :total_l2_to_l1_count => non_neg_integer(),
-    :l2_to_l1 => [L2ToL1.t()]
-  }
+          :total_l2_to_l1_count => non_neg_integer(),
+          :l2_to_l1 => [L2ToL1.t()]
+        }
 
   def recent_collated_l2_to_l1_for_rap(options \\ []) when is_list(options) do
     paging_options = Keyword.get(options, :paging_options, @default_paging_options)
 
     l2_to_l1_count = l2_to_l1_available_count()
-    fetched_l2_to_l1 =fetch_recent_collated_l2_to_l1_for_rap(paging_options)
+    fetched_l2_to_l1 = fetch_recent_collated_l2_to_l1_for_rap(paging_options)
     %{total_l2_to_l1_count: l2_to_l1_count, l2_to_l1: fetched_l2_to_l1}
   end
 
   @spec recent_collated_l1_to_l2_for_rap([paging_options], Decimal.t()) :: %{
-    :total_l1_to_l2_count => non_neg_integer(),
-    :l1_to_l2 => [L1ToL2.t()]
-  }
+          :total_l1_to_l2_count => non_neg_integer(),
+          :l1_to_l2 => [L1ToL2.t()]
+        }
 
   def recent_collated_l1_to_l2_for_rap(options \\ [], tx_type) when is_list(options) do
     paging_options = Keyword.get(options, :paging_options, @default_paging_options)
     l1_to_l2_count = l1_to_l2_available_count(tx_type)
-    fetched_l1_to_l2=fetch_recent_collated_l1_to_l2_for_rap(paging_options, tx_type)
+    fetched_l1_to_l2 = fetch_recent_collated_l1_to_l2_for_rap(paging_options, tx_type)
     %{total_l1_to_l2_count: l1_to_l2_count, l1_to_l2: fetched_l1_to_l2}
   end
 
@@ -3667,8 +3736,13 @@ defmodule Explorer.Chain do
 
   def fetch_recent_collated_state_batch_transactions_for_rap(paging_options, necessity_by_association, elements, size) do
     max = elements + size
+
     fetch_transactions_for_rap()
-    |> where([transaction], not is_nil(transaction.block_number) and not is_nil(transaction.index) and  transaction.block_number >= ^elements and transaction.block_number < ^max)
+    |> where(
+      [transaction],
+      not is_nil(transaction.block_number) and not is_nil(transaction.index) and transaction.block_number >= ^elements and
+        transaction.block_number < ^max
+    )
     |> handle_random_access_paging_options(paging_options)
     |> join_associations(necessity_by_association)
     |> preload([{:token_transfers, [:token, :from_address, :to_address]}])
@@ -3707,15 +3781,15 @@ defmodule Explorer.Chain do
     |> Repo.all()
   end
 
-
   def fetch_recent_collated_da_batch_transactions_for_rap(options \\ [], batch_index) when is_list(options) do
     paging_options = Keyword.get(options, :paging_options, @default_paging_options)
+
     DaBatchTransaction
     |> where([da_batch_transaction], da_batch_transaction.batch_index == ^batch_index)
+    |> order_by([da_batch_transaction], desc: da_batch_transaction.block_number)
     |> no_cache_handle_options(paging_options)
     |> Repo.all()
   end
-
 
   def fetch_recent_collated_eigenda_batch_for_rap(paging_options) do
     fetch_eigenda_batch_for_rap()
@@ -3724,65 +3798,66 @@ defmodule Explorer.Chain do
     |> Repo.all()
   end
 
-
-
   @spec recent_collated_txn_batches_for_rap([paging_options]) :: %{
-    :total_transactions_count => non_neg_integer(),
-    :txn_batches => [TxnBatch.t()]
-  }
+          :total_transactions_count => non_neg_integer(),
+          :txn_batches => [TxnBatch.t()]
+        }
 
   def recent_collated_txn_batches_for_rap(options \\ []) when is_list(options) do
     paging_options = Keyword.get(options, :paging_options, @default_paging_options)
     txn_batch_count = txn_batch_available_count()
-    fetched_txn_batches =fetch_recent_collated_txn_batch_for_rap(paging_options)
+    fetched_txn_batches = fetch_recent_collated_txn_batch_for_rap(paging_options)
     %{total_transactions_count: txn_batch_count, txn_batches: fetched_txn_batches}
   end
 
   @spec recent_collated_eigenda_batches_for_rap([paging_options]) :: %{
-    :total_eigenda_batches_count => non_neg_integer(),
-    :eigenda_batches => [DaBatch.t()]
-  }
+          :total_eigenda_batches_count => non_neg_integer(),
+          :eigenda_batches => [DaBatch.t()]
+        }
 
   def recent_collated_eigenda_batches_for_rap(options \\ []) when is_list(options) do
     paging_options = Keyword.get(options, :paging_options, @default_paging_options)
     total_eigenda_batches_count = eigenda_batch_available_count()
-    fetched_eigenda_batches =fetch_recent_collated_eigenda_batch_for_rap(paging_options)
+    fetched_eigenda_batches = fetch_recent_collated_eigenda_batch_for_rap(paging_options)
     %{total_eigenda_batches_count: total_eigenda_batches_count, eigenda_batches: fetched_eigenda_batches}
   end
 
   @spec recent_collated_da_batch_transactions_for_rap([paging_options], integer()) :: %{
-    :total_da_batch_transactions_count => non_neg_integer(),
-    :da_batch_transactions => [DaBatchTransaction.t()]
-  }
+          :total_da_batch_transactions_count => non_neg_integer(),
+          :da_batch_transactions => [DaBatchTransaction.t()]
+        }
 
   def recent_collated_da_batch_transactions_for_rap(options \\ [], batch_index) when is_list(options) do
     total_da_batch_transactions_count = da_batch_transactions_available_count(batch_index)
-    fetched_da_batch_transactions =fetch_recent_collated_da_batch_transactions_for_rap(options, batch_index)
-    %{total_da_batch_transactions_count: total_da_batch_transactions_count, da_batch_transactions: fetched_da_batch_transactions}
+    fetched_da_batch_transactions = fetch_recent_collated_da_batch_transactions_for_rap(options, batch_index)
+
+    %{
+      total_da_batch_transactions_count: total_da_batch_transactions_count,
+      da_batch_transactions: fetched_da_batch_transactions
+    }
   end
 
   @spec txn_batch_detail(integer()) :: %{
-    :txn_batch => TxnBatch.t()
-  }
+          :txn_batch => TxnBatch.t()
+        }
 
   def txn_batch_detail(batch_index) do
-    txn_batch =fetch_txn_batch(batch_index)
+    txn_batch = fetch_txn_batch(batch_index)
     %{txn_batch: txn_batch}
   end
 
   @spec state_batch_detail(integer()) :: %{
-    :state_batch => StateBatch.t()
-  }
+          :state_batch => StateBatch.t()
+        }
 
   def state_batch_detail(batch_index) do
-    state_batch =fetch_state_batch(batch_index)
+    state_batch = fetch_state_batch(batch_index)
     %{state_batch: state_batch}
   end
 
-
   @spec da_batch_detail(String.t()) :: %{
-    :da_batch => DaBatch.t()
-  }
+          :da_batch => DaBatch.t()
+        }
 
   def da_batch_detail(da_hash) do
     da_batch = fetch_da_batch(da_hash)
@@ -3819,6 +3894,7 @@ defmodule Explorer.Chain do
   defp fetch_eigenda_batch_transactions(options \\ []) when is_list(options) do
     paging_options = Keyword.get(options, :paging_options, @default_paging_options)
     %{batch_index: batch_index} = Keyword.get(options, :params)
+
     DaBatchTransaction
     |> where([eigenda_batch_transaction], eigenda_batch_transaction.batch_index == ^batch_index)
     |> no_cache_handle_options(paging_options)
@@ -3884,14 +3960,14 @@ defmodule Explorer.Chain do
   end
 
   def l1_to_l2_available_count(tx_type) do
-      if is_nil(tx_type) do
-        l1_to_l2_available_count()
-      else
-        L1ToL2
-        |> where([l1_to_l2], not is_nil(l1_to_l2.queue_index) and l1_to_l2.type == ^tx_type)
-        |> limit(^@limit_showing_transactions)
-        |> Repo.aggregate(:count, :hash)
-      end
+    if is_nil(tx_type) do
+      l1_to_l2_available_count()
+    else
+      L1ToL2
+      |> where([l1_to_l2], not is_nil(l1_to_l2.queue_index) and l1_to_l2.type == ^tx_type)
+      |> limit(^@limit_showing_transactions)
+      |> Repo.aggregate(:count, :hash)
+    end
   end
 
   def l1_to_l2_available_count() do
@@ -3917,8 +3993,13 @@ defmodule Explorer.Chain do
 
   def state_batch_transactions_available_count(elements, size) do
     max = elements + size
+
     Transaction
-    |> where([transaction], not is_nil(transaction.block_number) and not is_nil(transaction.index) and transaction.block_number >= ^elements and transaction.block_number < ^max)
+    |> where(
+      [transaction],
+      not is_nil(transaction.block_number) and not is_nil(transaction.index) and transaction.block_number >= ^elements and
+        transaction.block_number < ^max
+    )
     |> limit(^@limit_showing_transactions)
     |> Repo.aggregate(:count, :hash)
   end
@@ -3947,9 +4028,9 @@ defmodule Explorer.Chain do
   def fetch_recent_collated_txn_batches(paging_options) do
     paging_options
     |> fetch_txn_batches()
-    #|> where([transaction], not is_nil(transaction.block_number) and not is_nil(transaction.index))
-    #|> join_associations(necessity_by_association)
-    #|> preload([{:token_transfers, [:token, :from_address, :to_address]}])
+    # |> where([transaction], not is_nil(transaction.block_number) and not is_nil(transaction.index))
+    # |> join_associations(necessity_by_association)
+    # |> preload([{:token_transfers, [:token, :from_address, :to_address]}])
     |> Repo.all()
   end
 
@@ -5070,14 +5151,20 @@ defmodule Explorer.Chain do
   defp no_cache_handle_page(query, paging_options) do
     page_number = paging_options |> Map.get(:page_number, 1) |> proccess_page_number()
     page_size = Map.get(paging_options, :page_size, @default_page_size)
+    Logger.info("-----------2222-")
+    Logger.info("#{inspect(page_number)}")
+    Logger.info("#{inspect(page_size)}")
+
     cond do
       page_in_bounds?(page_number, page_size) && page_number == 1 ->
         query
         |> limit(^(page_size + 1))
+
       page_in_bounds?(page_number, page_size) ->
         query
         |> limit(^page_size)
         |> offset(^((page_number - 1) * page_size))
+
       true ->
         query
         |> limit(^(@default_page_size + 1))
@@ -5085,7 +5172,6 @@ defmodule Explorer.Chain do
   end
 
   defp handle_page(query, paging_options) do
-
     page_number = paging_options |> Map.get(:page_number, 1) |> proccess_page_number()
     page_size = Map.get(paging_options, :page_size, @default_page_size)
 
@@ -5559,7 +5645,7 @@ defmodule Explorer.Chain do
     TokenTransfer.fetch_token_transfers_from_token_hash(token_address_hash, options)
   end
 
-  @spec fetch_token_transfers_from_token_hash_and_token_id(Hash.t(), binary(), [paging_options]) :: []
+  @spec fetch_token_transfers_from_token_hash_and_token_id(Hash.t(), non_neg_integer(), [paging_options]) :: []
   def fetch_token_transfers_from_token_hash_and_token_id(token_address_hash, token_id, options \\ []) do
     TokenTransfer.fetch_token_transfers_from_token_hash_and_token_id(token_address_hash, token_id, options)
   end
@@ -5569,7 +5655,7 @@ defmodule Explorer.Chain do
     TokenTransfer.count_token_transfers_from_token_hash(token_address_hash)
   end
 
-  @spec count_token_transfers_from_token_hash_and_token_id(Hash.t(), binary()) :: non_neg_integer()
+  @spec count_token_transfers_from_token_hash_and_token_id(Hash.t(), non_neg_integer()) :: non_neg_integer()
   def count_token_transfers_from_token_hash_and_token_id(token_address_hash, token_id) do
     TokenTransfer.count_token_transfers_from_token_hash_and_token_id(token_address_hash, token_id)
   end
@@ -5750,7 +5836,7 @@ defmodule Explorer.Chain do
     |> Repo.all()
   end
 
-  @spec erc721_or_erc1155_token_instance_from_token_id_and_token_address(binary(), Hash.Address.t()) ::
+  @spec erc721_or_erc1155_token_instance_from_token_id_and_token_address(non_neg_integer(), Hash.Address.t()) ::
           {:ok, Instance.t()} | {:error, :not_found}
   def erc721_or_erc1155_token_instance_from_token_id_and_token_address(token_id, token_contract_address) do
     query =
@@ -6143,6 +6229,7 @@ defmodule Explorer.Chain do
     |> TypeDecoder.decode_raw(types)
   end
 
+  @spec get_token_type(Hash.Address.t()) :: String.t() | nil
   def get_token_type(hash) do
     query =
       from(
@@ -6152,6 +6239,18 @@ defmodule Explorer.Chain do
       )
 
     Repo.one(query)
+  end
+
+  @spec is_erc_20_token?(Token.t()) :: bool
+  def is_erc_20_token?(token) do
+    is_erc_20_token_type?(token.type)
+  end
+
+  defp is_erc_20_token_type?(type) do
+    case type do
+      "ERC-20" -> true
+      _ -> false
+    end
   end
 
   @doc """

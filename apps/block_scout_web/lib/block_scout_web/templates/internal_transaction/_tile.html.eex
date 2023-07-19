@@ -1,5 +1,5 @@
 <% error = @internal_transaction.error %>
-<div class="tile tile-type-internal-transaction fade-in <%= if error, do: "tile-status--error--reason"%>" data-test="internal_transaction" data-key="<%= @internal_transaction.transaction_hash %>_<%= @internal_transaction.index %>" data-internal-transaction-transaction-hash="<%= @internal_transaction.transaction_hash %>" data-internal-transaction-index="<%= @internal_transaction.index %>">
+<div style="border-radius:12px" class="tile tile-type-internal-transaction fade-in <%= if error, do: "tile-status--error--reason"%>" data-test="internal_transaction" data-key="<%= @internal_transaction.transaction_hash %>_<%= @internal_transaction.index %>" data-internal-transaction-transaction-hash="<%= @internal_transaction.transaction_hash %>" data-internal-transaction-index="<%= @internal_transaction.index %>">
   <div class="row tile-body">
     <!-- Color Block -->
     <div class="tile-transaction-type-block col-md-2 d-flex flex-row flex-md-column">
@@ -37,9 +37,9 @@
       <%= if assigns[:current_address] do %>
         <span class="mr-2 mr-md-0 order-0 order-md-3">
           <%= if assigns[:current_address].hash == @internal_transaction.from_address_hash do %>
-            <span class="badge badge-danger tile-badge"><%= gettext "OUT" %></span>
+            <span class="badge badge-danger tile-badge">OUT</span>
           <% else %>
-            <span class="badge badge-success tile-badge"><%= gettext "IN" %></span>
+            <span class="badge badge-success tile-badge">IN</span>
           <% end %>
         </span>
       <% end %>

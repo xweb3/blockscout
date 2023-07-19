@@ -37,9 +37,15 @@ $('.save-address-button').click((_event) => {
     eth_incoming: $('#watchlist_address_watch_coin_input').prop('checked'),
     eth_outgoing: $('#watchlist_address_watch_coin_output').prop('checked'),
     erc_20_incoming: $('#watchlist_address_watch_erc_20_input').prop('checked'),
-    erc_20_outgoing: $('#watchlist_address_watch_erc_20_output').prop('checked'),
-    erc_721_1155_incoming: $('#watchlist_address_watch_erc_721_input').prop('checked'),
-    erc_721_1155_outgoing: $('#watchlist_address_watch_erc_721_output').prop('checked'),
+    erc_20_outgoing: $('#watchlist_address_watch_erc_20_output').prop(
+      'checked'
+    ),
+    erc_721_1155_incoming: $('#watchlist_address_watch_erc_721_input').prop(
+      'checked'
+    ),
+    erc_721_1155_outgoing: $('#watchlist_address_watch_erc_721_output').prop(
+      'checked'
+    ),
     email_notifications: $('#watchlist_address_notify_email').prop('checked')
   }
   const eventName = 'New address to watchlist completed'
@@ -94,64 +100,68 @@ $('.send-public-tag-request-button').click((_event) => {
     email: $('#public_tags_request_email').val(),
     company_name: $('#public_tags_request_company').val(),
     company_website: $('#public_tags_request_website').val(),
-    goal: $('#public_tags_request_is_owner_true').prop('checked') ? 'Add tags' : 'Incorrect public tag',
+    goal: $('#public_tags_request_is_owner_true').prop('checked')
+      ? 'Add tags'
+      : 'Incorrect public tag',
     public_tag: $('#public_tags_request_tags').val(),
-    smart_contracts: $('*[id=public_tags_request_addresses]').map((_i, el) => {
-      return el.value
-    }).get(),
+    smart_contracts: $('*[id=public_tags_request_addresses]')
+      .map((_i, el) => {
+        return el.value
+      })
+      .get(),
     reason: $('#public_tags_request_additional_comment').val()
   }
 
   analytics.trackEvent(eventName, eventProperties)
 })
 
-$(document).ready(() => {
-  let timer
-  const waitTime = 500
-  const observer = new MutationObserver((mutations) => {
-    if (mutations[0].target.hidden) {
-      return
-    }
+// $(document).ready(() => {
+//   let timer
+//   const waitTime = 500
+//   const observer = new MutationObserver((mutations) => {
+//     if (mutations[0].target.hidden) {
+//       return
+//     }
 
-    const $results = $('li[id^="autoComplete_result_"]')
+//     const $results = $('li[id^="autoComplete_result_"]')
 
-    clearTimeout(timer)
-    timer = setTimeout(() => {
-      let eventName = 'Occurs searching according to substring at the nav bar'
-      let eventProperties = {
-        search: $('.main-search-autocomplete').val() || $('.main-search-autocomplete-mobile').val()
-      }
+//     clearTimeout(timer)
+//     timer = setTimeout(() => {
+//       let eventName = 'Occurs searching according to substring at the nav bar'
+//       let eventProperties = {
+//         search: $('.main-search-autocomplete').val() || $('.main-search-autocomplete-mobile').val()
+//       }
 
-      analytics.trackEvent(eventName, eventProperties)
+//       analytics.trackEvent(eventName, eventProperties)
 
-      eventName = 'Search list displays at the nav bar'
-      eventProperties = {
-        resultsNumber: $results.length,
-        results: $results.map((_i, el) => {
-          return el.children[1].innerText
-        })
-      }
+//       eventName = 'Search list displays at the nav bar'
+//       eventProperties = {
+//         resultsNumber: $results.length,
+//         results: $results.map((_i, el) => {
+//           return el.children[1].innerText
+//         })
+//       }
 
-      analytics.trackEvent(eventName, eventProperties)
-    }, waitTime)
+//       analytics.trackEvent(eventName, eventProperties)
+//     }, waitTime)
 
-    $results.click((event) => {
-      const eventName = 'Search item click at the nav bar'
-      const eventProperties = {
-        item: event.currentTarget.innerText
-      }
+//     $results.click((event) => {
+//       const eventName = 'Search item click at the nav bar'
+//       const eventProperties = {
+//         item: event.currentTarget.innerText
+//       }
 
-      analytics.trackEvent(eventName, eventProperties)
-    })
-  })
-  observer.observe($('#autoComplete_list_1')[0], {
-    attributeFilter: ['hidden'],
-    childList: true
-  })
-  observer.observe($('#autoComplete_list_2')[0], {
-    attributeFilter: ['hidden']
-  })
-})
+//       analytics.trackEvent(eventName, eventProperties)
+//     })
+//   })
+//   observer.observe($('#autoComplete_list_1')[0], {
+//     attributeFilter: ['hidden'],
+//     childList: true
+//   })
+//   observer.observe($('#autoComplete_list_2')[0], {
+//     attributeFilter: ['hidden']
+//   })
+// })
 
 $(document).click(function (event) {
   const clickover = $(event.target)
@@ -180,7 +190,7 @@ $(document)
       $('.main-search-autocomplete').trigger('focus')
     }
   })
-  .on('click', '.js-btn-add-chain-to-mm', event => {
+  .on('click', '.js-btn-add-chain-to-mm', (event) => {
     const $btn = $(event.target)
     addChainToMM({ btn: $btn })
   })
@@ -200,38 +210,52 @@ $('.main-search-autocomplete').on('keyup', function (event) {
 })
 
 $('#search-icon').on('click', function (event) {
-  const value = $('.main-search-autocomplete').val() || $('.main-search-autocomplete-mobile').val()
+  const value =
+    $('.main-search-autocomplete').val() ||
+    $('.main-search-autocomplete-mobile').val()
   search(value)
 })
 $('#search-btn').on('click', function (event) {
-  const value = $('.main-search-autocomplete').val() || $('.main-search-autocomplete-mobile').val()
+  const value =
+    $('.main-search-autocomplete').val() ||
+    $('.main-search-autocomplete-mobile').val()
   search(value)
 })
-if(window.innerWidth <= 1199){
-  if(document.getElementsByClassName('search-btn-cls') && document.getElementsByClassName('search-btn-cls').length > 1){
-    document.getElementsByClassName('search-btn-cls')[1].addEventListener('click', function (){
-      const els = document.getElementsByClassName('main-search-autocomplete');
-      if(els && els.length > 1){
-        let value = els[1].value
-        if(value){
-          search(value)
+if (window.innerWidth <= 1199) {
+  if (
+    document.getElementsByClassName('search-btn-cls') &&
+    document.getElementsByClassName('search-btn-cls').length > 1
+  ) {
+    document
+      .getElementsByClassName('search-btn-cls')[1]
+      .addEventListener('click', function () {
+        const els = document.getElementsByClassName('main-search-autocomplete')
+        if (els && els.length > 1) {
+          let value = els[1].value
+          if (value) {
+            search(value)
+          }
         }
-      }
-    })
+      })
   }
 }
 
-if(window.innerWidth <= 1199){
-  if(document.getElementsByClassName('search-icon-cls') && document.getElementsByClassName('search-icon-cls').length > 1){
-    document.getElementsByClassName('search-icon-cls')[1].addEventListener('click', function (){
-      const els = document.getElementsByClassName('main-search-autocomplete');
-      if(els && els.length > 1){
-        let value = els[1].value
-        if(value){
-          search(value)
+if (window.innerWidth <= 1199) {
+  if (
+    document.getElementsByClassName('search-icon-cls') &&
+    document.getElementsByClassName('search-icon-cls').length > 1
+  ) {
+    document
+      .getElementsByClassName('search-icon-cls')[1]
+      .addEventListener('click', function () {
+        const els = document.getElementsByClassName('main-search-autocomplete')
+        if (els && els.length > 1) {
+          let value = els[1].value
+          if (value) {
+            search(value)
+          }
         }
-      }
-    })
+      })
   }
 }
 

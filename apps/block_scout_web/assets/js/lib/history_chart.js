@@ -7,14 +7,45 @@ import numeral from 'numeral'
 import { DateTime } from 'luxon'
 import { formatUsdValue } from '../lib/currency'
 import sassVariables from '../../css/export-vars-to-js.module.scss'
+import 'chartjs-adapter-date-fns'
+import {zhCN, enGB, ja, ko, ru} from 'date-fns/locale'
 
 Chart.defaults.font.family = 'Nunito, "Helvetica Neue", Arial, sans-serif,"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
 Chart.register(LineController, LineElement, PointElement, LinearScale, TimeScale, Title, Tooltip)
+
+let lang = Cookies.get('locale')
+if (!lang) {
+  lang = 'en'
+}
+
+const getDateLocale = (lang) => {
+  switch (lang) {
+    case 'zh':
+      return zhCN
+    case 'ja':
+      return ja
+    case 'ko':
+      return ko
+    case 'ru':
+      return ru
+    default:
+      return enGB
+  }
+}
 
 const grid = {
   display: false,
   drawBorder: false,
   drawOnChartArea: false
+}
+const border = {
+  display: false
+}
+
+const adapters = {
+  date: {
+    locale: getDateLocale(lang)
+  }
 }
 
 function getTxChartColor () {
@@ -41,19 +72,19 @@ function getMarketCapChartColor () {
   }
 }
 
-function getAxisColor(){
+function getAxisColor () {
   if (Cookies.get('chakra-ui-color-mode') === 'dark') {
-    return "#FFFFFF"
+    return '#FFFFFF'
   } else {
-    return "#41474D"
+    return '#41474D'
   }
 }
 
-function getAxisBorderColor(){
+function getAxisBorderColor () {
   if (Cookies.get('chakra-ui-color-mode') === 'dark') {
-    return "rgba(255, 255, 255, 0.15)"
+    return 'rgba(255, 255, 255, 0.15)'
   } else {
-    return "#7FD8D2"
+    return '#7FD8D2'
   }
 }
 
@@ -66,17 +97,19 @@ function xAxe () {
   }
   return {
     grid,
+    border,
     type: 'time',
     time: {
       unit: 'day',
-      tooltipFormat: 'DD',
+      tooltipFormat: 'd MMM yyyy',
       stepSize: 14
     },
     ticks: {
       color: getAxisColor(),
       align: 'start',
       stepSize: 14
-    }
+    },
+    adapters
   }
 }
 
@@ -119,6 +152,7 @@ const config = {
       price: {
         position: 'left',
         grid,
+        border,
         ticks: {
           beginAtZero: true,
           callback: (value, _index, _values) => `$${numeral(value).format('0,0.00')}`,
@@ -129,6 +163,7 @@ const config = {
       marketCap: {
         position: 'right',
         grid,
+        border,
         ticks: {
           callback: (_value, _index, _values) => '',
           maxTicksLimit: 6,
@@ -142,10 +177,11 @@ const config = {
           color: getAxisBorderColor(),
           drawBorder: false
         },
+        border,
         ticks: {
           beginAtZero: true,
           callback: (value, _index, _values) => formatValue(value),
-          maxTicksLimit: 3,
+          maxTicksLimit: 4,
           color: getAxisColor()
         }
       }
@@ -315,7 +351,6 @@ class MarketHistoryChart {
     } else {
       window.sessionStorage.setItem(isChartLoadedKey, true)
     }
-
     this.chart = new Chart(el, config)
   }
 

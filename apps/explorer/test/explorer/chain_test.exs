@@ -2683,11 +2683,11 @@ defmodule Explorer.ChainTest do
     end
   end
 
-  describe "transaction_estimated_count/1" do
-    test "returns integer" do
-      assert is_integer(TransactionCache.estimated_count())
-    end
-  end
+  #describe "transaction_estimated_count/1" do
+  #  test "returns integer" do
+  #    assert is_integer(TransactionCache.estimated_count())
+  #  end
+  #end
 
   describe "transaction_to_internal_transactions/1" do
     test "with transaction without internal transactions" do

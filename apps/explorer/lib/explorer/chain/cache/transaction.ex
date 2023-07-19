@@ -24,17 +24,17 @@ defmodule Explorer.Chain.Cache.Transaction do
 
   Estimated count of both collated and pending transactions using the transactions table statistics.
   """
-  @spec estimated_count() :: non_neg_integer()
-  def estimated_count do
+  #@spec estimated_count() :: non_neg_integer()
+  #def estimated_count do
     #cached_value = __MODULE__.get_count()
     # TODO(Jayce) Cache of count of transactions is wrong now, hide cache temporary
     #if is_nil(cached_value) do
-      %Postgrex.Result{rows: [[count]]} = SQL.query!(Repo, "SELECT count(*) from transactions")
-        count
+  #    %Postgrex.Result{rows: [[count]]} = SQL.query!(Repo, "SELECT count(*) from transactions")
+  #      count
     #else
       #cached_value
     #end
-  end
+  #end
 
   defp handle_fallback(:count) do
     # This will get the task PID if one exists and launch a new task if not
