@@ -541,13 +541,30 @@ export class L2IngestionService {
       order: { block_number: 'DESC' },
     })
     this.metricL1ToL2L2Hash.set(Number(relayedEventsItem?.block_number || 0))
-    const l2ToL1Item2 = await this.l2ToL1Repository.findOne({
+    // initialize metricL2ToL1Status
+    // get latest waiting l2-to-l1 txn(status: '0')
+    let l2ToL1Item2 = await this.l2ToL1Repository.findOne({
       select: ['msg_nonce'],
       order: { block: 'DESC' },
       where: {
         status: '0'
       },
     })
-    this.metricL2ToL1Status.set(Number(l2ToL1Item2.msg_nonce || 0))
+    // if there is no waiting txn, then get latest l2-to-l1 txn
+    if (!l2ToL1Item2) {
+      l2ToL1Item2 = await this.l2ToL1Repository.findOne({
+        select: ['msg_nonce'],
+        order: { block: 'DESC' }
+      })
+    }
+    console.log({
+      type: 'log',
+      time: new Date().getTime(),
+      msg: {
+        message: 'initMetrics metricL2ToL1Status',
+        l2ToL1Item2
+      }
+    })
+    this.metricL2ToL1Status.set(Number(l2ToL1Item2?.msg_nonce || 0))
   }
 }
