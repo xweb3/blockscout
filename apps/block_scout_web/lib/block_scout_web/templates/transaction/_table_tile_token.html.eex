@@ -73,8 +73,27 @@
           <%= if involves_token_transfers?(@transaction) do %>
               <% [first_token_transfer | remaining_token_transfers] = @transaction.token_transfers %>
               <%= case token_transfer_amount(first_token_transfer) do %>
+                  <% {:ok, :erc721_instance} -> %>
+                    <%= render BlockScoutWeb.TransactionView, "_transfer_token_with_id_no_label.html", transfer: first_token_transfer, token_id: List.first(first_token_transfer.token_ids) %>
+                  <% {:ok, :erc1155_instance, value} -> %>
+                    <% transfer_type = Chain.get_token_transfer_type(first_token_transfer) %>
+                    <%= if transfer_type == :token_spawning do %>
+                        <%= render BlockScoutWeb.TransactionView, "_transfer_token_with_id_no_label.html", transfer: first_token_transfer, token_id: List.first(first_token_transfer.token_ids) %>
+                    <% else %>
+                        <%= "#{value} " %>
+                        <%= render BlockScoutWeb.TransactionView, "_transfer_token_with_id_no_label.html", transfer: first_token_transfer, token_id: List.first(first_token_transfer.token_ids) %>
+                    <% end %>
+                  <% {:ok, :erc1155_instance, values, token_ids, _decimals} -> %>
+                    <% values_ids = Enum.zip(values, token_ids) %>
+                    <%= for {value, token_id} <- values_ids do %>
+                        <div>
+                        <%= "#{value} "%>
+                        <%= render BlockScoutWeb.TransactionView, "_transfer_token_with_id_no_label.html", transfer: first_token_transfer, token_id: token_id %>
+                        </div>
+                    <% end %>
                   <% {:ok, value} -> %>
-                    <%= render BlockScoutWeb.TransactionView, "_link_to_token_symbol.html", transfer: first_token_transfer %>
+                    <%= value %>
+                    <%= " " %><%= render BlockScoutWeb.TransactionView, "_link_to_token_symbol.html", transfer: first_token_transfer %>
               <% end %>
           <% end %>
         </span>

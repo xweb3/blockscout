@@ -119,7 +119,7 @@ $(document).ready(() => {
   let timer
   const waitTime = 500
   const observer = new MutationObserver((mutations) => {
-    if (mutations[0].target.hidden) {
+    if (!mutations[0] || mutations[0].target.hidden) {
       return
     }
 

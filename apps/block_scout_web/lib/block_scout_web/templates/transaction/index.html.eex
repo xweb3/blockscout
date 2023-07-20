@@ -21,13 +21,6 @@
         <span href="#" class="alert-link"><%= gettext("Something went wrong, click to reload.") %></span>
       </button>
 
-      <div data-empty-response-message style="display: none;">
-        <div class="tile tile-muted text-center">
-          <span data-selector="empty-internal-transactions-list">
-            <%= gettext "There are no transactions." %>
-          </span>
-        </div>
-      </div>
 
       <div class="table-tile-header txn-list-table-head-container">
         <span style="width: 2%;">
@@ -63,6 +56,15 @@
         <span style="width: 10%;">
            <%= gettext "Txn Fee" %>
         </span>
+      </div>
+
+
+      <div data-empty-response-message style="display: none;">
+        <div class="tile tile-muted text-center">
+          <span data-selector="empty-internal-transactions-list">
+            <%= gettext "There are no transactions." %>
+          </span>
+        </div>
       </div>
 
       <div data-selector="transactions-list" data-items class="table-list-page">
