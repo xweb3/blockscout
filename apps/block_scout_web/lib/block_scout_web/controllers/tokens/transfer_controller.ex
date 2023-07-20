@@ -11,15 +11,19 @@ defmodule BlockScoutWeb.Tokens.TransferController do
   alias Indexer.Fetcher.TokenTotalSupplyOnDemand
   alias Phoenix.View
 
-  import BlockScoutWeb.Chain, only: [split_list_by_page: 1, paging_options: 1, next_page_params: 3]
+  import BlockScoutWeb.Chain,
+    only: [split_list_by_page: 1, paging_options: 1, next_page_params: 3]
 
-  {:ok, burn_address_hash} = Chain.string_to_address_hash("0x0000000000000000000000000000000000000000")
+  {:ok, burn_address_hash} =
+    Chain.string_to_address_hash("0x0000000000000000000000000000000000000000")
+
   @burn_address_hash burn_address_hash
 
   def index(conn, %{"token_id" => address_hash_string, "type" => "JSON"} = params) do
     with {:ok, address_hash} <- Chain.string_to_address_hash(address_hash_string),
          {:ok, token} <- Chain.token_from_address_hash(address_hash),
-         token_transfers <- Chain.fetch_token_transfers_from_token_hash(address_hash, paging_options(params)),
+         token_transfers <-
+           Chain.fetch_token_transfers_from_token_hash(address_hash, paging_options(params)),
          {:ok, false} <- AccessHelpers.restricted_access?(address_hash_string, params) do
       {token_transfers_paginated, next_page} = split_list_by_page(token_transfers)
 
@@ -41,7 +45,7 @@ defmodule BlockScoutWeb.Tokens.TransferController do
         Enum.map(token_transfers_paginated, fn transfer ->
           View.render_to_string(
             TransferView,
-            "_token_transfer.html",
+            "_token_transfer_table.html",
             conn: conn,
             token: token,
             token_transfer: transfer,
@@ -71,7 +75,8 @@ defmodule BlockScoutWeb.Tokens.TransferController do
       render(
         conn,
         "index.html",
-        counters_path: token_path(conn, :token_counters, %{"id" => Address.checksum(address_hash)}),
+        counters_path:
+          token_path(conn, :token_counters, %{"id" => Address.checksum(address_hash)}),
         current_path: Controller.current_full_path(conn),
         token: Market.add_price(token),
         token_total_supply_status: TokenTotalSupplyOnDemand.trigger_fetch(address_hash),
