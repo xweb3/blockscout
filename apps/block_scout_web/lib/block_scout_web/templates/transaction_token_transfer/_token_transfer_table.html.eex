@@ -1,0 +1,73 @@
+<% transaction = get_transaction(@token_transfer.transaction_hash) %>
+<% status = transaction_status(transaction) %>
+<% current_user = AuthController.current_user(@conn) %>
+
+<div  class="table-tile tile tile-type-token-transfer fade-in" data-test="token-transfer" data-identifier-hash="<%= @token_transfer.transaction_hash %>-<%= @token_transfer.log_index %>">
+  <%= if status == :success do %>
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="7" cy="7" r="7" fill="#3EB66A"/>
+      <path d="M10.4455 5.44346L7.02754 8.86138C6.63702 9.2519 6.00385 9.2519 5.61333 8.86138L4.13281 7.38086" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+  <%= else %>
+    <%= if status == :pending do %>
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="7" cy="7" r="7" fill="#F2B61D"/>
+        <path d="M7 3V7.5L9.5 9.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    <%= else %>
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="7" cy="7" r="7" fill="#E74242"/>
+        <path d="M4.52344 4.52539L9.47318 9.47514" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M4.52344 9.47461L9.47318 4.52486" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    <%= end %>
+  <%= end %>
+  <div class="table-tile-row" data-selector="token-transfers-toggle" data-test="chain_transaction">
+    <span style="width: 2%;">
+
+    </span>
+    <span style="width: 10%;" class="text-truncate">
+      <div class="text-truncate d-flex">
+        <%= render BlockScoutWeb.TransactionView, "_link.html", transaction_hash: @token_transfer.transaction_hash %>
+      </div>
+    </span>
+    <span style="width: 10%;" class="tag-container text-truncate">
+      <span class="tile-label">
+        <%= render(BlockScoutWeb.CommonComponentsView, "_token_transfer_type_display_name.html", type: Chain.get_token_transfer_type(@token_transfer)) %>
+      </span>
+    </span>
+    <span style="width: 9%;" class="tag-container text-truncate">
+
+    </span>
+    <span style="width: 8%;">
+        <%= link(
+        @token_transfer.block_number,
+        to: block_path(BlockScoutWeb.Endpoint, :show, @token_transfer.block_number)
+      ) %>
+    </span>
+    <span style="width: 10%;">
+      <span data-from-now="<%= @token_transfer.block && @token_transfer.block.timestamp %>"></span>
+    </span>
+    <span style="width: 14%;" class="text-truncate">
+      <%= render BlockScoutWeb.AddressView, "_link.html", address: @token_transfer.from_address, contract: BlockScoutWeb.AddressView.contract?(@token_transfer.from_address), use_custom_tooltip: false %>
+    </span>
+    <span style="width: 3%;">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="chevron-right">
+        <rect width="24" height="24" rx="12" fill="#CBE9E7" fill-opacity="0.8"/>
+        <path d="M6 12L17 12" stroke="#65B3AE" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M13.5 8.42969L17.0355 11.9652L13.5 15.5008" stroke="#65B3AE" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <rect x="0.5" y="0.5" width="23" height="23" rx="11.5" stroke="#65B3AE" stroke-opacity="0.5"/>
+      </svg>
+    </span>
+    <span style="width: 14%;" class="text-truncate">
+      <%= render BlockScoutWeb.AddressView, "_link.html", address: @token_transfer.to_address, contract: BlockScoutWeb.AddressView.contract?(@token_transfer.to_address), use_custom_tooltip: false %>
+    </span>
+    <span style="width: 8%;" class="text-truncate">
+      <span>
+      </span>
+    </span>
+
+
+  </div>
+
+</div>

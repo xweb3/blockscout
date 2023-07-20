@@ -5243,3 +5243,13 @@ msgstr ""
 
 msgid "Txn Hash"
 msgstr ""
+
+msgid "Toggle Fullscreen"
+msgstr ""
+
+msgid "Copy"
+msgstr ""
+
+msgid "Disconnect"
+msgstr ""
+
