@@ -5251,3 +5251,6 @@ msgstr "L1로 확정되었습니다"
 
 msgid "Challenge Period Passed"
 msgstr "도전 기간이 지났습니다"
+
+msgid "Txn Hash"
+msgstr "거래 해시"

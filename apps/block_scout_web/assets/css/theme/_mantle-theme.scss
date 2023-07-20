@@ -19,6 +19,46 @@ body {
   overscroll-behavior: none;
 }
 
+.card-body {
+  .table-tile-header {
+    display: flex;
+    width: 100%;
+    padding: 0 10px;
+    gap: 10px;
+  }
+  .table-list-page {
+    .table-tile {
+      margin-top: 0;
+      border: none;
+      background: none;
+      border-bottom: 1px solid #e7eaf3;
+      padding: 0;
+      border-radius: 0;
+      .table-tile-row {
+        display: flex;
+        gap: 10px;
+        font-size: 14px;
+        height: 42px;
+        padding: 0 10px;
+        align-items: center;
+        width: 100%;
+        .tag-container {
+          .tile-label,
+          .bs-label.method {
+            color: #15181c;
+            padding: 2px 8px;
+            border-radius: 4px;
+            background-color: #f8f8f9;
+            line-height: 24px;
+            font-weight: normal;
+            display: inline-block;
+          }
+        }
+      }
+    }
+  }
+}
+
 .web3-connect-wrapper {
   display: none;
 }
@@ -699,6 +739,29 @@ body {
 
   .dashboard-banner-daily-tx-title {
     color: #ffffff;
+  }
+
+  .card-body {
+    .table-list-page {
+      .table-tile {
+        border-bottom: 1px solid #ffffff26;
+        .table-tile-row {
+          color: #ffffff;
+          .chevron-right {
+            rect:first-child {
+              fill: #21413f;
+            }
+          }
+          .tag-container {
+            .tile-label,
+            .bs-label.method {
+              color: #ffffff;
+              background-color: #ffffff0d;
+            }
+          }
+        }
+      }
+    }
   }
 
   .dashboard-banner-info-container {

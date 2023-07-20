@@ -2,17 +2,28 @@ defmodule BlockScoutWeb.TransactionTokenTransferController do
   use BlockScoutWeb, :controller
 
   import BlockScoutWeb.Account.AuthController, only: [current_user: 1]
-  import BlockScoutWeb.Chain, only: [paging_options: 1, next_page_params: 3, split_list_by_page: 1]
+
+  import BlockScoutWeb.Chain,
+    only: [paging_options: 1, next_page_params: 3, split_list_by_page: 1]
+
   import BlockScoutWeb.Models.GetAddressTags, only: [get_address_tags: 2]
   import BlockScoutWeb.Models.GetTransactionTags, only: [get_transaction_with_addresses_tags: 2]
 
-  alias BlockScoutWeb.{AccessHelpers, Controller, TransactionController, TransactionTokenTransferView}
+  alias BlockScoutWeb.{
+    AccessHelpers,
+    Controller,
+    TransactionController,
+    TransactionTokenTransferView
+  }
+
   alias Explorer.{Chain, Market}
   alias Explorer.ExchangeRates.Token
   alias Phoenix.View
   import EthereumJSONRPC
-require Logger
+  require Logger
+
   {:ok, burn_address_hash} = Chain.string_to_address_hash("0x0000000000000000000000000000000000000000")
+
   @burn_address_hash burn_address_hash
 
   def index(conn, %{"transaction_id" => transaction_hash_string, "type" => "JSON"} = params) do
@@ -23,12 +34,15 @@ require Logger
              transaction_hash,
              []
            ),
-         {:ok, false} <- AccessHelpers.restricted_access?(to_string(transaction.from_address_hash), params),
-         {:ok, false} <- AccessHelpers.restricted_access?(to_string(transaction.to_address_hash), params) do
+         {:ok, false} <-
+           AccessHelpers.restricted_access?(to_string(transaction.from_address_hash), params),
+         {:ok, false} <-
+           AccessHelpers.restricted_access?(to_string(transaction.to_address_hash), params) do
       full_options =
         Keyword.merge(
           [
             necessity_by_association: %{
+              :block => :optional,
               [from_address: :smart_contract] => :optional,
               [to_address: :smart_contract] => :optional,
               [from_address: :names] => :optional,
@@ -50,8 +64,33 @@ require Logger
             nil
 
           next_page_params ->
-            transaction_token_transfer_path(conn, :index, transaction_hash, Map.delete(next_page_params, "type"))
+            transaction_token_transfer_path(
+              conn,
+              :index,
+              transaction_hash,
+              Map.delete(next_page_params, "type")
+            )
         end
+
+      # transaction2 =
+      #   Chain.hash_to_transaction(
+      #     transaction_hash,
+      #     necessity_by_association: %{
+      #       [created_contract_address: :names] => :optional,
+      #       [from_address: :names] => :optional,
+      #       [to_address: :names] => :optional,
+      #       [created_contract_address: :smart_contract] => :optional,
+      #       [from_address: :smart_contract] => :optional,
+      #       [to_address: :smart_contract] => :optional,
+      #       [token_transfers: :token] => :optional,
+      #       [token_transfers: :to_address] => :optional,
+      #       [token_transfers: :from_address] => :optional,
+      #       [token_transfers: :token_contract_address] => :optional,
+      #       :block => :required
+      #     }
+      #   )
+
+      # Logger.info("#{inspect(transaction2)}")
 
       items =
         token_transfers
@@ -101,45 +140,72 @@ require Logger
                :token_transfers => :optional
              }
            ),
-         {:ok, false} <- AccessHelpers.restricted_access?(to_string(transaction.from_address_hash), params),
-         {:ok, false} <- AccessHelpers.restricted_access?(to_string(transaction.to_address_hash), params) do
-          tx_status = EthereumJSONRPC.request(%{id: 0, method: "eth_getTxStatusDetailByHash", params: [transaction_hash_string]})
-          |> json_rpc(Application.get_env(:indexer, :json_rpc_named_arguments))
-          |> case do
-            {:ok, tx}  ->
-              tx["status"]
-            {:error, _} ->
-              nil
-          end
-          updated_transaction = case Chain.hash_to_batch(transaction_hash_string,necessity_by_association: @necessity_by_association) do
-            {:error, _} ->
-              transaction
-            {:ok, %{batch_index: batch_index, data_commitment: data_commitment}} ->
-              res = Map.put(transaction, :batch_index, batch_index)
-              Map.put(res, :data_commitment, data_commitment)
-          end
-          updated_state_transaction = case Chain.block_to_state_batch(transaction.block_number,necessity_by_association: @necessity_by_association) do
-            {:error, _} ->
-              updated_transaction
-            {:ok, %{batch_index: batch_index, submission_tx_hash: submission_tx_hash}} ->
-              res = Map.put(updated_transaction, :state_batch_index, batch_index)
-              Map.put(res, :submission_tx_hash, submission_tx_hash)
-          end
+         {:ok, false} <-
+           AccessHelpers.restricted_access?(to_string(transaction.from_address_hash), params),
+         {:ok, false} <-
+           AccessHelpers.restricted_access?(to_string(transaction.to_address_hash), params) do
+      tx_status =
+        EthereumJSONRPC.request(%{
+          id: 0,
+          method: "eth_getTxStatusDetailByHash",
+          params: [transaction_hash_string]
+        })
+        |> json_rpc(Application.get_env(:indexer, :json_rpc_named_arguments))
+        |> case do
+          {:ok, tx} ->
+            tx["status"]
 
-          updated_display_tx_status_state_transaction = if tx_status == nil, do: updated_state_transaction, else: Map.put(updated_state_transaction, :tx_status, tx_status)
-          updated_token_price_transaction = case Chain.get_real_time_token_price() do
-            {:error, _} ->
-              updated_display_tx_status_state_transaction
-            {:ok, %{mnt_to_usd: mnt_to_usd}} ->
-              Map.put(updated_display_tx_status_state_transaction, :real_time_price, mnt_to_usd)
-          end
+          {:error, _} ->
+            nil
+        end
 
-          updated_token_price_history_transaction = case Chain.get_token_price_history(updated_token_price_transaction.block) do
-            {:error, _} ->
-              updated_token_price_transaction
-            {:ok, %{mnt_to_usd: mnt_to_usd}} ->
-              Map.put(updated_token_price_transaction, :token_price_history, mnt_to_usd)
-            end
+      updated_transaction =
+        case Chain.hash_to_batch(transaction_hash_string,
+               necessity_by_association: @necessity_by_association
+             ) do
+          {:error, _} ->
+            transaction
+
+          {:ok, %{batch_index: batch_index, data_commitment: data_commitment}} ->
+            res = Map.put(transaction, :batch_index, batch_index)
+            Map.put(res, :data_commitment, data_commitment)
+        end
+
+      updated_state_transaction =
+        case Chain.block_to_state_batch(transaction.block_number,
+               necessity_by_association: @necessity_by_association
+             ) do
+          {:error, _} ->
+            updated_transaction
+
+          {:ok, %{batch_index: batch_index, submission_tx_hash: submission_tx_hash}} ->
+            res = Map.put(updated_transaction, :state_batch_index, batch_index)
+            Map.put(res, :submission_tx_hash, submission_tx_hash)
+        end
+
+      updated_display_tx_status_state_transaction =
+        if tx_status == nil,
+          do: updated_state_transaction,
+          else: Map.put(updated_state_transaction, :tx_status, tx_status)
+
+      updated_token_price_transaction =
+        case Chain.get_real_time_token_price() do
+          {:error, _} ->
+            updated_display_tx_status_state_transaction
+
+          {:ok, %{mnt_to_usd: mnt_to_usd}} ->
+            Map.put(updated_display_tx_status_state_transaction, :real_time_price, mnt_to_usd)
+        end
+
+      updated_token_price_history_transaction =
+        case Chain.get_token_price_history(updated_token_price_transaction.block) do
+          {:error, _} ->
+            updated_token_price_transaction
+
+          {:ok, %{mnt_to_usd: mnt_to_usd}} ->
+            Map.put(updated_token_price_transaction, :token_price_history, mnt_to_usd)
+        end
+
       render(
         conn,
         "index.html",

@@ -115,53 +115,55 @@ $('.send-public-tag-request-button').click((_event) => {
   analytics.trackEvent(eventName, eventProperties)
 })
 
-// $(document).ready(() => {
-//   let timer
-//   const waitTime = 500
-//   const observer = new MutationObserver((mutations) => {
-//     if (mutations[0].target.hidden) {
-//       return
-//     }
+$(document).ready(() => {
+  let timer
+  const waitTime = 500
+  const observer = new MutationObserver((mutations) => {
+    if (!mutations[0] || mutations[0].target.hidden) {
+      return
+    }
 
-//     const $results = $('li[id^="autoComplete_result_"]')
+    const $results = $('li[id^="autoComplete_result_"]')
 
-//     clearTimeout(timer)
-//     timer = setTimeout(() => {
-//       let eventName = 'Occurs searching according to substring at the nav bar'
-//       let eventProperties = {
-//         search: $('.main-search-autocomplete').val() || $('.main-search-autocomplete-mobile').val()
-//       }
+    clearTimeout(timer)
+    timer = setTimeout(() => {
+      let eventName = 'Occurs searching according to substring at the nav bar'
+      let eventProperties = {
+        search:
+          $('.main-search-autocomplete').val() ||
+          $('.main-search-autocomplete-mobile').val()
+      }
 
-//       analytics.trackEvent(eventName, eventProperties)
+      analytics.trackEvent(eventName, eventProperties)
 
-//       eventName = 'Search list displays at the nav bar'
-//       eventProperties = {
-//         resultsNumber: $results.length,
-//         results: $results.map((_i, el) => {
-//           return el.children[1].innerText
-//         })
-//       }
+      eventName = 'Search list displays at the nav bar'
+      eventProperties = {
+        resultsNumber: $results.length,
+        results: $results.map((_i, el) => {
+          return el.children[1].innerText
+        })
+      }
 
-//       analytics.trackEvent(eventName, eventProperties)
-//     }, waitTime)
+      analytics.trackEvent(eventName, eventProperties)
+    }, waitTime)
 
-//     $results.click((event) => {
-//       const eventName = 'Search item click at the nav bar'
-//       const eventProperties = {
-//         item: event.currentTarget.innerText
-//       }
+    $results.click((event) => {
+      const eventName = 'Search item click at the nav bar'
+      const eventProperties = {
+        item: event.currentTarget.innerText
+      }
 
-//       analytics.trackEvent(eventName, eventProperties)
-//     })
-//   })
-//   observer.observe($('#autoComplete_list_1')[0], {
-//     attributeFilter: ['hidden'],
-//     childList: true
-//   })
-//   observer.observe($('#autoComplete_list_2')[0], {
-//     attributeFilter: ['hidden']
-//   })
-// })
+      analytics.trackEvent(eventName, eventProperties)
+    })
+  })
+  observer.observe($('#autoComplete_list_1')[0], {
+    attributeFilter: ['hidden'],
+    childList: true
+  })
+  observer.observe($('#autoComplete_list_2')[0], {
+    attributeFilter: ['hidden']
+  })
+})
 
 $(document).click(function (event) {
   const clickover = $(event.target)

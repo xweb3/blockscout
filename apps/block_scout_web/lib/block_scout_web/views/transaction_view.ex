@@ -10,7 +10,7 @@ defmodule BlockScoutWeb.TransactionView do
   alias Explorer.Counters.AverageBlockTime
   alias Explorer.ExchangeRates.Token
   alias Timex.Duration
-require Logger
+  require Logger
   import BlockScoutWeb.Gettext
   import BlockScoutWeb.AddressView, only: [from_address_hash: 1, short_token_id: 2, tag_name_to_label: 1]
   import BlockScoutWeb.Tokens.Helpers
@@ -32,8 +32,12 @@ require Logger
   defdelegate formatted_timestamp(block), to: BlockView
 
   def block_number(%Transaction{block_number: nil}), do: gettext("Block Pending")
-  def block_number(%Transaction{block: block}), do: [view_module: BlockView, partial: "_link.html", block: block]
-  def block_number(%Reward{block: block}), do: [view_module: BlockView, partial: "_link.html", block: block]
+
+  def block_number(%Transaction{block: block}),
+    do: [view_module: BlockView, partial: "_link.html", block: block, hideLabel: true]
+
+  def block_number(%Reward{block: block}),
+    do: [view_module: BlockView, partial: "_link.html", block: block, hideLabel: true]
 
   def block_timestamp(%Transaction{block_number: nil, inserted_at: time}), do: time
   def block_timestamp(%Transaction{block: %Block{timestamp: time}}), do: time
@@ -311,12 +315,13 @@ require Logger
   def formatted_fee(%Transaction{} = transaction, opts) do
     l1_fee = if transaction.l1_fee == nil, do: Wei.from(Decimal.new(0), :wei), else: transaction.l1_fee
     da_fee = if transaction.da_fee == nil, do: Wei.from(Decimal.new(0), :wei), else: transaction.da_fee
+
     transaction
     |> Chain.fee(:wei)
     |> fee_to_denomination(l1_fee, da_fee, opts)
     |> case do
-         {:actual, value} -> value
-         {:maximum, value} -> "#{gettext("Max of")} #{value}"
+      {:actual, value} -> value
+      {:maximum, value} -> "#{gettext("Max of")} #{value}"
     end
   end
 
@@ -347,10 +352,13 @@ require Logger
     case tx_status do
       "0x0" ->
         ""
+
       "0x1" ->
-          "transaction_detail_status_item_active"
+        "transaction_detail_status_item_active"
+
       "0x2" ->
         "transaction_detail_status_item_active"
+
       "0x3" ->
         "transaction_detail_status_item_active"
     end
@@ -360,10 +368,13 @@ require Logger
     case tx_status do
       "0x0" ->
         ""
+
       "0x1" ->
         ""
+
       "0x2" ->
         "transaction_detail_status_item_active"
+
       "0x3" ->
         "transaction_detail_status_item_active"
     end
@@ -373,10 +384,13 @@ require Logger
     case tx_status do
       "0x0" ->
         ""
+
       "0x1" ->
         ""
+
       "0x2" ->
         ""
+
       "0x3" ->
         "transaction_detail_status_item_active"
     end
@@ -386,7 +400,6 @@ require Logger
   def get_tx_status_cls2(%{tx_status: nil}), do: ""
   def get_tx_status_cls3(%{tx_status: nil}), do: ""
 
-
   def get_tx_status_icon_cls1(tx_status, is_dark) do
     case tx_status do
       "0x0" ->
@@ -395,18 +408,21 @@ require Logger
         else
           "right_icon_0.svg"
         end
+
       "0x1" ->
         if is_dark do
           "right_icon_1_dark.svg"
         else
           "right_icon_1.svg"
         end
+
       "0x2" ->
         if is_dark do
           "right_icon_1_dark.svg"
         else
           "right_icon_1.svg"
         end
+
       "0x3" ->
         if is_dark do
           "right_icon_1_dark.svg"
@@ -424,18 +440,21 @@ require Logger
         else
           "right_icon_0.svg"
         end
+
       "0x1" ->
         if is_dark do
           "right_icon_0_dark.svg"
         else
           "right_icon_0.svg"
         end
+
       "0x2" ->
         if is_dark do
           "right_icon_1_dark.svg"
         else
           "right_icon_1.svg"
         end
+
       "0x3" ->
         if is_dark do
           "right_icon_1_dark.svg"
@@ -453,18 +472,21 @@ require Logger
         else
           "right_icon_0.svg"
         end
+
       "0x1" ->
         if is_dark do
           "right_icon_0_dark.svg"
         else
           "right_icon_0.svg"
         end
+
       "0x2" ->
         if is_dark do
           "right_icon_0_dark.svg"
         else
           "right_icon_0.svg"
         end
+
       "0x3" ->
         if is_dark do
           "right_icon_1_dark.svg"
@@ -477,7 +499,6 @@ require Logger
   def get_tx_status_icon_cls1(%{tx_status: nil}, is_dark), do: ""
   def get_tx_status_icon_cls2(%{tx_status: nil}, is_dark), do: ""
   def get_tx_status_icon_cls3(%{tx_status: nil}, is_dark), do: ""
-
 
   def formatted_result(status) do
     case status do
@@ -524,11 +545,14 @@ require Logger
   end
 
   def da_gas_price(%Transaction{da_gas_price: da_gas_price}, unit) when unit in ~w(wei gwei ether)a do
-    if da_gas_price == nil, do: format_wei_value(%Wei{value: Decimal.new(0)}, unit), else: format_wei_value(da_gas_price, unit)
+    if da_gas_price == nil,
+      do: format_wei_value(%Wei{value: Decimal.new(0)}, unit),
+      else: format_wei_value(da_gas_price, unit)
   end
 
   def l2_fee(%Transaction{gas_price: gas_price, gas: gas, gas_used: gas_used}, unit) when unit in ~w(wei gwei ether)a do
     actual_gas = if gas_used == nil, do: gas, else: gas_used
+
     gas_price
     |> Wei.multi(actual_gas)
     |> Decimal.to_string(:normal)
@@ -538,6 +562,7 @@ require Logger
     l1_fee = if transaction.l1_fee == nil, do: Wei.from(Decimal.new(0), :wei), else: transaction.l1_fee
     da_fee = if transaction.da_fee == nil, do: Wei.from(Decimal.new(0), :wei), else: transaction.da_fee
     real_time_price = transaction.real_time_price
+
     transaction
     |> Chain.fee(:wei)
     |> fee_to_denomination_with_no_unit(l1_fee, da_fee, opts, real_time_price)
@@ -547,6 +572,7 @@ require Logger
     l1_fee = if transaction.l1_fee == nil, do: Wei.from(Decimal.new(0), :wei), else: transaction.l1_fee
     da_fee = if transaction.da_fee == nil, do: Wei.from(Decimal.new(0), :wei), else: transaction.da_fee
     token_price_history = transaction.token_price_history
+
     transaction
     |> Chain.fee(:wei)
     |> fee_to_denomination_with_no_unit(l1_fee, da_fee, opts, token_price_history)
@@ -558,6 +584,7 @@ require Logger
     gas_used = transaction.gas_used
     actual_gas = if gas_used == nil, do: gas, else: gas_used
     real_time_price = transaction.real_time_price
+
     gas_price
     |> Wei.multi(actual_gas)
     |> Decimal.mult(real_time_price)
@@ -570,6 +597,7 @@ require Logger
     gas_used = transaction.gas_used
     actual_gas = if gas_used == nil, do: gas, else: gas_used
     token_price_history = transaction.token_price_history
+
     gas_price
     |> Wei.multi(actual_gas)
     |> Decimal.mult(token_price_history)
@@ -632,11 +660,11 @@ require Logger
     end
   end
 
-  #def l1_gas_price(%Transaction{l1_gas_price: nil}, _unit), do: gettext("Pending")
+  # def l1_gas_price(%Transaction{l1_gas_price: nil}, _unit), do: gettext("Pending")
 
-  #def l1_gas_price(%Transaction{l1_gas_price: l1_gas_price}, unit) when unit in ~w(wei gwei ether)a do
+  # def l1_gas_price(%Transaction{l1_gas_price: l1_gas_price}, unit) when unit in ~w(wei gwei ether)a do
   #  format_wei_value(l1_gas_price, unit)
-  #end
+  # end
 
   def l1_gas_price(%Transaction{} = transaction, unit) when unit in ~w(wei gwei ether)a do
     l1_gas_price = if transaction.l1_gas_price == nil, do: 0, else: transaction.l1_gas_price
@@ -765,7 +793,9 @@ require Logger
     denomination = Keyword.get(opts, :denomination)
     include_label? = Keyword.get(opts, :include_label, true)
     l1_and_da_fee = Wei.sum(l1_fee, da_fee)
-    {fee_type, format_wei_value(Wei.sum(Wei.from(fee, :wei), l1_and_da_fee), denomination, include_unit_label: include_label?)}
+
+    {fee_type,
+     format_wei_value(Wei.sum(Wei.from(fee, :wei), l1_and_da_fee), denomination, include_unit_label: include_label?)}
   end
 
   defp fee_to_denomination_with_no_unit({fee_type, fee}, l1_fee, da_fee, opts, token_price) do
