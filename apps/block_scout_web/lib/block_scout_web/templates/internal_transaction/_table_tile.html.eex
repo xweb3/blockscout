@@ -18,7 +18,7 @@
           </svg>
         <%= end %>
       </span>
-      <span style="width: 11%;" class="text-truncate">
+      <span style="width: 10%;" class="text-truncate">
         <div class="text-truncate d-flex">
           <%= render BlockScoutWeb.TransactionView, "_link.html", transaction_hash: @internal_transaction.transaction_hash %>
         </div>
@@ -38,7 +38,7 @@
           to: block_path(BlockScoutWeb.Endpoint, :show, @internal_transaction.block_number)
         ) %>
       </span>
-      <span style="width: 9%;">
+      <span style="width: 10%;">
         <span class="mr-2 mr-md-0 order-2" in-tile data-from-now="<%= @internal_transaction.transaction.block.timestamp %>"></span>
       </span>
       <span style="width: 14%;" class="text-truncate">

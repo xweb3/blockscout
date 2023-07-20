@@ -61,7 +61,7 @@
           <span style="width: 2%;">
           &nbsp;
           </span>
-          <span style="width: 11%;">
+          <span style="width: 10%;">
             <%= gettext "Txn Hash" %>
           </span>
           <span style="width: 10%;">
@@ -73,7 +73,7 @@
           <span style="width: 8%;">
             <%= gettext "Block" %>
           </span>
-          <span style="width: 9%;">
+          <span style="width: 10%;">
             <%= gettext "Age" %>
           </span>
           <span style="width: 14%;">
