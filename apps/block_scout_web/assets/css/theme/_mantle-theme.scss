@@ -12,11 +12,12 @@ $dark-primary-alternate: #65b3ae !default;
 $dropdown-menu-item-hover-background-dark: #305a57;
 $dropdown-menu-background-dark: #3f7470;
 a {
-	text-decoration: none !important;
+  text-decoration: none !important;
 }
 
-body{
+body {
   overscroll-behavior: none;
+  width: 100%;
 }
 
 .dashboard-banner-info-container {
@@ -57,7 +58,8 @@ body{
   }
 }
 
-.button-primary, .btn-full-primary {
+.button-primary,
+.btn-full-primary {
   border-radius: 12px;
 }
 
@@ -83,17 +85,17 @@ body{
 
   [data-icon="moon"] {
     display: none;
-    path{
-      stroke:#65B3AE;
+    path {
+      stroke: #65b3ae;
     }
   }
   [data-icon="sun"] {
     display: inline-block;
-    path{
-      stroke:#21413F;
+    path {
+      stroke: #21413f;
     }
-    circle{
-      stroke:#21413F;
+    circle {
+      stroke: #21413f;
     }
   }
 }
@@ -225,30 +227,30 @@ body{
 
   .navbar.navbar-primary .navbar-nav .nav-link {
     color: $dark-text-content-color;
-    .dropdown-toggle-icon{
-      path{
-        stroke:$dark-text-content-color;
+    .dropdown-toggle-icon {
+      path {
+        stroke: $dark-text-content-color;
       }
     }
 
-    &:hover{
-      .dropdown-toggle-icon{
-        path{
-          stroke:white;
+    &:hover {
+      .dropdown-toggle-icon {
+        path {
+          stroke: white;
         }
       }
     }
 
     &.network-label {
       background-color: $dropdown-menu-background-dark;
-      .dropdown-toggle-icon{
-        path{
+      .dropdown-toggle-icon {
+        path {
           stroke: #06dd76;
         }
       }
-      &:hover{
-        .dropdown-toggle-icon{
-          path{
+      &:hover {
+        .dropdown-toggle-icon {
+          path {
             stroke: #06dd76;
           }
         }
@@ -619,9 +621,9 @@ body{
 
   .dropdown-item {
     color: #fff;
-    &[target='_blank']{
+    &[target="_blank"] {
       padding-right: 20px;
-      &:after{
+      &:after {
         content: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M13 8.5L9 8.5C7.89543 8.5 7 9.39543 7 10.5L7 14' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M12 6L14.5 8.5L12 11' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
       }
     }
@@ -640,16 +642,16 @@ body{
     background-color: $dark-light !important;
   }
 
-	.btn-dropdown-line {
-		background-color: $dark-light;
-		border-color: $dark-light;
-		color: #ffffff;
-		border-radius: 8px;
-	}
+  .btn-dropdown-line {
+    background-color: $dark-light;
+    border-color: $dark-light;
+    color: #ffffff;
+    border-radius: 8px;
+  }
   .index-label {
-    background: rgba(255,255,255, .3);
-    &:after{
-      border-left-color: rgba(255,255,255, .3);
+    background: rgba(255, 255, 255, 0.3);
+    &:after {
+      border-left-color: rgba(255, 255, 255, 0.3);
     }
   }
 
@@ -1482,7 +1484,7 @@ body{
   .main-search-autocomplete {
     background-color: transparent !important;
     color: #fff !important;
-    @include textfield-placeholder(rgba(255,255,255,.5));
+    @include textfield-placeholder(rgba(255, 255, 255, 0.5));
   }
 
   input::-webkit-input-placeholder {
@@ -1505,34 +1507,35 @@ body{
 
   ul[id^="autoComplete_list_"] {
     background-color: $dropdown-menu-background-dark;
-    .result-header{
+    .result-header {
       background-color: $dropdown-menu-background-dark;
-      border-bottom-color:#4F8F8B;
-      .result-header-content{
-        .list-toggle{
-          border-color: #65B3AE;
-          color: #BFF6F2;
-          &.active,&:hover{
-            background-color: #65B3AE;
-            color: #070D0C;
-            border-color: #65B3AE;
+      border-bottom-color: #4f8f8b;
+      .result-header-content {
+        .list-toggle {
+          border-color: #65b3ae;
+          color: #bff6f2;
+          &.active,
+          &:hover {
+            background-color: #65b3ae;
+            color: #070d0c;
+            border-color: #65b3ae;
           }
         }
       }
     }
-    .result-counter{
+    .result-counter {
       color: $dark-text-content-color;
-      border-bottom-color:#4F8F8B;
-      .counter-content{
-        p{
-          &.label{
-            color: #BFF6F2;
+      border-bottom-color: #4f8f8b;
+      .counter-content {
+        p {
+          &.label {
+            color: #bff6f2;
           }
-          &.count{
-            color: #7FD8D2;
+          &.count {
+            color: #7fd8d2;
           }
         }
-      }  
+      }
     }
   }
 
@@ -1540,13 +1543,13 @@ body{
     background-color: transparent !important;
     color: #fff;
 
-    .result-match{
-      & > div{
-        div:first-child{
+    .result-match {
+      & > div {
+        div:first-child {
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
-          color: #BFF6F2;
+          color: #bff6f2;
         }
       }
     }
