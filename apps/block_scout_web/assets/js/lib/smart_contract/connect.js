@@ -1,6 +1,24 @@
 import Web3 from 'web3'
-import Web3Modal from 'web3modal'
-import WalletConnectProvider from '@walletconnect/web3-provider'
+//import Web3Modal from 'web3modal'
+
+
+
+
+import { WalletConnectModal } from '@walletconnect/modal'
+
+import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum'
+import { Web3Modal } from '@web3modal/html'
+import { configureChains, createConfig } from '@wagmi/core'
+import { arbitrum, mainnet, polygon } from '@wagmi/core/chains'
+
+import { EthereumProvider } from '@walletconnect/ethereum-provider'
+
+
+
+
+
+
+//import WalletConnectProvider from '@walletconnect/web3-provider'
 import { compareChainIDs, formatError, showConnectElements, showConnectedToElements } from './common_helpers'
 import { openWarningModal } from '../modals'
 
@@ -16,32 +34,76 @@ let provider
 // Web3modal instance
 let web3Modal
 
+let ec
+
 /**
  * Setup the orchestra
  */
-export async function web3ModalInit (connectToWallet, ...args) {
+export async function web3ModalInit(connectToWallet, ...args) {
   return new Promise((resolve) => {
     // Tell Web3modal what providers we have available.
     // Built-in web browser provider (only one can exist as a time)
     // like MetaMask, Brave or Opera is added automatically by Web3modal
-    const providerOptions = {
+    /* const providerOptions = {
       walletconnect: {
         package: WalletConnectProvider,
         options: walletConnectOptions
       }
-    }
+    } */
 
-    web3Modal = new Web3Modal({
+    /* web3Modal = new Web3Modal({
       cacheProvider: true,
       providerOptions,
       disableInjectedProvider: false
-    })
+    }) */
+    /* web3Modal = new WalletConnectModal({
+      projectId: 'a85398a55b8ecc45aecdfb252276c71e',
+      chains: ['eip155:1']
+    }) */
+    const chains = [arbitrum, mainnet, polygon]
+    const projectId = 'a85398a55b8ecc45aecdfb252276c71e'
 
-    if (web3Modal.cachedProvider) {
-      connectToWallet(...args)
+    const { publicClient } = configureChains(chains, [w3mProvider({ projectId })])
+    const wagmiConfig = createConfig({
+      autoConnect: true,
+      connectors: w3mConnectors({ projectId, chains }),
+      publicClient
+    })
+    console.log(123123123)
+    const ethereumClient = new EthereumClient(wagmiConfig, chains)
+    web3Modal = new Web3Modal({ projectId }, ethereumClient)
+
+    web3Modal.subscribeEvents = (e)=> {
+      console.log('-------1', e)
     }
 
-    resolve(web3Modal)
+    web3Modal.subscribeModal = (e)=> {
+      console.log('-------2', e)
+    }
+
+    window.ec = ethereumClient
+    console.log(ethereumClient)
+    console.log(web3Modal)
+    /* if (web3Modal.cachedProvider) {
+      connectToWallet(...args)
+    } */
+    /* EthereumProvider.init({
+      projectId: 'a85398a55b8ecc45aecdfb252276c71e', // required
+      chains: [5001],
+      rpcMap: {
+        '5001': 'https://rpc.testnet.mantle.xyz'
+      },
+      showQrModal: true // requires @walletconnect/modal
+    }).then(res => {
+      console.log('------', res)
+      provider = res
+      window.web3 = new Web3(provider)
+      resolve(provider)
+    }).catch(e=> {
+      console.error('111111', e)
+    }) */
+
+    //resolve(web3Modal)
   })
 }
 
@@ -50,7 +112,8 @@ export const walletEnabled = () => {
     if (window.web3 && window.web3.currentProvider && window.web3.currentProvider.wc) {
       resolve(true)
     } else {
-      if (window.ethereum) {
+      console.log(123)
+      /* if (window.ethereum) {
         window.web3 = new Web3(window.ethereum)
         window.ethereum._metamask.isUnlocked()
           .then(isUnlocked => {
@@ -80,7 +143,8 @@ export const walletEnabled = () => {
           .catch(_error => {
             resolve(false)
           })
-      } else if (window.web3) {
+      } else  */if (window.web3) {
+        console.log(456)
         window.web3 = new Web3(window.web3.currentProvider)
         resolve(true)
       } else {
@@ -90,7 +154,7 @@ export const walletEnabled = () => {
   })
 }
 
-export async function disconnect () {
+export async function disconnect() {
   if (provider && provider.close) {
     await provider.close()
   }
@@ -103,28 +167,46 @@ export async function disconnect () {
   // WalletConnect will default to the existing session
   // and does not allow to re-scan the QR code with a new wallet.
   // Depending on your use case you may want or want not his behavir.
-  await web3Modal.clearCachedProvider()
+  //await web3Modal.clearCachedProvider()
 }
 
 /**
  * Disconnect wallet button pressed.
  */
-export async function disconnectWallet () {
+export async function disconnectWallet() {
   await disconnect()
 
   showConnectElements()
 }
 
 export const connectToProvider = () => {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     try {
-      web3Modal
+      /* web3Modal
         .connect()
         .then((connectedProvider) => {
           provider = connectedProvider
           window.web3 = new Web3(provider)
           resolve(provider)
-        })
+        }) */
+        //console.log('====================', provider)
+        
+      /* provider.connect({
+        chains: [5001],
+        rpcMap: {
+          '5001': 'https://rpc.testnet.mantle.xyz'
+        }
+      }).then( () => {
+        console.log('11111111111')
+        window.web3.currentProvider.wc = true
+        console.log(window.web3.currentProvider.wc)
+        //const list = await provider.enable().catch(e=> console.error('------', e));
+        //console.log('0-0-0-0-0-', list)
+        resolve()
+      }) */
+      await web3Modal.openModal()
+      console.log(2222, ec?.wagmi)
+
     } catch (e) {
       reject(e)
     }
@@ -161,7 +243,7 @@ export const connectToWallet = async () => {
   await fetchAccountData(showConnectedToElements, [])
 }
 
-export async function fetchAccountData (setAccount, args) {
+export async function fetchAccountData(setAccount, args) {
   // Get a Web3 instance for the wallet
   if (provider) {
     window.web3 = new Web3(provider)
