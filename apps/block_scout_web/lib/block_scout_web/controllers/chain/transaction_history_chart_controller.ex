@@ -1,5 +1,6 @@
 defmodule BlockScoutWeb.Chain.TransactionHistoryChartController do
   use BlockScoutWeb, :controller
+  require Logger
 
   alias Explorer.Chain.Transaction.History.TransactionStats
 
@@ -10,6 +11,11 @@ defmodule BlockScoutWeb.Chain.TransactionHistoryChartController do
       today = Date.utc_today()
       latest = Date.add(today, -1)
       earliest = Date.add(latest, -1 * history_size)
+
+      Logger.info("---------------============")
+      Logger.info("#{inspect(today)}")
+      Logger.info("#{inspect(latest)}")
+      Logger.info("#{inspect(earliest)}")
 
       date_range = TransactionStats.by_date_range(earliest, latest)
 
