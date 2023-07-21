@@ -108,7 +108,7 @@ export const formatTitleAndError = (error) => {
 
 export const getCurrentAccountPromise = (provider) => {
   return new Promise((resolve, reject) => {
-    if (provider && provider.wc) {
+    if (provider) {
       getCurrentAccountFromWCPromise(provider)
         .then(account => resolve(account))
         .catch(err => {

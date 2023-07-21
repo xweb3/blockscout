@@ -34,8 +34,6 @@ let provider
 // Web3modal instance
 let web3Modal
 
-let ec
-
 /**
  * Setup the orchestra
  */
@@ -60,7 +58,7 @@ export async function web3ModalInit(connectToWallet, ...args) {
       projectId: 'a85398a55b8ecc45aecdfb252276c71e',
       chains: ['eip155:1']
     }) */
-    const chains = [arbitrum, mainnet, polygon]
+    /* const chains = [arbitrum, mainnet, polygon]
     const projectId = 'a85398a55b8ecc45aecdfb252276c71e'
 
     const { publicClient } = configureChains(chains, [w3mProvider({ projectId })])
@@ -72,22 +70,11 @@ export async function web3ModalInit(connectToWallet, ...args) {
     console.log(123123123)
     const ethereumClient = new EthereumClient(wagmiConfig, chains)
     web3Modal = new Web3Modal({ projectId }, ethereumClient)
-
-    web3Modal.subscribeEvents = (e)=> {
-      console.log('-------1', e)
-    }
-
-    web3Modal.subscribeModal = (e)=> {
-      console.log('-------2', e)
-    }
-
-    window.ec = ethereumClient
-    console.log(ethereumClient)
-    console.log(web3Modal)
+    console.log(web3Modal) */
     /* if (web3Modal.cachedProvider) {
       connectToWallet(...args)
     } */
-    /* EthereumProvider.init({
+    EthereumProvider.init({
       projectId: 'a85398a55b8ecc45aecdfb252276c71e', // required
       chains: [5001],
       rpcMap: {
@@ -101,7 +88,7 @@ export async function web3ModalInit(connectToWallet, ...args) {
       resolve(provider)
     }).catch(e=> {
       console.error('111111', e)
-    }) */
+    })
 
     //resolve(web3Modal)
   })
@@ -180,7 +167,7 @@ export async function disconnectWallet() {
 }
 
 export const connectToProvider = () => {
-  return new Promise(async (resolve, reject) => {
+  return new Promise((resolve, reject) => {
     try {
       /* web3Modal
         .connect()
@@ -189,9 +176,9 @@ export const connectToProvider = () => {
           window.web3 = new Web3(provider)
           resolve(provider)
         }) */
-        //console.log('====================', provider)
+        console.log('====================', provider)
         
-      /* provider.connect({
+      provider.connect({
         chains: [5001],
         rpcMap: {
           '5001': 'https://rpc.testnet.mantle.xyz'
@@ -203,9 +190,7 @@ export const connectToProvider = () => {
         //const list = await provider.enable().catch(e=> console.error('------', e));
         //console.log('0-0-0-0-0-', list)
         resolve()
-      }) */
-      await web3Modal.openModal()
-      console.log(2222, ec?.wagmi)
+      })
 
     } catch (e) {
       reject(e)
