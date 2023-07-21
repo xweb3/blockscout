@@ -1,4 +1,4 @@
-<div class="table-tile tile tile-type-token fade-in mb-10" data-test="token_holders">
+<div class="table-tile tile tile-type-token mb-10" data-test="token_holders">
 
   <div class="table-tile-row">
     <span style="width: 40%;">

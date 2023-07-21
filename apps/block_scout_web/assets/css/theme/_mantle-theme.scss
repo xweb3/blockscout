@@ -19,6 +19,61 @@ body {
   overscroll-behavior: none;
 }
 
+.modal-dialog {
+  width: 850px !important;
+  padding: 10px;
+  .modal-content {
+    padding: 30px;
+    border-radius: 30px;
+    overflow: hidden;
+    .modal-status-title {
+      font-weight: bold;
+    }
+    .modal-status-button-wrapper {
+      button {
+        background-color: #65b3ae;
+        color: #05050e;
+        border: none;
+        width: 100%;
+        padding: 10px;
+        border-radius: 12px;
+      }
+    }
+    .close.close-modal {
+      top: 30px;
+      right: 30px;
+      svg {
+        path {
+          fill: #15181c;
+        }
+      }
+    }
+    .modal-status-graph {
+      background-color: transparent;
+      height: auto;
+    }
+    .modal-icon {
+      width: 96px;
+      svg {
+        width: 100%;
+        height: auto;
+      }
+      .light {
+        display: block;
+      }
+      .dark {
+        display: none;
+      }
+    }
+  }
+}
+
+#addressContractTabContent {
+  [aria-labelledby='code-tab'] {
+    font-size: 14px;
+  }
+}
+
 .card-body {
   .table-tile-header {
     display: flex;
@@ -42,6 +97,25 @@ body {
         padding: 0 10px;
         align-items: center;
         width: 100%;
+        span.text-truncate.address {
+          display: flex;
+          align-items: center;
+          gap: 5px;
+          svg {
+            overflow: visible;
+          }
+        }
+        [data-test='address_hash_link'] {
+          width: calc(100% - 23px);
+          display: flex;
+          align-items: center;
+        }
+        .contract-address,
+        [data-address-hash] {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
         .tag-container {
           .tile-label,
           .bs-label.method {
@@ -176,8 +250,13 @@ body {
             background-color: #f0f1f2;
           }
         }
-        .custom-power-input {
-          margin-top: 0 !important;
+        .custom-power-btn {
+          .custom-power-input {
+            margin-top: 0 !important;
+            height: 18px;
+            font-size: 8px;
+            padding: 2px;
+          }
         }
       }
       input[type='submit'] {
@@ -212,6 +291,7 @@ body {
       padding: 10px 16px;
       line-height: 1;
       height: 36px;
+      font-size: 14px;
       [disconnect-wallet] {
         padding: 0;
         width: 24px;
@@ -246,11 +326,11 @@ body {
 
 .card-tabs {
   border-bottom: 0;
-  margin: 20px 20px 0;
+  margin: 20px 30px 0;
   padding: 12px;
   border-radius: 12px;
   background-color: #f8f8f9;
-  gap: 20px;
+  gap: 15px;
 
   .card-tab {
     height: 40px;
@@ -474,6 +554,26 @@ body {
 // dark theme applied style start here
 .dark-theme-applied {
   color: #fff;
+
+  .modal-dialog {
+    .modal-content {
+      .close.close-modal {
+        svg {
+          path {
+            fill: #f6f7f9;
+          }
+        }
+      }
+      .modal-icon {
+        .light {
+          display: none;
+        }
+        .dark {
+          display: block;
+        }
+      }
+    }
+  }
 
   .contract-function {
     border-color: #ffffff26;
