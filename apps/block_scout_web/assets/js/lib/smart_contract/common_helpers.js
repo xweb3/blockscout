@@ -108,7 +108,7 @@ export const formatTitleAndError = (error) => {
 
 export const getCurrentAccountPromise = (provider) => {
   return new Promise((resolve, reject) => {
-    if (provider && provider.wc) {
+    if (provider && provider.isWalletConnect) {
       getCurrentAccountFromWCPromise(provider)
         .then(account => resolve(account))
         .catch(err => {
@@ -180,10 +180,10 @@ function showConnectToContainer () {
 
 export function showHideDisconnectButton () {
   // Show disconnect button only in case of Wallet Connect
-  if (window.web3 && window.web3.currentProvider && window.web3.currentProvider.wc) {
+  if (window.web3 && window.web3.currentProvider && window.web3.currentProvider.isWalletConnect) {
     document.querySelector(disconnectSelector) && document.querySelector(disconnectSelector).classList.remove('hidden')
   } else {
-    document.querySelector(disconnectSelector) && document.querySelector(disconnectSelector).classList.add('hidden')
+    document.querySelector(disconnectSelector) && document.querySelector(disconnectSelector).classList.remove('hidden')
   }
 }
 
@@ -191,7 +191,7 @@ export function showConnectedToElements (account) {
   hideConnectToContainer()
   showConnectContainer()
   showConnectedToContainer()
-  showHideDisconnectButton()
+  // showHideDisconnectButton()
   setConnectToAddress(account)
 }
 
@@ -311,4 +311,23 @@ function replaceDoubleQuotes (value, type, components) {
 
 function isFunction (param) {
   return typeof param === 'function'
+}
+
+export const mantleQa = {
+  id: 1705003,
+  name: 'Mantle Qa',
+  network: 'Mantle Qa',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'Mantle',
+    symbol: 'MNT'
+  },
+  rpcUrls: {
+    public: { http: ['https://rpc4blockscout-qa2.qa.gomantle.org'] },
+    default: { http: ['https://rpc4blockscout-qa2.qa.gomantle.org'] }
+  },
+  blockExplorers: {
+    blockScout: { name: 'BlockScout', url: 'https://explorer.qa.gomantle.org/' },
+    default: { name: 'BlockScout', url: 'https://explorer.qa.gomantle.org/' }
+  }
 }

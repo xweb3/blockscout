@@ -18,7 +18,7 @@ const loadFunctions = (element, isCustomABI, from) => {
   )
     .done(function () {
       document.querySelector(connectSelector) && document.querySelector(connectSelector).addEventListener('click', connectToWallet)
-      document.querySelector(disconnectSelector) && document.querySelector(disconnectSelector).addEventListener('click', disconnectWallet)
+      document.querySelector(disconnectSelector) && document.querySelector(disconnectSelector).addEventListener('click', connectToWallet)
       web3ModalInit(connectToWallet)
 
       const selector = isCustomABI ? '[data-function-custom]' : '[data-function]'

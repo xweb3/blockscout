@@ -12,5 +12,5 @@
       </span>
       <h2 style="margin-top: -2px; min-width: 104px;" class="mr-2">Connected to</h2><h3 connected-to-address></h3>
     </div>
-    <button disconnect-wallet class="button btn-line ml-3">Disconnect wallet</button>
+    <button disconnect-wallet class="button btn-line ml-3">show wallet</button>
 </div>
