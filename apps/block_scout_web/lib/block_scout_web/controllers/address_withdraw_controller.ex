@@ -28,7 +28,9 @@ defmodule BlockScoutWeb.AddressWithdrawController do
     }
   ]
 
-  {:ok, burn_address_hash} = Chain.string_to_address_hash("0x0000000000000000000000000000000000000000")
+  {:ok, burn_address_hash} =
+    Chain.string_to_address_hash("0x0000000000000000000000000000000000000000")
+
   @burn_address_hash burn_address_hash
 
   def index(
@@ -81,7 +83,7 @@ defmodule BlockScoutWeb.AddressWithdrawController do
         Enum.map(transactions_paginated, fn transaction ->
           View.render_to_string(
             TransactionView,
-            "_table_tile_token.html",
+            "_table_tile_deposit_withdraw.html",
             conn: conn,
             transaction: transaction,
             burn_address_hash: @burn_address_hash,
@@ -118,7 +120,8 @@ defmodule BlockScoutWeb.AddressWithdrawController do
         exchange_rate: Market.get_exchange_rate(Explorer.coin()) || Token.null(),
         filter: params["filter"],
         current_path: Controller.current_full_path(conn),
-        counters_path: address_path(conn, :address_counters, %{"id" => Address.checksum(address_hash)}),
+        counters_path:
+          address_path(conn, :address_counters, %{"id" => Address.checksum(address_hash)}),
         tags: get_address_tags(address_hash, current_user(conn))
       )
     else

@@ -2,7 +2,7 @@
 <% status = transaction_status(transaction) %>
 <% current_user = AuthController.current_user(@conn) %>
 
-<div  class="table-tile tile tile-type-token-transfer fade-in" data-test="token-transfer" data-identifier-hash="<%= @token_transfer.transaction_hash %>-<%= @token_transfer.log_index %>">
+<div  class="table-tile tile tile-type-token-transfer" data-test="token-transfer" data-identifier-hash="<%= @token_transfer.transaction_hash %>-<%= @token_transfer.log_index %>">
   <%= if status == :success do %>
     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
       <circle cx="7" cy="7" r="7" fill="#3EB66A"/>
