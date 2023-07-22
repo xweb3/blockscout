@@ -158,7 +158,7 @@ export const formatTitleAndError = (error) => {
 
 export const getCurrentAccountPromise = (provider) => {
   return new Promise((resolve, reject) => {
-    if (provider && provider.wc) {
+    if (provider && provider.isWalletConnect) {
       getCurrentAccountFromWCPromise(provider)
         .then((account) => resolve(account))
         .catch((err) => {
@@ -253,7 +253,7 @@ export function showHideDisconnectButton() {
   if (
     window.web3 &&
     window.web3.currentProvider &&
-    window.web3.currentProvider.wc
+    window.web3.currentProvider.isWalletConnect
   ) {
     $(disconnectSelector).length &&
       $(disconnectSelector).each((_, ele) => {
@@ -262,7 +262,7 @@ export function showHideDisconnectButton() {
   } else {
     $(disconnectSelector).length &&
       $(disconnectSelector).each((_, ele) => {
-        $(ele).addClass('hidden')
+        $(ele).removeClass('hidden')
       })
   }
 }
@@ -418,4 +418,23 @@ function replaceDoubleQuotes(value, type, components) {
 
 function isFunction(param) {
   return typeof param === 'function'
+}
+
+export const mantleQa = {
+  id: 1705003,
+  name: 'Mantle Qa',
+  network: 'Mantle Qa',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'Mantle',
+    symbol: 'MNT'
+  },
+  rpcUrls: {
+    public: { http: ['https://rpc4blockscout-qa2.qa.gomantle.org'] },
+    default: { http: ['https://rpc4blockscout-qa2.qa.gomantle.org'] }
+  },
+  blockExplorers: {
+    blockScout: { name: 'BlockScout', url: 'https://explorer.qa.gomantle.org/' },
+    default: { name: 'BlockScout', url: 'https://explorer.qa.gomantle.org/' }
+  }
 }

@@ -71,6 +71,10 @@ defmodule Explorer.History.Process do
 
   @spec compile_historical_records(non_neg_integer(), module(), non_neg_integer()) :: Task.t()
   defp compile_historical_records(day_count, historian, failed_attempts \\ 0) do
+    a = delay(failed_attempts)
+    Logger.info("-------------------------")
+    Logger.info("#{inspect(day_count)}")
+    Logger.info("#{inspect(a)}")
     Task.Supervisor.async_nolink(Explorer.HistoryTaskSupervisor, fn ->
       Process.sleep(delay(failed_attempts))
       {day_count, failed_attempts, historian.compile_records(day_count)}

@@ -1,11 +1,14 @@
 import Web3 from 'web3'
-import Web3Modal from 'web3modal'
-import WalletConnectProvider from '@walletconnect/web3-provider'
+import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum'
+import { Web3Modal } from '@web3modal/html'
+import { configureChains, createConfig } from '@wagmi/core'
+import { mantle, mantleTestnet } from '@wagmi/core/chains'
 import {
   compareChainIDs,
   formatError,
   showConnectElements,
-  showConnectedToElements
+  showConnectedToElements,
+  mantleQa
 } from './common_helpers'
 import { openWarningModal } from '../modals'
 
@@ -26,27 +29,44 @@ let web3Modal
  */
 export async function web3ModalInit(connectToWallet, ...args) {
   return new Promise((resolve) => {
-    // Tell Web3modal what providers we have available.
-    // Built-in web browser provider (only one can exist as a time)
-    // like MetaMask, Brave or Opera is added automatically by Web3modal
-    const providerOptions = {
-      walletconnect: {
-        package: WalletConnectProvider,
-        options: walletConnectOptions
-      }
+    const projectId = 'a85398a55b8ecc45aecdfb252276c71e'
+    let chains = []
+    const chainId = process.env.CHAIN_ID
+    console.log('----------chainId----------', chainId)
+    if (chainId === '1705003') {
+      chains = [mantleQa]
+    } else if (chainId === '5001') {
+      chains = [mantleTestnet]
+    } else if (chainId === '5000') {
+      chains = [mantle]
     }
-
-    web3Modal = new Web3Modal({
-      cacheProvider: true,
-      providerOptions,
-      disableInjectedProvider: false
+    const { publicClient } = configureChains(chains, [w3mProvider({ projectId })])
+    const wagmiConfig = createConfig({
+      autoConnect: true,
+      connectors: w3mConnectors({ projectId, chains }),
+      publicClient
     })
+    const ethereumClient = new EthereumClient(wagmiConfig, chains)
+    web3Modal = new Web3Modal({
+      projectId,
+      defaultChain: {
+        id: chains[0].id,
+        name: chains[0].name
+      }
+    }, ethereumClient)
 
-    if (web3Modal.cachedProvider) {
-      connectToWallet(...args)
-    }
+    window.ec = ethereumClient
 
-    resolve(web3Modal)
+    ethereumClient.watchAccount(async (account) => {
+      window.connector = account.connector
+      if (account.isConnected) {
+        provider = await account.connector.getProvider()
+        window.web3 = new Web3(provider)
+        connectToWalletAfterConnected()
+      } else {
+        disconnectWallet()
+      }
+    })
   })
 }
 
@@ -55,7 +75,7 @@ export const walletEnabled = () => {
     if (
       window.web3 &&
       window.web3.currentProvider &&
-      window.web3.currentProvider.wc
+      window.web3.currentProvider.isWalletConnect
     ) {
       resolve(true)
     } else {
@@ -104,8 +124,8 @@ export const walletEnabled = () => {
 }
 
 export async function disconnect() {
-  if (provider && provider.close) {
-    await provider.close()
+  if (window.ec && window.ec.disconnect) {
+    await window.ec.disconnect()
   }
 
   provider = null
@@ -116,7 +136,7 @@ export async function disconnect() {
   // WalletConnect will default to the existing session
   // and does not allow to re-scan the QR code with a new wallet.
   // Depending on your use case you may want or want not his behavir.
-  await web3Modal.clearCachedProvider()
+  // await web3Modal.clearCachedProvider()
 }
 
 /**
@@ -143,8 +163,10 @@ export const connectToProvider = () => {
 }
 
 export const connectToWallet = async () => {
-  await connectToProvider()
+  web3Modal.openModal()
+}
 
+export const connectToWalletAfterConnected = async () => {
   // Subscribe to accounts change
   provider.on('accountsChanged', async (accs) => {
     const newAccount = accs && accs.length > 0 ? accs[0].toLowerCase() : null
