@@ -2,7 +2,7 @@
 <% error_in_internal_tx = @transaction.has_error_in_internal_txs %>
 <% current_user = AuthController.current_user(@conn) %>
 <% tx_tags = BlockScoutWeb.Models.GetTransactionTags.get_transaction_with_addresses_tags(@transaction, current_user) %>
-<div class="table-tile tile tile-type-<%= type_suffix(@transaction) %> fade-in <%= status_class(@transaction) %>" data-test="<%= type_suffix(@transaction) %>" data-identifier-hash="<%= @transaction.hash %>">
+<div class="table-tile tile tile-type-<%= type_suffix(@transaction) %> <%= status_class(@transaction) %>" data-test="<%= type_suffix(@transaction) %>" data-identifier-hash="<%= @transaction.hash %>">
 
 
   <div class="table-tile-row" data-selector="token-transfers-toggle" data-test="chain_transaction">
@@ -80,20 +80,17 @@
                     <%= if transfer_type == :token_spawning do %>
                         <%= render BlockScoutWeb.TransactionView, "_transfer_token_with_id_no_label.html", transfer: first_token_transfer, token_id: List.first(first_token_transfer.token_ids) %>
                     <% else %>
-                        <%= "#{value} " %>
                         <%= render BlockScoutWeb.TransactionView, "_transfer_token_with_id_no_label.html", transfer: first_token_transfer, token_id: List.first(first_token_transfer.token_ids) %>
                     <% end %>
                   <% {:ok, :erc1155_instance, values, token_ids, _decimals} -> %>
                     <% values_ids = Enum.zip(values, token_ids) %>
                     <%= for {value, token_id} <- values_ids do %>
                         <div>
-                        <%= "#{value} "%>
                         <%= render BlockScoutWeb.TransactionView, "_transfer_token_with_id_no_label.html", transfer: first_token_transfer, token_id: token_id %>
                         </div>
                     <% end %>
                   <% {:ok, value} -> %>
-                    <%= value %>
-                    <%= " " %><%= render BlockScoutWeb.TransactionView, "_link_to_token_symbol.html", transfer: first_token_transfer %>
+                  <%= render BlockScoutWeb.TransactionView, "_link_to_token_symbol.html", transfer: first_token_transfer %>
               <% end %>
           <% end %>
         </span>

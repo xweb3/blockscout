@@ -3,7 +3,7 @@
 <div class="table-tile tile tile-type-<%= String.downcase(@block_type) %>" data-selector="block-tile" data-block-number="<%= to_string(@block.number) %>" data-block-hash="<%= @block.hash %>">
 
   <div
-    class="table-tile-row fade-in"
+    class="table-tile-row"
   >
     <span style="width: 13%;">
         <%= if @block_type == "Block" do %>

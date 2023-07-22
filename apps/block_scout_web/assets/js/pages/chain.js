@@ -1,20 +1,20 @@
-import $ from "jquery";
-import omit from "lodash.omit";
-import first from "lodash.first";
-import rangeRight from "lodash.rangeright";
-import find from "lodash.find";
-import map from "lodash.map";
-import humps from "humps";
-import numeral from "numeral";
-import socket from "../socket";
-import { updateAllCalculatedUsdValues, formatUsdValue } from "../lib/currency";
-import { createStore, connectElements } from "../lib/redux_helpers.js";
-import { batchChannel, showLoader } from "../lib/utils";
-import listMorph from "../lib/list_morph";
-import "../app";
+import $ from 'jquery'
+import omit from 'lodash.omit'
+import first from 'lodash.first'
+import rangeRight from 'lodash.rangeright'
+import find from 'lodash.find'
+import map from 'lodash.map'
+import humps from 'humps'
+import numeral from 'numeral'
+import socket from '../socket'
+import { updateAllCalculatedUsdValues, formatUsdValue } from '../lib/currency'
+import { createStore, connectElements } from '../lib/redux_helpers.js'
+import { batchChannel, showLoader } from '../lib/utils'
+import listMorph from '../lib/list_morph'
+import '../app'
 
-const BATCH_THRESHOLD = 6;
-const BLOCKS_PER_PAGE = 4;
+const BATCH_THRESHOLD = 6
+const BLOCKS_PER_PAGE = 4
 
 export const initialState = {
   addressCount: null,
@@ -37,90 +37,90 @@ export const initialState = {
   transactionCount: null,
   totalGasUsageCount: null,
   usdMarketCap: null,
-  blockCount: null,
-};
+  blockCount: null
+}
 
-export const reducer = withMissingBlocks(baseReducer);
+export const reducer = withMissingBlocks(baseReducer)
 
 function baseReducer(state = initialState, action) {
   switch (action.type) {
-    case "ELEMENTS_LOAD": {
-      return Object.assign({}, state, omit(action, "type"));
+    case 'ELEMENTS_LOAD': {
+      return Object.assign({}, state, omit(action, 'type'))
     }
-    case "RECEIVED_NEW_ADDRESS_COUNT": {
+    case 'RECEIVED_NEW_ADDRESS_COUNT': {
       return Object.assign({}, state, {
-        addressCount: action.msg.count,
-      });
+        addressCount: action.msg.count
+      })
     }
-    case "RECEIVED_NEW_BLOCK": {
+    case 'RECEIVED_NEW_BLOCK': {
       if (
         !state.blocks.length ||
         state.blocks[0].blockNumber < action.msg.blockNumber
       ) {
-        let pastBlocks;
+        let pastBlocks
         if (state.blocks.length < BLOCKS_PER_PAGE) {
-          pastBlocks = state.blocks;
+          pastBlocks = state.blocks
         } else {
-          $(".miner-address-tooltip").tooltip("hide");
-          pastBlocks = state.blocks.slice(0, -1);
+          $('.miner-address-tooltip').tooltip('hide')
+          pastBlocks = state.blocks.slice(0, -1)
         }
         return Object.assign({}, state, {
           averageBlockTime: action.msg.averageBlockTime,
           blocks: [action.msg, ...pastBlocks],
-          blockCount: action.msg.blockNumber,
-        });
+          blockCount: action.msg.blockNumber
+        })
       } else {
         return Object.assign({}, state, {
           blocks: state.blocks.map((block) =>
             block.blockNumber === action.msg.blockNumber ? action.msg : block
           ),
-          blockCount: action.msg.blockNumber,
-        });
+          blockCount: action.msg.blockNumber
+        })
       }
     }
-    case "START_BLOCKS_FETCH": {
+    case 'START_BLOCKS_FETCH': {
       return Object.assign({}, state, {
         blocksError: false,
-        blocksLoading: true,
-      });
+        blocksLoading: true
+      })
     }
-    case "BLOCKS_FINISH_REQUEST": {
-      return Object.assign({}, state, { blocksLoading: false });
+    case 'BLOCKS_FINISH_REQUEST': {
+      return Object.assign({}, state, { blocksLoading: false })
     }
-    case "BLOCKS_FETCHED": {
+    case 'BLOCKS_FETCHED': {
       return Object.assign({}, state, {
         blocks: [...action.msg.blocks],
-        blocksLoading: false,
-      });
+        blocksLoading: false
+      })
     }
-    case "BLOCKS_REQUEST_ERROR": {
+    case 'BLOCKS_REQUEST_ERROR': {
       return Object.assign({}, state, {
         blocksError: true,
-        blocksLoading: false,
-      });
+        blocksLoading: false
+      })
     }
-    case "RECEIVED_NEW_EXCHANGE_RATE": {
+    case 'RECEIVED_NEW_EXCHANGE_RATE': {
       return Object.assign({}, state, {
         availableSupply: action.msg.exchangeRate.availableSupply,
         marketHistoryData: action.msg.marketHistoryData,
-        usdMarketCap: action.msg.exchangeRate.marketCapUsd,
-      });
+        usdMarketCap: action.msg.exchangeRate.marketCapUsd
+      })
     }
-    case "RECEIVED_NEW_TRANSACTION_BATCH": {
-      if (state.channelDisconnected) return state;
+    case 'RECEIVED_NEW_TRANSACTION_BATCH': {
+      if (state.channelDisconnected) return state
 
-      const transactionCount = state.transactionCount + action.msgs.length;
+      const transactionCount = state.transactionCount + action.msgs.length
 
       if (state.transactionsLoading || state.transactionsError) {
-        return Object.assign({}, state, { transactionCount });
+        return Object.assign({}, state, { transactionCount })
       }
 
-      const transactionsLength = state.transactions.length + action.msgs.length;
+      const transactionsLength = state.transactions.length + action.msgs.length
       if (transactionsLength < BATCH_THRESHOLD) {
         return Object.assign({}, state, {
           transactions: [...action.msgs.reverse(), ...state.transactions],
-          transactionCount,
-        });
+          transactionCount
+        })
       } else if (
         !state.transactionsBatch.length &&
         action.msgs.length < BATCH_THRESHOLD
@@ -128,100 +128,100 @@ function baseReducer(state = initialState, action) {
         return Object.assign({}, state, {
           transactions: [
             ...action.msgs.reverse(),
-            ...state.transactions.slice(0, -1 * action.msgs.length),
+            ...state.transactions.slice(0, -1 * action.msgs.length)
           ],
-          transactionCount,
-        });
+          transactionCount
+        })
       } else {
         return Object.assign({}, state, {
           transactionsBatch: [
             ...action.msgs.reverse(),
-            ...state.transactionsBatch,
+            ...state.transactionsBatch
           ],
-          transactionCount,
-        });
+          transactionCount
+        })
       }
     }
-    case "TRANSACTION_BATCH_EXPANDED": {
+    case 'TRANSACTION_BATCH_EXPANDED': {
       return Object.assign({}, state, {
-        transactionsBatch: [],
-      });
+        transactionsBatch: []
+      })
     }
-    case "RECEIVED_UPDATED_TRANSACTION_STATS": {
+    case 'RECEIVED_UPDATED_TRANSACTION_STATS': {
       return Object.assign({}, state, {
-        transactionStats: action.msg.stats,
-      });
+        transactionStats: action.msg.stats
+      })
     }
-    case "START_TRANSACTIONS_FETCH":
+    case 'START_TRANSACTIONS_FETCH':
       return Object.assign({}, state, {
         transactionsError: false,
-        transactionsLoading: true,
-      });
-    case "TRANSACTIONS_FETCHED":
+        transactionsLoading: true
+      })
+    case 'TRANSACTIONS_FETCHED':
       return Object.assign({}, state, {
-        transactions: [...action.msg.transactions],
-      });
-    case "TRANSACTIONS_FETCH_ERROR":
-      return Object.assign({}, state, { transactionsError: true });
-    case "FINISH_TRANSACTIONS_FETCH":
-      return Object.assign({}, state, { transactionsLoading: false });
+        transactions: [...action.msg.transactions]
+      })
+    case 'TRANSACTIONS_FETCH_ERROR':
+      return Object.assign({}, state, { transactionsError: true })
+    case 'FINISH_TRANSACTIONS_FETCH':
+      return Object.assign({}, state, { transactionsLoading: false })
 
-    case "START_EIGENDA_BATCHES_FETCH":
+    case 'START_EIGENDA_BATCHES_FETCH':
       return Object.assign({}, state, {
         eigendaBatchesError: false,
-        eigendaBatchesLoading: true,
-      });
-    case "EIGENDA_BATCHES_FETCHED":
+        eigendaBatchesLoading: true
+      })
+    case 'EIGENDA_BATCHES_FETCHED':
       return Object.assign({}, state, {
-        eigendaBatches: [...action.msg.eigendaBatches],
-      });
-    case "EIGENDA_BATCHES_FETCH_ERROR":
-      return Object.assign({}, state, { eigendaBatchesError: true });
-    case "FINISH_EIGENDA_BATCHES_FETCH":
-      return Object.assign({}, state, { eigendaBatchesLoading: false });
+        eigendaBatches: [...action.msg.eigendaBatches]
+      })
+    case 'EIGENDA_BATCHES_FETCH_ERROR':
+      return Object.assign({}, state, { eigendaBatchesError: true })
+    case 'FINISH_EIGENDA_BATCHES_FETCH':
+      return Object.assign({}, state, { eigendaBatchesLoading: false })
 
-    case "START_L1_TO_L2_FETCH":
+    case 'START_L1_TO_L2_FETCH':
       return Object.assign({}, state, {
         L1ToL2Error: false,
-        eigendaBatchesLoading: true,
-      });
-    case "L1_TO_L2_FETCHED":
-      return Object.assign({}, state, { l1ToL2Txn: [...action.msg.l1ToL2Txn] });
-    case "L1_TO_L2_FETCH_ERROR":
-      return Object.assign({}, state, { L1ToL2Error: true });
-    case "FINISH_L1_TO_L2_FETCH":
-      return Object.assign({}, state, { L1ToL2Loading: false });
+        eigendaBatchesLoading: true
+      })
+    case 'L1_TO_L2_FETCHED':
+      return Object.assign({}, state, { l1ToL2Txn: [...action.msg.l1ToL2Txn] })
+    case 'L1_TO_L2_FETCH_ERROR':
+      return Object.assign({}, state, { L1ToL2Error: true })
+    case 'FINISH_L1_TO_L2_FETCH':
+      return Object.assign({}, state, { L1ToL2Loading: false })
     default:
-      return state;
+      return state
   }
 }
 
 function withMissingBlocks(reducer) {
   return (...args) => {
-    const result = reducer(...args);
+    const result = reducer(...args)
 
-    if (!result.blocks || result.blocks.length < 2) return result;
+    if (!result.blocks || result.blocks.length < 2) return result
 
-    const maxBlock = first(result.blocks).blockNumber;
-    const minBlock = maxBlock - (result.blocks.length - 1);
+    const maxBlock = first(result.blocks).blockNumber
+    const minBlock = maxBlock - (result.blocks.length - 1)
 
     return Object.assign({}, result, {
       blocks: rangeRight(minBlock, maxBlock + 1).map(
         (blockNumber) =>
-          find(result.blocks, ["blockNumber", blockNumber]) || {
+          find(result.blocks, ['blockNumber', blockNumber]) || {
             blockNumber,
-            chainBlockHtml: placeHolderBlock(blockNumber),
+            chainBlockHtml: placeHolderBlock(blockNumber)
           }
-      ),
-    });
-  };
+      )
+    })
+  }
 }
 
-let chart;
+let chart
 const elements = {
   '[data-chart="historyChart"]': {
     load() {
-      chart = window.dashboardChart;
+      chart = window.dashboardChart
     },
     render(_$el, state, oldState) {
       if (
@@ -230,73 +230,73 @@ const elements = {
           oldState.marketHistoryData === state.marketHistoryData) ||
         !state.availableSupply
       )
-        return;
+        return
 
-      chart.updateMarketHistory(state.availableSupply, state.marketHistoryData);
+      chart.updateMarketHistory(state.availableSupply, state.marketHistoryData)
 
       if (
         !chart ||
         JSON.stringify(oldState.transactionStats) ===
           JSON.stringify(state.transactionStats)
       )
-        return;
+        return
 
-      chart.updateTransactionHistory(state.transactionStats);
-    },
+      chart.updateTransactionHistory(state.transactionStats)
+    }
   },
   '[data-selector="transaction-count"]': {
     load($el) {
-      return { transactionCount: numeral($el.text()).value() };
+      return { transactionCount: numeral($el.text()).value() }
     },
     render($el, state, oldState) {
-      if (oldState.transactionCount === state.transactionCount) return;
-      $el.empty().append(numeral(state.transactionCount).format());
-    },
+      if (oldState.transactionCount === state.transactionCount) return
+      $el.empty().append(numeral(state.transactionCount).format())
+    }
   },
   '[data-selector="total-gas-usage"]': {
     load($el) {
-      return { totalGasUsageCount: numeral($el.text()).value() };
+      return { totalGasUsageCount: numeral($el.text()).value() }
     },
     render($el, state, oldState) {
-      if (oldState.totalGasUsageCount === state.totalGasUsageCount) return;
-      $el.empty().append(numeral(state.totalGasUsageCount).format());
-    },
+      if (oldState.totalGasUsageCount === state.totalGasUsageCount) return
+      $el.empty().append(numeral(state.totalGasUsageCount).format())
+    }
   },
   '[data-selector="block-count"]': {
     load($el) {
-      return { blockCount: numeral($el.text()).value() };
+      return { blockCount: numeral($el.text()).value() }
     },
     render($el, state, oldState) {
-      if (oldState.blockCount === state.blockCount) return;
-      $el.empty().append(numeral(state.blockCount).format());
-    },
+      if (oldState.blockCount === state.blockCount) return
+      $el.empty().append(numeral(state.blockCount).format())
+    }
   },
   '[data-selector="block-counts"]': {
     load($el) {
-      return { blockCount: numeral($el.text()).value() };
+      return { blockCount: numeral($el.text()).value() }
     },
     render($el, state, oldState) {
-      if (oldState.blockCount === state.blockCount) return;
-      $el.empty().append(numeral(state.blockCount).format());
-    },
+      if (oldState.blockCount === state.blockCount) return
+      $el.empty().append(numeral(state.blockCount).format())
+    }
   },
   '[data-selector="address-count"]': {
     render($el, state, oldState) {
-      if (oldState.addressCount === state.addressCount) return;
-      $el.empty().append(state.addressCount);
-    },
+      if (oldState.addressCount === state.addressCount) return
+      $el.empty().append(state.addressCount)
+    }
   },
   '[data-selector="average-block-time"]': {
     render($el, state, oldState) {
-      if (oldState.averageBlockTime === state.averageBlockTime) return;
-      $el.empty().append(state.averageBlockTime);
-    },
+      if (oldState.averageBlockTime === state.averageBlockTime) return
+      $el.empty().append(state.averageBlockTime)
+    }
   },
   '[data-selector="market-cap"]': {
     render($el, state, oldState) {
-      if (oldState.usdMarketCap === state.usdMarketCap) return;
-      $el.empty().append(formatUsdValue(state.usdMarketCap));
-    },
+      if (oldState.usdMarketCap === state.usdMarketCap) return
+      $el.empty().append(formatUsdValue(state.usdMarketCap))
+    }
   },
   '[data-selector="tx_per_day"]': {
     render($el, state, oldState) {
@@ -310,254 +310,254 @@ const elements = {
           .empty()
           .append(
             numeral(state.transactionStats[0].number_of_transactions).format(
-              "0,0"
+              '0,0'
             )
-          );
+          )
       }
-    },
+    }
   },
   '[data-selector="chain-block-list"]': {
     load($el) {
       return {
-        blocksPath: $el[0].dataset.url,
-      };
+        blocksPath: $el[0].dataset.url
+      }
     },
     render($el, state, oldState) {
-      if (oldState.blocks === state.blocks) return;
+      if (oldState.blocks === state.blocks) return
 
-      const container = $el[0];
+      const container = $el[0]
 
       if (state.blocksLoading === false) {
         const blocks = map(
           state.blocks,
           ({ chainBlockHtml }) => $(chainBlockHtml)[0]
-        );
+        )
         listMorph(container, blocks, {
-          key: "dataset.blockNumber",
-          horizontal: true,
-        });
+          key: 'dataset.blockNumber',
+          horizontal: true
+        })
       }
-    },
+    }
   },
   '[data-selector="chain-block-list"] [data-selector="error-message"]': {
     render($el, state, _oldState) {
       if (state.blocksError) {
-        $el.show();
+        $el.show()
       } else {
-        $el.hide();
+        $el.hide()
       }
-    },
+    }
   },
   '[data-selector="chain-block-list"] [data-selector="loading-message"]': {
     render($el, state, _oldState) {
-      showLoader(state.blocksLoading, $el);
-    },
+      showLoader(state.blocksLoading, $el)
+    }
   },
   '[data-selector="transactions-list"] [data-selector="error-message"]': {
     render($el, state, _oldState) {
-      $el.toggle(state.transactionsError);
-    },
+      $el.toggle(state.transactionsError)
+    }
   },
   '[data-selector="transactions-list"] [data-selector="loading-message"]': {
     render($el, state, _oldState) {
-      showLoader(state.transactionsLoading, $el);
-    },
+      showLoader(state.transactionsLoading, $el)
+    }
   },
   '[data-selector="transactions-list"]': {
     load($el) {
-      return { transactionsPath: $el[0].dataset.transactionsPath };
+      return { transactionsPath: $el[0].dataset.transactionsPath }
     },
     render($el, state, oldState) {
-      if (oldState.transactions === state.transactions) return;
-      const container = $el[0];
+      if (oldState.transactions === state.transactions) return
+      const container = $el[0]
       const newElements = map(state.transactions, ({ transactionHtml }) => {
-        return $(transactionHtml)[0];
-      });
-      listMorph(container, newElements, { key: "dataset.identifierHash" });
-    },
+        return $(transactionHtml)[0]
+      })
+      listMorph(container, newElements, { key: 'dataset.identifierHash' })
+    }
   },
   '[data-selector="eigenda-batch-list"] [data-selector="error-message"]': {
     render($el, state, _oldState) {
-      $el.toggle(state.eigendaBatchesError);
-    },
+      $el.toggle(state.eigendaBatchesError)
+    }
   },
   '[data-selector="eigenda-batch-list"] [data-selector="loading-message"]': {
     render($el, state, _oldState) {
-      showLoader(state.eigendaBatchesLoading, $el);
-    },
+      showLoader(state.eigendaBatchesLoading, $el)
+    }
   },
   '[data-selector="eigenda-batch-list"]': {
     load($el) {
-      return { eigendaBatchesPath: $el[0].dataset.eigendaBatchesPath };
+      return { eigendaBatchesPath: $el[0].dataset.eigendaBatchesPath }
     },
     render($el, state, oldState) {
-      if (oldState.eigendaBatches === state.eigendaBatches) return;
-      const container = $el[0];
+      if (oldState.eigendaBatches === state.eigendaBatches) return
+      const container = $el[0]
       const newElements = map(
         state.eigendaBatches,
         ({ eigendaBatchesHtml }) => {
-          return $(eigendaBatchesHtml)[0];
+          return $(eigendaBatchesHtml)[0]
         }
-      );
-      listMorph(container, newElements, { key: "dataset.identifierHash" });
-    },
+      )
+      listMorph(container, newElements, { key: 'dataset.identifierHash' })
+    }
   },
   '[data-selector="l1-to-l2-list"] [data-selector="error-message"]': {
     render($el, state, _oldState) {
-      $el.toggle(state.L1ToL2Error);
-    },
+      $el.toggle(state.L1ToL2Error)
+    }
   },
   '[data-selector="l1-to-l2-list"] [data-selector="loading-message"]': {
     render($el, state, _oldState) {
-      showLoader(state.L1ToL2Loading, $el);
-    },
+      showLoader(state.L1ToL2Loading, $el)
+    }
   },
   '[data-selector="l1-to-l2-list"]': {
     load($el) {
-      return { l1ToL2TxnPath: $el[0].dataset.l1ToL2TxnPath };
+      return { l1ToL2TxnPath: $el[0].dataset.l1ToL2TxnPath }
     },
     render($el, state, oldState) {
-      if (oldState.l1ToL2Txn === state.l1ToL2Txn) return;
-      const container = $el[0];
+      if (oldState.l1ToL2Txn === state.l1ToL2Txn) return
+      const container = $el[0]
       const newElements = map(state.l1ToL2Txn, ({ l1ToL2TxnHtml }) => {
-        return $(l1ToL2TxnHtml)[0];
-      });
-      listMorph(container, newElements, { key: "dataset.identifierHash" });
-    },
+        return $(l1ToL2TxnHtml)[0]
+      })
+      listMorph(container, newElements, { key: 'dataset.identifierHash' })
+    }
   },
   '[data-selector="channel-batching-count"]': {
     render($el, state, _oldState) {
-      const $channelBatching = $('[data-selector="channel-batching-message"]');
-      if (!state.transactionsBatch.length) return $channelBatching.hide();
-      $channelBatching.show();
-      $el[0].innerHTML = numeral(state.transactionsBatch.length).format();
-    },
-  },
-};
+      const $channelBatching = $('[data-selector="channel-batching-message"]')
+      if (!state.transactionsBatch.length) return $channelBatching.hide()
+      $channelBatching.show()
+      $el[0].innerHTML = numeral(state.transactionsBatch.length).format()
+    }
+  }
+}
 
-const $chainDetailsPage = $('[data-page="chain-details"]');
+const $chainDetailsPage = $('[data-page="chain-details"]')
 if ($chainDetailsPage.length) {
-  const store = createStore(reducer);
-  connectElements({ store, elements });
+  const store = createStore(reducer)
+  connectElements({ store, elements })
 
-  loadTransactions(store);
-  loadEigendaBatches(store);
-  loadl1ToL2Txn(store);
-  bindTransactionErrorMessage(store);
+  loadTransactions(store)
+  loadEigendaBatches(store)
+  loadl1ToL2Txn(store)
+  bindTransactionErrorMessage(store)
 
-  loadBlocks(store);
-  bindBlockErrorMessage(store);
+  loadBlocks(store)
+  bindBlockErrorMessage(store)
 
-  const exchangeRateChannel = socket.channel("exchange_rate:new_rate");
-  exchangeRateChannel.join();
-  exchangeRateChannel.on("new_rate", (msg) => {
-    updateAllCalculatedUsdValues(humps.camelizeKeys(msg).exchangeRate.usdValue);
+  const exchangeRateChannel = socket.channel('exchange_rate:new_rate')
+  exchangeRateChannel.join()
+  exchangeRateChannel.on('new_rate', (msg) => {
+    updateAllCalculatedUsdValues(humps.camelizeKeys(msg).exchangeRate.usdValue)
     store.dispatch({
-      type: "RECEIVED_NEW_EXCHANGE_RATE",
-      msg: humps.camelizeKeys(msg),
-    });
-  });
-
-  const addressesChannel = socket.channel("addresses:new_address");
-  addressesChannel.join();
-  addressesChannel.on("count", (msg) =>
-    store.dispatch({
-      type: "RECEIVED_NEW_ADDRESS_COUNT",
-      msg: humps.camelizeKeys(msg),
+      type: 'RECEIVED_NEW_EXCHANGE_RATE',
+      msg: humps.camelizeKeys(msg)
     })
-  );
+  })
 
-  const blocksChannel = socket.channel("blocks:new_block");
-  blocksChannel.join();
-  blocksChannel.on("new_block", (msg) =>
+  const addressesChannel = socket.channel('addresses:new_address')
+  addressesChannel.join()
+  addressesChannel.on('count', (msg) =>
     store.dispatch({
-      type: "RECEIVED_NEW_BLOCK",
-      msg: humps.camelizeKeys(msg),
+      type: 'RECEIVED_NEW_ADDRESS_COUNT',
+      msg: humps.camelizeKeys(msg)
     })
-  );
+  )
 
-  const transactionsChannel = socket.channel("transactions:new_transaction");
-  transactionsChannel.join();
+  const blocksChannel = socket.channel('blocks:new_block')
+  blocksChannel.join()
+  blocksChannel.on('new_block', (msg) =>
+    store.dispatch({
+      type: 'RECEIVED_NEW_BLOCK',
+      msg: humps.camelizeKeys(msg)
+    })
+  )
+
+  const transactionsChannel = socket.channel('transactions:new_transaction')
+  transactionsChannel.join()
   transactionsChannel.on(
-    "transaction",
+    'transaction',
     batchChannel((msgs) =>
       store.dispatch({
-        type: "RECEIVED_NEW_TRANSACTION_BATCH",
-        msgs: humps.camelizeKeys(msgs),
+        type: 'RECEIVED_NEW_TRANSACTION_BATCH',
+        msgs: humps.camelizeKeys(msgs)
       })
     )
-  );
+  )
 
-  const transactionStatsChannel = socket.channel("transactions:stats");
-  transactionStatsChannel.join();
-  transactionStatsChannel.on("update", (msg) =>
+  const transactionStatsChannel = socket.channel('transactions:stats')
+  transactionStatsChannel.join()
+  transactionStatsChannel.on('update', (msg) =>
     store.dispatch({
-      type: "RECEIVED_UPDATED_TRANSACTION_STATS",
-      msg,
+      type: 'RECEIVED_UPDATED_TRANSACTION_STATS',
+      msg
     })
-  );
+  )
 
-  const $txReloadButton = $('[data-selector="reload-transactions-button"]');
-  const $channelBatching = $('[data-selector="channel-batching-message"]');
-  $txReloadButton.on("click", (event) => {
-    event.preventDefault();
-    loadTransactions(store);
-    loadEigendaBatches(store);
-    loadl1ToL2Txn(store);
-    $channelBatching.hide();
+  const $txReloadButton = $('[data-selector="reload-transactions-button"]')
+  const $channelBatching = $('[data-selector="channel-batching-message"]')
+  $txReloadButton.on('click', (event) => {
+    event.preventDefault()
+    loadTransactions(store)
+    loadEigendaBatches(store)
+    loadl1ToL2Txn(store)
+    $channelBatching.hide()
     store.dispatch({
-      type: "TRANSACTION_BATCH_EXPANDED",
-    });
-  });
+      type: 'TRANSACTION_BATCH_EXPANDED'
+    })
+  })
 }
 
 function loadTransactions(store) {
-  const path = store.getState().transactionsPath;
-  store.dispatch({ type: "START_TRANSACTIONS_FETCH" });
+  const path = store.getState().transactionsPath
+  store.dispatch({ type: 'START_TRANSACTIONS_FETCH' })
   $.getJSON(path)
     .done((response) =>
       store.dispatch({
-        type: "TRANSACTIONS_FETCHED",
-        msg: humps.camelizeKeys(response),
+        type: 'TRANSACTIONS_FETCHED',
+        msg: humps.camelizeKeys(response)
       })
     )
-    .fail(() => store.dispatch({ type: "TRANSACTIONS_FETCH_ERROR" }))
-    .always(() => store.dispatch({ type: "FINISH_TRANSACTIONS_FETCH" }));
+    .fail(() => store.dispatch({ type: 'TRANSACTIONS_FETCH_ERROR' }))
+    .always(() => store.dispatch({ type: 'FINISH_TRANSACTIONS_FETCH' }))
 }
 
 function loadEigendaBatches(store) {
-  const path = store.getState().eigendaBatchesPath;
-  store.dispatch({ type: "START_EIGENDA_BATCHES_FETCH" });
+  const path = store.getState().eigendaBatchesPath
+  store.dispatch({ type: 'START_EIGENDA_BATCHES_FETCH' })
   $.getJSON(path)
     .done((response) =>
       store.dispatch({
-        type: "EIGENDA_BATCHES_FETCHED",
-        msg: humps.camelizeKeys(response),
+        type: 'EIGENDA_BATCHES_FETCHED',
+        msg: humps.camelizeKeys(response)
       })
     )
-    .fail(() => store.dispatch({ type: "EIGENDA_BATCHES_FETCH_ERROR" }))
-    .always(() => store.dispatch({ type: "FINISH_EIGENDA_BATCHES_FETCH" }));
+    .fail(() => store.dispatch({ type: 'EIGENDA_BATCHES_FETCH_ERROR' }))
+    .always(() => store.dispatch({ type: 'FINISH_EIGENDA_BATCHES_FETCH' }))
 }
 
 function loadl1ToL2Txn(store) {
-  const path = "/recent-l1-to-l2-txn";
-  store.dispatch({ type: "START_L1_TO_L2_FETCH" });
+  const path = '/recent-l1-to-l2-txn'
+  store.dispatch({ type: 'START_L1_TO_L2_FETCH' })
   $.getJSON(path)
     .done((response) =>
       store.dispatch({
-        type: "L1_TO_L2_FETCHED",
-        msg: humps.camelizeKeys(response),
+        type: 'L1_TO_L2_FETCHED',
+        msg: humps.camelizeKeys(response)
       })
     )
-    .fail(() => store.dispatch({ type: "L1_TO_L2_FETCH_ERROR" }))
-    .always(() => store.dispatch({ type: "FINISH_L1_TO_L2_FETCH" }));
+    .fail(() => store.dispatch({ type: 'L1_TO_L2_FETCH_ERROR' }))
+    .always(() => store.dispatch({ type: 'FINISH_L1_TO_L2_FETCH' }))
 }
 
 function bindTransactionErrorMessage(store) {
   $('[data-selector="transactions-list"] [data-selector="error-message"]').on(
-    "click",
+    'click',
     (_event) => loadTransactions(store)
-  );
+  )
 }
 
 export function placeHolderBlock(blockNumber) {
@@ -568,36 +568,36 @@ export function placeHolderBlock(blockNumber) {
       data-selector="place-holder"
     >
       <div
-        class="table-tile  tile tile-type-block d-flex align-items-center fade-up"
+        class="table-tile  tile tile-type-block d-flex align-items-center"
       >
         <div class="table-tile-row">
           <span class="tile-title p-0 m-0">${blockNumber}</span>
-          <div class="tile-transactions p-0 m-0">${window.localized["Block Processing"]}</div>
+          <div class="tile-transactions p-0 m-0">${window.localized['Block Processing']}</div>
         </div>
       </div>
     </div>
-  `;
+  `
 }
 
 function loadBlocks(store) {
-  const url = store.getState().blocksPath;
+  const url = store.getState().blocksPath
 
-  store.dispatch({ type: "START_BLOCKS_FETCH" });
+  store.dispatch({ type: 'START_BLOCKS_FETCH' })
 
   $.getJSON(url)
     .done((response) => {
       store.dispatch({
-        type: "BLOCKS_FETCHED",
-        msg: humps.camelizeKeys(response),
-      });
+        type: 'BLOCKS_FETCHED',
+        msg: humps.camelizeKeys(response)
+      })
     })
-    .fail(() => store.dispatch({ type: "BLOCKS_REQUEST_ERROR" }))
-    .always(() => store.dispatch({ type: "BLOCKS_FINISH_REQUEST" }));
+    .fail(() => store.dispatch({ type: 'BLOCKS_REQUEST_ERROR' }))
+    .always(() => store.dispatch({ type: 'BLOCKS_FINISH_REQUEST' }))
 }
 
 function bindBlockErrorMessage(store) {
   $('[data-selector="chain-block-list"] [data-selector="error-message"]').on(
-    "click",
+    'click',
     (_event) => loadBlocks(store)
-  );
+  )
 }

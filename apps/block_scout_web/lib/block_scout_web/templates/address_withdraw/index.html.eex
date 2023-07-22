@@ -25,7 +25,7 @@
         </div>
         <% end %>
 
-           <div class="table-tile-header txn-list-table-head-container">
+        <div class="table-tile-header txn-list-table-head-container">
           <span style="width: 2%;">
           &nbsp;
           </span>
@@ -53,11 +53,11 @@
           <span style="width: 13%;">
             <%= gettext "To" %>
           </span>
-           <span style="width: 6%;">
-            <%= gettext "Asset" %>
-          </span>
-          <span style="width: 8%;">
+           <span style="width: 8%;">
             <%= gettext "Value" %>
+          </span>
+          <span style="width: 4%;">
+            <%= gettext "Token" %>
           </span>
           <span style="width: 8%;">
             <%= gettext "Txn Fee" %>
