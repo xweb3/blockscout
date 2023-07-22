@@ -1,0 +1,108 @@
+<% status = transaction_status(@transaction) %>
+<% error_in_internal_tx = @transaction.has_error_in_internal_txs %>
+<% current_user = AuthController.current_user(@conn) %>
+<% tx_tags = BlockScoutWeb.Models.GetTransactionTags.get_transaction_with_addresses_tags(@transaction, current_user) %>
+<div class="table-tile tile tile-type-<%= type_suffix(@transaction) %> <%= status_class(@transaction) %>" data-test="<%= type_suffix(@transaction) %>" data-identifier-hash="<%= @transaction.hash %>">
+
+
+  <div class="table-tile-row" data-selector="token-transfers-toggle" data-test="chain_transaction">
+        <span style="width: 2%;">
+          <%= if status == :success do %>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="7" cy="7" r="7" fill="#3EB66A"/>
+              <path d="M10.4455 5.44346L7.02754 8.86138C6.63702 9.2519 6.00385 9.2519 5.61333 8.86138L4.13281 7.38086" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          <%= else %>
+            <%= if status == :pending do %>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="7" cy="7" r="7" fill="#F2B61D"/>
+                <path d="M7 3V7.5L9.5 9.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            <%= else %>
+               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="7" cy="7" r="7" fill="#E74242"/>
+                <path d="M4.52344 4.52539L9.47318 9.47514" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M4.52344 9.47461L9.47318 4.52486" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            <%= end %>
+          <%= end %>
+        </span>
+        <span style="width: 10%;" class="text-truncate">
+          <div class="text-truncate d-flex">
+            <%= render "_link.html", transaction_hash: @transaction.hash, data_test: "address_hash_link" %>
+          </div>
+        </span>
+        <span style="width: 10%;" class="tag-container text-truncate">
+          <span class="tile-label" data-test="transaction_type">
+            <%= transaction_display_type(@transaction) %>
+          </span>
+            <%= if error_in_internal_tx do %>
+            <%= render BlockScoutWeb.CommonComponentsView, "_i_tooltip_2.html", text: gettext("Error in internal transactions"), additional_classes: ["color-inherit"] %>
+          <% end %>
+        </span>
+        <span style="width: 9%;" class="tag-container text-truncate">
+          <% method_name = Transaction.get_method_name(@transaction) %>
+          <%= if method_name do %>
+            <%= render BlockScoutWeb.FormView, "_tag.html", text: method_name, additional_classes: ["method"] %>
+          <% end %>
+          <%= if tx_tags.personal_tx_tag && tx_tags.personal_tx_tag.name !== :error do %>
+            <%= render BlockScoutWeb.FormView, "_tag.html", text: tx_tags.personal_tx_tag.name, additional_classes: [tag_name_to_label(tx_tags.personal_tx_tag.name)] %>
+          <% end %>
+        </span>
+        <span style="width: 8%;">
+          <%= @transaction |> block_number() |> BlockScoutWeb.RenderHelpers.render_partial() %>
+        </span>
+        <span style="width: 10%;">
+          <span in-tile data-from-now="<%= block_timestamp(@transaction) %>"></span>
+        </span>
+        <span style="width: 14%;" class="text-truncate">
+          <%= @transaction |> BlockScoutWeb.AddressView.address_partial_selector(:from, assigns[:current_address],:truncate) |> BlockScoutWeb.RenderHelpers.render_partial() %>
+        </span>
+        <span style="width: 3%;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="chevron-right">
+            <rect width="24" height="24" rx="12" fill="#CBE9E7" fill-opacity="0.8"/>
+            <path d="M6 12L17 12" stroke="#65B3AE" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M13.5 8.42969L17.0355 11.9652L13.5 15.5008" stroke="#65B3AE" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="0.5" y="0.5" width="23" height="23" rx="11.5" stroke="#65B3AE" stroke-opacity="0.5"/>
+          </svg>
+        </span>
+        <span style="width: 14%;" class="text-truncate">
+          <%= @transaction |> BlockScoutWeb.AddressView.address_partial_selector(:to, assigns[:current_address],:truncate) |> BlockScoutWeb.RenderHelpers.render_partial() %>
+        </span>
+        <span style="width: 8%;" class="text-truncate" data-toggle="tooltip" data-placement="top" title="" data-custom-class="" data-original-title="<%= value(@transaction, include_label: false) %> <%= Explorer.coin_name() %>">
+          <span>
+            <%= value(@transaction, include_label: false) %> <%= Explorer.coin_name() %>
+          </span>
+        </span>
+         <span style="width: 4%;" class="text-truncate">
+          <%= if involves_token_transfers?(@transaction) do %>
+              <% [first_token_transfer | remaining_token_transfers] = @transaction.token_transfers %>
+              <%= case token_transfer_amount(first_token_transfer) do %>
+                  <% {:ok, :erc721_instance} -> %>
+                    <%= render BlockScoutWeb.TransactionView, "_transfer_token_with_id_no_label.html", transfer: first_token_transfer, token_id: List.first(first_token_transfer.token_ids) %>
+                  <% {:ok, :erc1155_instance, value} -> %>
+                    <% transfer_type = Chain.get_token_transfer_type(first_token_transfer) %>
+                    <%= if transfer_type == :token_spawning do %>
+                        <%= render BlockScoutWeb.TransactionView, "_transfer_token_with_id_no_label.html", transfer: first_token_transfer, token_id: List.first(first_token_transfer.token_ids) %>
+                    <% else %>
+                        <%= render BlockScoutWeb.TransactionView, "_transfer_token_with_id_no_label.html", transfer: first_token_transfer, token_id: List.first(first_token_transfer.token_ids) %>
+                    <% end %>
+                  <% {:ok, :erc1155_instance, values, token_ids, _decimals} -> %>
+                    <% values_ids = Enum.zip(values, token_ids) %>
+                    <%= for {value, token_id} <- values_ids do %>
+                        <div>
+                        <%= render BlockScoutWeb.TransactionView, "_transfer_token_with_id_no_label.html", transfer: first_token_transfer, token_id: token_id %>
+                        </div>
+                    <% end %>
+                  <% {:ok, value} -> %>
+                  <%= render BlockScoutWeb.TransactionView, "_link_to_token_symbol.html", transfer: first_token_transfer %>
+              <% end %>
+          <% end %>
+        </span>
+        <span style="width: 8%;" class="text-truncate" data-toggle="tooltip" data-placement="top" title="" data-custom-class="" data-original-title="<%= formatted_fee(@transaction, denomination: :ether, include_label: false) %>">
+          <span >
+             <%= formatted_fee(@transaction, denomination: :ether, include_label: false) %>
+          </span>
+        </span>
+    </div>
+</div>

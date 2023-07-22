@@ -5246,3 +5246,21 @@ msgstr "20 байт - адрес для проверки баланса"
 
 msgid "Integer block number, or the string \"latest\", \"earliest\" or \"pending\""
 msgstr "Блок номер целого числа или строка \"latest\", \"earliest\" или \"pending\""
+
+msgid "seconds"
+msgstr "секунды"
+
+msgid "Accepted on L2"
+msgstr "Принято на уровне L2"
+
+msgid "Rollup to L1"
+msgstr "Свернуть до L1"
+
+msgid "Finalized on L1"
+msgstr "Окончательно согласовано на L1"
+
+msgid "Challenge Period Passed"
+msgstr "Период испытаний прошел"
+
+msgid "Txn Hash"
+msgstr "Хэш транзакции"

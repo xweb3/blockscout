@@ -3384,6 +3384,8 @@ msgstr "取引手数料 (Torihiki Tesuryō)"
 msgid "Transaction Hash"
 msgstr "トランザクションハッシュ"
 
+
+
 #: lib/block_scout_web/templates/da_batch_transaction/_decoded_input_body.html.eex:2
 #: lib/block_scout_web/templates/da_batch_transaction/_decoded_input_body.html.eex:19
 #: lib/block_scout_web/templates/eigenda_batch/_decoded_input_body.html.eex:2
@@ -5236,3 +5238,21 @@ msgstr "20バイト - 残高を確認するアドレス"
 
 msgid "Integer block number, or the string \"latest\", \"earliest\" or \"pending\""
 msgstr "整数ブロック番号、または文字列 \"最新\"、\"最古\"、または \"保留中\""
+
+msgid "seconds"
+msgstr "秒"
+
+msgid "Accepted on L2"
+msgstr "L2で受け付けられました"
+
+msgid "Rollup to L1"
+msgstr "L1まで巻き上げる"
+
+msgid "Finalized on L1"
+msgstr "L1で最終決定"
+
+msgid "Challenge Period Passed"
+msgstr "チャレンジ期間が終了しました"
+
+msgid "Txn Hash"
+msgstr "トランザクションハッシュ"

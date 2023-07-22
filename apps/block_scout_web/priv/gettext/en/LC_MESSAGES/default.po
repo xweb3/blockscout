@@ -5231,3 +5231,21 @@ msgstr ""
 
 msgid "Integer block number, or the string \"latest\", \"earliest\" or \"pending\""
 msgstr ""
+
+msgid "seconds"
+msgstr ""
+
+msgid "Accepted on L2"
+msgstr ""
+
+msgid "Rollup to L1"
+msgstr ""
+
+msgid "Finalized on L1"
+msgstr ""
+
+msgid "Challenge Period Passed"
+msgstr ""
+
+msgid "Txn Hash"
+msgstr ""

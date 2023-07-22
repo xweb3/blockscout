@@ -1,0 +1,70 @@
+<% error = @internal_transaction.error %>
+
+<div class="table-tile tile tile-type-internal-transaction <%= if error, do: "tile-status--error--reason"%>" data-test="internal_transaction" data-key="<%= @internal_transaction.transaction_hash %>_<%= @internal_transaction.index %>" data-internal-transaction-transaction-hash="<%= @internal_transaction.transaction_hash %>" data-internal-transaction-index="<%= @internal_transaction.index %>">
+
+
+  <div class="table-tile-row" data-selector="token-transfers-toggle" data-test="chain_transaction">
+      <span style="width: 2%;">
+        <%= if error == :success do %>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="7" cy="7" r="7" fill="#E74242"/>
+            <path d="M4.52344 4.52539L9.47318 9.47514" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M4.52344 9.47461L9.47318 4.52486" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        <%= else %>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="7" cy="7" r="7" fill="#3EB66A"/>
+            <path d="M10.4455 5.44346L7.02754 8.86138C6.63702 9.2519 6.00385 9.2519 5.61333 8.86138L4.13281 7.38086" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        <%= end %>
+      </span>
+      <span style="width: 10%;" class="text-truncate">
+        <div class="text-truncate d-flex">
+          <%= render BlockScoutWeb.TransactionView, "_link.html", transaction_hash: @internal_transaction.transaction_hash %>
+        </div>
+      </span>
+      <span style="width: 10%;" class="tag-container text-truncate">
+         <%= gettext("Internal Transaction") %>
+      </span>
+      <span style="width: 9%;" class="tag-container text-truncate">
+        <span class="tile-status-label ml-2 ml-md-0" data-internal-transaction-type="<%= type(@internal_transaction) %>"><%= type(@internal_transaction) %></span>
+        <%= if error do %>
+          <span class="tile-status-label ml-2 ml-md-0"><%= gettext "Error" %>: <%= error %></span>
+        <% end %>
+      </span>
+      <span style="width: 8%;">
+         <%= link(
+          to_string(@internal_transaction.block_number),
+          to: block_path(BlockScoutWeb.Endpoint, :show, @internal_transaction.block_number)
+        ) %>
+      </span>
+      <span style="width: 10%;">
+        <span class="mr-2 mr-md-0 order-2" in-tile data-from-now="<%= @internal_transaction.transaction.block.timestamp %>"></span>
+      </span>
+      <span style="width: 14%;" class="text-truncate">
+        <%= @internal_transaction |> BlockScoutWeb.AddressView.address_partial_selector(:from, assigns[:current_address]) |> (&(if is_list(&1), do: Keyword.put(&1, :ignore_implementation_name, true), else: &1)).() |> BlockScoutWeb.RenderHelpers.render_partial() %>
+      </span>
+      <span style="width: 3%;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="chevron-right">
+          <rect width="24" height="24" rx="12" fill="#CBE9E7" fill-opacity="0.8"/>
+          <path d="M6 12L17 12" stroke="#65B3AE" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M13.5 8.42969L17.0355 11.9652L13.5 15.5008" stroke="#65B3AE" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="0.5" y="0.5" width="23" height="23" rx="11.5" stroke="#65B3AE" stroke-opacity="0.5"/>
+        </svg>
+      </span>
+      <span style="width: 14%;" class="text-truncate">
+        <%= @internal_transaction |> BlockScoutWeb.AddressView.address_partial_selector(:to, assigns[:current_address]) |> (&(if is_list(&1), do: Keyword.put(&1, :ignore_implementation_name, true), else: &1)).() |> BlockScoutWeb.RenderHelpers.render_partial() %>
+      </span>
+      <span style="width: 10%;" class="text-truncate" data-toggle="tooltip" data-placement="top" title="" data-custom-class="" data-original-title="<%= BlockScoutWeb.TransactionView.value(@internal_transaction, include_label: false) %> <%= Explorer.coin_name() %>">
+        <span>
+          <%= BlockScoutWeb.TransactionView.value(@internal_transaction, include_label: false) %> <%= Explorer.coin_name() %>
+        </span>
+      </span>
+      <span style="width: 10%;" class="text-truncate" data-toggle="tooltip" data-placement="top" title="" data-custom-class="" data-original-title="<%= BlockScoutWeb.TransactionView.formatted_fee(@internal_transaction.transaction, denomination: :ether, include_label: false) %>">
+        <span >
+          <%= BlockScoutWeb.TransactionView.formatted_fee(@internal_transaction.transaction, denomination: :ether, include_label: false) %>
+        </span>
+      </span>
+  </div>
+
+</div>

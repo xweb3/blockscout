@@ -17,7 +17,7 @@ export const initialState = {
 
 export const blockReducer = withMissingBlocks(baseReducer)
 
-function baseReducer (state = initialState, action) {
+function baseReducer(state = initialState, action) {
   switch (action.type) {
     case 'ELEMENTS_LOAD': {
       return Object.assign({}, state, omit(action, 'type'))
@@ -28,7 +28,12 @@ function baseReducer (state = initialState, action) {
       })
     }
     case 'RECEIVED_NEW_BLOCK': {
-      if (state.channelDisconnected || state.beyondPageOne || state.blockType !== 'block') return state
+      if (
+        state.channelDisconnected ||
+        state.beyondPageOne ||
+        state.blockType !== 'block'
+      )
+        return state
 
       const blockNumber = getBlockNumber(action.msg.blockHtml)
       const minBlock = getBlockNumber(last(state.items))
@@ -46,17 +51,17 @@ function baseReducer (state = initialState, action) {
 
 const elements = {
   '[data-selector="channel-disconnected-message"]': {
-    render ($el, state) {
+    render($el, state) {
       if (state.channelDisconnected && !window.loading) $el.show()
     }
   }
 }
 
-function getBlockNumber (blockHtml) {
+function getBlockNumber(blockHtml) {
   return $(blockHtml).data('blockNumber')
 }
 
-function withMissingBlocks (reducer) {
+function withMissingBlocks(reducer) {
   return (...args) => {
     const result = reducer(...args)
 
@@ -68,14 +73,16 @@ function withMissingBlocks (reducer) {
       return acc
     }, {})
 
-    const blockNumbers = keys(blockNumbersToItems).map(x => parseInt(x, 10))
+    const blockNumbers = keys(blockNumbersToItems).map((x) => parseInt(x, 10))
     const minBlock = min(blockNumbers)
     const maxBlock = max(blockNumbers)
     if (maxBlock - minBlock > 100) return result
 
     return Object.assign({}, result, {
-      items: rangeRight(minBlock, maxBlock + 1)
-        .map((blockNumber) => blockNumbersToItems[blockNumber] || placeHolderBlock(blockNumber))
+      items: rangeRight(minBlock, maxBlock + 1).map(
+        (blockNumber) =>
+          blockNumbersToItems[blockNumber] || placeHolderBlock(blockNumber)
+      )
     })
   }
 }
@@ -88,7 +95,11 @@ if ($blockListPage.length || $uncleListPage.length || $reorgListPage.length) {
     window.loading = true
   }
 
-  const blockType = $blockListPage.length ? 'block' : $uncleListPage.length ? 'uncle' : 'reorg'
+  const blockType = $blockListPage.length
+    ? 'block'
+    : $uncleListPage.length
+    ? 'uncle'
+    : 'reorg'
 
   const store = createAsyncLoadStore(
     $blockListPage.length ? blockReducer : baseReducer,
@@ -99,26 +110,28 @@ if ($blockListPage.length || $uncleListPage.length || $reorgListPage.length) {
 
   const blocksChannel = socket.channel('blocks:new_block', {})
   blocksChannel.join()
-  blocksChannel.onError(() => store.dispatch({
-    type: 'CHANNEL_DISCONNECTED'
-  }))
-  blocksChannel.on('new_block', (msg) => store.dispatch({
-    type: 'RECEIVED_NEW_BLOCK',
-    msg: humps.camelizeKeys(msg)
-  }))
+  blocksChannel.onError(() =>
+    store.dispatch({
+      type: 'CHANNEL_DISCONNECTED'
+    })
+  )
+  blocksChannel.on('new_block', (msg) =>
+    store.dispatch({
+      type: 'RECEIVED_NEW_BLOCK',
+      msg: humps.camelizeKeys(msg)
+    })
+  )
 }
 
-export function placeHolderBlock (blockNumber) {
+export function placeHolderBlock(blockNumber) {
   return `
-    <div class="my-3" data-selector="place-holder" data-block-number="${blockNumber}">
+    <div  data-selector="place-holder" data-block-number="${blockNumber}">
       <div
-        class="tile tile-type-block d-flex align-items-center fade-up"
-        style="min-height: 90px;"
+        class="table-tile tile tile-type-block d-flex align-items-center"
       >
-       
-        <div>
-          <span class="tile-title pr-0 pl-0">${blockNumber}</span>
-          <div class="tile-transactions">${window.localized['Block Processing']}</div>
+        <div class="table-tile-row">
+          <span class="tile-title p-0 m-0" style="width: 15%;">${blockNumber}</span>
+          <div class="tile-transactions p-0 m-0">${window.localized['Block Processing']}</div>
         </div>
       </div>
     </div>

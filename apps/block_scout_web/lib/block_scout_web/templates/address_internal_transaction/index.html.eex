@@ -6,7 +6,7 @@
   <section data-page="address-internal-transactions">
     <div class="card">
       <%= render BlockScoutWeb.AddressView, "_tabs.html", address: @address, is_proxy: is_proxy, conn: @conn %>
-      <div class="card-body" data-async-load data-async-listing="<%= @current_path %>" data-no-self-calls>
+      <div class="card-body txn-list-container" data-async-load data-async-listing="<%= @current_path %>" data-no-self-calls>
         <div data-selector="channel-batching-message" class="d-none">
           <div data-selector="reload-button" class="alert alert-info">
             <a href="#" class="alert-link"><span data-selector="channel-batching-count"></span> <%= gettext "More internal transactions have come in" %></a>
@@ -46,17 +46,59 @@
           </div>
         </div>
 
+
+
+        <div class="table-tile-header txn-list-table-head-container">
+          <span style="width: 2%;">
+          &nbsp;
+          </span>
+          <span style="width: 10%;">
+            <%= gettext "Txn Hash" %>
+          </span>
+          <span style="width: 10%;">
+            <%= gettext "Txn Type" %>
+          </span>
+          <span style="width: 9%;">
+              <%= gettext "Method" %>
+          </span>
+          <span style="width: 8%;">
+            <%= gettext "Block" %>
+          </span>
+          <span style="width: 10%;">
+            <%= gettext "Age" %>
+          </span>
+          <span style="width: 14%;">
+            <%= gettext "From" %>
+          </span>
+          <span style="width: 3%;">
+          &nbsp;
+          </span>
+          <span style="width: 14%;">
+            <%= gettext "To" %>
+          </span>
+          <span style="width: 10%;">
+            <%= gettext "Value" %>
+          </span>
+          <span style="width: 10%;">
+            <%= gettext "Txn Fee" %>
+          </span>
+        </div>
+
+
         <button data-error-message class="alert alert-danger col-12 text-left" style="display: none;">
           <span href="#" class="alert-link"><%= gettext("Something went wrong, click to reload.") %></span>
         </button>
+
+
+        <div data-items class="table-list-page">
+          <%= render BlockScoutWeb.CommonComponentsView, "_tile-loader.html" %>
+        </div>
+
+
         <div data-empty-response-message style="display: none;">
           <div class="tile tile-muted text-center">
             <span data-selector="empty-internal-transactions-list"><%= gettext "There are no internal transactions for this address." %></span>
           </div>
-        </div>
-
-        <div data-items>
-          <%= render BlockScoutWeb.CommonComponentsView, "_tile-loader.html" %>
         </div>
 
         <div class="transaction-bottom-panel">

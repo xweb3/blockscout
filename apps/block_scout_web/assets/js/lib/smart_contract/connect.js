@@ -1,13 +1,15 @@
 import Web3 from 'web3'
-// import Web3Modal from 'web3modal'
-// import { WalletConnectModal } from '@walletconnect/modal'
 import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum'
 import { Web3Modal } from '@web3modal/html'
 import { configureChains, createConfig } from '@wagmi/core'
 import { mantle, mantleTestnet } from '@wagmi/core/chains'
-// import { EthereumProvider } from '@walletconnect/ethereum-provider'
-// import WalletConnectProvider from '@walletconnect/web3-provider'
-import { compareChainIDs, formatError, showConnectElements, showConnectedToElements, mantleQa } from './common_helpers'
+import {
+  compareChainIDs,
+  formatError,
+  showConnectElements,
+  showConnectedToElements,
+  mantleQa
+} from './common_helpers'
 import { openWarningModal } from '../modals'
 
 const instanceChainIdStr = document.getElementById('js-chain-id').value
@@ -25,7 +27,7 @@ let web3Modal
 /**
  * Setup the orchestra
  */
-export async function web3ModalInit (connectToWallet, ...args) {
+export async function web3ModalInit(connectToWallet, ...args) {
   return new Promise((resolve) => {
     const projectId = 'a85398a55b8ecc45aecdfb252276c71e'
     let chains = []
@@ -70,17 +72,24 @@ export async function web3ModalInit (connectToWallet, ...args) {
 
 export const walletEnabled = () => {
   return new Promise((resolve) => {
-    if (window.web3 && window.web3.currentProvider && window.web3.currentProvider.isWalletConnect) {
+    if (
+      window.web3 &&
+      window.web3.currentProvider &&
+      window.web3.currentProvider.isWalletConnect
+    ) {
       resolve(true)
     } else {
       if (window.ethereum) {
         window.web3 = new Web3(window.ethereum)
-        window.ethereum._metamask.isUnlocked()
-          .then(isUnlocked => {
-            if (isUnlocked && window.ethereum.isNiftyWallet) { // Nifty Wallet
+        window.ethereum._metamask
+          .isUnlocked()
+          .then((isUnlocked) => {
+            if (isUnlocked && window.ethereum.isNiftyWallet) {
+              // Nifty Wallet
               window.web3 = new Web3(window.web3.currentProvider)
               resolve(true)
-            } else if (isUnlocked === false && window.ethereum.isNiftyWallet) { // Nifty Wallet
+            } else if (isUnlocked === false && window.ethereum.isNiftyWallet) {
+              // Nifty Wallet
               window.ethereum.enable()
               resolve(false)
             } else {
@@ -89,18 +98,19 @@ export const walletEnabled = () => {
                 window.web3 = new Web3(window.web3.currentProvider)
                 resolve(true)
               } else {
-                return window.ethereum.request({ method: 'eth_requestAccounts' })
+                return window.ethereum
+                  .request({ method: 'eth_requestAccounts' })
                   .then((_res) => {
                     window.web3 = new Web3(window.web3.currentProvider)
                     resolve(true)
                   })
-                  .catch(_error => {
+                  .catch((_error) => {
                     resolve(false)
                   })
               }
             }
           })
-          .catch(_error => {
+          .catch((_error) => {
             resolve(false)
           })
       } else if (window.web3) {
@@ -113,7 +123,7 @@ export const walletEnabled = () => {
   })
 }
 
-export async function disconnect () {
+export async function disconnect() {
   if (window.ec && window.ec.disconnect) {
     await window.ec.disconnect()
   }
@@ -132,7 +142,7 @@ export async function disconnect () {
 /**
  * Disconnect wallet button pressed.
  */
-export async function disconnectWallet () {
+export async function disconnectWallet() {
   await disconnect()
 
   showConnectElements()
@@ -141,13 +151,11 @@ export async function disconnectWallet () {
 export const connectToProvider = () => {
   return new Promise((resolve, reject) => {
     try {
-      web3Modal
-        .connect()
-        .then((connectedProvider) => {
-          provider = connectedProvider
-          window.web3 = new Web3(provider)
-          resolve(provider)
-        })
+      web3Modal.connect().then((connectedProvider) => {
+        provider = connectedProvider
+        window.web3 = new Web3(provider)
+        resolve(provider)
+      })
     } catch (e) {
       reject(e)
     }
@@ -174,7 +182,7 @@ export const connectToWalletAfterConnected = async () => {
   provider.on('chainChanged', (chainId) => {
     compareChainIDs(instanceChainId, chainId)
       .then(() => fetchAccountData(showConnectedToElements, []))
-      .catch(error => {
+      .catch((error) => {
         openWarningModal('Unauthorized', formatError(error))
       })
   })
@@ -186,14 +194,14 @@ export const connectToWalletAfterConnected = async () => {
   await fetchAccountData(showConnectedToElements, [])
 }
 
-export async function fetchAccountData (setAccount, args) {
+export async function fetchAccountData(setAccount, args) {
   // Get a Web3 instance for the wallet
   if (provider) {
     window.web3 = new Web3(provider)
   }
 
   // Get list of accounts of the connected wallet
-  const accounts = window.web3 && await window.web3.eth.getAccounts()
+  const accounts = window.web3 && (await window.web3.eth.getAccounts())
 
   // MetaMask does not give you all accounts, only the selected account
   if (accounts && accounts.length > 0) {

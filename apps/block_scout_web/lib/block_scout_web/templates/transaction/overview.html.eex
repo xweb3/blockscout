@@ -48,11 +48,11 @@
           <h1 class="card-title">
             <div style="display: inline-block; vertical-align: bottom; line-height: 25px;">
               <%= gettext "Transaction Details" %>
-              <% personal_tx_tag = if assigns[:tx_tags], do: @tx_tags.personal_tx_tag, else: nil %>
-              <%= if personal_tx_tag && personal_tx_tag.name !== :error do %>
-                <%= render BlockScoutWeb.FormView, "_tag.html", text: personal_tx_tag.name, additional_classes: [tag_name_to_label(personal_tx_tag.name), "ml-1"] %>
-              <% end %>
-              <%= render BlockScoutWeb.AddressView, "_labels.html", tags: @tx_tags %>
+              <%# personal_tx_tag = if assigns[:tx_tags], do: @tx_tags.personal_tx_tag, else: nil %>
+              <%=# if personal_tx_tag && personal_tx_tag.name !== :error do %>
+                <%=# render BlockScoutWeb.FormView, "_tag.html", text: personal_tx_tag.name, additional_classes: [tag_name_to_label(personal_tx_tag.name), "ml-1"] %>
+              <%# end %>
+              <%=# render BlockScoutWeb.AddressView, "_labels.html", tags: @tx_tags %>
             </div>
           </h1>
           <%= if status == :pending do %>
@@ -118,28 +118,28 @@
                     <span class="transaction_detail_status_item transaction_detail_status_item_active">
                       <img class="transaction_detail_status_item_right" src="/images/right_icon_1.svg" />
                       <img class="transaction_detail_status_item_right_dark" src="/images/right_icon_1_dark.svg" />
-                      Accepted on L2
+                       <%= gettext "Accepted on L2" %>
                     </span>
                     <img class="transaction_detail_status_item_true" src="/images/arrow_right_icon.svg" />
                     <img class="transaction_detail_status_item_true_dark" src="/images/arrow_right_icon_dark.svg" />
                     <span class="transaction_detail_status_item <%= BlockScoutWeb.TransactionView.get_tx_status_cls1(@transaction.tx_status) %>">
                       <img class="transaction_detail_status_item_right" src="/images/<%= BlockScoutWeb.TransactionView.get_tx_status_icon_cls1(@transaction.tx_status, false) %>" />
                       <img class="transaction_detail_status_item_right_dark" src="/images/<%= BlockScoutWeb.TransactionView.get_tx_status_icon_cls1(@transaction.tx_status, true) %>" />
-                      Rollup to L1
+                       <%= gettext "Rollup to L1" %>
                     </span>
                     <img class="transaction_detail_status_item_true" src="/images/arrow_right_icon.svg" />
                     <img class="transaction_detail_status_item_true_dark" src="/images/arrow_right_icon_dark.svg" />
                     <span class="transaction_detail_status_item <%= BlockScoutWeb.TransactionView.get_tx_status_cls2(@transaction.tx_status) %>">
                       <img class="transaction_detail_status_item_right" src="/images/<%= BlockScoutWeb.TransactionView.get_tx_status_icon_cls2(@transaction.tx_status, false) %>" />
                       <img class="transaction_detail_status_item_right_dark" src="/images/<%= BlockScoutWeb.TransactionView.get_tx_status_icon_cls2(@transaction.tx_status, true) %>" />
-                      Finalized on L1
+                        <%= gettext "Finalized on L1" %>
                     </span>
                     <img class="transaction_detail_status_item_true" src="/images/arrow_right_icon.svg" />
                     <img class="transaction_detail_status_item_true_dark" src="/images/arrow_right_icon_dark.svg" />
                     <span class="transaction_detail_status_item <%= BlockScoutWeb.TransactionView.get_tx_status_cls3(@transaction.tx_status) %>">
                      <img class="transaction_detail_status_item_right" src="/images/<%= BlockScoutWeb.TransactionView.get_tx_status_icon_cls3(@transaction.tx_status, false) %>" />
                       <img class="transaction_detail_status_item_right_dark" src="/images/<%= BlockScoutWeb.TransactionView.get_tx_status_icon_cls3(@transaction.tx_status, true) %>" />
-                      Challenge Period Passed
+                       <%= gettext "Challenge Period Passed" %>
                     </span>
                   </div>
                 <% end %>
