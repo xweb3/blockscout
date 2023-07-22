@@ -27,17 +27,15 @@ let web3Modal
 /**
  * Setup the orchestra
  */
-export async function web3ModalInit(connectToWallet, ...args) {
+export async function web3ModalInit (connectToWallet, ...args) {
   return new Promise((resolve) => {
     const projectId = 'a85398a55b8ecc45aecdfb252276c71e'
     let chains = []
-    const chainId = process.env.CHAIN_ID
-    console.log('----------chainId----------', chainId)
-    if (chainId === '1705003') {
+    if (instanceChainId === 1705003) {
       chains = [mantleQa]
-    } else if (chainId === '5001') {
+    } else if (instanceChainId === 5001) {
       chains = [mantleTestnet]
-    } else if (chainId === '5000') {
+    } else if (instanceChainId === 5000) {
       chains = [mantle]
     }
     const { publicClient } = configureChains(chains, [w3mProvider({ projectId })])
