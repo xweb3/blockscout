@@ -430,8 +430,8 @@ export const mantleQa = {
     symbol: 'MNT'
   },
   rpcUrls: {
-    public: { http: ['https://rpc4blockscout-qa2.qa.gomantle.org'] },
-    default: { http: ['https://rpc4blockscout-qa2.qa.gomantle.org'] }
+    public: { http: ['https://rpc.qa.gomantle.org'] },
+    default: { http: ['https://rpc.qa.gomantle.org'] }
   },
   blockExplorers: {
     blockScout: { name: 'BlockScout', url: 'https://explorer.qa.gomantle.org/' },
