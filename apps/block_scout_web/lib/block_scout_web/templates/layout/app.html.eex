@@ -59,7 +59,7 @@
         'Market Cap': '<%= gettext("Market Cap") %>',
         'Price': '<%= gettext("Price") %>',
         'Ether': '<%= Explorer.coin_name() %>',
-        'Tx/day': '<%= gettext("Tx/day") %>'
+        'Tx/Day': '<%= gettext("Tx/Day") %>'
       }
     </script>
 

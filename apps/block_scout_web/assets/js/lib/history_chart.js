@@ -312,7 +312,7 @@ class MarketHistoryChart {
     }
 
     this.numTransactions = {
-      label: window.localized['Tx/day'],
+      label: window.localized['Tx/Day'],
       yAxisID: 'numTransactions',
       data: [],
       cubicInterpolationMode: 'monotone',
