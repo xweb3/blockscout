@@ -306,10 +306,14 @@ const elements = {
           JSON.stringify(state.transactionStats)
         )
       ) {
+        let num = 0;
+        if(state.transactionStats && state.transactionStats.length > 1){
+          num = state.transactionStats[1].number_of_transactions
+        }
         $el
           .empty()
           .append(
-            numeral(state.transactionStats[0].number_of_transactions).format(
+            numeral(num).format(
               '0,0'
             )
           )

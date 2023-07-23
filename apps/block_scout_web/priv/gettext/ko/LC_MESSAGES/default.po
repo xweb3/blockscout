@@ -3477,7 +3477,7 @@ msgstr "트위터"
 
 #: lib/block_scout_web/templates/layout/app.html.eex:50
 #, elixir-autogen
-msgid "Tx/day"
+msgid "Tx/Day"
 msgstr "일일 Tx"
 
 #: lib/block_scout_web/templates/verified_contracts/index.html.eex:60

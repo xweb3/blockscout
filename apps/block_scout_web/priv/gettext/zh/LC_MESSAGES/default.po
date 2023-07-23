@@ -3479,7 +3479,7 @@ msgstr "推特"
 
 #: lib/block_scout_web/templates/layout/app.html.eex:50
 #, elixir-autogen
-msgid "Tx/day"
+msgid "Tx/Day"
 msgstr "每日交易量"
 
 #: lib/block_scout_web/templates/verified_contracts/index.html.eex:60

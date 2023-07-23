@@ -41,6 +41,13 @@ defmodule BlockScoutWeb.ChainController do
 
     chart_config = Application.get_env(:block_scout_web, :chart_config, %{})
 
+    today = Date.utc_today()
+    latest = Date.add(today, -1)
+    x_days_back = Date.add(latest, 0)
+    Logger.info("------------")
+    Logger.info("#{inspect(latest)}")
+    Logger.info("#{inspect(x_days_back)}")
+
     render(
       conn,
       "show.html",
