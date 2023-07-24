@@ -13,6 +13,7 @@ $dropdown-menu-item-hover-background-dark: #305a57;
 $dropdown-menu-background-dark: #3f7470;
 a {
   text-decoration: none !important;
+  color: rgba(10, 143, 246, 1);
 }
 
 body {
@@ -80,6 +81,8 @@ body {
     width: 100%;
     padding: 0 10px;
     gap: 10px;
+    border-radius: 4px;
+    font-size: 14px;
   }
   .table-list-page {
     .table-tile {
@@ -117,8 +120,10 @@ body {
           white-space: nowrap;
         }
         .tag-container {
+          display: flex;
+          align-items: center;
           .tile-label,
-          .bs-label.method {
+          .method {
             color: #15181c;
             padding: 2px 8px;
             border-radius: 4px;
@@ -126,6 +131,11 @@ body {
             line-height: 24px;
             font-weight: normal;
             display: inline-block;
+            width:100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            text-align: center;
           }
         }
       }
@@ -256,6 +266,7 @@ body {
             height: 18px;
             font-size: 8px;
             padding: 2px;
+            border-radius: 2px;
           }
         }
       }
@@ -555,6 +566,10 @@ body {
 .dark-theme-applied {
   color: #fff;
 
+  a{
+    color: rgba(69, 161, 232, 1);
+  }
+
   .modal-dialog {
     .modal-content {
       .close.close-modal {
@@ -847,6 +862,7 @@ body {
         border-bottom: 1px solid #ffffff26;
         .table-tile-row {
           color: #ffffff;
+        
           .chevron-right {
             rect:first-child {
               fill: #21413f;
@@ -854,7 +870,7 @@ body {
           }
           .tag-container {
             .tile-label,
-            .bs-label.method {
+            .method {
               color: #ffffff;
               background-color: #ffffff0d;
             }
