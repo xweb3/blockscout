@@ -34,9 +34,6 @@
       </span>
       <span style="width: 9%;" class="tag-container text-truncate" data-toggle="tooltip" data-placement="top" title="" data-custom-class="" data-original-title="<%= type(@internal_transaction) %>">
         <span class="tile-status-label ml-2 ml-md-0 method" data-internal-transaction-type="<%= type(@internal_transaction) %>"><%= type(@internal_transaction) %></span>
-        <%= if error do %>
-          <span class="tile-status-label ml-2 ml-md-0 method"><%= gettext "Error" %>: <%= error %></span>
-        <% end %>
       </span>
       <span style="width: 8%;">
          <%= link(
