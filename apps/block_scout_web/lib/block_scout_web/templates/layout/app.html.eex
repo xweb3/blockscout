@@ -323,6 +323,16 @@
         render BlockScoutWeb.CommonComponentsView, "_modal_status.html", status: status
       end
     %>
+
+
+    <button class="scroll-top-btn">
+      <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M30 22L22.7071 14.7071C22.3166 14.3166 21.6834 14.3166 21.2929 14.7071L14 22" stroke="#4F8F8B" stroke-width="3" stroke-linecap="round"/>
+        <path d="M22 15V31" stroke="#4F8F8B" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+    </button>
+
+
     <%= render_existing(@view_module, "scripts.html", assigns) %>
     <%= if @view_module == Elixir.BlockScoutWeb.ChainView do %>
       <script defer data-cfasync="false" src="<%= static_path(@conn, "/js/chain.js") %>"></script>
