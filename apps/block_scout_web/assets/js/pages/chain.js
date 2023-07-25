@@ -237,7 +237,7 @@ const elements = {
       if (
         !chart ||
         JSON.stringify(oldState.transactionStats) ===
-          JSON.stringify(state.transactionStats)
+        JSON.stringify(state.transactionStats)
       )
         return
 
@@ -300,23 +300,20 @@ const elements = {
   },
   '[data-selector="tx_per_day"]': {
     render($el, state, oldState) {
-      if (
-        !(
-          JSON.stringify(oldState.transactionStats) ===
-          JSON.stringify(state.transactionStats)
-        )
-      ) {
-        let num = 0;
-        if(state.transactionStats && state.transactionStats.length > 1){
-          num = state.transactionStats[1].number_of_transactions
-        }
-        $el
-          .empty()
-          .append(
-            numeral(num).format(
-              '0,0'
+      if (oldState.blockCount === state.blockCount) {
+        const todayStartBlock = sessionStorage.getItem('today_start_block')
+        //console.log('state block count and today start block', state.blockCount, todayStartBlock)
+        if (todayStartBlock && Number(todayStartBlock) !== NaN) {
+          const count = state.blockCount + 1 - Number(todayStartBlock);
+          $el
+            .empty()
+            .append(
+              numeral(count).format(
+                '0,0'
+              )
             )
-          )
+        }
+
       }
     }
   },

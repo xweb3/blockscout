@@ -1097,7 +1097,7 @@ msgstr "Пользовательский ABI от аккаунта"
 #: lib/block_scout_web/templates/chain/show.html.eex:7
 #: lib/block_scout_web/templates/chain/show.html.eex:44
 #, elixir-autogen
-msgid "Daily Transactions"
+msgid "Daily Txn Volume"
 msgstr "Ежедневные транзакции."
 
 #: lib/block_scout_web/templates/address_logs/_logs.html.eex:101

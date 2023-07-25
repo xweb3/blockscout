@@ -1091,7 +1091,7 @@ msgstr "アカウントからカスタムABI"
 #: lib/block_scout_web/templates/chain/show.html.eex:7
 #: lib/block_scout_web/templates/chain/show.html.eex:44
 #, elixir-autogen
-msgid "Daily Transactions"
+msgid "Daily Txn Volume"
 msgstr "日々の取引"
 
 #: lib/block_scout_web/templates/address_logs/_logs.html.eex:101

@@ -1,6 +1,8 @@
 import { Transactions } from './transactions.entity';
 import { L1ToL2 } from './l1_to_l2.entity';
 import { L2ToL1 } from './l2_to_l1.entity';
+import { Blocks } from './blocks.entity';
+import { TransactionStats } from './transactions_stats.entity';
 import { L1RelayedMessageEvents } from './l1_relayed_message_events.entity';
 import { L1SentMessageEvents } from './l1_sent_message_events.entity';
 import { L2RelayedMessageEvents } from './l2_relayed_message_events.entity';
@@ -27,7 +29,9 @@ const entities = [
   DaBatches,
   DaBatchTransactions,
   TokenPriceHistory,
-  TokenPriceRealTime
+  TokenPriceRealTime,
+  Blocks,
+  TransactionStats,
 ];
 
 export {
@@ -45,5 +49,7 @@ export {
   DaBatchTransactions,
   TokenPriceHistory,
   TokenPriceRealTime,
+  Blocks,
+  TransactionStats,
 };
 export default entities;

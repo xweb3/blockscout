@@ -45,6 +45,7 @@ defmodule BlockScoutWeb.ChainController do
     latest = Date.add(today, -1)
     x_days_back = Date.add(latest, 0)
     Logger.info("------------")
+    Logger.info("#{inspect(today)}")
     Logger.info("#{inspect(latest)}")
     Logger.info("#{inspect(x_days_back)}")
 
