@@ -178,7 +178,7 @@ export const connectToWalletAfterConnected = async () => {
 
   // // Subscribe to chainId change
   // provider.on('chainChanged', (chainId) => {
-  //   compareChainIDs(5001, chainId)
+  //   compareChainIDs(instanceChainId, chainId)
   //     .then(() => fetchAccountData(showConnectedToElements, []))
   //     .catch((error) => {
   //       openWarningModal('Unauthorized', formatError(error))
