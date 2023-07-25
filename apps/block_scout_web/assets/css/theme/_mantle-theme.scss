@@ -20,6 +20,25 @@ body {
   overscroll-behavior: none;
 }
 
+.scroll-top-btn{
+  padding: 0;
+  border: none;
+  outline: none;
+  position: fixed;
+  right: 40px;
+  bottom: 40px;
+  background: none;
+  z-index: 1;
+  display: none;
+  background-color: #CBE9E7;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+}
+
 .modal-dialog {
   width: 850px !important;
   padding: 10px;
@@ -566,6 +585,26 @@ body {
 .dark-theme-applied {
   color: #fff;
 
+
+  .scroll-top-btn{
+    background-color: #305A57;
+    path{
+      stroke:#7FD8D2;
+    }
+  }
+
+
+  .ace_editor{
+    .ace_gutter{
+      background-color: rgba(255, 255, 255, 0.05);
+      color: white;
+    }
+    .ace_scroller{
+      background-color: rgba(9, 19, 18, 1);
+    }
+  }
+  
+
   a{
     color: rgba(69, 161, 232, 1);
   }
@@ -685,7 +724,7 @@ body {
     ul {
       .nav-item {
         .nav-link {
-          background-color: #ffffff26;
+          background-color: rgba(255, 255, 255, 0.05);
           color: #ffffff99;
           &:not(.active) {
             &:hover {

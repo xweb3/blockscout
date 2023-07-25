@@ -30,6 +30,23 @@ if (analytics.mixpanelInitialized || analytics.amplitudeInitialized) {
   }
 }
 
+const handleWindowOnScroll = (e) => {
+  if (e.currentTarget.scrollY > 100) {
+    $('.scroll-top-btn').fadeIn()
+  } else {
+    $('.scroll-top-btn').fadeOut()
+  }
+}
+
+$(window).on('scroll', handleWindowOnScroll)
+
+$('.scroll-top-btn').on('click', () => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  })
+})
+
 $('.save-address-button').click((_event) => {
   const eventProperties = {
     address_hash: $('#watchlist_address_address_hash').val(),
