@@ -8,22 +8,28 @@
   <div class="table-tile-row" data-selector="token-transfers-toggle" data-test="chain_transaction">
         <span style="width: 2%;">
           <%= if status == :success do %>
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="7" cy="7" r="7" fill="#3EB66A"/>
-              <path d="M10.4455 5.44346L7.02754 8.86138C6.63702 9.2519 6.00385 9.2519 5.61333 8.86138L4.13281 7.38086" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-            </svg>
+            <span data-toggle="tooltip" data-placement="top" title="" data-custom-class="" data-original-title="<%= gettext("Success") %>">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="7" cy="7" r="7" fill="#3EB66A"/>
+                <path d="M10.4455 5.44346L7.02754 8.86138C6.63702 9.2519 6.00385 9.2519 5.61333 8.86138L4.13281 7.38086" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </span>
           <%= else %>
             <%= if status == :pending do %>
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="7" cy="7" r="7" fill="#F2B61D"/>
-                <path d="M7 3V7.5L9.5 9.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-              </svg>
+              <span data-toggle="tooltip" data-placement="top" title="" data-custom-class="" data-original-title="<%= gettext("Pending") %>">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="7" cy="7" r="7" fill="#F2B61D"/>
+                  <path d="M7 3V7.5L9.5 9.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+              </span>
             <%= else %>
-               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="7" cy="7" r="7" fill="#E74242"/>
-                <path d="M4.52344 4.52539L9.47318 9.47514" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                <path d="M4.52344 9.47461L9.47318 4.52486" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-              </svg>
+              <span data-toggle="tooltip" data-placement="top" title="" data-custom-class="" data-original-title="<%= gettext("Failed") %>">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="7" cy="7" r="7" fill="#E74242"/>
+                  <path d="M4.52344 4.52539L9.47318 9.47514" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                  <path d="M4.52344 9.47461L9.47318 4.52486" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+              </span>
             <%= end %>
           <%= end %>
         </span>

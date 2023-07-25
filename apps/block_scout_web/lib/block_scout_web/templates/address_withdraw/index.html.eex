@@ -53,13 +53,13 @@
           <span style="width: 13%;">
             <%= gettext "To" %>
           </span>
-           <span style="width: 8%;">
+           <span style="width: 6%;">
             <%= gettext "Value" %>
           </span>
-          <span style="width: 4%;">
+          <span style="width: 8%;">
             <%= gettext "Token" %>
           </span>
-          <span style="width: 8%;">
+          <span style="width: 6%;">
             <%= gettext "Txn Fee" %>
           </span>
         </div>
