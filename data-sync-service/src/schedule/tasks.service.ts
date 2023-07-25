@@ -5,6 +5,7 @@ import { L1IngestionService } from '../l1Ingestion/l1Ingestion.service';
 import { L2IngestionService } from '../l2Ingestion/l2Ingestion.service';
 import { ConfigService } from '@nestjs/config';
 import { MonitorService } from 'src/monitor/monitor.service';
+import { TransactionStatsService } from 'src/transaction_stats/transaction.stats.service';
 
 const L1_SENT = 'l1_sent_block_number';
 const L1_SENT_CURRENT_START = 'l1_sent_current_start_block_number';
@@ -26,6 +27,7 @@ export class TasksService {
     private readonly l1IngestionService: L1IngestionService,
     private readonly l2IngestionService: L2IngestionService,
     private readonly monitorService: MonitorService,
+    private readonly transactionStatsService: TransactionStatsService,
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private schedulerRegistry: SchedulerRegistry,
   ) {
@@ -612,5 +614,10 @@ export class TasksService {
         msg: `update missed eigenda batches catch error: ${e?.message}`,
       });
     }
+  }
+
+  @Interval(3150)
+  async updateTransactionStats() {
+    this.transactionStatsService.updateTransactionStats();
   }
 }

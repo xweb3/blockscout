@@ -4,7 +4,7 @@
       <!-- Graph and legend -->
       <div class="dashboard-banner-network-graph">
         <p class="dashboard-banner-daily-tx-title">
-          <%= gettext("Daily Transactions") %>
+          <%= gettext("Daily Txn Volume") %>
         </p>
 
         <div class="dashboard-banner-info-container">
@@ -41,7 +41,7 @@
                     <i class="dashboard-banner-chart-legend-item-line"></i>
                     <div class="dashboard-banner-chart-legend-item-item">
                       <span class="dashboard-banner-chart-legend-label">
-                        <%= gettext "Daily Transactions" %>
+                        <%= gettext "Daily Txn Volume" %>
                       </span>
                       <span class="dashboard-banner-chart-legend-value" data-selector="tx_per_day">
                           <% num_of_transactions = BlockScoutWeb.Cldr.Number.to_string!(Enum.at(@transaction_stats, 0).number_of_transactions, format: "#,###") %>
@@ -276,3 +276,11 @@
     </div>
   </div>
 </section>
+<script>
+  window.onload = function (){
+     <% num_of_transactions = Enum.at(@transaction_stats, 0).today_start_block %>
+    var a = <%= num_of_transactions %>
+    sessionStorage.setItem("today_start_block", a)
+    console.log('-------', a)
+  }
+</script>

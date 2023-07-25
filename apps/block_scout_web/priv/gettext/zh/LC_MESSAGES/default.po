@@ -1093,7 +1093,7 @@ msgstr "帐户自定义ABI"
 #: lib/block_scout_web/templates/chain/show.html.eex:7
 #: lib/block_scout_web/templates/chain/show.html.eex:44
 #, elixir-autogen
-msgid "Daily Transactions"
+msgid "Daily Txn Volume"
 msgstr "每日交易"
 
 #: lib/block_scout_web/templates/address_logs/_logs.html.eex:101
