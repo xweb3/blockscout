@@ -166,28 +166,28 @@ export const connectToWallet = async () => {
 
 export const connectToWalletAfterConnected = async () => {
   // Subscribe to accounts change
-  provider.on('accountsChanged', async (accs) => {
-    const newAccount = accs && accs.length > 0 ? accs[0].toLowerCase() : null
+  // provider.on('accountsChanged', async (accs) => {
+  //   const newAccount = accs && accs.length > 0 ? accs[0].toLowerCase() : null
 
-    if (!newAccount) {
-      await disconnectWallet()
-    }
+  //   if (!newAccount) {
+  //     await disconnectWallet()
+  //   }
 
-    fetchAccountData(showConnectedToElements, [])
-  })
+  //   fetchAccountData(showConnectedToElements, [])
+  // })
 
-  // Subscribe to chainId change
-  provider.on('chainChanged', (chainId) => {
-    compareChainIDs(instanceChainId, chainId)
-      .then(() => fetchAccountData(showConnectedToElements, []))
-      .catch((error) => {
-        openWarningModal('Unauthorized', formatError(error))
-      })
-  })
+  // // Subscribe to chainId change
+  // provider.on('chainChanged', (chainId) => {
+  //   compareChainIDs(5001, chainId)
+  //     .then(() => fetchAccountData(showConnectedToElements, []))
+  //     .catch((error) => {
+  //       openWarningModal('Unauthorized', formatError(error))
+  //     })
+  // })
 
-  provider.on('disconnect', async () => {
-    await disconnectWallet()
-  })
+  // provider.on('disconnect', async () => {
+  //   await disconnectWallet()
+  // })
 
   await fetchAccountData(showConnectedToElements, [])
 }

@@ -46,7 +46,7 @@ const loadFunctions = (element, isCustomABI, from) => {
       $(disconnectSelector, $(`#${action}-${typeForId}`)).length &&
         $(disconnectSelector, $(`#${action}-${typeForId}`)).on(
           'click',
-          connectToWallet
+          disconnectWallet
         )
 
       if (!walletInit) {
