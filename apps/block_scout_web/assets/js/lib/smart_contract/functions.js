@@ -62,7 +62,7 @@ const loadFunctions = (element, isCustomABI, from) => {
         readWriteFunction(element)
       })
 
-      $('.contract-exponentiation-btn').on('click', (event) => {
+      $('.contract-exponentiation-btn', $element).on('click', (event) => {
         const $customPower = $(event.currentTarget).find('[name=custom_power]')
         let power
         if ($customPower.length > 0) {
@@ -86,7 +86,7 @@ const loadFunctions = (element, isCustomABI, from) => {
         }
       })
 
-      $('[name=custom_power]').on('click', (event) => {
+      $('[name=custom_power]', $element).on('click', (event) => {
         $(event.currentTarget).parent().parent().toggleClass('show')
       })
     })
