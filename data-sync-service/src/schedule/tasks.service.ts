@@ -161,10 +161,10 @@ export class TasksService {
     );
 
     //this.sync_token_price_history();
-    //this.updateDaBatchMissed();
+    this.updateDaBatchMissed();
   }
 
-  /* @Interval(12000)
+  @Interval(12000)
   async l1_sent_latest() {
     // sync from latest block
     let end = 0;
@@ -613,7 +613,7 @@ export class TasksService {
         msg: `update missed eigenda batches catch error: ${e?.message}`,
       });
     }
-  } */
+  }
 
   @Interval(3150)
   async updateTransactionStats() {

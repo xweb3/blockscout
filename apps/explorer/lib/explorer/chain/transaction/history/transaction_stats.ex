@@ -8,7 +8,7 @@ defmodule Explorer.Chain.Transaction.History.TransactionStats do
   use Explorer.Schema
 
   alias Explorer.Repo
-require Logger
+
   @derive {Jason.Encoder,
            except: [
              :__meta__
@@ -19,7 +19,7 @@ require Logger
     field(:number_of_transactions, :integer)
     field(:gas_used, :decimal)
     field(:total_fee, :decimal)
-    field(:today_start_block, :decimal)
+    field(:today_start_block, :integer)
   end
 
   @typedoc """

@@ -314,7 +314,7 @@ const elements = {
   },
   '[data-selector="tx_per_day"]': {
     render($el, state, oldState) {
-      console.log('block count, today start block',state.blockCount, state.todayStartBlock)
+      console.log('block count, today start block', state.blockCount, state.todayStartBlock)
       if ((state.blockCount && state.todayStartBlock) && (oldState.blockCount !== state.blockCount || oldState.todayStartBlock !== state.todayStartBlock)) {
         const count = state.blockCount + 1 - state.todayStartBlock;
         $el
@@ -520,13 +520,11 @@ if ($chainDetailsPage.length) {
 
   const transactionStatsChannel = socket.channel('transactions:stats')
   transactionStatsChannel.join()
-  transactionStatsChannel.on('update', (msg) => {
-    console.log('------', msg)
-    return store.dispatch({
+  transactionStatsChannel.on('update', (msg) =>
+    store.dispatch({
       type: 'RECEIVED_UPDATED_TRANSACTION_STATS',
       msg
     })
-  }
 
   )
 
