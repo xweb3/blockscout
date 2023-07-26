@@ -20,7 +20,7 @@ body {
   overscroll-behavior: none;
 }
 
-.scroll-top-btn{
+.scroll-top-btn {
   padding: 0;
   border: none;
   outline: none;
@@ -30,7 +30,7 @@ body {
   background: none;
   z-index: 1;
   display: none;
-  background-color: #CBE9E7;
+  background-color: #cbe9e7;
   border-radius: 6px;
   display: flex;
   align-items: center;
@@ -152,7 +152,7 @@ body {
             line-height: 24px;
             font-weight: normal;
             display: inline-block;
-            width:100%;
+            width: 100%;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -170,6 +170,19 @@ body {
 .buttons {
   display: flex;
   align-items: center;
+  .button.button-primary {
+    border-radius: 6px;
+    padding: 6px 10px;
+    background-color: #65b3ae;
+    font-size: 14px;
+    color: #15181c;
+    border: none;
+    display: flex;
+    align-items: center;
+    &:hover {
+      color: #15181c;
+    }
+  }
 }
 .contract-code-buttons {
   display: flex;
@@ -587,27 +600,24 @@ body {
 .dark-theme-applied {
   color: #fff;
 
-
-  .scroll-top-btn{
-    background-color: #305A57;
-    path{
-      stroke:#7FD8D2;
+  .scroll-top-btn {
+    background-color: #305a57;
+    path {
+      stroke: #7fd8d2;
     }
   }
 
-
-  .ace_editor{
-    .ace_gutter{
+  .ace_editor {
+    .ace_gutter {
       background-color: rgba(255, 255, 255, 0.05);
       color: white;
     }
-    .ace_scroller{
+    .ace_scroller {
       background-color: rgba(9, 19, 18, 1);
     }
   }
-  
 
-  a{
+  a {
     color: rgba(69, 161, 232, 1);
   }
 
@@ -903,7 +913,7 @@ body {
         border-bottom: 1px solid #ffffff26;
         .table-tile-row {
           color: #ffffff;
-        
+
           .chevron-right {
             rect:first-child {
               fill: #21413f;
