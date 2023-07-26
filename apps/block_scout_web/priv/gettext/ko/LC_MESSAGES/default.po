@@ -1092,12 +1092,12 @@ msgstr "계정에서 사용자 정의 ABI"
 #: lib/block_scout_web/templates/chain/show.html.eex:44
 #, elixir-autogen
 msgid "Daily Txn Volume"
-msgstr ""
+msgstr "일일 거래량"
 
 #: lib/block_scout_web/templates/chain/show.html.eex:58
 #, elixir-autogen
 msgid "24H Txn Volume"
-msgstr ""
+msgstr "24시간 거래량"
 
 #: lib/block_scout_web/templates/chain/show.html.eex:7
 #, elixir-autogen
