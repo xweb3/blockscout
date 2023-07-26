@@ -34,7 +34,7 @@ defmodule BlockScoutWeb.ChainController do
 
     transaction_stats = Helper.get_transaction_stats()
     last_24hrs_stats = Helper.get_last_24hrs_stats()
-    Logger.info("4==4=4=4==4=4=4=4")
+    Logger.info("last 24 hours stats")
     Logger.info("#{inspect(last_24hrs_stats)}")
     chart_data_paths = %{
       market: market_history_chart_path(conn, :show),
@@ -42,14 +42,6 @@ defmodule BlockScoutWeb.ChainController do
     }
 
     chart_config = Application.get_env(:block_scout_web, :chart_config, %{})
-
-    today = Date.utc_today()
-    latest = Date.add(today, -1)
-    x_days_back = Date.add(latest, 0)
-    Logger.info("------------")
-    Logger.info("#{inspect(today)}")
-    Logger.info("#{inspect(latest)}")
-    Logger.info("#{inspect(x_days_back)}")
 
     render(
       conn,

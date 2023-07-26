@@ -130,9 +130,6 @@ export class TransactionStatsService {
         msg: `update today last 24 hours stats failed ${e?.message}`
       })
     }
-
-    console.log('-=-=-=',formatUTCTimestamp);
-
   }
 
 }
