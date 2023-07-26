@@ -289,11 +289,3 @@
     </div>
   </div>
 </section>
-<script>
-  window.onload = function (){
-     <% num_of_transactions = Enum.at(@transaction_stats, 0).today_start_block %>
-    var a = <%= num_of_transactions %>
-    sessionStorage.setItem("today_start_block", a)
-    console.log('-------', a)
-  }
-</script>
