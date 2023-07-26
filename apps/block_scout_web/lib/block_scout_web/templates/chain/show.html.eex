@@ -4,7 +4,7 @@
       <!-- Graph and legend -->
       <div class="dashboard-banner-network-graph">
         <p class="dashboard-banner-daily-tx-title">
-          <%= gettext("Daily Txn Volume") %>
+          <%= gettext("Daily Transactions") %>
         </p>
 
         <div class="dashboard-banner-info-container">
@@ -51,6 +51,19 @@
 
                 </div>
                 <% end %>
+                <div class="dashboard-banner-chart-legend-item">
+                    <i class="dashboard-banner-chart-legend-item-line"></i>
+                    <div class="dashboard-banner-chart-legend-item-item">
+                      <span class="dashboard-banner-chart-legend-label">
+                        <%= gettext "24H Txn Volume" %>
+                      </span>
+                      <span class="dashboard-banner-chart-legend-value" data-selector="24h_txn_volume">
+                          <% txn = BlockScoutWeb.Cldr.Number.to_string!(Enum.at(@last_24hrs_stats, 0).number_of_transactions, format: "#,###") %>
+                          <%= txn %>
+                      </span>
+                    </div>
+
+                </div>
               <% end %>
               <%= render BlockScoutWeb.ChainView, "gas_price_oracle_legend_item.html", gas_price: @gas_price %>
 

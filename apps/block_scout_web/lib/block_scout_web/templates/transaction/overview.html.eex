@@ -125,7 +125,7 @@
                     <span class="transaction_detail_status_item <%= BlockScoutWeb.TransactionView.get_tx_status_cls1(@transaction.tx_status) %>">
                       <img class="transaction_detail_status_item_right" src="/images/<%= BlockScoutWeb.TransactionView.get_tx_status_icon_cls1(@transaction.tx_status, false) %>" />
                       <img class="transaction_detail_status_item_right_dark" src="/images/<%= BlockScoutWeb.TransactionView.get_tx_status_icon_cls1(@transaction.tx_status, true) %>" />
-                       <%= gettext "Rollup to L1" %>
+                       <%= gettext "Accepted on L1" %>
                     </span>
                     <img class="transaction_detail_status_item_true" src="/images/arrow_right_icon.svg" />
                     <img class="transaction_detail_status_item_true_dark" src="/images/arrow_right_icon_dark.svg" />

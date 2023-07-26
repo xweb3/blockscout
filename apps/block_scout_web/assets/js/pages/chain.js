@@ -37,7 +37,8 @@ export const initialState = {
   transactionCount: null,
   totalGasUsageCount: null,
   usdMarketCap: null,
-  blockCount: null
+  blockCount: null,
+  last24HrsTxnCount: null,
 }
 
 export const reducer = withMissingBlocks(baseReducer)
@@ -64,17 +65,21 @@ function baseReducer(state = initialState, action) {
           $('.miner-address-tooltip').tooltip('hide')
           pastBlocks = state.blocks.slice(0, -1)
         }
+        console.log('last 24 hours txn count from websocket push', action.msg.last24hrsTxnCount)
         return Object.assign({}, state, {
           averageBlockTime: action.msg.averageBlockTime,
           blocks: [action.msg, ...pastBlocks],
-          blockCount: action.msg.blockNumber
+          blockCount: action.msg.blockNumber,
+          last24HrsTxnCount: action.msg.last24hrsTxnCount,
         })
       } else {
+        console.log('last 24 hours txn count from websocket push', action.msg.last24hrsTxnCount)
         return Object.assign({}, state, {
           blocks: state.blocks.map((block) =>
             block.blockNumber === action.msg.blockNumber ? action.msg : block
           ),
-          blockCount: action.msg.blockNumber
+          blockCount: action.msg.blockNumber,
+          last24HrsTxnCount: action.msg.last24hrsTxnCount,
         })
       }
     }
@@ -300,7 +305,7 @@ const elements = {
   },
   '[data-selector="tx_per_day"]': {
     render($el, state, oldState) {
-      if (oldState.blockCount === state.blockCount) {
+      if (state.blockCount && oldState.blockCount !== state.blockCount) {
         const todayStartBlock = sessionStorage.getItem('today_start_block')
         //console.log('state block count and today start block', state.blockCount, todayStartBlock)
         if (todayStartBlock && Number(todayStartBlock) !== NaN) {
@@ -309,6 +314,23 @@ const elements = {
             .empty()
             .append(
               numeral(count).format(
+                '0,0'
+              )
+            )
+        }
+
+      }
+    }
+  },
+  '[data-selector="24h_txn_volume"]': {
+    render($el, state, oldState) {
+      console.log('state last 24 hours txn count', oldState.last24HrsTxnCount,state.last24HrsTxnCount)
+      if (state.last24HrsTxnCount !== null && oldState.last24HrsTxnCount !== state.last24HrsTxnCount) {
+        if (state.last24HrsTxnCount && Number(state.last24HrsTxnCount) !== NaN) {
+          $el
+            .empty()
+            .append(
+              numeral(state.last24HrsTxnCount).format(
                 '0,0'
               )
             )
@@ -470,11 +492,13 @@ if ($chainDetailsPage.length) {
 
   const blocksChannel = socket.channel('blocks:new_block')
   blocksChannel.join()
-  blocksChannel.on('new_block', (msg) =>
-    store.dispatch({
+  blocksChannel.on('new_block', (msg) =>{
+    return store.dispatch({
       type: 'RECEIVED_NEW_BLOCK',
       msg: humps.camelizeKeys(msg)
     })
+  }
+   
   )
 
   const transactionsChannel = socket.channel('transactions:new_transaction')

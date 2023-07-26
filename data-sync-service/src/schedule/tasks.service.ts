@@ -160,9 +160,8 @@ export class TasksService {
       },
     );
 
-    this.sync_token_price_history();
+    //this.sync_token_price_history();
     this.updateDaBatchMissed();
-    this.l1IngestionService.updateDaBatchMissed(0);
   }
 
   @Interval(12000)
@@ -494,7 +493,7 @@ export class TasksService {
     }
   }
 
-  @Interval(1800000)
+  /* @Interval(1800000)
   async sync_token_price_history() {
     this.l1IngestionService.syncTokenPriceHistory();
   }
@@ -502,7 +501,7 @@ export class TasksService {
   @Interval(10000)
   async sync_token_price_real_time() {
     this.l1IngestionService.syncTokenPriceRealTime();
-  }
+  } */
 
   @Interval(60000)
   async updateReorgBlockMessage() {
@@ -619,5 +618,10 @@ export class TasksService {
   @Interval(3150)
   async updateTransactionStats() {
     this.transactionStatsService.updateTransactionStats();
+  }
+
+  @Interval(3550)
+  async updateLast24HrsStats() {
+    this.transactionStatsService.updateLast24HrsStats();
   }
 }

@@ -6,6 +6,7 @@ import {
   Blocks,
   Transactions,
   TransactionStats,
+  Last24HrsStats,
 } from 'src/typeorm';
 import { EntityManager, getConnection, getManager, Repository } from 'typeorm';
 
@@ -66,6 +67,7 @@ export class TransactionStatsService {
 
       const startBlockNumber = await this.queryTodayStartBlock(formatUTCTimestamp);
 
+      //TODO (Jayce) The method calculated of count of txn should be change after upgrade of bedrock
       const [{ count }] = await this.entityManager.query(`SELECT count(*) FROM blocks WHERE timestamp >= $1`, [formatUTCTimestamp])
 
       if (count || count === 0) {
@@ -95,6 +97,39 @@ export class TransactionStatsService {
     }
 
 
+  }
+
+  async updateLast24HrsStats() {
+    const currentUTCTimestamp = moment.utc().valueOf();
+    const last24HrsAgoTimestamp = currentUTCTimestamp - 86400000;
+    const formatUTCTimestamp = new Date(last24HrsAgoTimestamp).toISOString();
+
+    try {
+      //TODO (Jayce) The method calculated of count of txn should be change after upgrade of bedrock
+      const [{ count }] = await this.entityManager.query(`SELECT count(*) FROM blocks WHERE timestamp >= $1`, [formatUTCTimestamp])
+      if (count || count === 0) {
+        await getConnection()
+          .createQueryBuilder()
+          .setLock('pessimistic_write')
+          .insert()
+          .into(Last24HrsStats)
+          .values([{
+            const_id: 1,
+            number_of_transactions: count,
+            number_of_blocks: count,
+          }])
+          .orUpdate(["number_of_transactions", "number_of_blocks"], ["const_id"], {
+            skipUpdateIfNoValuesChanged: true
+          })
+          .execute()
+      }
+    } catch (e) {
+      console.log({
+        type: 'ERROR',
+        time: new Date().getTime(),
+        msg: `update today last 24 hours stats failed ${e?.message}`
+      })
+    }
   }
 
 }

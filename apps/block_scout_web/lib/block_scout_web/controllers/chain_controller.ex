@@ -33,21 +33,15 @@ defmodule BlockScoutWeb.ChainController do
     exchange_rate = Market.get_exchange_rate(Explorer.coin()) || Token.null()
 
     transaction_stats = Helper.get_transaction_stats()
-
+    last_24hrs_stats = Helper.get_last_24hrs_stats()
+    Logger.info("last 24 hours stats")
+    Logger.info("#{inspect(last_24hrs_stats)}")
     chart_data_paths = %{
       market: market_history_chart_path(conn, :show),
       transaction: transaction_history_chart_path(conn, :show)
     }
 
     chart_config = Application.get_env(:block_scout_web, :chart_config, %{})
-
-    today = Date.utc_today()
-    latest = Date.add(today, -1)
-    x_days_back = Date.add(latest, 0)
-    Logger.info("------------")
-    Logger.info("#{inspect(today)}")
-    Logger.info("#{inspect(latest)}")
-    Logger.info("#{inspect(x_days_back)}")
 
     render(
       conn,
@@ -64,6 +58,7 @@ defmodule BlockScoutWeb.ChainController do
       eigenda_batches_path: recent_eigenda_batches_path(conn, :index),
       l1_to_l2_txn_path: recent_l1_to_l2_txn_path(conn, :index),
       transaction_stats: transaction_stats,
+      last_24hrs_stats: last_24hrs_stats,
       block_count: block_count,
       gas_price: Application.get_env(:block_scout_web, :gas_price)
     )

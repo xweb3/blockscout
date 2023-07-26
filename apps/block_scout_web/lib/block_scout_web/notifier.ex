@@ -13,16 +13,16 @@ defmodule BlockScoutWeb.Notifier do
     AddressContractVerificationVyperView,
     Endpoint
   }
-
   alias Explorer.{Chain, Market, Repo}
   alias Explorer.Chain.{Address, InternalTransaction, TokenTransfer, Transaction}
+  alias Explorer.Chain.Transaction.History.Last24HrsStats
   alias Explorer.Chain.Supply.RSK
   alias Explorer.Chain.Transaction.History.TransactionStats
   alias Explorer.Counters.{AverageBlockTime, Helper}
   alias Explorer.ExchangeRates.Token
   alias Explorer.SmartContract.{CompilerVersion, Solidity.CodeCompiler}
   alias Phoenix.View
-
+require Logger
   @check_broadcast_sequence_period 500
 
   def handle_event({:chain_event, :addresses, type, addresses}) when type in [:realtime, :on_demand] do
@@ -98,6 +98,18 @@ defmodule BlockScoutWeb.Notifier do
     |> Enum.each(fn block ->
       broadcast_latest_block?(block, last_broadcasted_block_number)
     end)
+  end
+
+  def get_last_24hrs_stats do
+    #stats_scale = date_range(1)
+    last_24hrs_stats = Last24HrsStats.by_const_id(1)
+
+    # Need datapoint for legend if none currently available.
+    if Enum.empty?(last_24hrs_stats) do
+      [%{number_of_transactions: 0, number_of_blocks: 0}]
+    else
+      last_24hrs_stats
+    end
   end
 
   def handle_event({:chain_event, :exchange_rate}) do
@@ -308,9 +320,15 @@ defmodule BlockScoutWeb.Notifier do
     preloaded_block = Repo.preload(block, [[miner: :names], :transactions, :rewards])
     average_block_time = AverageBlockTime.average_block_time()
 
+    last_24hrs_stats = get_last_24hrs_stats()
+
+    last_24hrs_txn = Enum.at(last_24hrs_stats, 0).number_of_transactions
+    Logger.info("last 24 hours number of transactions from push")
+    Logger.info("#{inspect(last_24hrs_txn)}")
     Endpoint.broadcast("blocks:new_block", "new_block", %{
       block: preloaded_block,
-      average_block_time: average_block_time
+      average_block_time: average_block_time,
+      last_24hrs_txn_count: last_24hrs_txn,
     })
 
     Endpoint.broadcast("blocks:#{to_string(block.miner_hash)}", "new_block", %{

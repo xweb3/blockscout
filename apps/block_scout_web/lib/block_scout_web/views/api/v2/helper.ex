@@ -6,6 +6,7 @@ defmodule BlockScoutWeb.API.V2.Helper do
   alias Ecto.Association.NotLoaded
   alias Explorer.Chain.Address
   alias Explorer.Chain.Transaction.History.TransactionStats
+  alias Explorer.Chain.Transaction.History.Last24HrsStats
 
   import BlockScoutWeb.Account.AuthController, only: [current_user: 1]
   import BlockScoutWeb.Models.GetAddressTags, only: [get_address_tags: 2, get_tags_on_address: 1]
@@ -112,6 +113,18 @@ defmodule BlockScoutWeb.API.V2.Helper do
       [%{number_of_transactions: 0, gas_used: 0}]
     else
       transaction_stats
+    end
+  end
+
+  def get_last_24hrs_stats do
+    #stats_scale = date_range(1)
+    last_24hrs_stats = Last24HrsStats.by_const_id(1)
+
+    # Need datapoint for legend if none currently available.
+    if Enum.empty?(last_24hrs_stats) do
+      [%{number_of_transactions: 0, number_of_blocks: 0}]
+    else
+      last_24hrs_stats
     end
   end
 
