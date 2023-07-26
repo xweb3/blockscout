@@ -1088,10 +1088,15 @@ msgstr "カスタムABI"
 msgid "Custom ABI from account"
 msgstr "アカウントからカスタムABI"
 
-#: lib/block_scout_web/templates/chain/show.html.eex:7
+
 #: lib/block_scout_web/templates/chain/show.html.eex:44
 #, elixir-autogen
 msgid "Daily Txn Volume"
+msgstr ""
+
+#: lib/block_scout_web/templates/chain/show.html.eex:7
+#, elixir-autogen
+msgid "Daily Transactions"
 msgstr "日々の取引"
 
 #: lib/block_scout_web/templates/address_logs/_logs.html.eex:101
@@ -5245,7 +5250,7 @@ msgstr "秒"
 msgid "Accepted on L2"
 msgstr "L2で受け付けられました"
 
-msgid "Rollup to L1"
+msgid "Accepted on L1"
 msgstr "L1まで巻き上げる"
 
 msgid "Finalized on L1"

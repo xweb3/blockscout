@@ -1088,10 +1088,15 @@ msgstr "커스텀 ABI"
 msgid "Custom ABI from account"
 msgstr "계정에서 사용자 정의 ABI"
 
-#: lib/block_scout_web/templates/chain/show.html.eex:7
+
 #: lib/block_scout_web/templates/chain/show.html.eex:44
 #, elixir-autogen
 msgid "Daily Txn Volume"
+msgstr ""
+
+#: lib/block_scout_web/templates/chain/show.html.eex:7
+#, elixir-autogen
+msgid "Daily Transactions"
 msgstr "일일 거래량"
 
 #: lib/block_scout_web/templates/address_logs/_logs.html.eex:101
@@ -5243,7 +5248,7 @@ msgstr "초"
 msgid "Accepted on L2"
 msgstr "L2에서 수락되었습니다"
 
-msgid "Rollup to L1"
+msgid "Accepted on L1"
 msgstr "L1로 롤업"
 
 msgid "Finalized on L1"
