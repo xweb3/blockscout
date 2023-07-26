@@ -1098,12 +1098,12 @@ msgstr "Пользовательский ABI от аккаунта"
 #: lib/block_scout_web/templates/chain/show.html.eex:44
 #, elixir-autogen
 msgid "Daily Txn Volume"
-msgstr ""
+msgstr "Ежедневный объем сделок"
 
 #: lib/block_scout_web/templates/chain/show.html.eex:58
 #, elixir-autogen
 msgid "24H Txn Volume"
-msgstr ""
+msgstr "24H объем транзакций"
 
 #: lib/block_scout_web/templates/chain/show.html.eex:7
 #, elixir-autogen

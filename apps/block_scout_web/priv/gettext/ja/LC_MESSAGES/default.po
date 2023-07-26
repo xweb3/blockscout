@@ -1092,12 +1092,12 @@ msgstr "アカウントからカスタムABI"
 #: lib/block_scout_web/templates/chain/show.html.eex:44
 #, elixir-autogen
 msgid "Daily Txn Volume"
-msgstr ""
+msgstr "毎日の取引量"
 
 #: lib/block_scout_web/templates/chain/show.html.eex:58
 #, elixir-autogen
 msgid "24H Txn Volume"
-msgstr ""
+msgstr "24時間の取引量"
 
 #: lib/block_scout_web/templates/chain/show.html.eex:7
 #, elixir-autogen
