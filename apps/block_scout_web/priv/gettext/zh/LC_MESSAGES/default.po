@@ -1094,12 +1094,12 @@ msgstr "帐户自定义ABI"
 #: lib/block_scout_web/templates/chain/show.html.eex:44
 #, elixir-autogen
 msgid "Daily Txn Volume"
-msgstr ""
+msgstr "每日交易量"
 
 #: lib/block_scout_web/templates/chain/show.html.eex:58
 #, elixir-autogen
 msgid "24H Txn Volume"
-msgstr ""
+msgstr "24小时交易量"
 
 #: lib/block_scout_web/templates/chain/show.html.eex:7
 #, elixir-autogen
