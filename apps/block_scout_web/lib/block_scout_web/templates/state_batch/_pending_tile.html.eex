@@ -13,7 +13,9 @@
         <%= if @state_batch.to_address_hash do %>
           <%= render BlockScoutWeb.AddressView, "_link.html", address: @state_batch.to_address, contract: BlockScoutWeb.AddressView.contract?(@state_batch.to_address), use_custom_tooltip: false %>
         <% else %>
-          <%= gettext("Contract Address Pending") %>
+          <span class="text-truncate">
+     <%= gettext("Contract Address Pending") %>
+ <span>
         <% end %>
       </span>
       <span class="d-flex flex-md-row flex-column mt-3 mt-md-0">

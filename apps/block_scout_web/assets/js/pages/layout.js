@@ -30,6 +30,37 @@ if (analytics.mixpanelInitialized || analytics.amplitudeInitialized) {
   }
 }
 
+const getParam = (key) => {
+  if (!key) return false
+  const url = window.location
+  const params = new URLSearchParams(url.search)
+  if (params.has(key)) {
+    return params.get(key)
+  }
+  return false
+}
+
+const addParam = (key, val) => {
+  if (!key || !val) return
+  const currUrl = new URL(location)
+  currUrl.searchParams.set(key, val)
+  history.pushState({}, '', currUrl)
+}
+
+$('#addressContractTab button.nav-link').on('click', (e) => {
+  const target = $(e.currentTarget).data('target')
+  const applyParam = target.slice(1, target.length)
+  console.log({ target, applyParam })
+  addParam('contract-tab', applyParam)
+})
+
+if ($('#addressContractTab').length && getParam('contract-tab')) {
+  const currTabs = getParam('contract-tab')
+  if ($(`#${currTabs}`).length) {
+    $(`button[data-target='#${currTabs}']`).trigger('click')
+  }
+}
+
 const handleWindowOnScroll = (e) => {
   if (e.currentTarget.scrollY > 100) {
     $('.scroll-top-btn').fadeIn()
