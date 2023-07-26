@@ -39,6 +39,7 @@ export const initialState = {
   usdMarketCap: null,
   blockCount: null,
   last24HrsTxnCount: null,
+  todayStartBlock: null,
 }
 
 export const reducer = withMissingBlocks(baseReducer)
@@ -153,8 +154,16 @@ function baseReducer(state = initialState, action) {
       })
     }
     case 'RECEIVED_UPDATED_TRANSACTION_STATS': {
+      let todayStartBlock = null;
+      if (action.msg.stats.length > 0) {
+        const { today_start_block } = action.msg.stats[0];
+        if (today_start_block && Number(today_start_block) !== NaN) {
+          todayStartBlock = Number(today_start_block);
+        }
+      }
       return Object.assign({}, state, {
-        transactionStats: action.msg.stats
+        transactionStats: action.msg.stats,
+        todayStartBlock
       })
     }
     case 'START_TRANSACTIONS_FETCH':
@@ -305,26 +314,22 @@ const elements = {
   },
   '[data-selector="tx_per_day"]': {
     render($el, state, oldState) {
-      if (state.blockCount && oldState.blockCount !== state.blockCount) {
-        const todayStartBlock = sessionStorage.getItem('today_start_block')
-        //console.log('state block count and today start block', state.blockCount, todayStartBlock)
-        if (todayStartBlock && Number(todayStartBlock) !== NaN) {
-          const count = state.blockCount + 1 - Number(todayStartBlock);
-          $el
-            .empty()
-            .append(
-              numeral(count).format(
-                '0,0'
-              )
+      console.log('block count, today start block',state.blockCount, state.todayStartBlock)
+      if ((state.blockCount && state.todayStartBlock) && (oldState.blockCount !== state.blockCount || oldState.todayStartBlock !== state.todayStartBlock)) {
+        const count = state.blockCount + 1 - state.todayStartBlock;
+        $el
+          .empty()
+          .append(
+            numeral(count).format(
+              '0,0'
             )
-        }
-
+          )
       }
     }
   },
   '[data-selector="24h_txn_volume"]': {
     render($el, state, oldState) {
-      console.log('state last 24 hours txn count', oldState.last24HrsTxnCount,state.last24HrsTxnCount)
+      console.log('state last 24 hours txn count', oldState.last24HrsTxnCount, state.last24HrsTxnCount)
       if (state.last24HrsTxnCount !== null && oldState.last24HrsTxnCount !== state.last24HrsTxnCount) {
         if (state.last24HrsTxnCount && Number(state.last24HrsTxnCount) !== NaN) {
           $el
@@ -492,13 +497,13 @@ if ($chainDetailsPage.length) {
 
   const blocksChannel = socket.channel('blocks:new_block')
   blocksChannel.join()
-  blocksChannel.on('new_block', (msg) =>{
+  blocksChannel.on('new_block', (msg) => {
     return store.dispatch({
       type: 'RECEIVED_NEW_BLOCK',
       msg: humps.camelizeKeys(msg)
     })
   }
-   
+
   )
 
   const transactionsChannel = socket.channel('transactions:new_transaction')
@@ -515,11 +520,14 @@ if ($chainDetailsPage.length) {
 
   const transactionStatsChannel = socket.channel('transactions:stats')
   transactionStatsChannel.join()
-  transactionStatsChannel.on('update', (msg) =>
-    store.dispatch({
+  transactionStatsChannel.on('update', (msg) => {
+    console.log('------', msg)
+    return store.dispatch({
       type: 'RECEIVED_UPDATED_TRANSACTION_STATS',
       msg
     })
+  }
+
   )
 
   const $txReloadButton = $('[data-selector="reload-transactions-button"]')

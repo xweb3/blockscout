@@ -8,7 +8,7 @@ defmodule Explorer.Chain.Transaction.History.TransactionStats do
   use Explorer.Schema
 
   alias Explorer.Repo
-
+require Logger
   @derive {Jason.Encoder,
            except: [
              :__meta__
