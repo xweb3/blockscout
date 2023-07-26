@@ -19,7 +19,7 @@ defmodule Explorer.Chain.Transaction.History.TransactionStats do
     field(:number_of_transactions, :integer)
     field(:gas_used, :decimal)
     field(:total_fee, :decimal)
-    field(:today_start_block, :integer)
+    field(:today_start_block, :decimal)
   end
 
   @typedoc """
@@ -34,7 +34,7 @@ defmodule Explorer.Chain.Transaction.History.TransactionStats do
           number_of_transactions: integer(),
           gas_used: non_neg_integer(),
           total_fee: non_neg_integer(),
-          today_start_block: non_neg_integer()
+          today_start_block: integer()
         }
 
   @spec by_date_range(Date.t(), Date.t()) :: [__MODULE__]
