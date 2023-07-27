@@ -43,7 +43,7 @@ export class TransactionStatsService {
       SELECT number FROM blocks WHERE timestamp < $1 order by number desc limit 1;
       `, [formatUTCTimestamp])
       if (subRes?.length > 0) {
-        const { number } = res[0]
+        const { number } = subRes[0]
         startBlockNumber = number + 1;
       }
     }
