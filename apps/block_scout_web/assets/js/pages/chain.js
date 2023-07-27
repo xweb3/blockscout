@@ -238,7 +238,7 @@ const elements = {
       chart = window.dashboardChart
     },
     render(_$el, state, oldState) {
-      if (
+      /* if (
         !chart ||
         (oldState.availableSupply === state.availableSupply &&
           oldState.marketHistoryData === state.marketHistoryData) ||
@@ -246,7 +246,7 @@ const elements = {
       )
         return
 
-      chart.updateMarketHistory(state.availableSupply, state.marketHistoryData)
+      chart.updateMarketHistory(state.availableSupply, state.marketHistoryData) */
 
       if (
         !chart ||
@@ -254,7 +254,7 @@ const elements = {
         JSON.stringify(state.transactionStats)
       )
         return
-
+        console.log('transaction history chart will update')
       chart.updateTransactionHistory(state.transactionStats)
     }
   },
