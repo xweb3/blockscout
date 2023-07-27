@@ -247,15 +247,44 @@ const elements = {
         return
 
       chart.updateMarketHistory(state.availableSupply, state.marketHistoryData) */
+      if(state.transactionStats && oldState.transactionStats){
+        console.error(state.transactionStats[1], oldState.transactionStats[1])
+        console.error(chart 
+          && oldState.transactionStats 
+          && state.transactionStats 
+          && oldState.transactionStats.length > 1 
+          && state.transactionStats.length > 1)
+        console.error(oldState.transactionStats[1].date !== state.transactionStats[1].date)
+        console.error(oldState.transactionStats[1].id !== state.transactionStats[1].id)
+        console.error(oldState.transactionStats[1].number_of_transactions !== state.transactionStats[1].number_of_transactions)
+      }
+      
+      if(
+        chart 
+        && oldState.transactionStats 
+        && state.transactionStats 
+        && oldState.transactionStats.length > 1 
+        && state.transactionStats.length > 1
+        && (
+          oldState.transactionStats[1].date !== state.transactionStats[1].date
+          || oldState.transactionStats[1].id !== state.transactionStats[1].id
+          || oldState.transactionStats[1].number_of_transactions !== state.transactionStats[1].number_of_transactions
+        )
+      ){
+        console.log('transaction history chart will update')
+        chart.updateTransactionHistory(state.transactionStats)
+      }
 
-      if (
+
+
+      /* if (
         !chart ||
         JSON.stringify(oldState.transactionStats) ===
         JSON.stringify(state.transactionStats)
       )
-        return
-        console.log('transaction history chart will update')
-      chart.updateTransactionHistory(state.transactionStats)
+        return */
+        
+      
     }
   },
   '[data-selector="transaction-count"]': {
