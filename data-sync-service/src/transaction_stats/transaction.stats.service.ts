@@ -65,7 +65,7 @@ export class TransactionStatsService {
       const todayUtcZeroTimestamp = moment.utc().clone().startOf('day').valueOf();
       const formatUTCTimestamp = new Date(todayUtcZeroTimestamp).toISOString();
 
-      const startBlockNumber = await this.queryTodayStartBlock(formatUTCTimestamp);
+      //const startBlockNumber = await this.queryTodayStartBlock(formatUTCTimestamp);
 
       //TODO (Jayce) The method calculated of count of txn should be change after upgrade of bedrock
       const [{ count }] = await this.entityManager.query(`SELECT count(*) FROM blocks WHERE timestamp >= $1`, [formatUTCTimestamp])
@@ -81,7 +81,7 @@ export class TransactionStatsService {
             number_of_transactions: count,
             gas_used: 0,
             total_fee: 0,
-            today_start_block: Number(startBlockNumber),
+            //today_start_block: Number(startBlockNumber),
           }])
           .orUpdate(["number_of_transactions", "today_start_block"], ["date"], {
             skipUpdateIfNoValuesChanged: true

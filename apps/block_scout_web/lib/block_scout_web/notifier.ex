@@ -112,6 +112,19 @@ require Logger
     end
   end
 
+  def get_transaction_stats do
+    #stats_scale = date_range(1)
+    today = Date.utc_today()
+    transaction_stats = TransactionStats.by_date_range(today, today)
+
+    # Need datapoint for legend if none currently available.
+    if Enum.empty?(transaction_stats) do
+      [%{number_of_transactions: 0, gas_used: 0}]
+    else
+      transaction_stats
+    end
+  end
+
   def handle_event({:chain_event, :exchange_rate}) do
     exchange_rate = Market.get_exchange_rate(Explorer.coin()) || Token.null()
 
@@ -323,12 +336,21 @@ require Logger
     last_24hrs_stats = get_last_24hrs_stats()
 
     last_24hrs_txn = Enum.at(last_24hrs_stats, 0).number_of_transactions
+
+
+    today_txn_stats = get_transaction_stats()
+    today_txn_count = Enum.at(today_txn_stats, 0).number_of_transactions
+
     Logger.info("last 24 hours number of transactions from push")
     Logger.info("#{inspect(last_24hrs_txn)}")
+
+    Logger.info("today number of transactions from push")
+    Logger.info("#{inspect(today_txn_count)}")
     Endpoint.broadcast("blocks:new_block", "new_block", %{
       block: preloaded_block,
       average_block_time: average_block_time,
       last_24hrs_txn_count: last_24hrs_txn,
+      today_txn_count: today_txn_count,
     })
 
     Endpoint.broadcast("blocks:#{to_string(block.miner_hash)}", "new_block", %{

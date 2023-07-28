@@ -40,6 +40,7 @@ export const initialState = {
   blockCount: null,
   last24HrsTxnCount: null,
   todayStartBlock: null,
+  todayTxnCount: null,
 }
 
 export const reducer = withMissingBlocks(baseReducer)
@@ -66,21 +67,23 @@ function baseReducer(state = initialState, action) {
           $('.miner-address-tooltip').tooltip('hide')
           pastBlocks = state.blocks.slice(0, -1)
         }
-        console.log('last 24 hours txn count from websocket push', action.msg.last24hrsTxnCount)
+        console.log('today and last 24 hours txn count from websocket push', action.msg.last24hrsTxnCount, action.msg.todayTxnCount)
         return Object.assign({}, state, {
           averageBlockTime: action.msg.averageBlockTime,
           blocks: [action.msg, ...pastBlocks],
           blockCount: action.msg.blockNumber,
           last24HrsTxnCount: action.msg.last24hrsTxnCount,
+          todayTxnCount: action.msg.todayTxnCount,
         })
       } else {
-        console.log('last 24 hours txn count from websocket push', action.msg.last24hrsTxnCount)
+        console.log('today and last 24 hours txn count from websocket push', action.msg.last24hrsTxnCount, action.msg.todayTxnCount)
         return Object.assign({}, state, {
           blocks: state.blocks.map((block) =>
             block.blockNumber === action.msg.blockNumber ? action.msg : block
           ),
           blockCount: action.msg.blockNumber,
           last24HrsTxnCount: action.msg.last24hrsTxnCount,
+          todayTxnCount: action.msg.todayTxnCount,
         })
       }
     }
@@ -328,13 +331,12 @@ const elements = {
   },
   '[data-selector="tx_per_day"]': {
     render($el, state, oldState) {
-      console.log('block count, today start block', state.blockCount, state.todayStartBlock)
-      if ((state.blockCount && state.todayStartBlock) && (oldState.blockCount !== state.blockCount || oldState.todayStartBlock !== state.todayStartBlock)) {
-        const count = state.blockCount + 1 - state.todayStartBlock;
+      console.log('today txn count', state.todayTxnCount)
+      if (state.todayTxnCount !== null && state.todayTxnCount > 0) {
         $el
           .empty()
           .append(
-            numeral(count).format(
+            numeral(state.todayTxnCount).format(
               '0,0'
             )
           )
@@ -343,7 +345,7 @@ const elements = {
   },
   '[data-selector="24h_txn_volume"]': {
     render($el, state, oldState) {
-      console.log('state last 24 hours txn count', oldState.last24HrsTxnCount, state.last24HrsTxnCount)
+      console.log('state last 24 hours txn count', state.last24HrsTxnCount)
       if (state.last24HrsTxnCount !== null && oldState.last24HrsTxnCount !== state.last24HrsTxnCount) {
         if (state.last24HrsTxnCount && Number(state.last24HrsTxnCount) !== NaN) {
           $el

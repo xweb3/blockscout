@@ -34,7 +34,7 @@ require Logger
     {:noreply, socket}
   end
 
-  def handle_out("new_block", %{block: block, average_block_time: average_block_time, last_24hrs_txn_count: last_24hrs_txn_count}, socket) do
+  def handle_out("new_block", %{block: block, average_block_time: average_block_time, last_24hrs_txn_count: last_24hrs_txn_count, today_txn_count: today_txn_count}, socket) do
     Gettext.put_locale(BlockScoutWeb.Gettext, socket.assigns.locale)
 
     rendered_block =
@@ -58,6 +58,7 @@ require Logger
       block_number: block.number,
       block_miner_hash: to_string(block.miner_hash),
       last_24hrs_txn_count: last_24hrs_txn_count,
+      today_txn_count: today_txn_count,
 
     })
 
