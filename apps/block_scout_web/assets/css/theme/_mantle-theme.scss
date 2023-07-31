@@ -913,7 +913,15 @@ body {
         border-bottom: 1px solid #ffffff26;
         .table-tile-row {
           color: #ffffff;
-
+          span[data-address-hash]{
+            color: rgb(69, 161, 232);
+          }
+          [data-from-now]{
+            color: rgba(255, 255, 255, 0.7);
+          }
+          .dark-opacity-white{
+            color: rgba(255, 255, 255, 0.7);
+          }
           .chevron-right {
             rect:first-child {
               fill: #21413f;
@@ -1958,7 +1966,7 @@ body {
   }
 
   .alert-danger {
-    background-color: $dark-light;
+    // background-color: $dark-light;
     border-color: $dark-light;
 
     .alert-link {

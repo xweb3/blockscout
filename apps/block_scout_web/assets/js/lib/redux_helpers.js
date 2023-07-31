@@ -3,6 +3,7 @@ import reduce from 'lodash.reduce'
 import isObject from 'lodash.isobject'
 import forIn from 'lodash.forin'
 import { createStore as reduxCreateStore } from 'redux'
+import { hideUnvisibleTooltips } from './tooltip'
 
 /**
  * Create a redux store given the reducer. It also enables the Redux dev tools.
@@ -109,6 +110,7 @@ export function connectElements ({ elements, store, action = 'ELEMENTS_LOAD' }) 
   }
 
   function renderElements (state, oldState) {
+    hideUnvisibleTooltips()
     forIn(elements, ({ render }, selector) => {
       if (!render) return
       const $el = $(selector)
