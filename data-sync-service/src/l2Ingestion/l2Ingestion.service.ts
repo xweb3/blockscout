@@ -52,10 +52,10 @@ export class L2IngestionService {
     );
     this.web3 = web3;
     this.initMetrics();
-    /* if(configService.get('ENV') !== 'mainnet'){
+    if(configService.get('ENV') === 'testnet'){
       this.WithdrawalMethod = 'finalizeBitWithdrawal'
       this.WithdrawalMethodHexPrefix = '0x839f0ec6'
-    } */
+    }
   }
   async getSentMessageByBlockNumber(fromBlock: number, toBlock: number) {
     return this.crossDomainMessengerContract.getPastEvents('SentMessage', {
