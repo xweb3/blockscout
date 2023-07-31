@@ -22,7 +22,8 @@ defmodule BlockScoutWeb.TransactionTokenTransferController do
   import EthereumJSONRPC
   require Logger
 
-  {:ok, burn_address_hash} = Chain.string_to_address_hash("0x0000000000000000000000000000000000000000")
+  {:ok, burn_address_hash} =
+    Chain.string_to_address_hash("0x0000000000000000000000000000000000000000")
 
   @burn_address_hash burn_address_hash
 
@@ -54,7 +55,8 @@ defmodule BlockScoutWeb.TransactionTokenTransferController do
           paging_options(params)
         )
 
-      token_transfers_plus_one = Chain.transaction_to_token_transfers(transaction_hash, full_options)
+      token_transfers_plus_one =
+        Chain.transaction_to_token_transfers(transaction_hash, full_options)
 
       {token_transfers, next_page} = split_list_by_page(token_transfers_plus_one)
 
@@ -90,14 +92,15 @@ defmodule BlockScoutWeb.TransactionTokenTransferController do
       #     }
       #   )
 
-      # Logger.info("#{inspect(transaction2)}")
-
       items =
         token_transfers
         |> Enum.map(fn transfer ->
+          IO.puts("+++++++")
+          Logger.info("#{inspect(transfer)}")
+
           View.render_to_string(
             TransactionTokenTransferView,
-            "_token_transfer.html",
+            "_token_transfer_table.html",
             token_transfer: transfer,
             burn_address_hash: @burn_address_hash,
             conn: conn

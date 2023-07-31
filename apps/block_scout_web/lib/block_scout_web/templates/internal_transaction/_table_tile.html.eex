@@ -84,7 +84,7 @@
         </span>
       </span>
       <span style="width: 10%;" class="text-truncate" data-toggle="tooltip" data-placement="top" title="" data-custom-class="" data-original-title="<%= BlockScoutWeb.TransactionView.formatted_fee(@internal_transaction.transaction, denomination: :ether, include_label: false) %>">
-        <span >
+        <span class="dark-opacity-white">
           <%= BlockScoutWeb.TransactionView.formatted_fee(@internal_transaction.transaction, denomination: :ether, include_label: false) %>
         </span>
       </span>

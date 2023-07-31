@@ -42,9 +42,6 @@
           <span class="tile-label" data-test="transaction_type">
             <%= transaction_display_type(@transaction) %>
           </span>
-            <%= if error_in_internal_tx do %>
-            <%= render BlockScoutWeb.CommonComponentsView, "_i_tooltip_2.html", text: gettext("Error in internal transactions"), additional_classes: ["color-inherit"] %>
-          <% end %>
         </span>
         <span style="width: 9%;" class="tag-container text-truncate">
           <% method_name = Transaction.get_method_name(@transaction) %>
@@ -101,7 +98,7 @@
           </span>
         </span>
         <span style="width: 10%;" class="text-truncate" data-toggle="tooltip" data-placement="top" title="" data-custom-class="" data-original-title="<%= formatted_fee(@transaction, denomination: :ether, include_label: false) %>">
-          <span >
+          <span class="dark-opacity-white">
              <%= formatted_fee(@transaction, denomination: :ether, include_label: false) %>
           </span>
         </span>

@@ -126,7 +126,7 @@
           </span>
         </span>
         <span style="width: 8%;" class="text-truncate" data-toggle="tooltip" data-placement="top" title="" data-custom-class="" data-original-title="<%= formatted_fee(@transaction, denomination: :ether, include_label: false) %>">
-          <span >
+          <span class="dark-opacity-white">
              <%= formatted_fee(@transaction, denomination: :ether, include_label: false) %>
           </span>
         </span>
