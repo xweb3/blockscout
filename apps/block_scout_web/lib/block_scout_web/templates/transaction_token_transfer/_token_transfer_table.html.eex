@@ -84,11 +84,24 @@
 
     <span style="width: 15%;" class="text-truncate">
       <%= case token_transfer_amount(@token_transfer) do %>
-        <% {:ok, value} -> %>
-          <span data-toggle="tooltip" data-placement="top" title="" data-custom-class="" data-original-title="<%= value %>">
-            <%= value %>
-          </span>
+            <% {:ok, :erc721_instance} -> %>
+               <div>
+           1
+            </div>
+    <% {:ok, :erc1155_instance, value} -> %>
+         <%= "#{value} " %>
+    <% {:ok, :erc1155_instance, values, token_ids, _decimals} -> %>
+        <% values_ids = Enum.zip(values, token_ids) %>
+        <%= for {value, token_id} <- values_ids do %>
+            <div>
+            <%= "#{value} "%>
+            </div>
+        <% end %>
+    <% {:ok, value} -> %>
+        <%= value %>
       <% end %>
+
+
     </span>
 
 
