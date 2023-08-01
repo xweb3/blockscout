@@ -5,6 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <%= if System.get_env("REDIRECT_SEO_TO_MAINNET") do %>
+      <link rel="canonical" href="https://explorer.mantle.xyz/" />
+      <meta name="robots" content="noindex">
+    <% end %>
+
     <%= case @view_module do %>
       <% Elixir.BlockScoutWeb.ChainView -> %>
         <link rel="stylesheet" href="<%= static_path(@conn, "/css/main-page.css") %>">
@@ -35,6 +40,8 @@
     <meta name="msapplication-TileColor" content="#7dd79f">
     <meta name="msapplication-config" content="<%= static_path(@conn, "/browserconfig.xml") %>">
     <meta name="theme-color" content="#ffffff">
+
+
 
     <%= render_existing(@view_module, "_metatags.html", assigns) || render("_default_title.html") %>
 
