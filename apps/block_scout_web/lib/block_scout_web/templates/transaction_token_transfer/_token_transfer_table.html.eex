@@ -88,7 +88,7 @@
                       <div class="collapsible-list">
 
 
-                       <button class="collapsible-toggler" type="button" data-toggle="collapse" data-target="#collapsible-token-<%= @token_transfer.transaction_hash %>" aria-controls="collapsible-token-<%= @token_transfer.transaction_hash %>" aria-expanded="false" aria-label="<%= gettext("Toggle navigation") %>">
+                       <button class="collapsible-toggler only-more" type="button" data-toggle="collapse" data-target="#collapsible-token-<%= @token_transfer.transaction_hash %>" aria-controls="collapsible-token-<%= @token_transfer.transaction_hash %>" aria-expanded="false" aria-label="<%= gettext("Toggle navigation") %>">
 
                         <span class="more">
                           <%= gettext("More Details") %>
@@ -99,15 +99,30 @@
                         <svg viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg" class="collapsible-toggle-icon"><path d="m3 5 3 3 3-3" stroke="white" stroke-width="1.2"></path></svg>
                         </button>
 
-                        <div class="collapse navbar-collapse" id="collapsible-token-<%= @token_transfer.transaction_hash %>">
-                          <%= for {{_value, token_id}, index} <- Enum.with_index(values_ids) do %>
-                            <%= if index >= 4 do %>
-                              <div class="collapsible-item text-truncate" style="width:100%">
-                                <%= render BlockScoutWeb.TransactionView, "_transfer_token_with_id_no_label.html", transfer: @token_transfer, token_id: token_id %>
-                              </div>
+                        <div class="collapse" id="collapsible-token-<%= @token_transfer.transaction_hash %>">
+                          <div >
+                            <%= for {{_value, token_id}, index} <- Enum.with_index(values_ids) do %>
+                              <%= if index >= 4 do %>
+                                <div class="collapsible-item text-truncate" style="width:100%">
+                                  <%= render BlockScoutWeb.TransactionView, "_transfer_token_with_id_no_label.html", transfer: @token_transfer, token_id: token_id %>
+                                </div>
+                              <% end %>
                             <% end %>
-                          <% end %>
+                          </div>
                         </div>
+
+                        <button class="collapsible-toggler only-less" type="button" data-toggle="collapse" data-target="#collapsible-token-<%= @token_transfer.transaction_hash %>" aria-controls="collapsible-token-<%= @token_transfer.transaction_hash %>" aria-expanded="false" aria-label="<%= gettext("Toggle navigation") %>">
+                        <span class="more">
+                          <%= gettext("More Details") %>
+                        </span>
+                        <span class="less">
+                          <%= gettext("Less Details") %>
+                        </span>
+                        <svg viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg" class="collapsible-toggle-icon"><path d="m3 5 3 3 3-3" stroke="white" stroke-width="1.2"></path></svg>
+                        </button>
+
+
+
                       </div>
                     <% end %>
 
@@ -145,26 +160,29 @@
       <%= if length(values_ids) > 4 do %>
         <div class="collapsible-list">
 
-          <button class="collapsible-toggler" type="button" data-toggle="collapse" data-target="#collapsible-amount-<%= @token_transfer.transaction_hash %>" aria-controls="collapsible-amount-<%= @token_transfer.transaction_hash %>" aria-expanded="false" aria-label="<%= gettext("Toggle navigation") %>">
-                         <span class="more">
-                          <%= gettext("More Details") %>
-                        </span>
-                        <span class="less">
-                          <%= gettext("Less Details") %>
-                        </span>
+        <button style="opacity: 0; visibility: hidden;" class="collapsible-toggler only-more" type="button" data-toggle="collapse" data-target="#collapsible-token-<%= @token_transfer.transaction_hash %>" aria-controls="collapsible-token-<%= @token_transfer.transaction_hash %>" aria-expanded="false" aria-label="<%= gettext("Toggle navigation") %>">
+          <span class="more">
+            <%= gettext("More Details") %>
+          </span>
+          <span class="less">
+            <%= gettext("Less Details") %>
+          </span>
+          <svg viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg" class="collapsible-toggle-icon"><path d="m3 5 3 3 3-3" stroke="white" stroke-width="1.2"></path></svg>
+        </button>
 
-                        <svg viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg" class="collapsible-toggle-icon"><path d="m3 5 3 3 3-3" stroke="white" stroke-width="1.2"></path></svg>
-                        </button>
-
-          <div class="collapse navbar-collapse" id="collapsible-amount-<%= @token_transfer.transaction_hash %>">
-            <%= for {{value, _token_id}, index} <- Enum.with_index(values_ids) do %>
+          <div class="collapse" id="collapsible-token-<%= @token_transfer.transaction_hash %>">
+            <div >
+              <%= for {{value, _token_id}, index} <- Enum.with_index(values_ids) do %>
               <%= if index >= 4 do %>
                 <div class="collapsible-item text-truncate" style="width:100%">
                   <%= "#{value} "%>
                 </div>
               <% end %>
             <% end %>
+            </div>
           </div>
+
+
         </div>
        <% end %>
 

@@ -148,6 +148,7 @@ body {
                 stroke: #007bff;
               }
             }
+
             &[aria-expanded="true"]{
               .collapsible-toggle-icon{
                 transform: rotate(180deg);
@@ -158,12 +159,24 @@ body {
                .less{
                 display: block;
                }
+               &.only-more{
+                display: none;
+               }
+               &.only-less{
+                display: flex;
+               }
             }
             &[aria-expanded="false"]{
              .more{
               display: block;
              }
              .less{
+              display: none;
+             }
+             &.only-more{
+              display: flex;
+             }
+             &.only-less{
               display: none;
              }
             }
