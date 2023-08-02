@@ -617,7 +617,7 @@ export function placeHolderBlock(blockNumber) {
       <div
         class="table-tile  tile tile-type-block d-flex align-items-center"
       >
-        <div class="table-tile-row">
+        <div class="table-tile-row placeholder-tile">
           <span class="tile-title p-0 m-0">${blockNumber}</span>
           <div class="tile-transactions p-0 m-0">${window.localized['Block Processing']}</div>
         </div>

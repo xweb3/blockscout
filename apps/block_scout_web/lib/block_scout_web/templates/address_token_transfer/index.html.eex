@@ -79,13 +79,13 @@
           <span style="width: 13%;">
             <%= gettext "To" %>
           </span>
-           <span style="width: 6%;">
+           <span style="width: 10%;">
             <%= gettext "Asset" %>
           </span>
-          <span style="width: 8%;">
+          <span style="width: 6%;">
             <%= gettext "Value" %>
           </span>
-          <span style="width: 8%;">
+          <span style="width: 6%;">
             <%= gettext "Txn Fee" %>
           </span>
         </div>

@@ -2,10 +2,15 @@
 <% error_in_internal_tx = @transaction.has_error_in_internal_txs %>
 <% current_user = AuthController.current_user(@conn) %>
 <% tx_tags = BlockScoutWeb.Models.GetTransactionTags.get_transaction_with_addresses_tags(@transaction, current_user) %>
+<% multiple_token_class = if BlockScoutWeb.Tokens.TransferView.include_multiple_token_from_transaction?(@transaction), do: "multiple", else: "" %>
+
+
+
+
 <div class="table-tile tile tile-type-<%= type_suffix(@transaction) %> <%= status_class(@transaction) %>" data-test="<%= type_suffix(@transaction) %>" data-identifier-hash="<%= @transaction.hash %>">
 
 
-  <div class="table-tile-row" data-selector="token-transfers-toggle" data-test="chain_transaction">
+  <div class="table-tile-row <%= multiple_token_class %>" data-selector="token-transfers-toggle" data-test="chain_transaction">
         <span style="width: 2%;">
           <%= if status == :success do %>
             <span data-toggle="tooltip" data-placement="top" title="" data-custom-class="" data-original-title="<%= gettext("Success") %>">
@@ -95,7 +100,7 @@
           <% end %>
           <%= @transaction |> BlockScoutWeb.AddressView.address_partial_selector(:to, assigns[:current_address],:truncate) |> BlockScoutWeb.RenderHelpers.render_partial() %>
         </span>
-        <span style="width: 6%;" class="text-truncate">
+        <span style="width: 10%;" class="text-truncate">
           <%= if involves_token_transfers?(@transaction) do %>
               <% [first_token_transfer | remaining_token_transfers] = @transaction.token_transfers %>
               <%= case token_transfer_amount(first_token_transfer) do %>
@@ -110,22 +115,58 @@
                     <% end %>
                   <% {:ok, :erc1155_instance, values, token_ids, _decimals} -> %>
                     <% values_ids = Enum.zip(values, token_ids) %>
-                    <%= for {value, token_id} <- values_ids do %>
-                        <div>
-                        <%= render BlockScoutWeb.TransactionView, "_transfer_token_with_id_no_label.html", transfer: first_token_transfer, token_id: token_id %>
+
+
+                    <%= for {{_value, token_id}, index} <- Enum.with_index(values_ids) do %>
+                      <%= if index < 4 do %>
+                        <div class="text-truncate">
+                          <%= render BlockScoutWeb.TransactionView, "_transfer_token_with_id_no_label.html", transfer: first_token_transfer, token_id: token_id %>
                         </div>
+                      <% end %>
                     <% end %>
+
+
+
+                    <%= if length(values_ids) > 4 do %>
+                      <div class="collapsible-list">
+
+
+                       <button class="collapsible-toggler" type="button" data-toggle="collapse" data-target="#collapsible-token-<%= @transaction.hash %>" aria-controls="collapsible-token-<%= @transaction.hash %>" aria-expanded="false" aria-label="<%= gettext("Toggle navigation") %>">
+                           <span class="more">
+                          <%= gettext("More Details") %>
+                        </span>
+                        <span class="less">
+                          <%= gettext("Less Details") %>
+                        </span>
+                        <svg viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg" class="collapsible-toggle-icon"><path d="m3 5 3 3 3-3" stroke="white" stroke-width="1.2"></path></svg>
+                        </button>
+
+                        <div class="collapse navbar-collapse" id="collapsible-token-<%= @transaction.hash %>">
+                          <%= for {{_value, token_id}, index} <- Enum.with_index(values_ids) do %>
+                            <%= if index >= 4 do %>
+                              <div class="collapsible-item text-truncate" style="width:100%">
+                                <%= render BlockScoutWeb.TransactionView, "_transfer_token_with_id_no_label.html", transfer: first_token_transfer, token_id: token_id %>
+                              </div>
+                            <% end %>
+                          <% end %>
+                        </div>
+                      </div>
+                    <% end %>
+
+
+
+
                   <% {:ok, value} -> %>
                   <%= render BlockScoutWeb.TransactionView, "_link_to_token_symbol.html", transfer: first_token_transfer %>
               <% end %>
           <% end %>
         </span>
-        <span style="width: 8%;" class="text-truncate" data-toggle="tooltip" data-placement="top" title="" data-custom-class="" data-original-title="<%= value(@transaction, include_label: false) %> <%= Explorer.coin_name() %>">
+        <span style="width: 6%;" class="text-truncate" data-toggle="tooltip" data-placement="top" title="" data-custom-class="" data-original-title="<%= value(@transaction, include_label: false) %> <%= Explorer.coin_name() %>">
           <span>
             <%= value(@transaction, include_label: false) %> <%= Explorer.coin_name() %>
           </span>
         </span>
-        <span style="width: 8%;" class="text-truncate" data-toggle="tooltip" data-placement="top" title="" data-custom-class="" data-original-title="<%= formatted_fee(@transaction, denomination: :ether, include_label: false) %>">
+        <span style="width: 6%;" class="text-truncate" data-toggle="tooltip" data-placement="top" title="" data-custom-class="" data-original-title="<%= formatted_fee(@transaction, denomination: :ether, include_label: false) %>">
           <span class="dark-opacity-white">
              <%= formatted_fee(@transaction, denomination: :ether, include_label: false) %>
           </span>
