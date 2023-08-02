@@ -103,7 +103,7 @@
             <%= value(@transaction, include_label: false) %> <%= Explorer.coin_name() %>
           </span>
         </span>
-         <span style="width: 8%;" class="text-truncate">
+         <span style="width: 8%;" class="text-truncate text-link">
           <%= if involves_token_transfers?(@transaction) do %>
               <% [first_token_transfer | remaining_token_transfers] = @transaction.token_transfers %>
               <%= case token_transfer_amount(first_token_transfer) do %>
@@ -120,14 +120,14 @@
                     <% values_ids = Enum.zip(values, token_ids) %>
 
                     <%= for {{_value, token_id}, index} <- Enum.with_index(values_ids) do %>
-                      <%= if index < 4 do %>
+                      <%= if index < 3 do %>
                         <div class="text-truncate">
                           <%= render BlockScoutWeb.TransactionView, "_transfer_token_with_id_no_label.html", transfer: first_token_transfer, token_id: token_id %>
                         </div>
                       <% end %>
                     <% end %>
 
-                    <%= if length(values_ids) > 4 do %>
+                    <%= if length(values_ids) > 3 do %>
                       <div class="collapsible-list">
                        <button class="collapsible-toggler only-more" type="button" data-toggle="collapse" data-target="#collapsible-token-<%= @transaction.hash %>" aria-controls="collapsible-token-<%= @transaction.hash %>" aria-expanded="false" aria-label="<%= gettext("Toggle navigation") %>">
                            <span class="more">
@@ -144,7 +144,7 @@
                          <div class="collapse" id="collapsible-token-<%= @transaction.hash %>">
                           <div >
                              <%= for {{_value, token_id}, index} <- Enum.with_index(values_ids) do %>
-                            <%= if index >= 4 do %>
+                            <%= if index >= 3 do %>
                               <div class="collapsible-item text-truncate" style="width:100%">
                                 <%= render BlockScoutWeb.TransactionView, "_transfer_token_with_id_no_label.html", transfer: first_token_transfer, token_id: token_id %>
                               </div>

@@ -117,7 +117,7 @@
       </span>
     </span>
 
-    <span style="width: 8%;" class="text-truncate">
+    <span style="width: 8%;" class="text-truncate text-link">
       <span>
            <%= case token_transfer_amount(@token_transfer) do %>
                   <% {:ok, :erc721_instance} -> %>
@@ -134,7 +134,7 @@
 
 
                     <%= for {{_value, token_id}, index} <- Enum.with_index(values_ids) do %>
-                      <%= if index < 4 do %>
+                      <%= if index < 3 do %>
                         <div class="text-truncate">
                           <%= render BlockScoutWeb.TransactionView, "_transfer_token_with_id_no_label.html", transfer: @token_transfer, token_id: token_id %>
                         </div>
@@ -143,7 +143,7 @@
 
 
 
-                    <%= if length(values_ids) > 4 do %>
+                    <%= if length(values_ids) > 3 do %>
                       <div class="collapsible-list">
 
 
@@ -161,7 +161,7 @@
                          <div class="collapse" id="collapsible-token-<%= @token_transfer.transaction_hash %>">
                           <div >
                             <%= for {{_value, token_id}, index} <- Enum.with_index(values_ids) do %>
-                            <%= if index >= 4 do %>
+                            <%= if index >= 3 do %>
                               <div class="collapsible-item text-truncate" style="width:100%">
                                 <%= render BlockScoutWeb.TransactionView, "_transfer_token_with_id_no_label.html", transfer: @token_transfer, token_id: token_id %>
                               </div>

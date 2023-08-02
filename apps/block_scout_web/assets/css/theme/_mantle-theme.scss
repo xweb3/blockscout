@@ -16,6 +16,10 @@ a {
   color: rgba(10, 143, 246, 1);
 }
 
+.text-link{
+  color: #007bff;
+}
+
 body {
   overscroll-behavior: none;
 }
@@ -126,6 +130,10 @@ body {
           padding: 10px;
           align-items: flex-start;
           height: auto;
+        }
+
+        .bracket{
+          color: #9FA5A9;
         }
 
         .collapsible-list{
@@ -968,6 +976,10 @@ body {
     color: #ffffff;
   }
 
+  .text-link{
+    color: rgb(69, 161, 232);
+  }
+
   .card-body {
     .table-list-page {
       .table-tile {
@@ -985,6 +997,10 @@ body {
           }
           .dark-opacity-white {
             color: rgba(255, 255, 255, 0.7);
+          }
+
+          .bracket{
+            color: white;
           }
           
           .collapsible-list{
