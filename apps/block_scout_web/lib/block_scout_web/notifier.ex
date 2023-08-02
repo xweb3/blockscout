@@ -332,14 +332,17 @@ require Logger
   defp broadcast_block(block) do
     preloaded_block = Repo.preload(block, [[miner: :names], :transactions, :rewards])
     average_block_time = AverageBlockTime.average_block_time()
-
+    Logger.info("start push 24 hours txn volume")
     last_24hrs_stats = get_last_24hrs_stats()
-
+    Logger.info("#{inspect(last_24hrs_stats)}")
     last_24hrs_txn = Enum.at(last_24hrs_stats, 0).number_of_transactions
+    Logger.info("#{inspect(last_24hrs_txn)}")
 
-
+    Logger.info("start push daily txn volume")
     today_txn_stats = get_transaction_stats()
+    Logger.info("#{inspect(today_txn_stats)}")
     today_txn_count = Enum.at(today_txn_stats, 0).number_of_transactions
+    Logger.info("#{inspect(today_txn_count)}")
 
     Logger.info("last 24 hours number of transactions from push")
     Logger.info("#{inspect(last_24hrs_txn)}")
