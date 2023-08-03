@@ -16,6 +16,10 @@ a {
   color: rgba(10, 143, 246, 1);
 }
 
+.text-link{
+  color: #007bff;
+}
+
 body {
   overscroll-behavior: none;
 }
@@ -121,6 +125,71 @@ body {
         padding: 0 10px;
         align-items: center;
         width: 100%;
+        &.multiple{
+          min-height: 42px;
+          padding: 10px;
+          align-items: flex-start;
+          height: auto;
+        }
+
+        .bracket{
+          color: #9FA5A9;
+        }
+
+        .collapsible-list{
+          .collapsible-toggler{
+            height: auto;
+            padding: 0;
+            background: none;
+            border: none;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #007bff;
+            outline: none;
+            .collapsible-toggle-icon{
+              width: 12px;
+              height: auto;
+              transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+              path{
+                stroke: #007bff;
+              }
+            }
+
+            &[aria-expanded="true"]{
+              .collapsible-toggle-icon{
+                transform: rotate(180deg);
+              }
+              .more{
+                display: none;
+               }
+               .less{
+                display: block;
+               }
+               &.only-more{
+                display: none;
+               }
+               &.only-less{
+                display: flex;
+               }
+            }
+            &[aria-expanded="false"]{
+             .more{
+              display: block;
+             }
+             .less{
+              display: none;
+             }
+             &.only-more{
+              display: flex;
+             }
+             &.only-less{
+              display: none;
+             }
+            }
+          }
+        }
         span.text-truncate.address {
           display: flex;
           align-items: center;
@@ -907,6 +976,10 @@ body {
     color: #ffffff;
   }
 
+  .text-link{
+    color: rgb(69, 161, 232);
+  }
+
   .card-body {
     .table-list-page {
       .table-tile {
@@ -925,6 +998,22 @@ body {
           .dark-opacity-white {
             color: rgba(255, 255, 255, 0.7);
           }
+
+          .bracket{
+            color: white;
+          }
+          
+          .collapsible-list{
+            .collapsible-toggler{
+              color: rgb(69, 161, 232);
+              .collapsible-toggle-icon{
+                path{
+                  stroke: rgb(69, 161, 232);
+                }
+              }
+            }
+          }
+
           .chevron-right {
             rect:first-child {
               fill: #21413f;

@@ -95,8 +95,6 @@ defmodule BlockScoutWeb.TransactionTokenTransferController do
       items =
         token_transfers
         |> Enum.map(fn transfer ->
-          IO.puts("+++++++")
-          Logger.info("#{inspect(transfer)}")
 
           View.render_to_string(
             TransactionTokenTransferView,
