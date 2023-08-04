@@ -7,6 +7,7 @@ import {
   L2RelayedMessageEvents,
   L2SentMessageEvents,
   L2ToL1,
+  Addresses
 } from 'src/typeorm';
 import { EntityManager, getConnection, getManager, Repository } from 'typeorm';
 import Web3 from 'web3';
@@ -34,6 +35,8 @@ export class L2IngestionService {
     private readonly sentEventsRepository: Repository<L2SentMessageEvents>,
     @InjectRepository(L2ToL1)
     private readonly l2ToL1Repository: Repository<L2ToL1>,
+    @InjectRepository(Addresses)
+    private readonly addressesRepo: Repository<Addresses>,
     private readonly httpService: HttpService,
     @InjectMetric('msg_nonce')
     public metricMsgNonce: Gauge<string>,
@@ -523,6 +526,36 @@ export class L2IngestionService {
         type: 'ERROR',
         time: new Date().getTime(),
         msg: `l2l1 change status error ${error?.message}`
+      })
+      await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
+    }
+  }
+  async syncFeeVaultBalance() {
+    const BVM_SequencerFeeVault = '0x4200000000000000000000000000000000000011'
+    const currentBlockNumber = await this.web3.eth.getBlockNumber()
+    const balance = await this.web3.eth.getBalance(BVM_SequencerFeeVault, currentBlockNumber);
+    const dataSource = getConnection();
+    const queryRunner = dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    try {
+      await queryRunner.manager
+          .createQueryBuilder()
+          .update(Addresses)
+          .set({
+            fetched_coin_balance_block_number: currentBlockNumber,
+            fetched_coin_balance: balance
+          })
+          .where({ hash: Buffer.from(BVM_SequencerFeeVault.slice(2), 'hex') })
+          .execute()
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      console.log({
+        type: 'ERROR',
+        time: new Date().getTime(),
+        msg: `syncFeeVaultBalance error ${error?.message}`
       })
       await queryRunner.rollbackTransaction();
     } finally {
