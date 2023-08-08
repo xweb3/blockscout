@@ -31,7 +31,9 @@ defmodule BlockScoutWeb.AddressChannel do
     "pending_transaction"
   ])
 
-  {:ok, burn_address_hash} = Chain.string_to_address_hash("0x0000000000000000000000000000000000000000")
+  {:ok, burn_address_hash} =
+    Chain.string_to_address_hash("0x0000000000000000000000000000000000000000")
+
   @burn_address_hash burn_address_hash
 
   def join("addresses:" <> address_hash, _params, socket) do
@@ -105,7 +107,11 @@ defmodule BlockScoutWeb.AddressChannel do
     end
   end
 
-  def handle_out("count", %{count: count}, %Phoenix.Socket{handler: BlockScoutWeb.UserSocketV2} = socket) do
+  def handle_out(
+        "count",
+        %{count: count},
+        %Phoenix.Socket{handler: BlockScoutWeb.UserSocketV2} = socket
+      ) do
     push(socket, "count", %{count: to_string(count)})
 
     {:noreply, socket}
@@ -135,13 +141,17 @@ defmodule BlockScoutWeb.AddressChannel do
     {:noreply, socket}
   end
 
-  def handle_out("internal_transaction", %{address: address, internal_transaction: internal_transaction}, socket) do
+  def handle_out(
+        "internal_transaction",
+        %{address: address, internal_transaction: internal_transaction},
+        socket
+      ) do
     Gettext.put_locale(BlockScoutWeb.Gettext, socket.assigns.locale)
 
     rendered_internal_transaction =
       View.render_to_string(
         InternalTransactionView,
-        "_tile.html",
+        "_table_tile.html",
         current_address: address,
         internal_transaction: internal_transaction
       )
@@ -157,7 +167,8 @@ defmodule BlockScoutWeb.AddressChannel do
 
   def handle_out("transaction", data, socket), do: handle_transaction(data, socket, "transaction")
 
-  def handle_out("token_transfer", data, socket), do: handle_token_transfer(data, socket, "token_transfer")
+  def handle_out("token_transfer", data, socket),
+    do: handle_token_transfer(data, socket, "token_transfer")
 
   def handle_out(
         "coin_balance",
@@ -166,7 +177,8 @@ defmodule BlockScoutWeb.AddressChannel do
       ) do
     coin_balance = Chain.get_coin_balance(socket.assigns.address_hash, block_number)
 
-    rendered_coin_balance = AddressViewAPI.render("coin_balance.json", %{coin_balance: coin_balance})
+    rendered_coin_balance =
+      AddressViewAPI.render("coin_balance.json", %{coin_balance: coin_balance})
 
     push(socket, "coin_balance", %{coin_balance: rendered_coin_balance})
 
@@ -197,10 +209,15 @@ defmodule BlockScoutWeb.AddressChannel do
     {:noreply, socket}
   end
 
-  def handle_out("pending_transaction", data, %Phoenix.Socket{handler: BlockScoutWeb.UserSocketV2} = socket),
-    do: handle_transaction(data, socket, "pending_transaction")
+  def handle_out(
+        "pending_transaction",
+        data,
+        %Phoenix.Socket{handler: BlockScoutWeb.UserSocketV2} = socket
+      ),
+      do: handle_transaction(data, socket, "pending_transaction")
 
-  def handle_out("pending_transaction", data, socket), do: handle_transaction(data, socket, "transaction")
+  def handle_out("pending_transaction", data, socket),
+    do: handle_transaction(data, socket, "transaction")
 
   def push_current_coin_balance(
         %Phoenix.Socket{handler: BlockScoutWeb.UserSocketV2} = socket,
@@ -247,7 +264,8 @@ defmodule BlockScoutWeb.AddressChannel do
         %Phoenix.Socket{handler: BlockScoutWeb.UserSocketV2} = socket,
         event
       ) do
-    transaction_json = TransactionViewAPI.render("transaction.json", %{transaction: transaction, conn: nil})
+    transaction_json =
+      TransactionViewAPI.render("transaction.json", %{transaction: transaction, conn: nil})
 
     push(socket, event, %{transaction: transaction_json})
 
@@ -260,7 +278,7 @@ defmodule BlockScoutWeb.AddressChannel do
     rendered =
       View.render_to_string(
         TransactionView,
-        "_tile.html",
+        "_table_tile.html",
         conn: socket,
         current_address: address,
         transaction: transaction,
@@ -282,7 +300,11 @@ defmodule BlockScoutWeb.AddressChannel do
         %Phoenix.Socket{handler: BlockScoutWeb.UserSocketV2} = socket,
         event
       ) do
-    token_transfer_json = TransactionViewAPI.render("token_transfer.json", %{token_transfer: token_transfer, conn: nil})
+    token_transfer_json =
+      TransactionViewAPI.render("token_transfer.json", %{
+        token_transfer: token_transfer,
+        conn: nil
+      })
 
     push(socket, event, %{token_transfer: token_transfer_json})
 
@@ -312,13 +334,14 @@ defmodule BlockScoutWeb.AddressChannel do
         burn_address_hash: @burn_address_hash,
         conn: socket
       )
+
     # TODO(Jayce) there is something wrong with deposit & withdraw tabs in address detail page now, hide cache temporary
-    #push(socket, event, %{
+    # push(socket, event, %{
     #  to_address_hash: to_string(token_transfer.to_address_hash),
     #  from_address_hash: to_string(token_transfer.from_address_hash),
     #  token_transfer_hash: Hash.to_string(token_transfer.transaction_hash),
     #  token_transfer_html: rendered
-    #})
+    # })
 
     {:noreply, socket}
   end

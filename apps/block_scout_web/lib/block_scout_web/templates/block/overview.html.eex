@@ -26,7 +26,7 @@
                         </svg>
                     </a>
                 </li>
-                 <li class="page-item"><a class="page-link no-hover" href data-page-number><%= gettext "Block" %> <%= @block.number %></a>
+                 <li class="page-item"><a class="page-link no-hover" href data-page-number data-page-lang='<%= gettext "Page" %>' ><%= gettext "Block" %> <%= @block.number %></a>
                 </li>
                 <li class="page-item">
                     <a

@@ -30,6 +30,54 @@ if (analytics.mixpanelInitialized || analytics.amplitudeInitialized) {
   }
 }
 
+const getParam = (key) => {
+  if (!key) return false
+  const url = window.location
+  const params = new URLSearchParams(url.search)
+  if (params.has(key)) {
+    return params.get(key)
+  }
+  return false
+}
+
+const addParam = (key, val) => {
+  if (!key || !val) return
+  const currUrl = new URL(location)
+  currUrl.searchParams.set(key, val)
+  history.pushState({}, '', currUrl)
+}
+
+$('#addressContractTab button.nav-link').on('click', (e) => {
+  const target = $(e.currentTarget).data('target')
+  const applyParam = target.slice(1, target.length)
+  console.log({ target, applyParam })
+  addParam('contract-tab', applyParam)
+})
+
+if ($('#addressContractTab').length && getParam('contract-tab')) {
+  const currTabs = getParam('contract-tab')
+  if ($(`#${currTabs}`).length) {
+    $(`button[data-target='#${currTabs}']`).trigger('click')
+  }
+}
+
+const handleWindowOnScroll = (e) => {
+  if (e.currentTarget.scrollY > 100) {
+    $('.scroll-top-btn').fadeIn()
+  } else {
+    $('.scroll-top-btn').fadeOut()
+  }
+}
+
+$(window).on('scroll', handleWindowOnScroll)
+
+$('.scroll-top-btn').on('click', () => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  })
+})
+
 $('.save-address-button').click((_event) => {
   const eventProperties = {
     address_hash: $('#watchlist_address_address_hash').val(),
@@ -37,9 +85,15 @@ $('.save-address-button').click((_event) => {
     eth_incoming: $('#watchlist_address_watch_coin_input').prop('checked'),
     eth_outgoing: $('#watchlist_address_watch_coin_output').prop('checked'),
     erc_20_incoming: $('#watchlist_address_watch_erc_20_input').prop('checked'),
-    erc_20_outgoing: $('#watchlist_address_watch_erc_20_output').prop('checked'),
-    erc_721_1155_incoming: $('#watchlist_address_watch_erc_721_input').prop('checked'),
-    erc_721_1155_outgoing: $('#watchlist_address_watch_erc_721_output').prop('checked'),
+    erc_20_outgoing: $('#watchlist_address_watch_erc_20_output').prop(
+      'checked'
+    ),
+    erc_721_1155_incoming: $('#watchlist_address_watch_erc_721_input').prop(
+      'checked'
+    ),
+    erc_721_1155_outgoing: $('#watchlist_address_watch_erc_721_output').prop(
+      'checked'
+    ),
     email_notifications: $('#watchlist_address_notify_email').prop('checked')
   }
   const eventName = 'New address to watchlist completed'
@@ -94,11 +148,15 @@ $('.send-public-tag-request-button').click((_event) => {
     email: $('#public_tags_request_email').val(),
     company_name: $('#public_tags_request_company').val(),
     company_website: $('#public_tags_request_website').val(),
-    goal: $('#public_tags_request_is_owner_true').prop('checked') ? 'Add tags' : 'Incorrect public tag',
+    goal: $('#public_tags_request_is_owner_true').prop('checked')
+      ? 'Add tags'
+      : 'Incorrect public tag',
     public_tag: $('#public_tags_request_tags').val(),
-    smart_contracts: $('*[id=public_tags_request_addresses]').map((_i, el) => {
-      return el.value
-    }).get(),
+    smart_contracts: $('*[id=public_tags_request_addresses]')
+      .map((_i, el) => {
+        return el.value
+      })
+      .get(),
     reason: $('#public_tags_request_additional_comment').val()
   }
 
@@ -109,7 +167,7 @@ $(document).ready(() => {
   let timer
   const waitTime = 500
   const observer = new MutationObserver((mutations) => {
-    if (mutations[0].target.hidden) {
+    if (!mutations[0] || mutations[0].target.hidden) {
       return
     }
 
@@ -119,7 +177,9 @@ $(document).ready(() => {
     timer = setTimeout(() => {
       let eventName = 'Occurs searching according to substring at the nav bar'
       let eventProperties = {
-        search: $('.main-search-autocomplete').val() || $('.main-search-autocomplete-mobile').val()
+        search:
+          $('.main-search-autocomplete').val() ||
+          $('.main-search-autocomplete-mobile').val()
       }
 
       analytics.trackEvent(eventName, eventProperties)
@@ -180,7 +240,7 @@ $(document)
       $('.main-search-autocomplete').trigger('focus')
     }
   })
-  .on('click', '.js-btn-add-chain-to-mm', event => {
+  .on('click', '.js-btn-add-chain-to-mm', (event) => {
     const $btn = $(event.target)
     addChainToMM({ btn: $btn })
   })
@@ -200,38 +260,52 @@ $('.main-search-autocomplete').on('keyup', function (event) {
 })
 
 $('#search-icon').on('click', function (event) {
-  const value = $('.main-search-autocomplete').val() || $('.main-search-autocomplete-mobile').val()
+  const value =
+    $('.main-search-autocomplete').val() ||
+    $('.main-search-autocomplete-mobile').val()
   search(value)
 })
 $('#search-btn').on('click', function (event) {
-  const value = $('.main-search-autocomplete').val() || $('.main-search-autocomplete-mobile').val()
+  const value =
+    $('.main-search-autocomplete').val() ||
+    $('.main-search-autocomplete-mobile').val()
   search(value)
 })
-if(window.innerWidth <= 1199){
-  if(document.getElementsByClassName('search-btn-cls') && document.getElementsByClassName('search-btn-cls').length > 1){
-    document.getElementsByClassName('search-btn-cls')[1].addEventListener('click', function (){
-      const els = document.getElementsByClassName('main-search-autocomplete');
-      if(els && els.length > 1){
-        let value = els[1].value
-        if(value){
-          search(value)
+if (window.innerWidth <= 1199) {
+  if (
+    document.getElementsByClassName('search-btn-cls') &&
+    document.getElementsByClassName('search-btn-cls').length > 1
+  ) {
+    document
+      .getElementsByClassName('search-btn-cls')[1]
+      .addEventListener('click', function () {
+        const els = document.getElementsByClassName('main-search-autocomplete')
+        if (els && els.length > 1) {
+          let value = els[1].value
+          if (value) {
+            search(value)
+          }
         }
-      }
-    })
+      })
   }
 }
 
-if(window.innerWidth <= 1199){
-  if(document.getElementsByClassName('search-icon-cls') && document.getElementsByClassName('search-icon-cls').length > 1){
-    document.getElementsByClassName('search-icon-cls')[1].addEventListener('click', function (){
-      const els = document.getElementsByClassName('main-search-autocomplete');
-      if(els && els.length > 1){
-        let value = els[1].value
-        if(value){
-          search(value)
+if (window.innerWidth <= 1199) {
+  if (
+    document.getElementsByClassName('search-icon-cls') &&
+    document.getElementsByClassName('search-icon-cls').length > 1
+  ) {
+    document
+      .getElementsByClassName('search-icon-cls')[1]
+      .addEventListener('click', function () {
+        const els = document.getElementsByClassName('main-search-autocomplete')
+        if (els && els.length > 1) {
+          let value = els[1].value
+          if (value) {
+            search(value)
+          }
         }
-      }
-    })
+      })
   }
 }
 

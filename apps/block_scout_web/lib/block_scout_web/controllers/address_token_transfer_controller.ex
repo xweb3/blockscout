@@ -31,6 +31,7 @@ defmodule BlockScoutWeb.AddressTokenTransferController do
   ]
 
   {:ok, burn_address_hash} = Chain.string_to_address_hash("0x0000000000000000000000000000000000000000")
+
   @burn_address_hash burn_address_hash
 
   def index(
@@ -74,7 +75,7 @@ defmodule BlockScoutWeb.AddressTokenTransferController do
         Enum.map(transactions_paginated, fn transaction ->
           View.render_to_string(
             TransactionView,
-            "_tile.html",
+            "_table_tile_token.html",
             conn: conn,
             transaction: transaction,
             burn_address_hash: @burn_address_hash,
@@ -168,7 +169,7 @@ defmodule BlockScoutWeb.AddressTokenTransferController do
         Enum.map(transactions_paginated, fn transaction ->
           View.render_to_string(
             TransactionView,
-            "_tile.html",
+            "_table_tile_token.html",
             conn: conn,
             transaction: transaction,
             burn_address_hash: @burn_address_hash,

@@ -22,7 +22,8 @@ defmodule BlockScoutWeb.StateBatchTransactionController do
     TransactionTokenTransferController,
     TransactionView
   }
-require Logger
+
+  require Logger
   alias Explorer.{Chain, Market}
   alias Explorer.Chain.Cache.Transaction, as: TransactionCache
   alias Explorer.ExchangeRates.Token
@@ -52,10 +53,11 @@ require Logger
     }
   ]
 
-  def index(conn, %{"type" => "JSON", "elements"=> elements, "size"=> size} = params) do
+  def index(conn, %{"type" => "JSON", "elements" => elements, "size" => size} = params) do
     options =
       @default_options
       |> Keyword.merge(paging_options(params))
+
     full_options =
       options
       |> Keyword.put(
@@ -65,11 +67,12 @@ require Logger
         |> update_page_parameters(Chain.default_page_size(), Keyword.get(options, :paging_options))
       )
 
-      elements_integer = String.to_integer(elements)
-      size_integer = String.to_integer(size)
+    elements_integer = String.to_integer(elements)
+    size_integer = String.to_integer(size)
 
     %{total_transactions_count: transactions_count, transactions: transactions_plus_one} =
       Chain.recent_state_batch_transactions_for_rap(full_options, elements_integer, size_integer)
+
     {transactions, next_page} =
       if fetch_page_number(params) == 1 do
         split_list_by_page(transactions_plus_one)
@@ -106,7 +109,7 @@ require Logger
           Enum.map(transactions, fn transaction ->
             View.render_to_string(
               TransactionView,
-              "_tile.html",
+              "_table_tile.html",
               transaction: transaction,
               burn_address_hash: @burn_address_hash,
               conn: conn
@@ -118,12 +121,10 @@ require Logger
   end
 
   def index(conn, _params) do
-
     render(
       conn,
       "index.html",
-      current_path: Controller.current_full_path(conn),
+      current_path: Controller.current_full_path(conn)
     )
   end
-
 end

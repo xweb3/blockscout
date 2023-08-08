@@ -170,7 +170,8 @@ const appJs =
         'process.env.MIXPANEL_TOKEN': JSON.stringify(process.env.MIXPANEL_TOKEN),
         'process.env.MIXPANEL_URL': JSON.stringify(process.env.MIXPANEL_URL),
         'process.env.AMPLITUDE_API_KEY': JSON.stringify(process.env.AMPLITUDE_API_KEY),
-        'process.env.AMPLITUDE_URL': JSON.stringify(process.env.AMPLITUDE_URL)
+        'process.env.AMPLITUDE_URL': JSON.stringify(process.env.AMPLITUDE_URL),
+        'process.env.CHAIN_ID': JSON.stringify(process.env.CHAIN_ID)
       }),
       new webpack.ProvidePlugin({
         process: 'process/browser',

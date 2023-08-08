@@ -1094,8 +1094,18 @@ msgstr "Настраиваемый ABI"
 msgid "Custom ABI from account"
 msgstr "Пользовательский ABI от аккаунта"
 
-#: lib/block_scout_web/templates/chain/show.html.eex:7
+
 #: lib/block_scout_web/templates/chain/show.html.eex:44
+#, elixir-autogen
+msgid "Daily Txn Volume"
+msgstr "Ежедневный объем сделок"
+
+#: lib/block_scout_web/templates/chain/show.html.eex:58
+#, elixir-autogen
+msgid "24H Txn Volume"
+msgstr "24H объем транзакций"
+
+#: lib/block_scout_web/templates/chain/show.html.eex:7
 #, elixir-autogen
 msgid "Daily Transactions"
 msgstr "Ежедневные транзакции."
@@ -3483,7 +3493,7 @@ msgstr "Твиттер"
 
 #: lib/block_scout_web/templates/layout/app.html.eex:50
 #, elixir-autogen
-msgid "Tx/day"
+msgid "Tx/Day"
 msgstr "Тх / день"
 
 #: lib/block_scout_web/templates/verified_contracts/index.html.eex:60
@@ -5246,3 +5256,21 @@ msgstr "20 байт - адрес для проверки баланса"
 
 msgid "Integer block number, or the string \"latest\", \"earliest\" or \"pending\""
 msgstr "Блок номер целого числа или строка \"latest\", \"earliest\" или \"pending\""
+
+msgid "seconds"
+msgstr "секунды"
+
+msgid "Accepted on L2"
+msgstr "Принято на уровне L2"
+
+msgid "Accepted on L1"
+msgstr "Свернуть до L1"
+
+msgid "Finalized on L1"
+msgstr "Окончательно согласовано на L1"
+
+msgid "Challenge Period Passed"
+msgstr "Период испытаний прошел"
+
+msgid "Txn Hash"
+msgstr "Хэш транзакции"

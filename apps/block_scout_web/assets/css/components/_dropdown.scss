@@ -53,9 +53,10 @@ $dropdown-menu-background: #cbe9e7;
   white-space: initial;
   border-radius: 6px;
   position: relative;
-  &[target='_blank']{
+  text-transform: capitalize;
+  &[target='_blank'] {
     padding-right: 20px;
-    &:after{
+    &:after {
       content: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M13 8.5L9 8.5C7.89543 8.5 7 9.39543 7 10.5L7 14' stroke='%2315181C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M12 6L14.5 8.5L12 11' stroke='%2315181C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
       width: 20px;
       height: 20px;

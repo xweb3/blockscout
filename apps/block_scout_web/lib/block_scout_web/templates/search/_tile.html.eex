@@ -93,6 +93,6 @@
     <% end %>
   </td>
   <td class="stakes-td">
-    <div class="bs-label <%= @result.type %>"><%= @result.type %>111</div>
+    <div class="bs-label <%= @result.type %>"><%= @result.type %></div>
   </td>
 </tr>

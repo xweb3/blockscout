@@ -51,10 +51,11 @@ export class L2IngestionService {
       configService.get('L2_CROSS_DOMAIN_MESSENGER_ADDRESS'),
     );
     this.web3 = web3;
-    /* if(configService.get('ENV') !== 'mainnet'){
+    this.initMetrics();
+    if(configService.get('ENV') === 'testnet'){
       this.WithdrawalMethod = 'finalizeBitWithdrawal'
       this.WithdrawalMethodHexPrefix = '0x839f0ec6'
-    } */
+    }
   }
   async getSentMessageByBlockNumber(fromBlock: number, toBlock: number) {
     return this.crossDomainMessengerContract.getPastEvents('SentMessage', {
@@ -528,5 +529,42 @@ export class L2IngestionService {
     } finally {
       await queryRunner.release();
     }
+  }
+  async initMetrics() {
+    const l2ToL1Item = await this.l2ToL1Repository.findOne({
+      select: ['msg_nonce'],
+      order: { msg_nonce: 'DESC' },
+    })
+    this.metricMsgNonce.set(Number(l2ToL1Item?.msg_nonce || 0))
+    const relayedEventsItem = await this.relayedEventsRepository.findOne({
+      select: ['block_number'],
+      order: { block_number: 'DESC' },
+    })
+    this.metricL1ToL2L2Hash.set(Number(relayedEventsItem?.block_number || 0))
+    // initialize metricL2ToL1Status
+    // get latest waiting l2-to-l1 txn(status: '0')
+    let l2ToL1Item2 = await this.l2ToL1Repository.findOne({
+      select: ['msg_nonce'],
+      order: { block: 'DESC' },
+      where: {
+        status: '0'
+      },
+    })
+    // if there is no waiting txn, then get latest l2-to-l1 txn
+    if (!l2ToL1Item2) {
+      l2ToL1Item2 = await this.l2ToL1Repository.findOne({
+        select: ['msg_nonce'],
+        order: { block: 'DESC' }
+      })
+    }
+    console.log({
+      type: 'log',
+      time: new Date().getTime(),
+      msg: {
+        message: 'initMetrics metricL2ToL1Status',
+        l2ToL1Item2
+      }
+    })
+    this.metricL2ToL1Status.set(Number(l2ToL1Item2?.msg_nonce || 0))
   }
 }

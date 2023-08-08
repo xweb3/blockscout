@@ -97,7 +97,7 @@ defmodule BlockScoutWeb.BlockController do
           Enum.map(blocks, fn block ->
             View.render_to_string(
               BlockView,
-              "_tile.html",
+              "_table_tile.html",
               block: block,
               block_type: block_type
             )

@@ -1079,8 +1079,18 @@ msgstr ""
 msgid "Custom ABI from account"
 msgstr ""
 
-#: lib/block_scout_web/templates/chain/show.html.eex:7
+
 #: lib/block_scout_web/templates/chain/show.html.eex:44
+#, elixir-autogen
+msgid "Daily Txn Volume"
+msgstr ""
+
+#: lib/block_scout_web/templates/chain/show.html.eex:58
+#, elixir-autogen
+msgid "24H Txn Volume"
+msgstr ""
+
+#: lib/block_scout_web/templates/chain/show.html.eex:7
 #, elixir-autogen
 msgid "Daily Transactions"
 msgstr ""
@@ -3468,7 +3478,7 @@ msgstr ""
 
 #: lib/block_scout_web/templates/layout/app.html.eex:50
 #, elixir-autogen
-msgid "Tx/day"
+msgid "Tx/Day"
 msgstr ""
 
 #: lib/block_scout_web/templates/verified_contracts/index.html.eex:60
@@ -5230,4 +5240,22 @@ msgid "20 Bytes - address to check for balance"
 msgstr ""
 
 msgid "Integer block number, or the string \"latest\", \"earliest\" or \"pending\""
+msgstr ""
+
+msgid "seconds"
+msgstr ""
+
+msgid "Accepted on L2"
+msgstr ""
+
+msgid "Accepted on L1"
+msgstr ""
+
+msgid "Finalized on L1"
+msgstr ""
+
+msgid "Challenge Period Passed"
+msgstr ""
+
+msgid "Txn Hash"
 msgstr ""
