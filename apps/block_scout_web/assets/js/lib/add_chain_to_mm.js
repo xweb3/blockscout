@@ -13,7 +13,7 @@ export async function addChainToMM({ btn }) {
 
     const blockscoutURL = location.protocol + '//' + location.host + path
     const successTitle = $(btn).data('success')
-    
+
     if (chainIDFromWallet !== chainIDFromInstance) {
       await window.ethereum.request({
         method: 'wallet_addEthereumChain',

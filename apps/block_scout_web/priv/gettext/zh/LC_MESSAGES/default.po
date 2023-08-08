@@ -1090,8 +1090,18 @@ msgstr "自定义ABI"
 msgid "Custom ABI from account"
 msgstr "帐户自定义ABI"
 
-#: lib/block_scout_web/templates/chain/show.html.eex:7
+
 #: lib/block_scout_web/templates/chain/show.html.eex:44
+#, elixir-autogen
+msgid "Daily Txn Volume"
+msgstr "每日交易量"
+
+#: lib/block_scout_web/templates/chain/show.html.eex:58
+#, elixir-autogen
+msgid "24H Txn Volume"
+msgstr "24小时交易量"
+
+#: lib/block_scout_web/templates/chain/show.html.eex:7
 #, elixir-autogen
 msgid "Daily Transactions"
 msgstr "每日交易"
@@ -3479,7 +3489,7 @@ msgstr "推特"
 
 #: lib/block_scout_web/templates/layout/app.html.eex:50
 #, elixir-autogen
-msgid "Tx/day"
+msgid "Tx/Day"
 msgstr "每日交易量"
 
 #: lib/block_scout_web/templates/verified_contracts/index.html.eex:60
@@ -5238,3 +5248,21 @@ msgstr "20字节 - 地址用于检查余额"
 
 msgid "Integer block number, or the string \"latest\", \"earliest\" or \"pending\""
 msgstr "整数块数字，或字符串\"latest\"，\"earliest\"或\"pending\""
+
+msgid "seconds"
+msgstr "秒"
+
+msgid "Accepted on L2"
+msgstr "在L2上接受"
+
+msgid "Accepted on L1"
+msgstr "Rollup 到 L1"
+
+msgid "Finalized on L1"
+msgstr "最终确认在L1"
+
+msgid "Challenge Period Passed"
+msgstr "挑战期已过"
+
+msgid "Txn Hash"
+msgstr "交易哈希"

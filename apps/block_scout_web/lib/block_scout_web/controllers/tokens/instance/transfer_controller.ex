@@ -40,7 +40,7 @@ defmodule BlockScoutWeb.Tokens.Instance.TransferController do
         Enum.map(token_transfers_paginated, fn transfer ->
           View.render_to_string(
             TransferView,
-            "_token_transfer.html",
+            "_token_transfer_table.html",
             conn: conn,
             token: token,
             token_transfer: transfer,

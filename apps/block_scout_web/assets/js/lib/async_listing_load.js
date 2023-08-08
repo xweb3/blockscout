@@ -252,16 +252,17 @@ export const elements = {
   },
   '[data-async-listing] [data-page-number]': {
     render ($el, state) {
+      const pageLang = $el.data('page-lang')
       if (state.emptyResponse) {
         return $el.hide()
       }
 
       $el.show()
       if (state.pagesStack.length === 0) {
-        return $el.text('Page 1')
+        return $el.text(`${pageLang} 1`)
       }
 
-      $el.text('Page ' + state.pagesStack.length)
+      $el.text(`${pageLang} ` + state.pagesStack.length)
     }
   },
   '[data-async-listing] [data-loading-button]': {

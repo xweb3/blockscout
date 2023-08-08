@@ -6,7 +6,7 @@
   <section data-page="address-token-transfers" id="transfers">
     <div class="card">
       <%= render BlockScoutWeb.AddressView, "_tabs.html", address: @address, is_proxy: is_proxy, conn: @conn %>
-      <div data-async-load data-async-listing="<%= @current_path %>" class="card-body" data-no-self-calls>
+      <div data-async-load data-async-listing="<%= @current_path %>" class="card-body txn-list-container" data-no-self-calls>
 
         <%= if assigns[:token] do %>
         <h2 class="card-title">
@@ -25,6 +25,45 @@
         </div>
         <% end %>
 
+        <div class="table-tile-header txn-list-table-head-container">
+          <span style="width: 2%;">
+          &nbsp;
+          </span>
+          <span style="width: 10%;">
+            <%= gettext "Txn Hash" %>
+          </span>
+          <span style="width: 10%;">
+            <%= gettext "Txn Type" %>
+          </span>
+          <span style="width: 9%;">
+              <%= gettext "Method" %>
+          </span>
+          <span style="width: 8%;">
+            <%= gettext "Block" %>
+          </span>
+          <span style="width: 10%;">
+            <%= gettext "Age" %>
+          </span>
+          <span style="width: 13%;">
+            <%= gettext "From" %>
+          </span>
+          <span style="width: 3%;">
+          &nbsp;
+          </span>
+          <span style="width: 13%;">
+            <%= gettext "To" %>
+          </span>
+           <span style="width: 6%;">
+            <%= gettext "Value" %>
+          </span>
+          <span style="width: 8%;">
+            <%= gettext "Token" %>
+          </span>
+          <span style="width: 6%;">
+            <%= gettext "Txn Fee" %>
+          </span>
+        </div>
+
         <div data-empty-response-message class="tile tile-muted text-center" style="display: none;">
           <span><%= gettext "There is no withdrawal Txn for this adress." %></span>
         </div>
@@ -35,7 +74,7 @@
           </span>
         </button>
 
-        <div data-items>
+        <div data-items class="table-list-page">
           <%= render BlockScoutWeb.CommonComponentsView, "_tile-loader.html" %>
         </div>
 

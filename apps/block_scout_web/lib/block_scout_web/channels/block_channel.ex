@@ -8,7 +8,7 @@ defmodule BlockScoutWeb.BlockChannel do
   alias BlockScoutWeb.{BlockView, ChainView}
   alias Phoenix.View
   alias Timex.Duration
-
+require Logger
   intercept(["new_block"])
 
   def join("blocks:new_block", _params, socket) do
@@ -34,13 +34,13 @@ defmodule BlockScoutWeb.BlockChannel do
     {:noreply, socket}
   end
 
-  def handle_out("new_block", %{block: block, average_block_time: average_block_time}, socket) do
+  def handle_out("new_block", %{block: block, average_block_time: average_block_time, last_24hrs_txn_count: last_24hrs_txn_count, today_txn_count: today_txn_count}, socket) do
     Gettext.put_locale(BlockScoutWeb.Gettext, socket.assigns.locale)
 
     rendered_block =
       View.render_to_string(
         BlockView,
-        "_tile.html",
+        "_table_tile.html",
         block: block,
         block_type: BlockView.block_type(block)
       )
@@ -51,13 +51,15 @@ defmodule BlockScoutWeb.BlockChannel do
         "_block.html",
         block: block
       )
-
     push(socket, "new_block", %{
       average_block_time: Timex.format_duration(average_block_time, Explorer.Counters.AverageBlockTimeDurationFormat),
       chain_block_html: rendered_chain_block,
       block_html: rendered_block,
       block_number: block.number,
-      block_miner_hash: to_string(block.miner_hash)
+      block_miner_hash: to_string(block.miner_hash),
+      last_24hrs_txn_count: last_24hrs_txn_count,
+      today_txn_count: today_txn_count,
+
     })
 
     {:noreply, socket}

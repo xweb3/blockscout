@@ -13,16 +13,16 @@ defmodule BlockScoutWeb.Notifier do
     AddressContractVerificationVyperView,
     Endpoint
   }
-
   alias Explorer.{Chain, Market, Repo}
   alias Explorer.Chain.{Address, InternalTransaction, TokenTransfer, Transaction}
+  alias Explorer.Chain.Transaction.History.Last24HrsStats
   alias Explorer.Chain.Supply.RSK
   alias Explorer.Chain.Transaction.History.TransactionStats
   alias Explorer.Counters.{AverageBlockTime, Helper}
   alias Explorer.ExchangeRates.Token
   alias Explorer.SmartContract.{CompilerVersion, Solidity.CodeCompiler}
   alias Phoenix.View
-
+  require Logger
   @check_broadcast_sequence_period 500
 
   def handle_event({:chain_event, :addresses, type, addresses}) when type in [:realtime, :on_demand] do
@@ -98,6 +98,31 @@ defmodule BlockScoutWeb.Notifier do
     |> Enum.each(fn block ->
       broadcast_latest_block?(block, last_broadcasted_block_number)
     end)
+  end
+
+  def get_last_24hrs_stats do
+    #stats_scale = date_range(1)
+    last_24hrs_stats = Last24HrsStats.by_const_id(1)
+
+    # Need datapoint for legend if none currently available.
+    if Enum.empty?(last_24hrs_stats) do
+      [%{number_of_transactions: 0, number_of_blocks: 0}]
+    else
+      last_24hrs_stats
+    end
+  end
+
+  def get_transaction_stats do
+    #stats_scale = date_range(1)
+    today = Date.utc_today()
+    transaction_stats = TransactionStats.by_date_range(today, today)
+
+    # Need datapoint for legend if none currently available.
+    if Enum.empty?(transaction_stats) do
+      [%{number_of_transactions: 0, gas_used: 0}]
+    else
+      transaction_stats
+    end
   end
 
   def handle_event({:chain_event, :exchange_rate}) do
@@ -305,12 +330,33 @@ defmodule BlockScoutWeb.Notifier do
   end
 
   defp broadcast_block(block) do
+    Logger.info("broadcast_block start")
     preloaded_block = Repo.preload(block, [[miner: :names], :transactions, :rewards])
     average_block_time = AverageBlockTime.average_block_time()
 
+
+    Logger.info("broadcast_block start1")
+    last_24hrs_stats = get_last_24hrs_stats()
+    Logger.info("broadcast_block start2")
+    last_24hrs_txn = Enum.at(last_24hrs_stats, 0).number_of_transactions
+
+
+    Logger.info("broadcast_block start3")
+    today_txn_stats = get_transaction_stats()
+
+    Logger.info("broadcast_block start4")
+    today_txn_count = Enum.at(today_txn_stats, 0).number_of_transactions
+
+    Logger.info("last 24 hours number of transactions from push")
+    Logger.info("#{inspect(last_24hrs_txn)}")
+
+    Logger.info("today number of transactions from push")
+    Logger.info("#{inspect(today_txn_count)}")
     Endpoint.broadcast("blocks:new_block", "new_block", %{
       block: preloaded_block,
-      average_block_time: average_block_time
+      average_block_time: average_block_time,
+      last_24hrs_txn_count: last_24hrs_txn,
+      today_txn_count: today_txn_count,
     })
 
     Endpoint.broadcast("blocks:#{to_string(block.miner_hash)}", "new_block", %{
@@ -349,31 +395,35 @@ defmodule BlockScoutWeb.Notifier do
   end
 
   defp broadcast_transaction(%Transaction{block_number: nil} = pending) do
+    Logger.info("broadcast_transaction pending start")
     broadcast_transaction(pending, "transactions:new_pending_transaction", "pending_transaction")
   end
 
   defp broadcast_transaction(transaction) do
+    Logger.info("broadcast_transaction start")
     broadcast_transaction(transaction, "transactions:new_transaction", "transaction")
   end
 
   defp broadcast_transaction(transaction, transaction_channel, event) do
+    Logger.info("broadcast_transaction func start")
     Endpoint.broadcast("transactions:#{transaction.hash}", "collated", %{})
-
+    Logger.info("broadcast_transaction func start1")
     Endpoint.broadcast(transaction_channel, event, %{
       transaction: transaction
     })
-
+    Logger.info("broadcast_transaction func start2")
     Endpoint.broadcast("addresses:#{transaction.from_address_hash}", event, %{
       address: transaction.from_address,
       transaction: transaction
     })
-
+    Logger.info("broadcast_transaction func start3")
     if transaction.to_address_hash != transaction.from_address_hash do
       Endpoint.broadcast("addresses:#{transaction.to_address_hash}", event, %{
         address: transaction.to_address,
         transaction: transaction
       })
     end
+    Logger.info("broadcast_transaction func start4")
   end
 
   defp broadcast_token_transfer(token_transfer) do
