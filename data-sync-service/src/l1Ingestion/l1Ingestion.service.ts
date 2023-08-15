@@ -787,7 +787,7 @@ export class L1IngestionService {
       .insert()
       .into(DaBatches)
       .values(insertBatchData)
-      .onConflict(`("da_hash") DO NOTHING`)
+      .orIgnore()
       .execute().catch(e => {
         console.log({
           type: 'ERROR',
@@ -1128,7 +1128,7 @@ export class L1IngestionService {
     if (upgrade_data_store_id && upgrade_data_store_id !== 0) {
       number += upgrade_data_store_id
     }
-    const dataStoreData = await this.eigenlayerService.getDataStore(fromStoreNumber);
+    const dataStoreData = await this.eigenlayerService.getDataStore(number);
     console.log({
       type: 'log',
       time: new Date().getTime(),
@@ -1603,7 +1603,7 @@ export class L1IngestionService {
     if (upgrade_data_store_id && upgrade_data_store_id !== 0) {
       number += upgrade_data_store_id
     }
-    const dataStoreData = await this.eigenlayerService.getDataStore(fromStoreNumber);
+    const dataStoreData = await this.eigenlayerService.getDataStore(number);
     console.log({
       type: 'log',
       time: new Date().getTime(),
