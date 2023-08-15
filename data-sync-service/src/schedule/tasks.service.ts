@@ -617,6 +617,11 @@ export class TasksService {
   @Interval(60000)
   async syncFeeVaultBalance() {
     // BVM_SequencerFeeVault: 0x4200000000000000000000000000000000000011
+    console.log({
+      type: 'log',
+      time: new Date().getTime(),
+      msg: `syncFeeVaultBalance start time: ${new Date().getTime()}`
+    })
     await this.l2IngestionService.syncFeeVaultBalance();
   }
 

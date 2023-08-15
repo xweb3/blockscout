@@ -541,6 +541,11 @@ export class L2IngestionService {
     const queryRunner = dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
+    console.log({
+      type: 'log',
+      time: new Date().getTime(),
+      msg: `syncFeeVaultBalance info balance: ${balance}, currentBlockNumber: ${currentBlockNumber}`
+    })
     try {
       await queryRunner.manager
           .createQueryBuilder()
