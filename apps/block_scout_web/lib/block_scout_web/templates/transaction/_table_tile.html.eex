@@ -97,7 +97,7 @@
             <%= value(@transaction, include_label: false) %> <%= Explorer.coin_name() %>
           </span>
         </span>
-        <span style="width: 10%;" class="text-truncate" data-toggle="tooltip" data-placement="top" title="" data-custom-class="" data-original-title="<%= formatted_fee(@transaction, denomination: :ether, include_label: false) %>">
+        <span style="width: 10%;" class="text-truncate txn-fee" data-toggle="tooltip" data-placement="top" title="" data-custom-class="" data-original-title="<%= formatted_fee(@transaction, denomination: :ether, include_label: false) %>">
           <span class="dark-opacity-white">
              <%= formatted_fee(@transaction, denomination: :ether, include_label: false) %>
           </span>

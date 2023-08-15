@@ -193,7 +193,7 @@
               <% end %>
       </span>
     </span>
-    <span style="width: 6%;" class="text-truncate" data-toggle="tooltip" data-placement="top" title="" data-custom-class="" data-original-title="<%= BlockScoutWeb.TransactionView.formatted_fee(@token_transfer.transaction, denomination: :ether, include_label: false) %>">
+    <span style="width: 6%;" class="text-truncate txn-fee" data-toggle="tooltip" data-placement="top" title="" data-custom-class="" data-original-title="<%= BlockScoutWeb.TransactionView.formatted_fee(@token_transfer.transaction, denomination: :ether, include_label: false) %>">
       <span class="dark-opacity-white">
           <%= BlockScoutWeb.TransactionView.formatted_fee(@token_transfer.transaction, denomination: :ether, include_label: false) %>
       </span>

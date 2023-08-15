@@ -38,12 +38,14 @@
 
       <div data-items class="table-list-page">
         <%= render BlockScoutWeb.CommonComponentsView, "_tile-loader.html" %>
+
       </div>
       <div data-empty-response-message style="display: none;">
           <span><%= gettext "There are no blocks." %></span>
       </div>
 
       <%= render BlockScoutWeb.CommonComponentsView, "_pagination_container.html", position: "bottom", cur_page_number: "1", show_pagination_limit: true, data_next_page_button: true, data_prev_page_button: true %>
+
 
     </div>
   </div>

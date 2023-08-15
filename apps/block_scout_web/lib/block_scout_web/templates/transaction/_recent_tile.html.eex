@@ -5,12 +5,12 @@
     <span
         class="recent-preview-item-content-title"
     >
-        Tx
+        Txn
     </span>
     <div class="recent-preview-item-content-latest-txs">
       <div class="d-flex flex-row" style="justify-content:space-between;">
         <span style="margin-right:10px;">
-          Tx#<%= @transaction.block_number %>
+          Txn#<%= @transaction.block_number %>
         </span>
             <a href="/tx/<%= @transaction.hash %>"
               class="recent-preview-item-content-latest-txs-hash"

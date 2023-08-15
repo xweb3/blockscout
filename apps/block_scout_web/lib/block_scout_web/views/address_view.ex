@@ -291,7 +291,7 @@ defmodule BlockScoutWeb.AddressView do
   end
 
   def trimmed_hash(address) when is_binary(address) do
-    "#{String.slice(address, 0..7)}–#{String.slice(address, -6..-1)}"
+    "#{String.slice(address, 0..7)}...#{String.slice(address, -6..-1)}"
   end
 
   def trimmed_hash(_), do: ""

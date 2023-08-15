@@ -290,7 +290,7 @@ $card-tab-icon-color-active: #fff !default;
   .txn-list-container {
     .txn-list-table-head-container {
       background: rgba(255, 255, 255, 0.05);
-      color: #ffffff;
+      color: rgba(159, 165, 169, 1);
       border-color: rgba(255, 255, 255, 0.15);
       .l1-to-l2-tx-type-head {
         color: #ffffff;
@@ -334,7 +334,7 @@ $card-tab-icon-color-active: #fff !default;
 .card-chain-blocks {
   // min-height: 233px;
   max-height: auto;
-  [class*="col-"]:last-child {
+  [class*='col-']:last-child {
     .tile {
       margin-bottom: 0;
     }
@@ -644,7 +644,7 @@ $card-tab-icon-color-active: #fff !default;
         border-left: 0.3em solid transparent;
         border-right: 0.3em solid transparent;
         border-top: 0.3em solid;
-        content: "";
+        content: '';
         display: inline-block;
         height: 0;
         margin-left: 10px;
@@ -722,7 +722,7 @@ $card-tab-icon-color-active: #fff !default;
   margin-left: -1rem;
 }
 
-.functions-tabs input[type="radio"] {
+.functions-tabs input[type='radio'] {
   display: none;
 }
 

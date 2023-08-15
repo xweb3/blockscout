@@ -16,6 +16,8 @@ $dropdown-menu-background: #cbe9e7;
   width: 100%;
   background-color: $dropdown-menu-background;
 
+  margin-top: 10px;
+
   &.center {
     @media (min-width: 992px) {
       left: 50%;
@@ -31,7 +33,7 @@ $dropdown-menu-background: #cbe9e7;
   .nav-item & {
     // border-top-left-radius: 0 !important;
     // border-top-right-radius: 0 !important;
-    top: 45px;
+    top: 35px;
 
     // .dropdown-item:first-child {
     //   border-top-left-radius: 0;

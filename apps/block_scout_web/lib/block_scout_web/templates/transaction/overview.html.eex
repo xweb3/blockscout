@@ -631,7 +631,7 @@
                       </a>
                     </div>
                   </div>
-                  <div class="btn-copy-tx-raw-input-container">
+                  <div class="btn-copy-tx-raw-input-container hidden">
                     <!-- Copy Hex input -->
                     <%= render BlockScoutWeb.CommonComponentsView, "_btn_copy.html",
                         id: "tx-raw-input",
@@ -649,15 +649,33 @@
                   </div>
                 </div>
                 <!-- Textarea -->
-                <div class="tx-raw-input">
+                <div class="tx-raw-input mantle-code-input">
                   <div class="tile tile-muted" style="border-radius: 8px;">
-                    <pre class="pre-scrollable pre-scrollable-shorty pre-wrap mb-0"><code><%= @transaction.input %></code></pre>
+                    <pre class="pre-scrollable pre-scrollable-shorty pre-wrap mb-0"><code><%= @transaction.input %>
+                    </code>
+
+                    </pre>
+                     <%= render BlockScoutWeb.CommonComponentsView, "_btn_copy.html",
+                        id: "tx-raw-input",
+                        additional_classes: ["btn-copy-icon-small", "btn-copy-icon-no-borders", "btn-copy-icon-ml-0", "btn-copy-tx-raw-input", "tx-raw-input"],
+                        clipboard_text: @transaction.input,
+                        aria_label: gettext("Copy Value"),
+                        title: gettext("Copy Txn Hex Input")
+                         %>
                   </div>
                 </div>
                 <!-- Textfield -->
-                <div class="tx-utf8-input" style="display: none;">
+                <div class="tx-utf8-input mantle-code-input" style="display: none;">
                   <div class="tile tile-muted" style="border-radius: 8px;">
-                    <pre class="pre-scrollable pre-scrollable-shorty pre-wrap mb-0"><code><%= @transaction.input.bytes %></code></pre>
+                    <pre class="pre-scrollable pre-scrollable-shorty pre-wrap mb-0"><code><%= @transaction.input.bytes %></code>
+
+                    </pre>
+                       <%= render BlockScoutWeb.CommonComponentsView, "_btn_copy.html",
+                        additional_classes: ["btn-copy-icon-small", "btn-copy-icon-no-borders", "btn-copy-icon-ml-0", "btn-copy-tx-raw-input", "tx-utf8-input"],
+                        clipboard_text: @transaction.input.bytes,
+                        aria_label: gettext("Copy Value"),
+                        title: gettext("Copy Txn UTF-8 Input"),
+                        style: "display: none;" %>
                   </div>
                 </div>
               </dd>

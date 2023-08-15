@@ -56,9 +56,11 @@
       display: inline-block;
       background: url(../static/images/not_verified.svg) no-repeat !important;
       background-size: 100% 100% !important;
+      top: 12px;
     }
     .contract_verified {
       background: url(../static/images/verified.svg) no-repeat !important;
+      top: 12px;
     }
   }
 }
