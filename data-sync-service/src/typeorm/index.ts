@@ -14,6 +14,7 @@ import { DaBatches } from './da_batches.entity';
 import { DaBatchTransactions } from './da_batch_transactions.entity';
 import { TokenPriceHistory } from './token_price_history.entity';
 import { TokenPriceRealTime } from './token_price_real_time.entity';
+import { Addresses } from './addresses.entity';
 import { Last24HrsStats } from './last_24hrs_stats.entity';
 
 const entities = [
@@ -31,6 +32,7 @@ const entities = [
   DaBatchTransactions,
   TokenPriceHistory,
   TokenPriceRealTime,
+  Addresses,
   Blocks,
   TransactionStats,
   Last24HrsStats,
@@ -51,6 +53,7 @@ export {
   DaBatchTransactions,
   TokenPriceHistory,
   TokenPriceRealTime,
+  Addresses,
   Blocks,
   TransactionStats,
   Last24HrsStats,
