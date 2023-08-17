@@ -66,6 +66,7 @@ const loadFunctions = (element, isCustomABI, from) => {
         const $customPower = $(event.currentTarget).find('[name=custom_power]')
         let power
         if ($customPower.length > 0) {
+          // @ts-ignore
           power = parseInt($customPower.val(), 10)
         } else {
           power = parseInt($(event.currentTarget).data('power'), 10)
@@ -118,8 +119,9 @@ const readWriteFunction = (element) => {
       const contractAbi = getContractABI($form)
       const inputs = getMethodInputs(contractAbi, functionName)
       const $methodId = $form.find('input[name=method_id]')
+      let args
       try {
-        var args = prepareMethodArgs($functionInputs, inputs)
+        args = prepareMethodArgs($functionInputs, inputs)
       } catch (exception) {
         $errorContainer.show()
         $errorContainer.text(exception)

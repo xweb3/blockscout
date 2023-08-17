@@ -3,8 +3,6 @@ defmodule Explorer.Chain.Cache.Block do
   Cache for block count.
   """
 
-  @default_cache_period :timer.hours(2)
-
   import Ecto.Query,
     only: [
       from: 2
@@ -14,14 +12,17 @@ defmodule Explorer.Chain.Cache.Block do
     name: :block_count,
     key: :count,
     key: :async_task,
-    global_ttl: cache_period(),
-    ttl_check_interval: :timer.minutes(15),
+    global_ttl: Application.get_env(:explorer, __MODULE__)[:global_ttl],
+    ttl_check_interval: :timer.seconds(1),
     callback: &async_task_on_deletion(&1)
 
   require Logger
 
+  alias Explorer.{Chain, Repo}
   alias Explorer.Chain.Block
-  alias Explorer.Repo
+  alias Explorer.Chain.Cache.Helper
+
+  @cache_key "block_count"
 
   @doc """
   Estimated count of `t:Explorer.Chain.Block.t/0`.
@@ -30,23 +31,24 @@ defmodule Explorer.Chain.Cache.Block do
   """
   @spec estimated_count() :: non_neg_integer()
   def estimated_count do
-    query =
-      from(block in Block,
-        select: block.number,
-        order_by: [desc: block.number],
-        limit: 1
-      )
+    cached_value_from_ets = __MODULE__.get_count()
 
-    Repo.one!(query, timeout: :infinity)
+    if is_nil(cached_value_from_ets) do
+      cached_value_from_db =
+        @cache_key
+        |> Chain.get_last_fetched_counter()
+        |> Decimal.to_integer()
 
-    #cached_value = __MODULE__.get_count()
-    # TODO(Jayce) Cache of count of transactions is wrong now, hide cache temporary
-   # if is_nil(cached_value) do
-      #%Postgrex.Result{rows: [[count]]} = Repo.query!("SELECT count(*) from blocks")
-      #trunc(count * 0.90)
-    #else
-      #count
-    #end
+      if cached_value_from_db === 0 do
+        count = Helper.estimated_count_from("blocks")
+
+        trunc(count * 0.90)
+      else
+        cached_value_from_db
+      end
+    else
+      cached_value_from_ets
+    end
   end
 
   defp handle_fallback(:count) do
@@ -65,11 +67,19 @@ defmodule Explorer.Chain.Cache.Block do
         try do
           result = fetch_count_consensus_block()
 
+          params = %{
+            counter_type: @cache_key,
+            value: result
+          }
+
+          Chain.upsert_last_fetched_counter(params)
+
           set_count(result)
         rescue
           e ->
             Logger.debug([
-              "Coudn't update block count test #{inspect(e)}"
+              "Couldn't update block count: ",
+              Exception.format(:error, e, __STACKTRACE__)
             ])
         end
 
@@ -84,16 +94,6 @@ defmodule Explorer.Chain.Cache.Block do
   defp async_task_on_deletion({:delete, _, :count}), do: get_async_task()
 
   defp async_task_on_deletion(_data), do: nil
-
-  defp cache_period do
-    "CACHE_BLOCK_COUNT_PERIOD"
-    |> System.get_env("")
-    |> Integer.parse()
-    |> case do
-      {integer, ""} -> :timer.seconds(integer)
-      _ -> @default_cache_period
-    end
-  end
 
   @spec fetch_count_consensus_block() :: non_neg_integer
   defp fetch_count_consensus_block do

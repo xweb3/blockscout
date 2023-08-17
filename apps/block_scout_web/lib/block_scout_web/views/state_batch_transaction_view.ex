@@ -10,10 +10,10 @@ defmodule BlockScoutWeb.StateBatchTransactionView do
   alias Explorer.Counters.AverageBlockTime
   alias Explorer.ExchangeRates.Token
   alias Timex.Duration
-require Logger
+  require Logger
   import BlockScoutWeb.Gettext
   import BlockScoutWeb.AddressView, only: [from_address_hash: 1, short_token_id: 2, tag_name_to_label: 1]
-  import BlockScoutWeb.Tokens.Helpers
+  import BlockScoutWeb.Tokens.Helper
 
   @tabs ["token-transfers", "internal-transactions", "logs", "raw-trace", "state"]
 

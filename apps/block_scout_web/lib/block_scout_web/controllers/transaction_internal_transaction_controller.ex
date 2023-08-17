@@ -5,10 +5,9 @@ defmodule BlockScoutWeb.TransactionInternalTransactionController do
   import BlockScoutWeb.Chain, only: [paging_options: 1, next_page_params: 3, split_list_by_page: 1]
   import BlockScoutWeb.Models.GetAddressTags, only: [get_address_tags: 2]
   import BlockScoutWeb.Models.GetTransactionTags, only: [get_transaction_with_addresses_tags: 2]
-  require Logger
-  alias BlockScoutWeb.{AccessHelpers, Controller, InternalTransactionView, TransactionController}
+
+  alias BlockScoutWeb.{AccessHelper, Controller, InternalTransactionView, TransactionController}
   alias Explorer.{Chain, Market}
-  alias Explorer.ExchangeRates.Token
   alias Phoenix.View
   import EthereumJSONRPC
 
@@ -16,8 +15,8 @@ defmodule BlockScoutWeb.TransactionInternalTransactionController do
     with {:ok, transaction_hash} <- Chain.string_to_transaction_hash(transaction_hash_string),
          :ok <- Chain.check_transaction_exists(transaction_hash),
          {:ok, transaction} <- Chain.hash_to_transaction(transaction_hash, []),
-         {:ok, false} <- AccessHelpers.restricted_access?(to_string(transaction.from_address_hash), params),
-         {:ok, false} <- AccessHelpers.restricted_access?(to_string(transaction.to_address_hash), params) do
+         {:ok, false} <- AccessHelper.restricted_access?(to_string(transaction.from_address_hash), params),
+         {:ok, false} <- AccessHelper.restricted_access?(to_string(transaction.to_address_hash), params) do
       full_options =
         Keyword.merge(
           [
@@ -98,8 +97,8 @@ defmodule BlockScoutWeb.TransactionInternalTransactionController do
                :token_transfers => :optional
              }
            ),
-         {:ok, false} <- AccessHelpers.restricted_access?(to_string(transaction.from_address_hash), params),
-         {:ok, false} <- AccessHelpers.restricted_access?(to_string(transaction.to_address_hash), params) do
+         {:ok, false} <- AccessHelper.restricted_access?(to_string(transaction.from_address_hash), params),
+         {:ok, false} <- AccessHelper.restricted_access?(to_string(transaction.to_address_hash), params) do
       tx_status =
         EthereumJSONRPC.request(%{id: 0, method: "eth_getTxStatusDetailByHash", params: [transaction_hash_string]})
         |> json_rpc(Application.get_env(:indexer, :json_rpc_named_arguments))
@@ -157,7 +156,7 @@ defmodule BlockScoutWeb.TransactionInternalTransactionController do
       render(
         conn,
         "index.html",
-        exchange_rate: Market.get_exchange_rate(Explorer.coin()) || Token.null(),
+        exchange_rate: Market.get_coin_exchange_rate(),
         current_path: Controller.current_full_path(conn),
         current_user: current_user(conn),
         block_height: Chain.block_height(),

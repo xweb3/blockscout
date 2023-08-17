@@ -3,7 +3,7 @@ defmodule BlockScoutWeb.Tokens.Instance.HolderController do
 
   alias BlockScoutWeb.Tokens.HolderView
   alias BlockScoutWeb.Tokens.Instance.Helper
-  alias Explorer.{Chain, Market}
+  alias Explorer.Chain
   alias Explorer.Chain.Address
   alias Phoenix.View
 

@@ -1,11 +1,15 @@
 defmodule BlockScoutWeb.API.V2.SmartContractControllerTest do
   use BlockScoutWeb.ConnCase
+  use BlockScoutWeb.ChannelCase, async: false
 
   import Mox
 
   alias BlockScoutWeb.AddressContractView
   alias BlockScoutWeb.Models.UserFromAuth
   alias Explorer.Chain.{Address, SmartContract}
+  alias Plug.Conn
+
+  setup :set_mox_from_context
 
   describe "/smart-contracts/{address_hash}" do
     test "get 404 on non existing SC", %{conn: conn} do
@@ -55,7 +59,8 @@ defmodule BlockScoutWeb.API.V2.SmartContractControllerTest do
     end
 
     test "get smart-contract", %{conn: conn} do
-      lib_address_string = to_string(build(:address))
+      lib_address = build(:address)
+      lib_address_string = to_string(lib_address)
 
       target_contract =
         insert(:smart_contract,
@@ -87,7 +92,7 @@ defmodule BlockScoutWeb.API.V2.SmartContractControllerTest do
         "can_be_visualized_via_sol2uml" => false,
         "name" => target_contract && target_contract.name,
         "compiler_version" => target_contract.compiler_version,
-        "optimization_enabled" => if(target_contract.is_vyper_contract, do: nil, else: target_contract.optimization),
+        "optimization_enabled" => target_contract.optimization,
         "optimization_runs" => target_contract.optimization_runs,
         "evm_version" => target_contract.evm_version,
         "verified_at" => target_contract.inserted_at |> to_string() |> String.replace(" ", "T"),
@@ -95,25 +100,28 @@ defmodule BlockScoutWeb.API.V2.SmartContractControllerTest do
         "file_path" => target_contract.file_path,
         "additional_sources" => [],
         "compiler_settings" => target_contract.compiler_settings,
-        "external_libraries" => [%{"name" => "ABC", "address_hash" => lib_address_string}],
+        "external_libraries" => [%{"name" => "ABC", "address_hash" => Address.checksum(lib_address)}],
         "constructor_args" => target_contract.constructor_arguments,
         "decoded_constructor_args" => nil,
         "is_self_destructed" => false,
         "deployed_bytecode" =>
           "0x6080604052600436106049576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806360fe47b114604e5780636d4ce63c146078575b600080fd5b348015605957600080fd5b5060766004803603810190808035906020019092919050505060a0565b005b348015608357600080fd5b50608a60aa565b6040518082815260200191505060405180910390f35b8060008190555050565b600080549050905600a165627a7a7230582061b7676067d537e410bb704932a9984739a959416170ea17bda192ac1218d2790029",
         "creation_bytecode" =>
-          "0x608060405234801561001057600080fd5b5060df8061001f6000396000f3006080604052600436106049576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806360fe47b114604e5780636d4ce63c146078575b600080fd5b348015605957600080fd5b5060766004803603810190808035906020019092919050505060a0565b005b348015608357600080fd5b50608a60aa565b6040518082815260200191505060405180910390f35b8060008190555050565b600080549050905600a165627a7a7230582061b7676067d537e410bb704932a9984739a959416170ea17bda192ac1218d2790029"
+          "0x608060405234801561001057600080fd5b5060df8061001f6000396000f3006080604052600436106049576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806360fe47b114604e5780636d4ce63c146078575b600080fd5b348015605957600080fd5b5060766004803603810190808035906020019092919050505060a0565b005b348015608357600080fd5b50608a60aa565b6040518082815260200191505060405180910390f35b8060008190555050565b600080549050905600a165627a7a7230582061b7676067d537e410bb704932a9984739a959416170ea17bda192ac1218d2790029",
+        "abi" => target_contract.abi,
+        "is_verified_via_eth_bytecode_db" => target_contract.verified_via_eth_bytecode_db,
+        "language" => smart_contract_language(target_contract)
       }
 
       request = get(conn, "/api/v2/smart-contracts/#{Address.checksum(target_contract.address_hash)}")
       response = json_response(request, 200)
 
-      assert ^correct_response = Map.drop(response, ["abi"])
-      assert response["abi"] == target_contract.abi
+      assert correct_response == response
     end
 
     test "get smart-contract with decoded constructor", %{conn: conn} do
-      lib_address_string = to_string(build(:address))
+      lib_address = build(:address)
+      lib_address_string = to_string(lib_address)
 
       target_contract =
         insert(:smart_contract,
@@ -172,7 +180,7 @@ defmodule BlockScoutWeb.API.V2.SmartContractControllerTest do
         "can_be_visualized_via_sol2uml" => false,
         "name" => target_contract && target_contract.name,
         "compiler_version" => target_contract.compiler_version,
-        "optimization_enabled" => if(target_contract.is_vyper_contract, do: nil, else: target_contract.optimization),
+        "optimization_enabled" => target_contract.optimization,
         "optimization_runs" => target_contract.optimization_runs,
         "evm_version" => target_contract.evm_version,
         "verified_at" => target_contract.inserted_at |> to_string() |> String.replace(" ", "T"),
@@ -180,7 +188,7 @@ defmodule BlockScoutWeb.API.V2.SmartContractControllerTest do
         "file_path" => target_contract.file_path,
         "additional_sources" => [],
         "compiler_settings" => target_contract.compiler_settings,
-        "external_libraries" => [%{"name" => "ABC", "address_hash" => lib_address_string}],
+        "external_libraries" => [%{"name" => "ABC", "address_hash" => Address.checksum(lib_address)}],
         "constructor_args" => target_contract.constructor_arguments,
         "decoded_constructor_args" => [
           ["0x0000000000000000000000000000000000000000", %{"name" => "_proxyStorage", "type" => "address"}],
@@ -191,7 +199,9 @@ defmodule BlockScoutWeb.API.V2.SmartContractControllerTest do
           "0x6080604052600436106049576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806360fe47b114604e5780636d4ce63c146078575b600080fd5b348015605957600080fd5b5060766004803603810190808035906020019092919050505060a0565b005b348015608357600080fd5b50608a60aa565b6040518082815260200191505060405180910390f35b8060008190555050565b600080549050905600a165627a7a7230582061b7676067d537e410bb704932a9984739a959416170ea17bda192ac1218d2790029",
         "creation_bytecode" =>
           "0x608060405234801561001057600080fd5b5060df8061001f6000396000f3006080604052600436106049576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806360fe47b114604e5780636d4ce63c146078575b600080fd5b348015605957600080fd5b5060766004803603810190808035906020019092919050505060a0565b005b348015608357600080fd5b50608a60aa565b6040518082815260200191505060405180910390f35b8060008190555050565b600080549050905600a165627a7a7230582061b7676067d537e410bb704932a9984739a959416170ea17bda192ac1218d2790029",
-        "abi" => target_contract.abi
+        "abi" => target_contract.abi,
+        "is_verified_via_eth_bytecode_db" => target_contract.verified_via_eth_bytecode_db,
+        "language" => smart_contract_language(target_contract)
       }
 
       request = get(conn, "/api/v2/smart-contracts/#{Address.checksum(target_contract.address_hash)}")
@@ -242,13 +252,178 @@ defmodule BlockScoutWeb.API.V2.SmartContractControllerTest do
         created_contract_address_hash: target_contract.address_hash,
         input:
           "0x608060405234801561001057600080fd5b5060df8061001f6000396000f3006080604052600436106049576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806360fe47b114604e5780636d4ce63c146078575b600080fd5b348015605957600080fd5b5060766004803603810190808035906020019092919050505060a0565b005b348015608357600080fd5b50608a60aa565b6040518082815260200191505060405180910390f35b8060008190555050565b600080549050905600a165627a7a7230582061b7676067d537e410bb704932a9984739a959416170ea17bda192ac1218d2790029"
+      )
+      |> with_block(status: :ok)
+
+      address = insert(:contract_address)
+
+      insert(:transaction,
+        created_contract_address_hash: address.hash,
+        input:
+          "0x608060405234801561001057600080fd5b5060df8061001f6000396000f3006080604052600436106049576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806360fe47b114604e5780636d4ce63c146078575b600080fd5b348015605957600080fd5b5060766004803603810190808035906020019092919050505060a0565b005b348015608357600080fd5b50608a60aa565b6040518082815260200191505060405180910390f35b8060008190555050565b600080549050905600a165627a7a7230582061b7676067d537e410bb704932a9984739a959416170ea17bda192ac1218d2790029"
+      )
+      |> with_block(status: :ok)
+
+      correct_response = %{
+        "verified_twin_address_hash" => Address.checksum(target_contract.address_hash),
+        "is_verified" => false,
+        "is_changed_bytecode" => false,
+        "is_partially_verified" => target_contract.partially_verified,
+        "is_fully_verified" => false,
+        "is_verified_via_sourcify" => false,
+        "is_vyper_contract" => target_contract.is_vyper_contract,
+        "minimal_proxy_address_hash" => nil,
+        "sourcify_repo_url" => nil,
+        "can_be_visualized_via_sol2uml" => false,
+        "name" => target_contract && target_contract.name,
+        "compiler_version" => target_contract.compiler_version,
+        "optimization_enabled" => target_contract.optimization,
+        "optimization_runs" => target_contract.optimization_runs,
+        "evm_version" => target_contract.evm_version,
+        "verified_at" => target_contract.inserted_at |> to_string() |> String.replace(" ", "T"),
+        "source_code" => target_contract.contract_source_code,
+        "file_path" => target_contract.file_path,
+        "additional_sources" => [],
+        "compiler_settings" => target_contract.compiler_settings,
+        "external_libraries" => [%{"name" => "ABC", "address_hash" => Address.checksum(lib_address)}],
+        "constructor_args" => nil,
+        "decoded_constructor_args" => nil,
+        "is_self_destructed" => false,
+        "deployed_bytecode" =>
+          "0x6080604052600436106049576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806360fe47b114604e5780636d4ce63c146078575b600080fd5b348015605957600080fd5b5060766004803603810190808035906020019092919050505060a0565b005b348015608357600080fd5b50608a60aa565b6040518082815260200191505060405180910390f35b8060008190555050565b600080549050905600a165627a7a7230582061b7676067d537e410bb704932a9984739a959416170ea17bda192ac1218d2790029",
+        "creation_bytecode" =>
+          "0x608060405234801561001057600080fd5b5060df8061001f6000396000f3006080604052600436106049576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806360fe47b114604e5780636d4ce63c146078575b600080fd5b348015605957600080fd5b5060766004803603810190808035906020019092919050505060a0565b005b348015608357600080fd5b50608a60aa565b6040518082815260200191505060405180910390f35b8060008190555050565b600080549050905600a165627a7a7230582061b7676067d537e410bb704932a9984739a959416170ea17bda192ac1218d2790029",
+        "abi" => target_contract.abi,
+        "is_verified_via_eth_bytecode_db" => target_contract.verified_via_eth_bytecode_db,
+        "language" => smart_contract_language(target_contract)
       }
 
       request = get(conn, "/api/v2/smart-contracts/#{Address.checksum(address.hash)}")
       response = json_response(request, 200)
 
-      assert ^correct_response = Map.drop(response, ["abi"])
-      assert response["abi"] == target_contract.abi
+      assert correct_response == response
+    end
+
+    test "automatically verify contract via Eth Bytecode Interface", %{conn: conn} do
+      {:ok, pid} = Explorer.Chain.Fetcher.LookUpSmartContractSourcesOnDemand.start_link([])
+
+      bypass = Bypass.open()
+      eth_bytecode_response = File.read!("./test/support/fixture/smart_contract/eth_bytecode_db_search_response.json")
+
+      old_env = Application.get_env(:explorer, Explorer.SmartContract.RustVerifierInterfaceBehaviour)
+
+      Application.put_env(:explorer, Explorer.SmartContract.RustVerifierInterfaceBehaviour,
+        service_url: "http://localhost:#{bypass.port}",
+        enabled: true
+      )
+
+      address = insert(:contract_address)
+
+      insert(:transaction,
+        created_contract_address_hash: address.hash,
+        input:
+          "0x608060405234801561001057600080fd5b5060df8061001f6000396000f3006080604052600436106049576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806360fe47b114604e5780636d4ce63c146078575b600080fd5b348015605957600080fd5b5060766004803603810190808035906020019092919050505060a0565b005b348015608357600080fd5b50608a60aa565b6040518082815260200191505060405180910390f35b8060008190555050565b600080549050905600a165627a7a7230582061b7676067d537e410bb704932a9984739a959416170ea17bda192ac1218d2790029"
+      )
+      |> with_block()
+
+      topic = "addresses:#{address.hash}"
+
+      {:ok, _reply, _socket} =
+        BlockScoutWeb.UserSocketV2
+        |> socket("no_id", %{})
+        |> subscribe_and_join(topic)
+
+      Bypass.expect_once(bypass, "POST", "/api/v2/bytecodes/sources:search", fn conn ->
+        Conn.resp(conn, 200, eth_bytecode_response)
+      end)
+
+      request = get(conn, "/api/v2/smart-contracts/#{Address.checksum(address.hash)}")
+
+      assert_receive %Phoenix.Socket.Message{
+                       payload: %{},
+                       event: "smart_contract_was_verified",
+                       topic: ^topic
+                     },
+                     :timer.seconds(1)
+
+      response = json_response(request, 200)
+
+      assert response ==
+               %{
+                 "is_self_destructed" => false,
+                 "deployed_bytecode" => to_string(address.contract_code),
+                 "creation_bytecode" =>
+                   "0x608060405234801561001057600080fd5b5060df8061001f6000396000f3006080604052600436106049576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806360fe47b114604e5780636d4ce63c146078575b600080fd5b348015605957600080fd5b5060766004803603810190808035906020019092919050505060a0565b005b348015608357600080fd5b50608a60aa565b6040518082815260200191505060405180910390f35b8060008190555050565b600080549050905600a165627a7a7230582061b7676067d537e410bb704932a9984739a959416170ea17bda192ac1218d2790029"
+               }
+
+      request = get(conn, "/api/v2/smart-contracts/#{Address.checksum(address.hash)}")
+      assert response = json_response(request, 200)
+      assert %{"is_verified" => true} = response
+      assert %{"is_verified_via_eth_bytecode_db" => true} = response
+      assert %{"is_partially_verified" => true} = response
+      assert %{"is_fully_verified" => false} = response
+
+      Application.put_env(:explorer, Explorer.SmartContract.RustVerifierInterfaceBehaviour, old_env)
+      Bypass.down(bypass)
+      GenServer.stop(pid)
+    end
+
+    test "check fetch interval for LookUpSmartContractSourcesOnDemand", %{conn: conn} do
+      {:ok, pid} = Explorer.Chain.Fetcher.LookUpSmartContractSourcesOnDemand.start_link([])
+
+      bypass = Bypass.open()
+      address = insert(:contract_address)
+
+      insert(:transaction,
+        created_contract_address_hash: address.hash,
+        input:
+          "0x608060405234801561001057600080fd5b5060df8061001f6000396000f3006080604052600436106049576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806360fe47b114604e5780636d4ce63c146078575b600080fd5b348015605957600080fd5b5060766004803603810190808035906020019092919050505060a0565b005b348015608357600080fd5b50608a60aa565b6040518082815260200191505060405180910390f35b8060008190555050565b600080549050905600a165627a7a7230582061b7676067d537e410bb704932a9984739a959416170ea17bda192ac1218d2790029"
+      )
+      |> with_block()
+
+      old_env = Application.get_env(:explorer, Explorer.SmartContract.RustVerifierInterfaceBehaviour)
+
+      Application.put_env(:explorer, Explorer.SmartContract.RustVerifierInterfaceBehaviour,
+        service_url: "http://localhost:#{bypass.port}",
+        enabled: true
+      )
+
+      old_interval_env = Application.get_env(:explorer, Explorer.Chain.Fetcher.LookUpSmartContractSourcesOnDemand)
+
+      Application.put_env(:explorer, Explorer.Chain.Fetcher.LookUpSmartContractSourcesOnDemand, fetch_interval: 0)
+
+      Bypass.expect_once(bypass, "POST", "/api/v2/bytecodes/sources:search", fn conn ->
+        Conn.resp(conn, 200, "{\"sources\": []}")
+      end)
+
+      _request = get(conn, "/api/v2/smart-contracts/#{Address.checksum(address.hash)}")
+
+      :timer.sleep(10)
+
+      Bypass.expect_once(bypass, "POST", "/api/v2/bytecodes/sources:search", fn conn ->
+        Conn.resp(conn, 200, "{\"sources\": []}")
+      end)
+
+      _request = get(conn, "/api/v2/smart-contracts/#{Address.checksum(address.hash)}")
+
+      :timer.sleep(10)
+
+      Bypass.expect_once(bypass, "POST", "/api/v2/bytecodes/sources:search", fn conn ->
+        Conn.resp(conn, 200, "{\"sources\": []}")
+      end)
+
+      _request = get(conn, "/api/v2/smart-contracts/#{Address.checksum(address.hash)}")
+
+      :timer.sleep(10)
+
+      Application.put_env(:explorer, Explorer.Chain.Fetcher.LookUpSmartContractSourcesOnDemand, fetch_interval: 10000)
+
+      _request = get(conn, "/api/v2/smart-contracts/#{Address.checksum(address.hash)}")
+
+      Application.put_env(:explorer, Explorer.Chain.Fetcher.LookUpSmartContractSourcesOnDemand, old_interval_env)
+      Application.put_env(:explorer, Explorer.SmartContract.RustVerifierInterfaceBehaviour, old_env)
+      Bypass.down(bypass)
+      GenServer.stop(pid)
     end
   end
 
@@ -296,6 +471,41 @@ defmodule BlockScoutWeb.API.V2.SmartContractControllerTest do
           "outputs" => [],
           "name" => "disableWhitelist",
           "inputs" => [%{"type" => "bool", "name" => "disable", "internalType" => "bool"}]
+        },
+        %{"type" => "fallback"},
+        %{"type" => "receive"},
+        %{
+          "type" => "function",
+          "stateMutability" => "view",
+          "outputs" => [
+            %{
+              "type" => "tuple",
+              "name" => "",
+              "internalType" => "struct Storage.TransactionReceipt",
+              "components" => [
+                %{"type" => "bytes32", "name" => "txHash", "internalType" => "bytes32"},
+                %{"type" => "uint256", "name" => "blockNumber", "internalType" => "uint256"},
+                %{"type" => "bytes32", "name" => "blockHash", "internalType" => "bytes32"},
+                %{"type" => "uint256", "name" => "transactionIndex", "internalType" => "uint256"},
+                %{"type" => "address", "name" => "from", "internalType" => "address"},
+                %{"type" => "address", "name" => "to", "internalType" => "address"},
+                %{"type" => "uint256", "name" => "gasUsed", "internalType" => "uint256"},
+                %{"type" => "bool", "name" => "status", "internalType" => "bool"},
+                %{
+                  "type" => "tuple[]",
+                  "name" => "logs",
+                  "internalType" => "struct Storage.Log[]",
+                  "components" => [
+                    %{"type" => "address", "name" => "from", "internalType" => "address"},
+                    %{"type" => "bytes32[]", "name" => "topics", "internalType" => "bytes32[]"},
+                    %{"type" => "bytes", "name" => "data", "internalType" => "bytes"}
+                  ]
+                }
+              ]
+            }
+          ],
+          "name" => "retrieve",
+          "inputs" => []
         }
       ]
 
@@ -303,17 +513,43 @@ defmodule BlockScoutWeb.API.V2.SmartContractControllerTest do
 
       blockchain_eth_call_mock()
 
-      request = get(conn, "/api/v2/smart-contracts/#{target_contract.address_hash}/methods-read")
+      expect(
+        EthereumJSONRPC.Mox,
+        :json_rpc,
+        fn [
+             %{
+               id: id,
+               method: "eth_call",
+               params: [%{to: _address_hash, from: "0xBb36c792B9B45Aaf8b848A1392B0d6559202729E"}, _]
+             }
+           ],
+           _opts ->
+          {:ok,
+           [
+             %{
+               id: id,
+               jsonrpc: "2.0",
+               result:
+                 "0x0000000000000000000000000000000000000000000000000000000000000020fe6a43fa23a0269092cbf97cb908e1d5a49a18fd6942baf2467fb5b221e39ab200000000000000000000000000000000000000000000000000000000000003e8fe6a43fa23a0269092cbf97cb908e1d5a49a18fd6942baf2467fb5b221e39ab2000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000bb36c792b9b45aaf8b848a1392b0d6559202729e000000000000000000000000bb36c792b9b45aaf8b848a1392b0d6559202729e000000000000000000000000000000000000000000000000000000000001e0f30000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000012000000000000000000000000000000000000000000000000000000000000000030000000000000000000000000000000000000000000000000000000000000060000000000000000000000000000000000000000000000000000000000000018000000000000000000000000000000000000000000000000000000000000002a0000000000000000000000000bb36c792b9b45aaf8b848a1392b0d6559202729e000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000e00000000000000000000000000000000000000000000000000000000000000003307830000000000000000000000000000000000000000000000000000000000030783030313132323333000000000000000000000000000000000000000000003078303031313232333331323300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000c3078303030303132333132330000000000000000000000000000000000000000000000000000000000000000bb36c792b9b45aaf8b848a1392b0d6559202729e000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000e00000000000000000000000000000000000000000000000000000000000000003307830000000000000000000000000000000000000000000000000000000000030783030313132323333000000000000000000000000000000000000000000003078303031313232333331323300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000c3078303030303132333132330000000000000000000000000000000000000000000000000000000000000000bb36c792b9b45aaf8b848a1392b0d6559202729e000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000e00000000000000000000000000000000000000000000000000000000000000003307830000000000000000000000000000000000000000000000000000000000030783030313132323333000000000000000000000000000000000000000000003078303031313232333331323300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000c3078303030303132333132330000000000000000000000000000000000000000"
+             }
+           ]}
+        end
+      )
+
+      request =
+        get(conn, "/api/v2/smart-contracts/#{target_contract.address_hash}/methods-read", %{
+          "from" => "0xBb36c792B9B45Aaf8b848A1392B0d6559202729E"
+        })
+
       assert response = json_response(request, 200)
 
       assert %{
                "type" => "function",
                "stateMutability" => "view",
+               "names" => ["address"],
                "outputs" => [
                  %{
                    "type" => "address",
-                   "name" => "",
-                   "internalType" => "address",
                    "value" => "0xfffffffffffffffffffffffffffffffffffffffe"
                  }
                ],
@@ -325,10 +561,145 @@ defmodule BlockScoutWeb.API.V2.SmartContractControllerTest do
       assert %{
                "type" => "function",
                "stateMutability" => "view",
-               "outputs" => [%{"type" => "bool", "name" => "", "internalType" => "bool", "value" => ""}],
+               "outputs" => [%{"type" => "bool", "name" => "", "internalType" => "bool"}],
                "name" => "isWhitelist",
                "inputs" => [%{"type" => "address", "name" => "_address", "internalType" => "address"}],
                "method_id" => "c683630d"
+             } in response
+
+      assert %{
+               "inputs" => [],
+               "method_id" => "2e64cec1",
+               "name" => "retrieve",
+               "names" => [
+                 [
+                   "struct Storage.TransactionReceipt",
+                   [
+                     "txHash",
+                     "blockNumber",
+                     "blockHash",
+                     "transactionIndex",
+                     "from",
+                     "to",
+                     "gasUsed",
+                     "status",
+                     ["logs", ["from", "topics", "data"]]
+                   ]
+                 ]
+               ],
+               "outputs" => [
+                 %{
+                   "type" =>
+                     "tuple[bytes32,uint256,bytes32,uint256,address,address,uint256,bool,tuple[address,bytes32[],bytes][]]",
+                   "value" => [
+                     "0xfe6a43fa23a0269092cbf97cb908e1d5a49a18fd6942baf2467fb5b221e39ab2",
+                     1000,
+                     "0xfe6a43fa23a0269092cbf97cb908e1d5a49a18fd6942baf2467fb5b221e39ab2",
+                     10,
+                     "0xbb36c792b9b45aaf8b848a1392b0d6559202729e",
+                     "0xbb36c792b9b45aaf8b848a1392b0d6559202729e",
+                     123_123,
+                     true,
+                     [
+                       [
+                         "0xbb36c792b9b45aaf8b848a1392b0d6559202729e",
+                         [
+                           "0x3078300000000000000000000000000000000000000000000000000000000000",
+                           "0x3078303031313232333300000000000000000000000000000000000000000000",
+                           "0x3078303031313232333331323300000000000000000000000000000000000000"
+                         ],
+                         "0x307830303030313233313233"
+                       ],
+                       [
+                         "0xbb36c792b9b45aaf8b848a1392b0d6559202729e",
+                         [
+                           "0x3078300000000000000000000000000000000000000000000000000000000000",
+                           "0x3078303031313232333300000000000000000000000000000000000000000000",
+                           "0x3078303031313232333331323300000000000000000000000000000000000000"
+                         ],
+                         "0x307830303030313233313233"
+                       ],
+                       [
+                         "0xbb36c792b9b45aaf8b848a1392b0d6559202729e",
+                         [
+                           "0x3078300000000000000000000000000000000000000000000000000000000000",
+                           "0x3078303031313232333300000000000000000000000000000000000000000000",
+                           "0x3078303031313232333331323300000000000000000000000000000000000000"
+                         ],
+                         "0x307830303030313233313233"
+                       ]
+                     ]
+                   ]
+                 }
+               ],
+               "stateMutability" => "view",
+               "type" => "function"
+             } in response
+
+      refute %{"type" => "fallback"} in response
+      refute %{"type" => "receive"} in response
+    end
+
+    test "get array of addresses within read-methods", %{conn: conn} do
+      abi = [
+        %{
+          "type" => "function",
+          "stateMutability" => "view",
+          "payable" => false,
+          "outputs" => [%{"type" => "address[]", "name" => ""}],
+          "name" => "getOwners",
+          "inputs" => [],
+          "constant" => true
+        }
+      ]
+
+      id =
+        abi
+        |> ABI.parse_specification()
+        |> Enum.at(0)
+        |> Map.fetch!(:method_id)
+
+      target_contract = insert(:smart_contract, abi: abi)
+
+      expect(
+        EthereumJSONRPC.Mox,
+        :json_rpc,
+        fn [%{id: id, method: "eth_call", params: _params}], _opts ->
+          {:ok,
+           [
+             %{
+               id: id,
+               jsonrpc: "2.0",
+               result:
+                 "0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000400000000000000000000000064631b5d259ead889e8b06d12c8b74742804e5f1000000000000000000000000234fe7224ce480ca97d01897311b8c3d35162f8600000000000000000000000087877d9d68c9e014ea81e6f4a8bd44528484567d0000000000000000000000009c28f1bb95d7e7fe88e6e8458d53be127cc2dc4f"
+             }
+           ]}
+        end
+      )
+
+      request = get(conn, "/api/v2/smart-contracts/#{target_contract.address_hash}/methods-read")
+      assert response = json_response(request, 200)
+
+      assert %{
+               "type" => "function",
+               "stateMutability" => "view",
+               "payable" => false,
+               "names" => [nil],
+               "outputs" => [
+                 %{
+                   "type" => "address[]",
+                   "value" => [
+                     "0x64631b5d259ead889e8b06d12c8b74742804e5f1",
+                     "0x234fe7224ce480ca97d01897311b8c3d35162f86",
+                     "0x87877d9d68c9e014ea81e6f4a8bd44528484567d",
+                     "0x9c28f1bb95d7e7fe88e6e8458d53be127cc2dc4f"
+                   ]
+                 }
+               ],
+               "name" => "getOwners",
+               "inputs" => [],
+               "constant" => true,
+               "method_id" => Base.encode16(id, case: :lower)
              } in response
     end
   end
@@ -432,6 +803,146 @@ defmodule BlockScoutWeb.API.V2.SmartContractControllerTest do
       assert %{
                "is_error" => false,
                "result" => %{"names" => ["bool"], "output" => [%{"type" => "bool", "value" => true}]}
+             } == response
+    end
+
+    test "query complex response", %{conn: conn} do
+      abi = [
+        %{
+          "type" => "function",
+          "stateMutability" => "view",
+          "outputs" => [
+            %{
+              "type" => "tuple",
+              "name" => "",
+              "internalType" => "struct Storage.TransactionReceipt",
+              "components" => [
+                %{"type" => "bytes32", "name" => "txHash", "internalType" => "bytes32"},
+                %{"type" => "uint256", "name" => "blockNumber", "internalType" => "uint256"},
+                %{"type" => "bytes32", "name" => "blockHash", "internalType" => "bytes32"},
+                %{"type" => "uint256", "name" => "transactionIndex", "internalType" => "uint256"},
+                %{"type" => "address", "name" => "from", "internalType" => "address"},
+                %{"type" => "address", "name" => "to", "internalType" => "address"},
+                %{"type" => "uint256", "name" => "gasUsed", "internalType" => "uint256"},
+                %{"type" => "bool", "name" => "status", "internalType" => "bool"},
+                %{
+                  "type" => "tuple[]",
+                  "name" => "logs",
+                  "internalType" => "struct Storage.Log[]",
+                  "components" => [
+                    %{"type" => "address", "name" => "from", "internalType" => "address"},
+                    %{"type" => "bytes32[]", "name" => "topics", "internalType" => "bytes32[]"},
+                    %{"type" => "bytes", "name" => "data", "internalType" => "bytes"}
+                  ]
+                }
+              ]
+            }
+          ],
+          "name" => "retrieve",
+          "inputs" => []
+        }
+      ]
+
+      target_contract = insert(:smart_contract, abi: abi)
+
+      expect(
+        EthereumJSONRPC.Mox,
+        :json_rpc,
+        fn [
+             %{
+               id: id,
+               method: "eth_call",
+               params: [%{to: _address_hash, from: "0xBb36c792B9B45Aaf8b848A1392B0d6559202729E"}, _]
+             }
+           ],
+           _opts ->
+          {:ok,
+           [
+             %{
+               id: id,
+               jsonrpc: "2.0",
+               result:
+                 "0x0000000000000000000000000000000000000000000000000000000000000020fe6a43fa23a0269092cbf97cb908e1d5a49a18fd6942baf2467fb5b221e39ab200000000000000000000000000000000000000000000000000000000000003e8fe6a43fa23a0269092cbf97cb908e1d5a49a18fd6942baf2467fb5b221e39ab2000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000bb36c792b9b45aaf8b848a1392b0d6559202729e000000000000000000000000bb36c792b9b45aaf8b848a1392b0d6559202729e000000000000000000000000000000000000000000000000000000000001e0f30000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000012000000000000000000000000000000000000000000000000000000000000000030000000000000000000000000000000000000000000000000000000000000060000000000000000000000000000000000000000000000000000000000000018000000000000000000000000000000000000000000000000000000000000002a0000000000000000000000000bb36c792b9b45aaf8b848a1392b0d6559202729e000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000e00000000000000000000000000000000000000000000000000000000000000003307830000000000000000000000000000000000000000000000000000000000030783030313132323333000000000000000000000000000000000000000000003078303031313232333331323300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000c3078303030303132333132330000000000000000000000000000000000000000000000000000000000000000bb36c792b9b45aaf8b848a1392b0d6559202729e000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000e00000000000000000000000000000000000000000000000000000000000000003307830000000000000000000000000000000000000000000000000000000000030783030313132323333000000000000000000000000000000000000000000003078303031313232333331323300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000c3078303030303132333132330000000000000000000000000000000000000000000000000000000000000000bb36c792b9b45aaf8b848a1392b0d6559202729e000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000e00000000000000000000000000000000000000000000000000000000000000003307830000000000000000000000000000000000000000000000000000000000030783030313132323333000000000000000000000000000000000000000000003078303031313232333331323300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000c3078303030303132333132330000000000000000000000000000000000000000"
+             }
+           ]}
+        end
+      )
+
+      request =
+        post(conn, "/api/v2/smart-contracts/#{target_contract.address_hash}/query-read-method", %{
+          "contract_type" => "regular",
+          "args" => [],
+          "method_id" => "2e64cec1",
+          "from" => "0xBb36c792B9B45Aaf8b848A1392B0d6559202729E"
+        })
+
+      assert response = json_response(request, 200)
+
+      assert %{
+               "is_error" => false,
+               "result" => %{
+                 "names" => [
+                   [
+                     "struct Storage.TransactionReceipt",
+                     [
+                       "txHash",
+                       "blockNumber",
+                       "blockHash",
+                       "transactionIndex",
+                       "from",
+                       "to",
+                       "gasUsed",
+                       "status",
+                       ["logs", ["from", "topics", "data"]]
+                     ]
+                   ]
+                 ],
+                 "output" => [
+                   %{
+                     "type" =>
+                       "tuple[bytes32,uint256,bytes32,uint256,address,address,uint256,bool,tuple[address,bytes32[],bytes][]]",
+                     "value" => [
+                       "0xfe6a43fa23a0269092cbf97cb908e1d5a49a18fd6942baf2467fb5b221e39ab2",
+                       1000,
+                       "0xfe6a43fa23a0269092cbf97cb908e1d5a49a18fd6942baf2467fb5b221e39ab2",
+                       10,
+                       "0xbb36c792b9b45aaf8b848a1392b0d6559202729e",
+                       "0xbb36c792b9b45aaf8b848a1392b0d6559202729e",
+                       123_123,
+                       true,
+                       [
+                         [
+                           "0xbb36c792b9b45aaf8b848a1392b0d6559202729e",
+                           [
+                             "0x3078300000000000000000000000000000000000000000000000000000000000",
+                             "0x3078303031313232333300000000000000000000000000000000000000000000",
+                             "0x3078303031313232333331323300000000000000000000000000000000000000"
+                           ],
+                           "0x307830303030313233313233"
+                         ],
+                         [
+                           "0xbb36c792b9b45aaf8b848a1392b0d6559202729e",
+                           [
+                             "0x3078300000000000000000000000000000000000000000000000000000000000",
+                             "0x3078303031313232333300000000000000000000000000000000000000000000",
+                             "0x3078303031313232333331323300000000000000000000000000000000000000"
+                           ],
+                           "0x307830303030313233313233"
+                         ],
+                         [
+                           "0xbb36c792b9b45aaf8b848a1392b0d6559202729e",
+                           [
+                             "0x3078300000000000000000000000000000000000000000000000000000000000",
+                             "0x3078303031313232333300000000000000000000000000000000000000000000",
+                             "0x3078303031313232333331323300000000000000000000000000000000000000"
+                           ],
+                           "0x307830303030313233313233"
+                         ]
+                       ]
+                     ]
+                   }
+                 ]
+               }
              } == response
     end
 
@@ -683,7 +1194,8 @@ defmodule BlockScoutWeb.API.V2.SmartContractControllerTest do
           "outputs" => [],
           "name" => "disableWhitelist",
           "inputs" => [%{"type" => "bool", "name" => "disable", "internalType" => "bool"}]
-        }
+        },
+        %{"type" => "fallback"}
       ]
 
       target_contract = insert(:smart_contract, abi: abi)
@@ -698,7 +1210,8 @@ defmodule BlockScoutWeb.API.V2.SmartContractControllerTest do
                  "outputs" => [],
                  "name" => "disableWhitelist",
                  "inputs" => [%{"type" => "bool", "name" => "disable", "internalType" => "bool"}]
-               }
+               },
+               %{"type" => "fallback"}
              ] == response
     end
   end
@@ -808,11 +1321,10 @@ defmodule BlockScoutWeb.API.V2.SmartContractControllerTest do
       assert %{
                "type" => "function",
                "stateMutability" => "view",
+               "names" => ["address"],
                "outputs" => [
                  %{
                    "type" => "address",
-                   "name" => "",
-                   "internalType" => "address",
                    "value" => "0xfffffffffffffffffffffffffffffffffffffffe"
                  }
                ],
@@ -824,7 +1336,7 @@ defmodule BlockScoutWeb.API.V2.SmartContractControllerTest do
       assert %{
                "type" => "function",
                "stateMutability" => "view",
-               "outputs" => [%{"type" => "bool", "name" => "", "internalType" => "bool", "value" => ""}],
+               "outputs" => [%{"type" => "bool", "name" => "", "internalType" => "bool"}],
                "name" => "isWhitelist",
                "inputs" => [%{"type" => "address", "name" => "_address", "internalType" => "address"}],
                "method_id" => "c683630d"
@@ -987,11 +1499,10 @@ defmodule BlockScoutWeb.API.V2.SmartContractControllerTest do
       assert %{
                "type" => "function",
                "stateMutability" => "view",
+               "names" => ["address"],
                "outputs" => [
                  %{
                    "type" => "address",
-                   "name" => "",
-                   "internalType" => "address",
                    "value" => "0xfffffffffffffffffffffffffffffffffffffffe"
                  }
                ],
@@ -1003,7 +1514,7 @@ defmodule BlockScoutWeb.API.V2.SmartContractControllerTest do
       assert %{
                "type" => "function",
                "stateMutability" => "view",
-               "outputs" => [%{"type" => "bool", "name" => "", "internalType" => "bool", "value" => ""}],
+               "outputs" => [%{"type" => "bool", "name" => "", "internalType" => "bool"}],
                "name" => "isWhitelist",
                "inputs" => [%{"type" => "address", "name" => "_address", "internalType" => "address"}],
                "method_id" => "c683630d"
@@ -1439,11 +1950,31 @@ defmodule BlockScoutWeb.API.V2.SmartContractControllerTest do
     end
   end
 
+<<<<<<< HEAD
   defp compare_item(%SmartContract{} = smart_contract, json) do
     assert smart_contract.compiler_version == json["compiler_version"]
 
     assert if(smart_contract.is_vyper_contract, do: nil, else: smart_contract.optimization) ==
              json["optimization_enabled"]
+=======
+  describe "/smart-contracts/counters" do
+    test "fetch counters", %{conn: conn} do
+      request = get(conn, "/api/v2/smart-contracts/counters")
+
+      assert %{
+               "smart_contracts" => _,
+               "new_smart_contracts_24h" => _,
+               "verified_smart_contracts" => _,
+               "new_verified_smart_contracts_24h" => _
+             } = json_response(request, 200)
+    end
+  end
+
+  defp compare_item(%SmartContract{} = smart_contract, json) do
+    assert smart_contract.compiler_version == json["compiler_version"]
+
+    assert smart_contract.optimization == json["optimization_enabled"]
+>>>>>>> v5.2.1-beta
 
     assert json["language"] == if(smart_contract.is_vyper_contract, do: "vyper", else: "solidity")
     assert json["verified_at"]
@@ -1477,5 +2008,18 @@ defmodule BlockScoutWeb.API.V2.SmartContractControllerTest do
          ]}
       end
     )
+  end
+
+  defp smart_contract_language(smart_contract) do
+    cond do
+      smart_contract.is_vyper_contract ->
+        "vyper"
+
+      is_nil(smart_contract.abi) ->
+        "yul"
+
+      true ->
+        "solidity"
+    end
   end
 end

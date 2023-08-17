@@ -42,15 +42,9 @@ export function prepareMethodArgs($functionInputs, inputs) {
       if (sanitizedInputValue === '' || sanitizedInputValue === '[]') {
         return [[]]
       } else {
-        if (isArrayOfTuple(inputType)) {
-          const sanitizedInputValueElements = JSON.parse(
-            sanitizedInputValue
-          ).map((elementValue, index) => {
-            return sanitizeMutipleInputValues(
-              elementValue,
-              inputType,
-              inputComponents
-            )
+        if (isArrayOfTuple(inputType) || isMultidimensionalArray(inputType)) {
+          const sanitizedInputValueElements = JSON.parse(sanitizedInputValue).map((elementValue, index) => {
+            return sanitizeMultipleInputValues(elementValue, inputType, inputComponents)
           })
           return [sanitizedInputValueElements]
         } else {
@@ -64,11 +58,7 @@ export function prepareMethodArgs($functionInputs, inputs) {
             )
           }
           const inputValueElements = sanitizedInputValue.split(',')
-          const sanitizedInputValueElements = sanitizeMutipleInputValues(
-            inputValueElements,
-            inputType,
-            inputComponents
-          )
+          const sanitizedInputValueElements = sanitizeMultipleInputValues(inputValueElements, inputType, inputComponents)
           return [sanitizedInputValueElements]
         }
       }
@@ -78,11 +68,7 @@ export function prepareMethodArgs($functionInputs, inputs) {
   })
 }
 
-function sanitizeMutipleInputValues(
-  inputValueElements,
-  inputType,
-  inputComponents
-) {
+function sanitizeMultipleInputValues (inputValueElements, inputType, inputComponents) {
   return inputValueElements.map((elementValue, index) => {
     let elementInputType
     if (inputType.includes('tuple')) {
@@ -144,11 +130,10 @@ export const formatTitleAndError = (error) => {
   let txHash = ''
   let errorMap = ''
   try {
-    errorMap =
-      message && message.indexOf('{') >= 0
-        ? JSON.parse(message && message.slice(message.indexOf('{')))
-        : ''
+    errorMap = message && message.indexOf('{') >= 0 ? JSON.parse(message && message.slice(message.indexOf('{'))) : ''
+    // @ts-ignore
     message = errorMap.error || ''
+    // @ts-ignore
     txHash = errorMap.transactionHash || ''
   } catch (exception) {
     message = ''
@@ -194,9 +179,9 @@ export const getCurrentAccountFromWCPromise = (provider) => {
 
 export const getCurrentAccountFromMMPromise = () => {
   return new Promise((resolve, reject) => {
-    window.ethereum
-      .request({ method: 'eth_accounts' })
-      .then((accounts) => {
+    // @ts-ignore
+    window.ethereum.request({ method: 'eth_accounts' })
+      .then(accounts => {
         const account = accounts[0] ? accounts[0].toLowerCase() : null
         resolve(account)
       })
@@ -318,7 +303,11 @@ function convertToBool(value, type) {
   }
 }
 
-function isArrayInputType(inputType) {
+function isMultidimensionalArray (inputType) {
+  return isArrayInputType(inputType) && inputType.includes('][')
+}
+
+function isArrayInputType (inputType) {
   return inputType && inputType.includes('[') && inputType.includes(']')
 }
 

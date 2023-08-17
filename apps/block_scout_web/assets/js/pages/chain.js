@@ -12,6 +12,7 @@ import { createStore, connectElements } from '../lib/redux_helpers.js'
 import { batchChannel, showLoader } from '../lib/utils'
 import listMorph from '../lib/list_morph'
 import '../app'
+import { openErrorModal, openSuccessModal, openWarningModal } from '../lib/modals'
 
 const BATCH_THRESHOLD = 6
 const BLOCKS_PER_PAGE = 4
@@ -56,10 +57,10 @@ function baseReducer(state = initialState, action) {
       })
     }
     case 'RECEIVED_NEW_BLOCK': {
-      if (
-        !state.blocks.length ||
-        state.blocks[0].blockNumber < action.msg.blockNumber
-      ) {
+      // const firstBlock = ($('#indexer-first-block').text() && parseInt($('#indexer-first-block').text(), 10)) || 0
+      // const blockCount = (action.msg.blockNumber - firstBlock) + 1
+      // @ts-ignore
+      if (!state.blocks.length || state.blocks[0].blockNumber < action.msg.blockNumber) {
         let pastBlocks
         if (state.blocks.length < BLOCKS_PER_PAGE) {
           pastBlocks = state.blocks
@@ -237,7 +238,8 @@ function withMissingBlocks(reducer) {
 let chart
 const elements = {
   '[data-chart="historyChart"]': {
-    load() {
+    load () {
+      // @ts-ignore
       chart = window.dashboardChart
     },
     render(_$el, state, oldState) {
@@ -466,7 +468,7 @@ const elements = {
       const newElements = map(state.l1ToL2Txn, ({ l1ToL2TxnHtml }) => {
         return $(l1ToL2TxnHtml)[0]
       })
-      listMorph(container, newElements, { key: 'dataset.identifierHash' })
+      listMorph(container, newElements, { key: 'dataset.identifierHash', horizontal: null })
     }
   },
   '[data-selector="channel-batching-count"]': {
@@ -648,3 +650,26 @@ function bindBlockErrorMessage(store) {
     (_event) => loadBlocks(store)
   )
 }
+
+$('a.ajax').on('click', (event) => {
+  event.preventDefault()
+  event.currentTarget.classList.add('disabled')
+
+  $.get($(event.currentTarget).attr('href'), () => {
+    openSuccessModal('Success', 'Email successfully resent', () => { window.location.reload() })
+  }).fail((error) => {
+    if (error.responseJSON && error.responseJSON.message) {
+      if (error.status === 429) {
+        openWarningModal('Warning', error.responseJSON.message)
+      } else {
+        openErrorModal('Error', error.responseJSON.message, false)
+      }
+    } else {
+      openErrorModal('Error', 'Email resend failed', false)
+    }
+  })
+    .always(() => {
+      event.currentTarget.classList.remove('disabled')
+    })
+}
+)

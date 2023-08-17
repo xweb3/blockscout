@@ -89,20 +89,22 @@
             </dd>
           </dl>
           <!-- Miner/Validator -->
-          <dl class="row">
-            <dt class="col-sm-3 col-lg-2 text-muted">
-              <%= render BlockScoutWeb.CommonComponentsView, "_i_tooltip_2.html",
-              text: gettext("A block producer who successfully included the block onto the blockchain.") %>
-              <%= gettext("Miner") %>
-            </dt>
-            <dd class="col-sm-9 col-lg-10"><%= render BlockScoutWeb.AddressView, "_link.html", address: @block.miner, contract: false, class: "", use_custom_tooltip: false, show_full_hash: true %>
-              <%= render BlockScoutWeb.CommonComponentsView, "_btn_copy.html",
-                additional_classes: ["btn-copy-icon-small", "btn-copy-icon-custom", "btn-copy-icon-no-borders"],
-                clipboard_text: @block.miner,
-                aria_label: gettext("Copy Address"),
-                title: gettext("Copy Address") %>
-              </dd>
-          </dl>
+          <%= if !Application.get_env(:block_scout_web, :hide_block_miner) do %>
+            <dl class="row">
+              <dt class="col-sm-3 col-lg-2 text-muted">
+                <%= render BlockScoutWeb.CommonComponentsView, "_i_tooltip_2.html",
+                text: gettext("A block producer who successfully included the block onto the blockchain.") %>
+                <%= gettext("Miner") %>
+              </dt>
+              <dd class="col-sm-9 col-lg-10"><%= render BlockScoutWeb.AddressView, "_link.html", address: @block.miner, contract: false, class: "", use_custom_tooltip: false, show_full_hash: true %>
+                <%= render BlockScoutWeb.CommonComponentsView, "_btn_copy.html",
+                  additional_classes: ["btn-copy-icon-small", "btn-copy-icon-custom", "btn-copy-icon-no-borders"],
+                  clipboard_text: @block.miner,
+                  aria_label: gettext("Copy Address"),
+                  title: gettext("Copy Address") %>
+                </dd>
+            </dl>
+          <% end %>
           <!-- Size -->
           <dl class="row">
             <dt class="col-sm-3 col-lg-2 text-muted">

@@ -350,6 +350,11 @@ require Logger
     :ignore
   end
 
+  # Optimism specific transaction receipt fields
+  defp entry_to_elixir({key, _}) when key in ~w(depositNonce) do
+    :ignore
+  end
+
   defp entry_to_elixir({key, value}) do
     {:error, {:unknown_key, %{key: key, value: value}}}
   end

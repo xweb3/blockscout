@@ -187,7 +187,7 @@
 
 
                   <% {:ok, value} -> %>
-                    <span data-toggle="tooltip" data-placement="top" title="" data-custom-class="" data-original-title="<%= BlockScoutWeb.Tokens.Helpers.token_symbol(@token_transfer.token) %>">
+                    <span data-toggle="tooltip" data-placement="top" title="" data-custom-class="" data-original-title="<%= BlockScoutWeb.Tokens.Helper.token_symbol(@token_transfer.token) %>">
                       <%= render BlockScoutWeb.TransactionView, "_link_to_token_symbol.html", transfer: @token_transfer, tooltip: true %>
                     </span>
               <% end %>

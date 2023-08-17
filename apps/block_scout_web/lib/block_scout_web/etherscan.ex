@@ -1243,9 +1243,8 @@ defmodule BlockScoutWeb.Etherscan do
 
         latest will be the latest balance in a *consensus* block.
         earliest will be the first recorded balance for the address.
-        pending will be the latest balance in consensus *or* nonconcensus blocks.
-        """,
-        getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,
+        pending will be the latest balance in consensus *or* nonconsensus blocks.
+        """
       }
     ],
     responses: [
@@ -1502,8 +1501,7 @@ defmodule BlockScoutWeb.Etherscan do
         placeholder: "transactionHash",
         type: "string",
         description:
-          "Transaction hash. Hash of contents of the transaction. A transaction hash or address hash is required.",
-        getRequiredParamsDescription: &__MODULE__.generateRequiredParamsDescription/1
+          "Transaction hash. Hash of contents of the transaction. A transaction hash or address hash is required."
       }
     ],
     optional_params: [
@@ -2251,8 +2249,7 @@ defmodule BlockScoutWeb.Etherscan do
 
   @block_eth_block_number_action %{
     name: "eth_block_number",
-    description: "Mimics Ethereum JSON RPC's eth_blockNumber. Returns the lastest block number",
-    getDescription: &__MODULE__.generateDescription/1,
+    description: "Mimics Ethereum JSON RPC's eth_blockNumber. Returns the latest block number",
     required_params: [],
     optional_params: [
       %{
@@ -2794,7 +2791,7 @@ defmodule BlockScoutWeb.Etherscan do
     ],
     optional_params: [
       %{
-        key: "constructorArguements",
+        key: "constructorArguments",
         type: "string",
         description: "The constructor argument data provided.",
         getOptionalParamsDescription: &__MODULE__.generateOptionalParamsDescription/1,

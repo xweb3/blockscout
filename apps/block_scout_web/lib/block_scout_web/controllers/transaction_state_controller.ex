@@ -2,7 +2,7 @@ defmodule BlockScoutWeb.TransactionStateController do
   use BlockScoutWeb, :controller
 
   alias BlockScoutWeb.{
-    AccessHelpers,
+    AccessHelper,
     Controller,
     Models.TransactionStateHelper,
     TransactionController,
@@ -10,13 +10,13 @@ defmodule BlockScoutWeb.TransactionStateController do
   }
 
   alias Explorer.{Chain, Market}
-  alias Explorer.ExchangeRates.Token
   alias Phoenix.View
 
   import BlockScoutWeb.Account.AuthController, only: [current_user: 1]
   import BlockScoutWeb.Models.GetAddressTags, only: [get_address_tags: 2]
   import BlockScoutWeb.Models.GetTransactionTags, only: [get_transaction_with_addresses_tags: 2]
   import EthereumJSONRPC
+  import BlockScoutWeb.Chain, only: [paging_options: 1, next_page_params: 3, split_list_by_page: 1]
 
   {:ok, burn_address_hash} = Chain.string_to_address_hash("0x0000000000000000000000000000000000000000")
 
@@ -34,10 +34,21 @@ defmodule BlockScoutWeb.TransactionStateController do
              }
            ),
          {:ok, false} <-
-           AccessHelpers.restricted_access?(to_string(transaction.from_address_hash), params),
+           AccessHelper.restricted_access?(to_string(transaction.from_address_hash), params),
          {:ok, false} <-
-           AccessHelpers.restricted_access?(to_string(transaction.to_address_hash), params) do
-      state_changes = TransactionStateHelper.state_changes(transaction)
+           AccessHelper.restricted_access?(to_string(transaction.to_address_hash), params) do
+      state_changes_plus_next_page = transaction |> TransactionStateHelper.state_changes(paging_options(params))
+
+      {state_changes, next_page} = split_list_by_page(state_changes_plus_next_page)
+
+      next_page_url =
+        case next_page_params(next_page, state_changes, params) do
+          nil ->
+            nil
+
+          next_page_params ->
+            transaction_state_path(conn, :index, transaction, Map.delete(next_page_params, "type"))
+        end
 
       rendered_changes =
         Enum.map(state_changes, fn state_change ->
@@ -50,13 +61,15 @@ defmodule BlockScoutWeb.TransactionStateController do
             balance_before: state_change.balance_before,
             balance_after: state_change.balance_after,
             balance_diff: state_change.balance_diff,
+            token_id: state_change.token_id,
             conn: conn,
             miner: state_change.miner?
           )
         end)
 
       json(conn, %{
-        items: rendered_changes
+        items: rendered_changes,
+        next_page_path: next_page_url
       })
     else
       {:restricted_access, _} ->
@@ -88,9 +101,9 @@ defmodule BlockScoutWeb.TransactionStateController do
              }
            ),
          {:ok, false} <-
-           AccessHelpers.restricted_access?(to_string(transaction.from_address_hash), params),
+           AccessHelper.restricted_access?(to_string(transaction.from_address_hash), params),
          {:ok, false} <-
-           AccessHelpers.restricted_access?(to_string(transaction.to_address_hash), params) do
+           AccessHelper.restricted_access?(to_string(transaction.to_address_hash), params) do
             tx_status = EthereumJSONRPC.request(%{id: 0, method: "eth_getTxStatusDetailByHash", params: [transaction_hash_string]})
           |> json_rpc(Application.get_env(:indexer, :json_rpc_named_arguments))
           |> case do
@@ -131,7 +144,7 @@ defmodule BlockScoutWeb.TransactionStateController do
       render(
         conn,
         "index.html",
-        exchange_rate: Market.get_exchange_rate(Explorer.coin()) || Token.null(),
+        exchange_rate: Market.get_coin_exchange_rate(),
         block_height: Chain.block_height(),
         current_path: Controller.current_full_path(conn),
         show_token_transfers: Chain.transaction_has_token_transfers?(transaction_hash),

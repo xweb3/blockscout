@@ -16,7 +16,7 @@ defmodule BlockScoutWeb.TransactionController do
   import BlockScoutWeb.Models.GetTransactionTags, only: [get_transaction_with_addresses_tags: 2]
 
   alias BlockScoutWeb.{
-    AccessHelpers,
+    AccessHelper,
     Controller,
     TransactionInternalTransactionController,
     TransactionTokenTransferController,
@@ -26,7 +26,6 @@ defmodule BlockScoutWeb.TransactionController do
   require Logger
   alias Explorer.{Chain, Market}
   alias Explorer.Chain.Cache.Transaction, as: TransactionCache
-  alias Explorer.ExchangeRates.Token
   alias Phoenix.View
 
   # alias EthereumJSONRPC.HTTP.HTTPoison
@@ -170,8 +169,8 @@ defmodule BlockScoutWeb.TransactionController do
                  transaction_hash,
                  necessity_by_association: @necessity_by_association
                ),
-             {:ok, false} <- AccessHelpers.restricted_access?(to_string(transaction.from_address_hash), params),
-             {:ok, false} <- AccessHelpers.restricted_access?(to_string(transaction.to_address_hash), params) do
+             {:ok, false} <- AccessHelper.restricted_access?(to_string(transaction.from_address_hash), params),
+             {:ok, false} <- AccessHelper.restricted_access?(to_string(transaction.to_address_hash), params) do
           updated_transaction =
             case Chain.hash_to_batch(id, necessity_by_association: @necessity_by_association) do
               {:error, _} ->
@@ -220,7 +219,7 @@ defmodule BlockScoutWeb.TransactionController do
           render(
             conn,
             "show_token_transfers.html",
-            exchange_rate: Market.get_exchange_rate(Explorer.coin()) || Token.null(),
+            exchange_rate: Market.get_coin_exchange_rate(),
             block_height: Chain.block_height(),
             current_path: Controller.current_full_path(conn),
             current_user: current_user(conn),
@@ -253,8 +252,8 @@ defmodule BlockScoutWeb.TransactionController do
                  transaction_hash,
                  necessity_by_association: @necessity_by_association
                ),
-             {:ok, false} <- AccessHelpers.restricted_access?(to_string(transaction.from_address_hash), params),
-             {:ok, false} <- AccessHelpers.restricted_access?(to_string(transaction.to_address_hash), params) do
+             {:ok, false} <- AccessHelper.restricted_access?(to_string(transaction.from_address_hash), params),
+             {:ok, false} <- AccessHelper.restricted_access?(to_string(transaction.to_address_hash), params) do
           updated_transaction =
             case Chain.hash_to_batch(id, necessity_by_association: @necessity_by_association) do
               {:error, _} ->
@@ -303,7 +302,7 @@ defmodule BlockScoutWeb.TransactionController do
           render(
             conn,
             "show_internal_transactions.html",
-            exchange_rate: Market.get_exchange_rate(Explorer.coin()) || Token.null(),
+            exchange_rate: Market.get_coin_exchange_rate(),
             current_path: Controller.current_full_path(conn),
             current_user: current_user(conn),
             block_height: Chain.block_height(),

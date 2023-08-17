@@ -12,7 +12,7 @@ defmodule BlockScoutWeb.TxnBatchView do
 
   import BlockScoutWeb.Gettext
   import BlockScoutWeb.AddressView, only: [from_address_hash: 1, short_token_id: 2]
-  import BlockScoutWeb.Tokens.Helpers
+  import BlockScoutWeb.Tokens.Helper
 
   @tabs ["token-transfers", "internal-transactions", "logs", "raw-trace"]
 

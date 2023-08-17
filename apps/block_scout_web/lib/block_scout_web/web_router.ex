@@ -8,6 +8,7 @@ defmodule BlockScoutWeb.WebRouter do
   alias BlockScoutWeb.Plug.CheckAccountWeb
 
   pipeline :browser do
+    plug(BlockScoutWeb.Plug.Logger, application: :block_scout_web)
     plug(:accepts, ["html"])
     plug(:fetch_session)
     plug(:fetch_flash)
@@ -18,6 +19,7 @@ defmodule BlockScoutWeb.WebRouter do
   end
 
   pipeline :account do
+    plug(BlockScoutWeb.Plug.Logger, application: :block_scout_web)
     plug(:accepts, ["html"])
     plug(:fetch_session)
     plug(:fetch_flash)
@@ -103,6 +105,7 @@ defmodule BlockScoutWeb.WebRouter do
 
     resources "/block", BlockController, only: [:show], param: "hash_or_number" do
       resources("/transactions", BlockTransactionController, only: [:index], as: :transaction)
+      resources("/withdrawals", BlockWithdrawalController, only: [:index], as: :withdrawal)
     end
 
     resources("/blocks", BlockController, as: :blocks, only: [:index])
@@ -112,6 +115,7 @@ defmodule BlockScoutWeb.WebRouter do
       only: [:show],
       param: "hash_or_number" do
       resources("/transactions", BlockTransactionController, only: [:index], as: :transaction)
+      resources("/withdrawals", BlockWithdrawalController, only: [:index], as: :withdrawal)
     end
 
     get("/reorgs", BlockController, :reorg, as: :reorg)
@@ -125,6 +129,8 @@ defmodule BlockScoutWeb.WebRouter do
     resources("/recent-eigenda-batches", RecentEigendaBatchesController, only: [:index])
 
     resources("/verified-contracts", VerifiedContractsController, only: [:index])
+
+    resources("/withdrawals", WithdrawalController, only: [:index])
 
     get("/txs", TransactionController, :index)
     get("/state-batch-txs/:elements/:size/:batch", StateBatchTransactionController, :index)
@@ -302,6 +308,13 @@ defmodule BlockScoutWeb.WebRouter do
         AddressTokenTransferController,
         only: [:index],
         as: :token_transfers
+      )
+
+      resources(
+        "/withdrawals",
+        AddressWithdrawalController,
+        only: [:index],
+        as: :withdrawal
       )
 
       resources("/tokens", AddressTokenController, only: [:index], as: :token) do

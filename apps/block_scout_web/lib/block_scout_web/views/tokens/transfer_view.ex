@@ -6,7 +6,7 @@ defmodule BlockScoutWeb.Tokens.TransferView do
   alias Explorer.Chain.{Address, Transaction}
   alias BlockScoutWeb.Account.AuthController
   import BlockScoutWeb.AddressView, only: [tag_name_to_label: 1]
-  import BlockScoutWeb.Tokens.Helpers
+  import BlockScoutWeb.Tokens.Helper
 
 
   def transaction_status(transaction) do
