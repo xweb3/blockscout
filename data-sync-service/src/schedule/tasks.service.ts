@@ -614,6 +614,11 @@ export class TasksService {
       });
     }
   }
+  @Interval(60000)
+  async syncFeeVaultBalance() {
+    // BVM_SequencerFeeVault: 0x4200000000000000000000000000000000000011
+    await this.l2IngestionService.syncFeeVaultBalance();
+  }
 
   @Interval(3150)
   async updateTransactionStats() {
