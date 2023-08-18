@@ -341,7 +341,7 @@ class MarketHistoryChart {
       axes.numTransactions.position = 'left'
     }
 
-    this.availableSupply = availableSupply
+    // this.availableSupply = availableSupply
 
     const txChartTitle = ''
     // const txChartTitle = 'Daily transactions'
