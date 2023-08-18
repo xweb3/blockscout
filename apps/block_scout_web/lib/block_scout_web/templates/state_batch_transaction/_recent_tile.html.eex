@@ -1,4 +1,4 @@
-<div 
+<div
     data-identifier-hash="<%= @transaction.hash %>"
     class="recent-preview-item-content"
 >
@@ -15,22 +15,22 @@
         <span class="recent-preview-item-content-latest-txs-hash">
           <%= render "_link.html", transaction_hash: @transaction.hash, data_test: "address_hash_link" %>
         </span>
-        
+
       </div>
       <div class="d-flex flex-row">
         <span>From</span>
         <span class="recent-preview-item-content-latest-txs-from">
-          <%= @transaction |> BlockScoutWeb.AddressView.address_partial_selector(:from, assigns[:current_address]) |> BlockScoutWeb.RenderHelpers.render_partial() %>
+          <%= @transaction |> BlockScoutWeb.AddressView.address_partial_selector(:from, assigns[:current_address]) |> BlockScoutWeb.RenderHelper.render_partial() %>
         </span>
         <span style="margin-left:10px;">To</span>
         <span class="recent-preview-item-content-latest-txs-from">
-          <%= @transaction |> BlockScoutWeb.AddressView.address_partial_selector(:to, assigns[:current_address]) |> BlockScoutWeb.RenderHelpers.render_partial() %>
+          <%= @transaction |> BlockScoutWeb.AddressView.address_partial_selector(:to, assigns[:current_address]) |> BlockScoutWeb.RenderHelper.render_partial() %>
         </span>
-          
+
       </div>
       <div class="d-flex flex-row">
         <span in-tile data-from-now="<%= block_timestamp(@transaction) %>"></span>
-        <span 
+        <span
           class="recent-preview-item-content-latest-txs-tag-wrap"
         >
           <i class="recent-preview-item-content-latest-txs-tag"></i>
@@ -39,16 +39,3 @@
       </div>
     </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-

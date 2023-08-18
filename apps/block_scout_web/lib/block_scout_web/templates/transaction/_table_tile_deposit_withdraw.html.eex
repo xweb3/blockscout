@@ -59,7 +59,7 @@
           <% end %>
         </span>
         <span style="width: 8%;">
-          <%= @transaction |> block_number() |> BlockScoutWeb.RenderHelpers.render_partial() %>
+          <%= @transaction |> block_number() |> BlockScoutWeb.RenderHelper.render_partial() %>
         </span>
         <span style="width: 10%;">
           <span in-tile data-from-now="<%= block_timestamp(@transaction) %>"></span>
@@ -75,7 +75,7 @@
               </svg>
             </span>
           <% end %>
-          <%= @transaction |> BlockScoutWeb.AddressView.address_partial_selector(:from, assigns[:current_address],:truncate) |> BlockScoutWeb.RenderHelpers.render_partial() %>
+          <%= @transaction |> BlockScoutWeb.AddressView.address_partial_selector(:from, assigns[:current_address],:truncate) |> BlockScoutWeb.RenderHelper.render_partial() %>
         </span>
         <span style="width: 3%;">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="chevron-right">
@@ -96,7 +96,7 @@
               </svg>
             </span>
           <% end %>
-          <%= @transaction |> BlockScoutWeb.AddressView.address_partial_selector(:to, assigns[:current_address],:truncate) |> BlockScoutWeb.RenderHelpers.render_partial() %>
+          <%= @transaction |> BlockScoutWeb.AddressView.address_partial_selector(:to, assigns[:current_address],:truncate) |> BlockScoutWeb.RenderHelper.render_partial() %>
         </span>
         <span style="width: 6%;" class="text-truncate" data-toggle="tooltip" data-placement="top" title="" data-custom-class="" data-original-title="<%= value(@transaction, include_label: false) %> <%= Explorer.coin_name() %>">
           <span>
