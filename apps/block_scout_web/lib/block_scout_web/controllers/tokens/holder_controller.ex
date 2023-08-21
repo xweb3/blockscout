@@ -19,8 +19,6 @@ defmodule BlockScoutWeb.Tokens.HolderController do
     ]
 
   def index(conn, %{"token_id" => address_hash_string, "type" => "JSON"} = params) do
-    from_api = false
-
     if(address_hash_string == "0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000") do
       {:ok, address_hash} = Chain.string_to_address_hash(address_hash_string)
       {:ok, token} = Chain.token_from_address_hash(address_hash)
@@ -52,7 +50,7 @@ defmodule BlockScoutWeb.Tokens.HolderController do
       items =
         addresses_page
         |> Enum.with_index(1)
-        |> Enum.map(fn {{address, tx_count}, index} ->
+        |> Enum.map(fn {{address, tx_count}, _index} ->
           View.render_to_string(HolderView, "_native_token_balances.html",
             address: address,
             token: token,
@@ -70,8 +68,8 @@ defmodule BlockScoutWeb.Tokens.HolderController do
     else
       with {:ok, address_hash} <- Chain.string_to_address_hash(address_hash_string),
            {:ok, token} <- Chain.token_from_address_hash(address_hash),
-           token_balances <- Chain.fetch_token_holders_from_token_hash(address_hash, from_api, paging_options(params)),
-           {:ok, false} <- AccessHelpers.restricted_access?(address_hash_string, params) do
+           token_balances <- Chain.fetch_token_holders_from_token_hash(address_hash, paging_options(params)),
+           {:ok, false} <- AccessHelper.restricted_access?(address_hash_string, params) do
         {token_balances_paginated, next_page} = split_list_by_page(token_balances)
 
         next_page_path =

@@ -18,8 +18,9 @@ defmodule BlockScoutWeb.TokensERC1155Controller do
     paging_params =
       params
       |> paging_options()
+      |> Keyword.merge([ token_type: ["ERC-1155"] ])
 
-    tokens = Chain.list_top_tokens(filter, paging_params,"ERC-1155")
+    tokens = Chain.list_top_tokens(filter, paging_params)
 
     {tokens_erc1155_page, next_page} = split_list_by_page(tokens)
 

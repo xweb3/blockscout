@@ -2746,7 +2746,7 @@ defmodule Explorer.Chain do
 
   """
   @spec list_top_tokens(String.t()) :: [{Token.t(), non_neg_integer()}]
-  def list_top_tokens(filter, options \\ [], token_type \\ "") do
+  def list_top_tokens(filter, options \\ []) do
     paging_options = Keyword.get(options, :paging_options, @default_paging_options)
     token_type = Keyword.get(options, :token_type, nil)
     sorting = Keyword.get(options, :sorting, [])
@@ -2763,12 +2763,12 @@ defmodule Explorer.Chain do
     #   )
     base_query = Token.base_token_query(token_type, sorting)
 
-    base_query =
-      if token_type != "" do
-        from(q in base_query, where: q.type == ^token_type)
-      else
-        base_query
-      end
+    # base_query =
+    #   if token_type != "" do
+    #     from(q in base_query, where: q.type == ^token_type)
+    #   else
+    #     base_query
+    #   end
 
     base_query_with_paging =
       base_query
