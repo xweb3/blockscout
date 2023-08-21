@@ -3418,6 +3418,8 @@ defmodule BlockScoutWeb.Etherscan do
         gettext("The constructor argument data provided.")
       "verifysourcecode-constructorArguements" ->
         gettext("The constructor argument data provided.")
+      "verifysourcecode-constructorArguments" ->
+        gettext("The constructor argument data provided.")
       "verifysourcecode-autodetectConstructorArguments" ->
         gettext("Whether or not automatically detect constructor argument.")
       "gettxinfo-index" ->
