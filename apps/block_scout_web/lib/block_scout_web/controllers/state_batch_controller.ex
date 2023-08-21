@@ -11,7 +11,7 @@ defmodule BlockScoutWeb.StateBatchController do
     ]
 
   alias BlockScoutWeb.{
-    AccessHelpers,
+    AccessHelper,
     Controller,
     StateBatchView
   }

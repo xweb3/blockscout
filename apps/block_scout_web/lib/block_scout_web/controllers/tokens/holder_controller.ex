@@ -50,7 +50,7 @@ defmodule BlockScoutWeb.Tokens.HolderController do
       items =
         addresses_page
         |> Enum.with_index(1)
-        |> Enum.map(fn {{address, tx_count}, _index} ->
+        |> Enum.map(fn {{address, _tx_count}, _index} ->
           View.render_to_string(HolderView, "_native_token_balances.html",
             address: address,
             token: token,

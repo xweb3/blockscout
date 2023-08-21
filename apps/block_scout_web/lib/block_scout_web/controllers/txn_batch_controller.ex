@@ -12,7 +12,7 @@ defmodule BlockScoutWeb.TxnBatchController do
     ]
 
   alias BlockScoutWeb.{
-    AccessHelpers,
+    AccessHelper,
     Controller,
     TransactionInternalTransactionController,
     TransactionTokenTransferController,

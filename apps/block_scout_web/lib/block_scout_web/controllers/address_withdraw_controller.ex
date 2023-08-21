@@ -1,7 +1,7 @@
 defmodule BlockScoutWeb.AddressWithdrawController do
   use BlockScoutWeb, :controller
 
-  alias BlockScoutWeb.{AccessHelpers, Controller, TransactionView}
+  alias BlockScoutWeb.{AccessHelper, Controller, TransactionView}
   alias Explorer.ExchangeRates.Token
   alias Explorer.{Chain, Market}
   alias Explorer.Chain.Address
@@ -42,7 +42,7 @@ defmodule BlockScoutWeb.AddressWithdrawController do
       ) do
     with {:ok, address_hash} <- Chain.string_to_address_hash(address_hash_string),
          {:ok, address} <- Chain.hash_to_address(address_hash),
-         {:ok, false} <- AccessHelpers.restricted_access?(address_hash_string, params) do
+         {:ok, false} <- AccessHelper.restricted_access?(address_hash_string, params) do
       full_options =
         [
           necessity_by_association: %{
@@ -111,7 +111,7 @@ defmodule BlockScoutWeb.AddressWithdrawController do
       ) do
     with {:ok, address_hash} <- Chain.string_to_address_hash(address_hash_string),
          {:ok, address} <- Chain.hash_to_address(address_hash),
-         {:ok, false} <- AccessHelpers.restricted_access?(address_hash_string, params) do
+         {:ok, false} <- AccessHelper.restricted_access?(address_hash_string, params) do
       render(
         conn,
         "index.html",

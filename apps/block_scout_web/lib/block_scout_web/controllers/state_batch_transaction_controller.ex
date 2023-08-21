@@ -16,7 +16,7 @@ defmodule BlockScoutWeb.StateBatchTransactionController do
   import BlockScoutWeb.Models.GetTransactionTags, only: [get_transaction_with_addresses_tags: 2]
 
   alias BlockScoutWeb.{
-    AccessHelpers,
+    AccessHelper,
     Controller,
     TransactionInternalTransactionController,
     TransactionTokenTransferController,

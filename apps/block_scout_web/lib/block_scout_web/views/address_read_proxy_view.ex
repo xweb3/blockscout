@@ -4,7 +4,7 @@ defmodule BlockScoutWeb.AddressReadProxyView do
   import BlockScoutWeb.Account.AuthController, only: [current_user: 1]
   import BlockScoutWeb.Models.GetAddressTags, only: [get_address_tags: 2]
 
-  alias BlockScoutWeb.AccessHelpers
+  alias BlockScoutWeb.AccessHelper
   alias Explorer.{Chain, Market}
   alias Explorer.Chain.Address
   alias Explorer.ExchangeRates.Token
@@ -25,7 +25,7 @@ defmodule BlockScoutWeb.AddressReadProxyView do
          {:ok, address} <- Chain.find_contract_address(address_hash, address_options, true),
          false <- is_nil(address.smart_contract),
          {:ok, false} <-
-           AccessHelpers.restricted_access?(address_hash_string, %{
+           AccessHelper.restricted_access?(address_hash_string, %{
              "address_id" => address_hash_string
            }) do
       [

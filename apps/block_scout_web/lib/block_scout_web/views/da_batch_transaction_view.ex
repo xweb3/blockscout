@@ -1,7 +1,7 @@
 defmodule BlockScoutWeb.DaBatchTransactionView do
   use BlockScoutWeb, :view
 
-  alias BlockScoutWeb.{AccessHelpers, AddressView, BlockView, TabHelpers}
+  alias BlockScoutWeb.{AccessHelper, AddressView, BlockView, TabHelpers}
   alias BlockScoutWeb.Cldr.Number
   alias Explorer.{Chain, CustomContractsHelpers, Repo}
   alias Explorer.Chain.Block.Reward

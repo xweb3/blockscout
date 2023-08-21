@@ -5,7 +5,7 @@ defmodule BlockScoutWeb.AddressContractView do
   alias Explorer.Chain
   alias Explorer.Chain.{Address, Data, InternalTransaction, Transaction, SmartContract}
 
-  alias BlockScoutWeb.{AccessHelpers}
+  alias BlockScoutWeb.{AccessHelper}
   alias Explorer.Account.CustomABI
   alias Explorer.SmartContract.{Helper, Writer}
 

@@ -4,7 +4,7 @@ defmodule BlockScoutWeb.AddressReadContractView do
   import BlockScoutWeb.Account.AuthController, only: [current_user: 1]
   import BlockScoutWeb.Models.GetAddressTags, only: [get_address_tags: 2]
 
-  alias BlockScoutWeb.AccessHelpers
+  alias BlockScoutWeb.AccessHelper
   alias BlockScoutWeb.AddressView
   alias Explorer.{Chain, Market}
   alias Explorer.Chain.Address
@@ -40,7 +40,7 @@ defmodule BlockScoutWeb.AddressReadContractView do
          {:ok, address} <- Chain.find_contract_address(address_hash, address_options, true),
          false <- is_nil(address.smart_contract),
          need_wallet? <- Reader.read_functions_required_wallet_from_abi(address.smart_contract.abi) != [],
-         {:ok, false} <- AccessHelpers.restricted_access?(address_hash_string, %{"address_id" => address_hash_string}) do
+         {:ok, false} <- AccessHelper.restricted_access?(address_hash_string, %{"address_id" => address_hash_string}) do
       base_params ++
         [
           address: address,
@@ -56,7 +56,7 @@ defmodule BlockScoutWeb.AddressReadContractView do
           with {:ok, address_hash} <- Chain.string_to_address_hash(address_hash_string),
                {:ok, address} <- Chain.find_contract_address(address_hash, address_options, false),
                {:ok, false} <-
-                 AccessHelpers.restricted_access?(address_hash_string, %{"address_id" => address_hash_string}) do
+                 AccessHelper.restricted_access?(address_hash_string, %{"address_id" => address_hash_string}) do
             base_params ++
               [
                 address: address,
