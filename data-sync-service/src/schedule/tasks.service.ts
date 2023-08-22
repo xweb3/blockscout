@@ -17,7 +17,7 @@ const TXN_BATCH = 'txn_batch_block_number';
 const STATE_BATCH = 'state_batch_block_number';
 const DA_BATCH_INDEX = 'DA_BATCH_INDEX';
 const SYNC_STEP = 10;
-const SYNC_STEP_L2 = 100;
+const SYNC_STEP_L2 = 1000;
 const DA_MISS_UPDATE_LATEST_BATCH = 'DA_MISS_UPDATE_LATEST_BATCH';
 
 @Injectable()
@@ -314,6 +314,11 @@ export class TasksService {
           ? start - SYNC_STEP_L2
           : currentBlockNumber;
     }
+    console.log({
+      type: 'log',
+      time: new Date().getTime(),
+      msg: `l2_sent start: ${start}, end: ${end}`,
+    });
     if (currentBlockNumber > start + 1) {
       const inserted = await this.l2IngestionService.createSentEvents(
         start + 1,
