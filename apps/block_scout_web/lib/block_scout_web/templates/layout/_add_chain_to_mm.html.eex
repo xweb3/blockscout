@@ -6,6 +6,8 @@
         <a
             class="footer-link js-btn-add-chain-to-mm btn-add-chain-to-mm in-footer"
             style="cursor: pointer;"
+            data-success="<%= gettext("You're already connected to") %>"
+            data-fail="<%= gettext("add custom chain failed,") %>"
         >
             <%= gettext("Add") <> " #{sub_network}" %>
         </a>
