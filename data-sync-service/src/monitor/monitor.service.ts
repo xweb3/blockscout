@@ -32,18 +32,41 @@ export class MonitorService {
     public metricBlockNumber: Gauge<string>,
     @InjectMetric('miss_block_number')
     public metricMissBlockNumber: Gauge<string>,
+    // MNT
     @InjectMetric('mnt_total_locked_value')
     public metricMntTotalLockedValue: Gauge<string>,
     @InjectMetric('mnt_total_deposit_value')
     public metricMntTotalDepositValue: Gauge<string>,
     @InjectMetric('mnt_total_withdraw_value')
     public metricMntTotalWithdrawValue: Gauge<string>,
+    // ETH
     @InjectMetric('eth_total_locked_value')
     public metricEthTotalLockedValue: Gauge<string>,
     @InjectMetric('eth_total_deposit_value')
     public metricEthTotalDepositValue: Gauge<string>,
     @InjectMetric('eth_total_withdraw_value')
     public metricEthTotalWithdrawValue: Gauge<string>,
+    // USDT
+    @InjectMetric('usdt_total_locked_value')
+    public metricUSDTTotalLockedValue: Gauge<string>,
+    @InjectMetric('usdt_total_deposit_value')
+    public metricUSDTTotalDepositValue: Gauge<string>,
+    @InjectMetric('usdt_total_withdraw_value')
+    public metricUSDTTotalWithdrawValue: Gauge<string>,
+    // USDC
+    @InjectMetric('usdc_total_locked_value')
+    public metricUSDCTotalLockedValue: Gauge<string>,
+    @InjectMetric('usdc_total_deposit_value')
+    public metricUSDCTotalDepositValue: Gauge<string>,
+    @InjectMetric('usdc_total_withdraw_value')
+    public metricUSDCTotalWithdrawValue: Gauge<string>,
+    // LUSD
+    @InjectMetric('lusd_total_locked_value')
+    public metricLUSDTotalLockedValue: Gauge<string>,
+    @InjectMetric('lusd_total_deposit_value')
+    public metricLUSDTotalDepositValue: Gauge<string>,
+    @InjectMetric('lusd_total_withdraw_value')
+    public metricLUSDTotalWithdrawValue: Gauge<string>,
   ) {
     this.entityManager = getManager();
 
@@ -57,9 +80,9 @@ export class MonitorService {
     })
     this.l2Client = l2Client;
   }
-  async getL1BalanceOf(address): Promise<any> {
+  async getL1BalanceOf(token, address): Promise<any> {
     return await this.l1Client.readContract({
-      address: this.configService.get('Proxy__L1MNT'),
+      address: token,
       abi: ABI,
       functionName: 'balanceOf',
       args: [address]
@@ -79,27 +102,52 @@ export class MonitorService {
   // MNT l2_token address: 0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000
   async syncBridgeData() {
     try {
+      const l1_bridge = this.configService.get('Proxy__BVM_L1StandardBridge')
       /* ---------MNT--------- */
       const L2_MNT = '0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000'
-      const mntLockedBalance = await this.getL1BalanceOf(this.configService.get('Proxy__BVM_L1StandardBridge'))
+      const mntLockedBalance = await this.getL1BalanceOf(this.configService.get('Proxy__L1MNT'), l1_bridge)
       const mntTotalDeposit = await this.getTotalDepositValueByL2Token(L2_MNT);
       const mntTotalWithdraw = await this.getTotalWithdrawValueByL2Token(L2_MNT)
-      this.metricMntTotalLockedValue.set(Number(utils.formatEther(mntLockedBalance)))
-      this.metricMntTotalDepositValue.set(Number(utils.formatEther(mntTotalDeposit)))
-      this.metricMntTotalWithdrawValue.set(Number(utils.formatEther(mntTotalWithdraw)))
+      this.metricMntTotalLockedValue.set(Number(utils.formatEther(mntLockedBalance || 0)))
+      this.metricMntTotalDepositValue.set(Number(utils.formatEther(mntTotalDeposit || 0)))
+      this.metricMntTotalWithdrawValue.set(Number(utils.formatEther(mntTotalWithdraw || 0)))
       /* ---------ETH--------- */
       const L1_ETH = constants.AddressZero
-      const ethLockedBalance = await this.l1Client.getBalance({  address: this.configService.get('Proxy__BVM_L1StandardBridge') });
+      const ethLockedBalance = await this.l1Client.getBalance({ address: this.configService.get('Proxy__BVM_L1StandardBridge') });
       const ethTotalDeposit = await this.getTotalDepositValueByL1Token(L1_ETH);
       const ethTotalWithdraw = await this.getTotalWithdrawValueByL1Token(L1_ETH);
-      this.metricEthTotalLockedValue.set(Number(utils.formatEther(ethLockedBalance)))
-      this.metricEthTotalDepositValue.set(Number(utils.formatEther(ethTotalDeposit)))
-      this.metricEthTotalWithdrawValue.set(Number(utils.formatEther(ethTotalWithdraw)))
+      this.metricEthTotalLockedValue.set(Number(utils.formatEther(ethLockedBalance || 0)))
+      this.metricEthTotalDepositValue.set(Number(utils.formatEther(ethTotalDeposit || 0)))
+      this.metricEthTotalWithdrawValue.set(Number(utils.formatEther(ethTotalWithdraw || 0)))
+      /* ---------USDT--------- */
+      const l1_usdt = this.configService.get('L1_USDT_ADDRESS')
+      const usdtLockedBalance = await this.getL1BalanceOf(l1_usdt, l1_bridge)
+      const usdtTotalDeposit = await this.getTotalDepositValueByL1Token(l1_usdt);
+      const usdtTotalWithdraw = await this.getTotalWithdrawValueByL1Token(l1_usdt);
+      this.metricUSDTTotalLockedValue.set(Number(utils.formatEther(usdtLockedBalance || 0)))
+      this.metricUSDTTotalDepositValue.set(Number(utils.formatEther(usdtTotalDeposit || 0)))
+      this.metricUSDTTotalWithdrawValue.set(Number(utils.formatEther(usdtTotalWithdraw || 0)))
+      /* ---------USDC--------- */
+      const l1_usdc = this.configService.get('L1_USDC_ADDRESS')
+      const usdcLockedBalance = await this.getL1BalanceOf(l1_usdc, l1_bridge)
+      const usdcTotalDeposit = await this.getTotalDepositValueByL1Token(l1_usdc);
+      const usdcTotalWithdraw = await this.getTotalWithdrawValueByL1Token(l1_usdc);
+      this.metricUSDCTotalLockedValue.set(Number(utils.formatEther(usdcLockedBalance || 0)))
+      this.metricUSDCTotalDepositValue.set(Number(utils.formatEther(usdcTotalDeposit || 0)))
+      this.metricUSDCTotalWithdrawValue.set(Number(utils.formatEther(usdcTotalWithdraw || 0)))
+      /* ---------LUSD--------- */
+      const l1_lusd = this.configService.get('L1_LUSD_ADDRESS')
+      const lusdLockedBalance = await this.getL1BalanceOf(l1_lusd, l1_bridge)
+      const lusdTotalDeposit = await this.getTotalDepositValueByL1Token(l1_lusd);
+      const lusdTotalWithdraw = await this.getTotalWithdrawValueByL1Token(l1_lusd);
+      this.metricLUSDTotalLockedValue.set(Number(utils.formatEther(lusdLockedBalance || 0)))
+      this.metricLUSDTotalDepositValue.set(Number(utils.formatEther(lusdTotalDeposit || 0)))
+      this.metricLUSDTotalWithdrawValue.set(Number(utils.formatEther(lusdTotalWithdraw || 0)))
     } catch (error) {
       console.log({
         type: 'ERROR',
         time: new Date().getTime(),
-        msg: `sync bridge data error: ${error?.message}`
+        msg: `sync bridge data error: ${error}`
       })
     }
   }
