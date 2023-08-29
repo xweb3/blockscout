@@ -23,32 +23,19 @@
     %>
   <% end %>
 
-  <%= if contract?(@token) do %>
+   <%= if contract?(@token) do %>
     <%= link(
-        gettext("Read Contract"),
-        to: AccessHelper.get_path(@conn, :token_read_contract_path, :index, address_hash),
-        class: "card-tab #{tab_status("read-contract", @conn.request_path)}")
-      %>
+        to: AccessHelper.get_path(@conn, :token_contract_path, :index, address_hash),
+        class: "card-tab #{tab_status("contracts", @conn.request_path)}") do %>
+        <%= gettext("Contract") %>
+      <%= if smart_contract_verified?(@token) do %>
+        <%= cond do %>
+          <% true -> %>
+            <i class="fa-regular fa-check-circle"></i>
+        <% end %>
+      <% end %>
+    <% end %>
   <% end %>
-  <%= if smart_contract_with_write_functions?(@token) do %>
-    <%= link(
-        gettext("Write Contract"),
-        to: AccessHelper.get_path(@conn, :token_write_contract_path, :index, address_hash),
-        class: "card-tab #{tab_status("write-contract", @conn.request_path)}")
-        %>
-  <% end %>
-  <%= if is_proxy do %>
-    <%= link(
-        gettext("Read Proxy"),
-        to: AccessHelper.get_path(@conn, :token_read_proxy_path, :index, address_hash),
-        class: "card-tab #{tab_status("read-proxy", @conn.request_path)}")
-        %>
-  <% end %>
-  <%= if smart_contract_with_write_functions?(@token) && is_proxy  do %>
-    <%= link(
-        gettext("Write Proxy"),
-        to: AccessHelper.get_path(@conn, :token_write_proxy_path, :index, address_hash),
-        class: "card-tab #{tab_status("write-proxy", @conn.request_path)}")
-        %>
-  <% end %>
+
+
 </div>

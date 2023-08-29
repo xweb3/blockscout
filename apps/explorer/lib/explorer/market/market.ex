@@ -70,7 +70,7 @@ defmodule Explorer.Market do
   end
 
   @spec get_exchange_rate(String.t()) :: Token.t() | nil
-  defp get_exchange_rate(symbol) do
+  def get_exchange_rate(symbol) do
     ExchangeRates.lookup(symbol)
   end
 end
