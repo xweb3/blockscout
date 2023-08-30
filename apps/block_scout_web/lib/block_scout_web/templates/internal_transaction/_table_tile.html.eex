@@ -22,7 +22,7 @@
           </span>
         <%= end %>
       </span>
-      <span style="width: 10%;" class="text-truncate" data-toggle="tooltip" data-placement="top" title="" data-custom-class="" data-original-title="<%= @internal_transaction.transaction_hash %>">
+      <span style="width: 12%;" class="text-truncate" data-toggle="tooltip" data-placement="top" title="" data-custom-class="" data-original-title="<%= @internal_transaction.transaction_hash %>">
         <div class="text-truncate d-flex">
           <%= render BlockScoutWeb.TransactionView, "_link.html", transaction_hash: @internal_transaction.transaction_hash %>
         </div>
@@ -32,19 +32,21 @@
           <%= gettext("Internal Transaction") %>
          </span>
       </span>
-      <span style="width: 9%;" class="tag-container text-truncate" data-toggle="tooltip" data-placement="top" title="" data-custom-class="" data-original-title="<%= type(@internal_transaction) %>">
+      <span style="width: 10%;" class="tag-container text-truncate" data-toggle="tooltip" data-placement="top" title="" data-custom-class="" data-original-title="<%= type(@internal_transaction) %>">
         <span class="tile-status-label ml-2 ml-md-0 method" data-internal-transaction-type="<%= type(@internal_transaction) %>"><%= type(@internal_transaction) %></span>
       </span>
-      <span style="width: 8%;">
+      <span style="width: 9%;">
          <%= link(
           to_string(@internal_transaction.block_number),
           to: block_path(BlockScoutWeb.Endpoint, :show, @internal_transaction.block_number)
         ) %>
       </span>
+
       <span style="width: 10%;">
-        <span class="mr-2 mr-md-0 order-2" in-tile data-from-now="<%= @internal_transaction.transaction.block.timestamp %>"></span>
+        <span class="mr-2 mr-md-0 order-2" in-tile data-from-now="<%= @internal_transaction.block.timestamp %>"></span>
       </span>
-      <span style="width: 14%;" class="text-truncate address">
+
+      <span style="width: 16%;" class="text-truncate address">
         <%= if BlockScoutWeb.AddressView.contract?(@internal_transaction.from_address) do %>
           <span data-toggle="tooltip" data-placement="top" title="" data-custom-class="" data-original-title="<%= gettext "Contract" %>">
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -65,7 +67,7 @@
           <rect x="0.5" y="0.5" width="23" height="23" rx="11.5" stroke="#65B3AE" stroke-opacity="0.5"/>
         </svg>
       </span>
-      <span style="width: 14%;" class="text-truncate address">
+      <span style="width: 16%;" class="text-truncate address">
         <%= if BlockScoutWeb.AddressView.contract?(@internal_transaction.to_address) do %>
           <span data-toggle="tooltip" data-placement="top" title="" data-custom-class="" data-original-title="<%= gettext "Contract" %>">
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -78,16 +80,13 @@
         <% end %>
         <%= @internal_transaction |> BlockScoutWeb.AddressView.address_partial_selector(:to, assigns[:current_address]) |> (&(if is_list(&1), do: Keyword.put(&1, :ignore_implementation_name, true), else: &1)).() |> BlockScoutWeb.RenderHelper.render_partial() %>
       </span>
-      <span style="width: 10%;" class="text-truncate" data-toggle="tooltip" data-placement="top" title="" data-custom-class="" data-original-title="<%= BlockScoutWeb.TransactionView.value(@internal_transaction, include_label: false) %> <%= Explorer.coin_name() %>">
+      <span style="width: 12%;" class="text-truncate" data-toggle="tooltip" data-placement="top" title="" data-custom-class="" data-original-title="<%= BlockScoutWeb.TransactionView.value(@internal_transaction, include_label: false) %> <%= Explorer.coin_name() %>">
         <span>
           <%= BlockScoutWeb.TransactionView.value(@internal_transaction, include_label: false) %> <%= Explorer.coin_name() %>
         </span>
       </span>
-      <span style="width: 10%;" class="text-truncate" data-toggle="tooltip" data-placement="top" title="" data-custom-class="" data-original-title="<%= BlockScoutWeb.TransactionView.formatted_fee(@internal_transaction.transaction, denomination: :ether, include_label: false) %>">
-        <span class="dark-opacity-white">
-          <%= BlockScoutWeb.TransactionView.formatted_fee(@internal_transaction.transaction, denomination: :ether, include_label: false) %>
-        </span>
-      </span>
+
+
   </div>
 
 </div>
