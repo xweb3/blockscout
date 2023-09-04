@@ -23,27 +23,30 @@ defmodule BlockScoutWeb.Tokens.ContractController do
 
     with {:ok, address_hash} <- Chain.string_to_address_hash(address_hash_string),
          {:ok, token} <- Chain.token_from_address_hash(address_hash, options),
-         {:ok, false} <- AccessHelper.restricted_access?(address_hash_string, params) do
-      %{type: type, action: action} =
-        cond do
-          TabHelper.tab_active?("read-contract", conn.request_path) ->
-            %{type: :regular, action: :read}
+         {:ok, false} <- AccessHelper.restricted_access?(address_hash_string, params),
+         {:ok, address} <- Chain.find_contract_address(address_hash, address_options, true) do
 
-          TabHelper.tab_active?("write-contract", conn.request_path) ->
-            %{type: :regular, action: :write}
+      # %{type: type, action: action} =
+      #   cond do
+      #     TabHelper.tab_active?("read-contract", conn.request_path) ->
+      #       %{type: :regular, action: :read}
 
-          TabHelper.tab_active?("read-proxy", conn.request_path) ->
-            %{type: :proxy, action: :read}
+      #     TabHelper.tab_active?("write-contract", conn.request_path) ->
+      #       %{type: :regular, action: :write}
 
-          TabHelper.tab_active?("write-proxy", conn.request_path) ->
-            %{type: :proxy, action: :write}
-        end
+      #     TabHelper.tab_active?("read-proxy", conn.request_path) ->
+      #       %{type: :proxy, action: :read}
+
+      #     TabHelper.tab_active?("write-proxy", conn.request_path) ->
+      #       %{type: :proxy, action: :write}
+      #   end
 
       render(
         conn,
         "index.html",
-        type: type,
-        action: action,
+        # type: type,
+        # action: action,
+        address: address,
         token: token,
         counters_path: token_path(conn, :token_counters, %{"id" => Address.checksum(address_hash)}),
         tags: get_address_tags(address_hash, current_user(conn))
