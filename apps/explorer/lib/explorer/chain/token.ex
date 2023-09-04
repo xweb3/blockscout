@@ -178,7 +178,18 @@ defmodule Explorer.Chain.Token do
   ]
 
   defp apply_sorting(query, sorting) when is_list(sorting) do
-    from(t in query, order_by: ^sorting_with_defaults(sorting))
+    # from(t in query, order_by: ^sorting_with_defaults(sorting))
+
+    order_by_list = [
+      asc: dynamic([t], fragment("""
+      (case WHEN ? = ? then 1 else 2 end)
+    """, t.contract_address_hash, "\\xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000"))
+    ] ++ sorting_with_defaults(sorting)
+
+    from(t in query,
+      order_by: ^order_by_list )
+
+
   end
 
   defp sorting_with_defaults(sorting) when is_list(sorting) do
