@@ -114,6 +114,7 @@ export class L1IngestionService {
     this.crossDomainMessengerContract = crossDomainMessengerContract;
     this.bvmEigenDataLayrChain = bvmEigenDataLayrChain;
     this.web3 = web3;
+    this.initMetrics();
   }
   async getCtcTransactionBatchAppendedByBlockNumber(
     fromBlock: number,
@@ -786,7 +787,7 @@ export class L1IngestionService {
       .insert()
       .into(DaBatches)
       .values(insertBatchData)
-      .onConflict(`("da_hash") DO NOTHING`)
+      .orIgnore()
       .execute().catch(e => {
         console.log({
           type: 'ERROR',
@@ -1090,7 +1091,6 @@ export class L1IngestionService {
     if (batchIndexParam > Number(batchIndex)) {
       return Promise.resolve(false);
     }
-    this.metricEigenlayerBatchIndex.set(Number(batchIndex))
     const res = await this.eigenlayerService.getRollupStoreByRollupBatchIndex(batchIndexParam);
     if (!res) {
       return Promise.resolve(false);
@@ -1128,7 +1128,7 @@ export class L1IngestionService {
     if (upgrade_data_store_id && upgrade_data_store_id !== 0) {
       number += upgrade_data_store_id
     }
-    const dataStoreData = await this.eigenlayerService.getDataStore(fromStoreNumber);
+    const dataStoreData = await this.eigenlayerService.getDataStore(number);
     console.log({
       type: 'log',
       time: new Date().getTime(),
@@ -1227,6 +1227,7 @@ export class L1IngestionService {
         insertHashData = insertHashList
       }
       await this.createEigenBatchTransaction(insertBatchData, insertHashData);
+      this.metricEigenlayerBatchIndex.set(Number(batchIndex))
     } else {
       console.log({
         type: 'log',
@@ -1602,7 +1603,7 @@ export class L1IngestionService {
     if (upgrade_data_store_id && upgrade_data_store_id !== 0) {
       number += upgrade_data_store_id
     }
-    const dataStoreData = await this.eigenlayerService.getDataStore(fromStoreNumber);
+    const dataStoreData = await this.eigenlayerService.getDataStore(number);
     console.log({
       type: 'log',
       time: new Date().getTime(),
@@ -1711,6 +1712,26 @@ export class L1IngestionService {
     return Promise.resolve(true);
   }
 
-
-
+  async initMetrics() {
+    const daBatchesItem = await this.daBatchesRepository.findOne({
+      select: ['batch_index'],
+      order: { batch_index: 'DESC' },
+    })
+    this.metricEigenlayerBatchIndex.set(Number(daBatchesItem?.batch_index || 0))
+    const stateBatchItem = await this.stateBatchesRepository.findOne({
+      select: ['batch_index'],
+      order: { batch_index: 'DESC' },
+    })
+    this.metricStateBatchIndex.set(Number(stateBatchItem?.batch_index || 0))
+    const l1Tol2Item = await this.txnL1ToL2Repository.findOne({
+      select: ['queue_index'],
+      order: { queue_index: 'DESC' },
+    })
+    this.metricQueueIndex.set(Number(l1Tol2Item?.queue_index || 0))
+    const relayedEventsItem = await this.relayedEventsRepository.findOne({
+      select: ['block_number'],
+      order: { block_number: 'DESC' },
+    })
+    this.metricL2ToL1L1Hash.set(Number(relayedEventsItem?.block_number || 0))
+  }
 }

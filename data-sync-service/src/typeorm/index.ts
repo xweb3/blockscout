@@ -1,6 +1,8 @@
 import { Transactions } from './transactions.entity';
 import { L1ToL2 } from './l1_to_l2.entity';
 import { L2ToL1 } from './l2_to_l1.entity';
+import { Blocks } from './blocks.entity';
+import { TransactionStats } from './transactions_stats.entity';
 import { L1RelayedMessageEvents } from './l1_relayed_message_events.entity';
 import { L1SentMessageEvents } from './l1_sent_message_events.entity';
 import { L2RelayedMessageEvents } from './l2_relayed_message_events.entity';
@@ -12,6 +14,8 @@ import { DaBatches } from './da_batches.entity';
 import { DaBatchTransactions } from './da_batch_transactions.entity';
 import { TokenPriceHistory } from './token_price_history.entity';
 import { TokenPriceRealTime } from './token_price_real_time.entity';
+import { Addresses } from './addresses.entity';
+import { Last24HrsStats } from './last_24hrs_stats.entity';
 
 const entities = [
   L1ToL2,
@@ -27,7 +31,11 @@ const entities = [
   DaBatches,
   DaBatchTransactions,
   TokenPriceHistory,
-  TokenPriceRealTime
+  TokenPriceRealTime,
+  Addresses,
+  Blocks,
+  TransactionStats,
+  Last24HrsStats,
 ];
 
 export {
@@ -45,5 +53,9 @@ export {
   DaBatchTransactions,
   TokenPriceHistory,
   TokenPriceRealTime,
+  Addresses,
+  Blocks,
+  TransactionStats,
+  Last24HrsStats,
 };
 export default entities;

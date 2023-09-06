@@ -7,6 +7,7 @@ import {
   L2RelayedMessageEvents,
   L2SentMessageEvents,
   L2ToL1,
+  Addresses
 } from 'src/typeorm';
 import { EntityManager, getConnection, getManager, Repository } from 'typeorm';
 import Web3 from 'web3';
@@ -34,6 +35,8 @@ export class L2IngestionService {
     private readonly sentEventsRepository: Repository<L2SentMessageEvents>,
     @InjectRepository(L2ToL1)
     private readonly l2ToL1Repository: Repository<L2ToL1>,
+    @InjectRepository(Addresses)
+    private readonly addressesRepo: Repository<Addresses>,
     private readonly httpService: HttpService,
     @InjectMetric('msg_nonce')
     public metricMsgNonce: Gauge<string>,
@@ -51,10 +54,11 @@ export class L2IngestionService {
       configService.get('L2_CROSS_DOMAIN_MESSENGER_ADDRESS'),
     );
     this.web3 = web3;
-    /* if(configService.get('ENV') !== 'mainnet'){
+    this.initMetrics();
+    if(configService.get('ENV') === 'testnet'){
       this.WithdrawalMethod = 'finalizeBitWithdrawal'
       this.WithdrawalMethodHexPrefix = '0x839f0ec6'
-    } */
+    }
   }
   async getSentMessageByBlockNumber(fromBlock: number, toBlock: number) {
     return this.crossDomainMessengerContract.getPastEvents('SentMessage', {
@@ -528,5 +532,72 @@ export class L2IngestionService {
     } finally {
       await queryRunner.release();
     }
+  }
+  async syncFeeVaultBalance() {
+    const BVM_SequencerFeeVault = '0x4200000000000000000000000000000000000011'
+    const currentBlockNumber = await this.web3.eth.getBlockNumber()
+    const balance = await this.web3.eth.getBalance(BVM_SequencerFeeVault, currentBlockNumber);
+    const dataSource = getConnection();
+    const queryRunner = dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    try {
+      await queryRunner.manager
+          .createQueryBuilder()
+          .update(Addresses)
+          .set({
+            fetched_coin_balance_block_number: currentBlockNumber,
+            fetched_coin_balance: balance
+          })
+          .where({ hash: Buffer.from(BVM_SequencerFeeVault.slice(2), 'hex') })
+          .execute()
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      console.log({
+        type: 'ERROR',
+        time: new Date().getTime(),
+        msg: `syncFeeVaultBalance error ${error?.message}`
+      })
+      await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
+    }
+  }
+  async initMetrics() {
+    const l2ToL1Item = await this.l2ToL1Repository.findOne({
+      select: ['msg_nonce'],
+      order: { msg_nonce: 'DESC' },
+    })
+    this.metricMsgNonce.set(Number(l2ToL1Item?.msg_nonce || 0))
+    const relayedEventsItem = await this.relayedEventsRepository.findOne({
+      select: ['block_number'],
+      order: { block_number: 'DESC' },
+    })
+    this.metricL1ToL2L2Hash.set(Number(relayedEventsItem?.block_number || 0))
+    // initialize metricL2ToL1Status
+    // get latest waiting l2-to-l1 txn(status: '0')
+    let l2ToL1Item2 = await this.l2ToL1Repository.findOne({
+      select: ['msg_nonce'],
+      order: { block: 'DESC' },
+      where: {
+        status: '0'
+      },
+    })
+    // if there is no waiting txn, then get latest l2-to-l1 txn
+    if (!l2ToL1Item2) {
+      l2ToL1Item2 = await this.l2ToL1Repository.findOne({
+        select: ['msg_nonce'],
+        order: { block: 'DESC' }
+      })
+    }
+    console.log({
+      type: 'log',
+      time: new Date().getTime(),
+      msg: {
+        message: 'initMetrics metricL2ToL1Status',
+        l2ToL1Item2
+      }
+    })
+    this.metricL2ToL1Status.set(Number(l2ToL1Item2?.msg_nonce || 0))
   }
 }

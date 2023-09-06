@@ -1,9 +1,22 @@
 import $ from 'jquery'
-import { connectSelector, disconnectSelector, getCurrentAccountPromise, getContractABI, getMethodInputs, prepareMethodArgs } from './common_helpers'
+import {
+  connectSelector,
+  disconnectSelector,
+  getCurrentAccountPromise,
+  getContractABI,
+  getMethodInputs,
+  prepareMethodArgs
+} from './common_helpers'
 import { queryMethod, callMethod } from './interact'
-import { walletEnabled, connectToWallet, disconnectWallet, web3ModalInit } from './connect.js'
+import {
+  walletEnabled,
+  connectToWallet,
+  disconnectWallet,
+  web3ModalInit
+} from './connect.js'
 import '../../pages/address'
 
+let walletInit = false
 const loadFunctions = (element, isCustomABI, from) => {
   const $element = $(element)
   const url = $element.data('url')
@@ -11,23 +24,45 @@ const loadFunctions = (element, isCustomABI, from) => {
   const type = $element.data('type')
   const action = $element.data('action')
 
+  const typeForId = type === 'proxy' ? 'proxy' : 'contract'
+
   $.get(
     url,
     { hash, type, action, is_custom_abi: isCustomABI, from },
-    response => $element.html(response)
+    (response) => $element.html(response)
   )
     .done(function () {
-      document.querySelector(connectSelector) && document.querySelector(connectSelector).addEventListener('click', connectToWallet)
-      document.querySelector(disconnectSelector) && document.querySelector(disconnectSelector).addEventListener('click', disconnectWallet)
-      web3ModalInit(connectToWallet)
+      $(
+        '.web3-connect-wrapper',
+        $element.parents('.contract-handler-container')
+      ).fadeIn()
 
-      const selector = isCustomABI ? '[data-function-custom]' : '[data-function]'
+      $(connectSelector, $(`#${action}-${typeForId}`)).length &&
+        $(connectSelector, $(`#${action}-${typeForId}`)).on(
+          'click',
+          connectToWallet
+        )
 
-      $(selector).each((_, element) => {
+      $(disconnectSelector, $(`#${action}-${typeForId}`)).length &&
+        $(disconnectSelector, $(`#${action}-${typeForId}`)).on(
+          'click',
+          disconnectWallet
+        )
+
+      if (!walletInit) {
+        web3ModalInit(connectToWallet)
+        walletInit = true
+      }
+
+      const selector = isCustomABI
+        ? '[data-function-custom]'
+        : '[data-function]'
+
+      $(selector, $element).each((_, element) => {
         readWriteFunction(element)
       })
 
-      $('.contract-exponentiation-btn').on('click', (event) => {
+      $('.contract-exponentiation-btn', $element).on('click', (event) => {
         const $customPower = $(event.currentTarget).find('[name=custom_power]')
         let power
         if ($customPower.length > 0) {
@@ -35,13 +70,23 @@ const loadFunctions = (element, isCustomABI, from) => {
         } else {
           power = parseInt($(event.currentTarget).data('power'), 10)
         }
-        const $input = $(event.currentTarget).parent().parent().parent().find('[name=function_input]')
-        const currentInputVal = parseInt($input.val(), 10) || 1
-        const newInputVal = (currentInputVal * Math.pow(10, power)).toString()
-        $input.val(newInputVal.toString())
+        // const $input = $(event.currentTarget)
+        //   .parent()
+        //   .parent()
+        //   .parent()
+        //   .find('[name=function_input]')
+        const $input = $(event.currentTarget)
+          .parents('.number-input-container')
+          .find('[name=function_input]')
+
+        if ($input.length) {
+          const currentInputVal = parseInt($input.val(), 10) || 1
+          const newInputVal = (currentInputVal * Math.pow(10, power)).toString()
+          $input.val(newInputVal.toString())
+        }
       })
 
-      $('[name=custom_power]').on('click', (event) => {
+      $('[name=custom_power]', $element).on('click', (event) => {
         $(event.currentTarget).parent().parent().toggleClass('show')
       })
     })
@@ -83,12 +128,30 @@ const readWriteFunction = (element) => {
       const type = $('[data-smart-contract-functions]').data('type')
       const isCustomABI = $form.data('custom-abi')
 
-      walletEnabled()
-        .then((isWalletEnabled) => queryMethod(isWalletEnabled, url, $methodId, args, type, functionName, $responseContainer, isCustomABI))
+      walletEnabled().then((isWalletEnabled) =>
+        queryMethod(
+          isWalletEnabled,
+          url,
+          $methodId,
+          args,
+          type,
+          functionName,
+          $responseContainer,
+          isCustomABI
+        )
+      )
     } else if (action === 'write') {
       const explorerChainId = $form.data('chainId')
-      walletEnabled()
-        .then((isWalletEnabled) => callMethod(isWalletEnabled, $functionInputs, explorerChainId, $form, functionName, $element))
+      walletEnabled().then((isWalletEnabled) =>
+        callMethod(
+          isWalletEnabled,
+          $functionInputs,
+          explorerChainId,
+          $form,
+          functionName,
+          $element
+        )
+      )
     }
   })
 }
@@ -96,19 +159,26 @@ const readWriteFunction = (element) => {
 const container = $('[data-smart-contract-functions]')
 
 if (container.length) {
-  getWalletAndLoadFunctions(false, container)
+  container.each(function (_, ele) {
+    getWalletAndLoadFunctions(false, $(ele))
+  })
 }
 
 const customABIContainer = $('[data-smart-contract-functions-custom]')
 
 if (customABIContainer.length) {
-  getWalletAndLoadFunctions(true, customABIContainer)
+  customABIContainer.each(function (_, ele) {
+    getWalletAndLoadFunctions(true, $(ele))
+  })
 }
 
-function getWalletAndLoadFunctions (isCustomABI, container) {
-  getCurrentAccountPromise(window.web3 && window.web3.currentProvider).then((currentAccount) => {
-    loadFunctions(container, isCustomABI, currentAccount)
-  }, () => {
-    loadFunctions(container, isCustomABI, null)
-  })
+function getWalletAndLoadFunctions(isCustomABI, container) {
+  getCurrentAccountPromise(window.web3 && window.web3.currentProvider).then(
+    (currentAccount) => {
+      loadFunctions(container, isCustomABI, currentAccount)
+    },
+    () => {
+      loadFunctions(container, isCustomABI, null)
+    }
+  )
 }

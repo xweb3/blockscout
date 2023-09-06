@@ -3,7 +3,13 @@ defmodule BlockScoutWeb.AddressContractView do
 
   alias ABI.{FunctionSelector, TypeDecoder}
   alias Explorer.Chain
-  alias Explorer.Chain.{Address, Data, InternalTransaction, Transaction}
+  alias Explorer.Chain.{Address, Data, InternalTransaction, Transaction, SmartContract}
+
+  alias BlockScoutWeb.{AccessHelpers}
+  alias Explorer.Account.CustomABI
+  alias Explorer.SmartContract.{Helper, Writer}
+
+  import BlockScoutWeb.Account.AuthController, only: [current_user: 1]
 
   def render("scripts.html", %{conn: conn}) do
     render_scripts(conn, "address_contract/code_highlighting.js")
@@ -148,4 +154,51 @@ defmodule BlockScoutWeb.AddressContractView do
     match = if partial_match, do: "/partial_match/", else: "/full_match/"
     repo_url <> match <> chain_id <> "/" <> checksummed_hash <> "/"
   end
+
+  def smart_contract_with_read_only_functions?(%Address{smart_contract: %SmartContract{}} = address) do
+    Enum.any?(address.smart_contract.abi || [], &is_read_function?(&1))
+  end
+
+  def smart_contract_with_read_only_functions?(%Address{smart_contract: nil}), do: false
+
+  def is_read_function?(function), do: Helper.queriable_method?(function) || Helper.read_with_wallet_method?(function)
+
+  def smart_contract_is_proxy?(%Address{smart_contract: %SmartContract{} = smart_contract}) do
+    SmartContract.proxy_contract?(smart_contract)
+  end
+
+  def smart_contract_is_proxy?(%Address{smart_contract: nil}), do: false
+
+  def smart_contract_with_write_functions?(%Address{smart_contract: %SmartContract{}} = address) do
+    Enum.any?(
+      address.smart_contract.abi || [],
+      &Writer.write_function?(&1)
+    )
+  end
+
+  def smart_contract_with_write_functions?(%Address{smart_contract: nil}), do: false
+
+  def fetch_custom_abi(conn, address_hash) do
+    if current_user = current_user(conn) do
+      CustomABI.get_custom_abi_by_identity_id_and_address_hash(address_hash, current_user.id)
+    end
+  end
+
+  def has_address_custom_abi_with_read_functions?(conn, address_hash) do
+    custom_abi = fetch_custom_abi(conn, address_hash)
+
+    check_custom_abi_for_having_read_functions(custom_abi)
+  end
+
+  def check_custom_abi_for_having_read_functions(custom_abi),
+    do: !is_nil(custom_abi) && Enum.any?(custom_abi.abi, &is_read_function?(&1))
+
+  def has_address_custom_abi_with_write_functions?(conn, address_hash) do
+    custom_abi = fetch_custom_abi(conn, address_hash)
+
+    check_custom_abi_for_having_write_functions(custom_abi)
+  end
+
+  def check_custom_abi_for_having_write_functions(custom_abi),
+    do: !is_nil(custom_abi) && Enum.any?(custom_abi.abi, &Writer.write_function?(&1))
 end
